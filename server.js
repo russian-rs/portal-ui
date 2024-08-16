@@ -14,6 +14,10 @@ app.get('/', (_req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'))
 })
 
+app.get('/health', (_req, res) => {
+    res.sendStatus(200)
+})
+
 const server = app.listen(process.env.PORT || 3000, '0.0.0.0', function () {
     const port = server.address().port
     console.log('App started on port %s', port)
