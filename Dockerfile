@@ -1,21 +1,12 @@
-# Step 1: Build the app in a node environment
-FROM node:22-alpine AS build
+# Define the node environment
+FROM node:22-alpine
 
-WORKDIR /app
-
-COPY package*.json ./
+COPY . /src
+WORKDIR /src
 
 RUN npm install
-
-COPY . .
-
 RUN npm run build
 
-# Step 2: Serve the app from a nginx server
-FROM nginx:1.27.1-alpine AS deploy
+EXPOSE 3000
 
-COPY --from=build /app/dist /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD [ "node", "server.js" ]
