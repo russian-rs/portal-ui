@@ -1,0 +1,58 @@
+name: Coolify Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  PERIOD: 10 # seconds
+  ATTEMPTS: 60 # PERIOD * ATTEMPTS = 600 s = 10 min
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: install jq
+        run: sudo apt-get install jq
+      - name: start deploy
+        id: start_deploy
+        run: |
+          response=$(curl -s --request GET '${{ secrets.COOLIFY_API_URL }}/api/v1/deploy?uuid=${{ secrets.COOLIFY_SERVICE_ID }}&force=false' --header 'Authorization: Bearer ${{ secrets.COOLIFY_API_KEY }}')
+          deployment_uuid=$(echo $response | jq -r '.deployments[0].deployment_uuid')
+          if [[ $deployment_uuid == "null" ]]; then
+            printf "Failed to start deployment: \n$response"
+            exit 1
+          fi
+          echo "deployment_uuid=$deployment_uuid" >> $GITHUB_OUTPUT
+      - name: checking status
+        run: |
+          deployment_uuid=${{ steps.start_deploy.outputs.deployment_uuid }}
+          status=""
+          deployment_url=""
+          
+          period=${{ env.PERIOD }}
+          attempts=${{ env.ATTEMPTS }}
+          
+          count=0
+          while [ "$status" != "finished" ] && [ "$count" -lt "$attempts" ]
+          do
+            sleep $period
+            count=$(( $count + 1 ))
+            response=$(curl -s --request GET "${{ secrets.COOLIFY_API_URL }}/api/v1/deployments/$deployment_uuid" --header 'Authorization: Bearer ${{ secrets.COOLIFY_API_KEY }}')
+            status=$(echo $response | jq -r '.status')
+            printf `expr $count \* $period`
+            printf "s, status: $status\n"
+            if [[ $status == "null" ]] || [[ $status != "in_progress" ]]; then
+              printf "Deployment failed: \n$response"
+              exit 1
+            fi
+            deployment_url=$(echo $response | jq -r '.deployment_url')
+          done
+          
+          if [ "$status" != "deployed" ]; then
+            printf "Deployment didn't completed after 10 minutes. \nMore info at ${{ secrets.COOLIFY_API_URL }}/$deployment_url"
+            exit 1
+          fi
+          
+          printf "Deployment finished successfully. More info at ${{ secrets.COOLIFY_API_URL }}/$deployment_url"
