@@ -1,4 +1,4 @@
-name: Coolify Deploy
+name: Build & Deploy
 
 on:
   push:
@@ -9,9 +9,43 @@ env:
   ATTEMPTS: 60 # PERIOD * ATTEMPTS = 600 s = 10 min
 
 jobs:
-  deploy:
+  Build:
+    permissions:
+      packages: read
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: create .npmrc
+        run: 'echo -e "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN\n@russian-rs:registry=https://npm.pkg.github.com/" > .secret_npmrc'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ruskadijaspora/portal-ui
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          secret-files: |
+            "npmrc=./.secret_npmrc"
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
+  Deploy:
+    runs-on: ubuntu-latest
+    needs:
+      - Build
     steps:
       - name: install jq
         run: sudo apt-get install jq
@@ -51,12 +85,12 @@ jobs:
             fi
           
             if [[ $status == "finished" ]]; then
-              printf "Deployment finished successfully. More info at ${{ vars.COOLIFY_API_URL }}$deployment_url"
+              printf "Deployment finished successfully. \nMore info at ${{ vars.COOLIFY_API_URL }}$deployment_url"
               exit 0
             fi
           
             if [[ $status != "in_progress" ]]; then
-              printf "Deployment failed. More info at ${{ vars.COOLIFY_API_URL }}$deployment_url"
+              printf "Deployment failed. \nMore info at ${{ vars.COOLIFY_API_URL }}$deployment_url"
               exit 1
             fi
           done
