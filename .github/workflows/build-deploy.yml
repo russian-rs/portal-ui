@@ -17,20 +17,11 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
-      - name: create .npmrc
-        run: 'echo -e "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN\n@russian-rs:registry=https://npm.pkg.github.com/" > .secret_npmrc'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ruskadijaspora/portal-ui
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v5
@@ -38,10 +29,9 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          secret-files: |
-            "npmrc=./.secret_npmrc"
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ruskadijaspora/portal-ui:latest
+          build-args: GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
 
   Deploy:
     runs-on: ubuntu-latest

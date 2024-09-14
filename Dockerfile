@@ -1,10 +1,11 @@
 # Define the node environment
 FROM node:22-alpine
+ARG GITHUB_TOKEN
 
 COPY . /src
 WORKDIR /src
 
-RUN --mount=type=secret,id=npmrc,target=/root/.npmrc npm install
+RUN GITHUB_RUSSIAN_RS_NPM_TOKEN=$GITHUB_TOKEN; npm install
 RUN npm run build
 
 EXPOSE 3000
