@@ -7,6 +7,8 @@ ENV GITHUB_RUSSIAN_RS_NPM_TOKEN=$NPM_TOKEN
 COPY . /src
 WORKDIR /src
 
+RUN apk --no-cache add curl
+
 RUN npm install
 RUN npm run build
 
