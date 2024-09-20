@@ -30,7 +30,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ruskadijaspora/portal-ui:latest
+            ruskadijaspora/docker:portal-ui
           build-args: NPM_TOKEN=${{ secrets.NPM_TOKEN }}
 
   Deploy:
