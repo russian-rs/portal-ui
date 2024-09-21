@@ -15,6 +15,8 @@ function App() {
     const handleLogout = () => {
         UserApiService.logout(true).then(() => {
             SimpleLocalStorageService.removeItem(LocalStorageKeys.user)
+            window.location.href =
+                'https://id.russian.rs/application/o/portal/end-session/'
         })
     }
 
