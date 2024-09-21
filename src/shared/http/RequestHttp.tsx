@@ -10,6 +10,9 @@ export const RequestHttp = Axios.create({
         'Content-Type': 'application/json',
         Cache: 'no-cache',
     },
+    withXSRFToken: true,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
 })
 
 RequestHttp.interceptors.response.use(

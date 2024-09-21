@@ -6,7 +6,6 @@ import { AuthContext } from './providers/AuthContext.tsx'
 import '@mantine/core/styles.css'
 import { Button } from '@mantine/core'
 import { UserApiService } from '../shared/api/userApiService/UserApiService.ts'
-import { history } from '../shared/constants/History.ts'
 import { SimpleLocalStorageService } from '../shared/localStorage/SimpleLocalStorageService.tsx'
 import { LocalStorageKeys } from '../shared/localStorage/constants.ts'
 
@@ -16,10 +15,6 @@ function App() {
     const handleLogout = () => {
         UserApiService.logout(true).then(() => {
             SimpleLocalStorageService.removeItem(LocalStorageKeys.user)
-            history.replace({
-                pathname: '/',
-            })
-            location.reload()
         })
     }
 
