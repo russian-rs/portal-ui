@@ -24,9 +24,7 @@
       "src/*": ["src/*"],
     },
     "types": [
-      "jest",
       "vite/client",
-      "vite-plugin-pwa/client",
     ],
     "typeRoots": [
       "src/app/types",
@@ -37,10 +35,7 @@
   },
   "files": [
     ".eslintrc.cjs",
-    "commitlint.config.js",
-    "jest.config.mjs",
     "vite.config.mts",
-    "node_modules/@types/dom-speech-recognition/index.d.ts"
   ],
   "include": [
     "src",
