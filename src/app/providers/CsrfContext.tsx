@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
-import { RequestHttp } from '../../shared/http/RequestHttp.tsx'
-import { getCookie } from '../../shared/http/Cookies.tsx'
+import { RequestHttp } from 'src/shared/http/RequestHttp'
+import { getCookie } from 'src/shared/http/Cookies'
 
 export const CsrfContext = createContext<String>('')
 
