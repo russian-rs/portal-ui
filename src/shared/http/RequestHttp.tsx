@@ -1,7 +1,7 @@
 import Axios, { AxiosError } from 'axios'
-import { SimpleLocalStorageService } from '../localStorage/SimpleLocalStorageService.tsx'
-import { LocalStorageKeys } from '../localStorage/constants.ts'
-import { history } from '../constants/History'
+import { SimpleLocalStorageService } from 'src/shared/localStorage/SimpleLocalStorageService'
+import { LocalStorageKeys } from 'src/shared/localStorage/constants'
+import { history } from 'src/shared/constants/History'
 
 export const RequestHttp = Axios.create({
     baseURL: '/api',

@@ -20,5 +20,5 @@ app.get('/health', (_req, res) => {
 
 const server = app.listen(process.env.PORT || 3000, '0.0.0.0', function () {
     const port = server.address().port
-    console.log('App started on port %s', port)
+    console.log('PrivateApp started on port %s', port)
 })
