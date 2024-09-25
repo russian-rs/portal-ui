@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const Section = styled.section`
     display: flex;
@@ -11,4 +11,4 @@ export const Section = styled.section`
         width: 240px;
         height: 240px;
     }
-`;
+`
