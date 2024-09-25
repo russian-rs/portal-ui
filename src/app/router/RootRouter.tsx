@@ -9,6 +9,7 @@ import NotFound from 'src/pages/not-found'
 
 const PrivateApp = lazy(() => import('src/app/PrivateApp'))
 const PublicApp = lazy(() => import('src/app/PublicApp'))
+const Login = lazy(() => import('src/pages/login'))
 
 const RootRouter = () => {
     return (
@@ -20,7 +21,8 @@ const RootRouter = () => {
                     <Route path="/" exact>
                         <Redirect to="/welcome" />
                     </Route>
-                    <Route path="*" component={PrivateApp} />
+                    <Route path="/login" exact component={Login} />
+                    <Route path="/" component={PrivateApp} />
                 </Switch>
             </Suspense>
         </Router>

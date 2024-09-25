@@ -1,19 +1,40 @@
 import { useHistory } from 'react-router-dom'
-
-import { NotFoundContainer, NotFoundContent } from './NotFound.styles'
-import { Button, Flex } from '@mantine/core'
+import { Text, SimpleGrid, Button, Image, Container, Flex } from '@mantine/core'
+import image from './404.svg'
+import {
+    Root,
+    StyledButton,
+    StyledTitle,
+} from 'src/pages/not-found/ui/NotFound.styles'
 
 export const NotFound = () => {
     const history = useHistory()
 
     return (
-        <NotFoundContainer>
-            <img src="/resources/not-found.png" alt="not found" width={300} />
-
-            <NotFoundContent>Страница не найдена</NotFoundContent>
-            <Flex direction={'column'} gap={'s4'}>
-                <Button onClick={() => history.push('/')}>На главную</Button>
-            </Flex>
-        </NotFoundContainer>
+        <Flex component={Root} align="center">
+            <Container>
+                <SimpleGrid cols={{ sm: 2 }}>
+                    <div>
+                        <StyledTitle>Something is not right...</StyledTitle>
+                        <Text c="dimmed" size="lg">
+                            Page you are trying to open does not exist. You may
+                            have mistyped the address, or the page has been
+                            moved to another URL. If you think this is an error
+                            contact support.
+                        </Text>
+                        <Button
+                            variant="outline"
+                            size="md"
+                            mt="xl"
+                            component={StyledButton}
+                            onClick={() => history.push('/')}
+                        >
+                            Get back to home page
+                        </Button>
+                    </div>
+                    <Image src={image} />
+                </SimpleGrid>
+            </Container>
+        </Flex>
     )
 }

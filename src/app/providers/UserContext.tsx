@@ -1,6 +1,9 @@
-import React, { createContext, ReactNode, useState } from 'react'
+import React, { createContext, ReactNode, useEffect, useState } from 'react'
 import { UserInfo } from '@russian-rs/portal-api-axios'
 import { defaultFunction } from 'src/shared/lib/defaultFunction'
+import { LoadingScreen } from 'src/shared/ui/loading-screen/LoadingScreen'
+import { SimpleLocalStorageService } from 'src/shared/localStorage/SimpleLocalStorageService'
+import { LAST_LOGIN, USER } from 'src/shared/constants/Storage'
 
 interface UserContextType {
     user: UserInfo | null
@@ -12,10 +15,43 @@ const defaultContextValue: UserContextType = {
     setUser: defaultFunction,
 }
 
+const SESSION_DURATION: number = 30
+
 export const UserContext = createContext<UserContextType>(defaultContextValue)
 
 export const UserContextProvider = ({ children }: { children?: ReactNode }) => {
     const [user, setUser] = useState<UserInfo | null>(null)
+    const [loading, setLoading] = useState(true)
+
+    /**
+     * Checks if user stored in localStorage was updated recently and retrieves it.
+     * Otherwise, not setting user in context
+     */
+    useEffect(() => {
+        let userExpired = true
+        let lastLogin = new Date(SimpleLocalStorageService.getItem(LAST_LOGIN))
+        if (lastLogin) {
+            const current = new Date()
+            const diffInMs = Math.abs(current.getTime() - lastLogin.getTime())
+            const diffInMinutes = Math.floor(diffInMs / 1000 / 60)
+            userExpired = diffInMinutes >= SESSION_DURATION
+        }
+        if (!userExpired) {
+            let localUser = SimpleLocalStorageService.getItem(USER)
+            if (localUser) {
+                setUser(localUser)
+            }
+        }
+        setLoading(false)
+    }, [])
+
+    useEffect(() => {
+        SimpleLocalStorageService.setItem(USER, user)
+    }, [user])
+
+    if (loading) {
+        return <LoadingScreen />
+    }
 
     return (
         <UserContext.Provider value={{ user, setUser }}>
