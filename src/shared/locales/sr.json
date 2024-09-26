@@ -1,1 +1,10 @@
-{}
+{
+  "pages": {
+    "notFound": {
+      "title": "Nešto je pošlo po zlu...",
+      "documentTitle": "Stranica nije pronađena",
+      "description": "Stranica koju pokušavate da otvorite ne postoji. Možda ste pogrešno uneli adresu ili je stranica premeštena na drugu URL adresu. Ako mislite da je ovo greška, obratite se podršci.",
+      "homeButton": "Početna stranica"
+    }
+  }
+}

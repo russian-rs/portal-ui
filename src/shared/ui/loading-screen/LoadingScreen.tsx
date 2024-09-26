@@ -6,7 +6,7 @@ import {
 import { Center, Flex, Image } from '@mantine/core'
 import { useEffect, useState } from 'react'
 
-export function LoadingScreen() {
+export const LoadingScreen = () => {
     const [visible, setVisible] = useState(false)
 
     useEffect(() => {
