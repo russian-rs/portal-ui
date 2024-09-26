@@ -8,6 +8,30 @@
       "documentTitle": "Page not found",
       "description": "Page you are trying to open does not exist. You may have mistyped the address, or the page has been moved to another URL. If you think this is an error contact support.",
       "homeButton": "Get back to home page"
+    },
+    "welcome": {
+      "title": "Volunteer portal",
+      "documentTitle": "Volunteer portal",
+      "subTitle": "a platform where your help to society becomes even more effective",
+      "bottomText": "Join us and make the world a better place!",
+      "benefits": {
+        "1": {
+          "name": "Convenient reporting",
+          "description": "Submit reports on your volunteer activities quickly and easily."
+        },
+        "2": {
+          "name": "Checking and support",
+          "description": "Our administrators carefully check your reports, ensuring transparency and fairness of the process. You can always get advice and recommendations to improve your work."
+        },
+        "3": {
+          "name": "Apply for membership",
+          "description": "Want to become part of the team? Fill out an application to join the Russian Diaspora. We will help you find a suitable volunteer program where your efforts will bring maximum benefit."
+        }
+      },
+      "buttons": {
+        "login": "Login",
+        "application": "Submit an application"
+      }
     }
   }
 }
