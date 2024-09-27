@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { UserApiService } from 'src/shared/api/userApiService/UserApiService'
-import { LoadingScreen } from 'src/shared/ui/loading-screen/LoadingScreen'
+import { LoadingScreen } from 'src/shared/ui/loadingScreen/LoadingScreen'
 import { SimpleLocalStorageService } from 'src/shared/localStorage/SimpleLocalStorageService'
 import { LAST_LOGIN, USER } from 'src/shared/constants/Storage'
 
