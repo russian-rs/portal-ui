@@ -1,4 +1,4 @@
-import { Group, Image } from '@mantine/core'
+import { Anchor, Group, Image } from '@mantine/core'
 import { ThemeSwitcher } from 'src/shared/ui/theme/ThemeSwitcher'
 import { LocaleSwitcher } from 'src/shared/ui/locale/LocaleSwitcher'
 import image from '/resources/pv_logo_light.png'
@@ -9,7 +9,9 @@ export const AppHeader = () => {
         <>
             <Group grow className={classes.rootGroup}>
                 <Group>
-                    <Image src={image} height={32} />
+                    <Anchor href="/">
+                        <Image src={image} height={32} />
+                    </Anchor>
                 </Group>
                 <Group justify="flex-end">
                     <LocaleSwitcher />
