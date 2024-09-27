@@ -82,7 +82,7 @@ export const Welcome = () => {
                             </List.Item>
                         </List>
 
-                        <Group mt={30}>
+                        <Group className={classes.controlGroup}>
                             <Button
                                 radius="xl"
                                 size="md"
