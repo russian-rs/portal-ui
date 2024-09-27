@@ -1,5 +1,7 @@
-.description {
-    padding: rem(4px) rem(12px);
+.rootFlex {
+    height: 100%;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 .title {
@@ -13,8 +15,20 @@
     }
 }
 
+.highlight {
+    position: relative;
+    background-color: var(--mantine-color-blue-light);
+    border-radius: var(--mantine-radius-sm);
+    padding: rem(4px) rem(12px);
+}
+
+
+.description {
+    padding: rem(4px) rem(12px);
+}
+
 .control {
-    @media (max-width: $mantine-breakpoint-xs) {
+    @media (max-width: $mantine-breakpoint-md) {
         flex: 1;
     }
 }
@@ -27,14 +41,7 @@
     }
 }
 
-.icon-check {
+.iconCheck {
     width: rem(12);
     height: rem(12);
-}
-
-.highlight {
-    position: relative;
-    background-color: var(--mantine-color-blue-light);
-    border-radius: var(--mantine-radius-sm);
-    padding: rem(4px) rem(12px);
 }
