@@ -16,14 +16,13 @@ import classes from './Welcome.module.css'
 import { FormattedMessage } from 'react-intl'
 import { locale } from 'src/pages/welcome/lib/locale'
 import { useSetDocumentTitleByLocale } from 'src/shared/hooks/useDocumentTitle'
-import { Root } from 'src/pages/welcome/ui/Welcome.styles'
 
 export const Welcome = () => {
     useSetDocumentTitleByLocale(locale.documentTitle)
     const history = useHistory()
 
     return (
-        <Flex component={Root} align="center">
+        <Flex align="center" className={classes.rootFlex}>
             <Container>
                 <Flex>
                     <Flex direction="column">
