@@ -68,3 +68,14 @@
     width: rem(12);
     height: rem(12);
 }
+
+.dots {
+    position: absolute;
+    color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+
+    margin-top: rem(100px);
+
+    @media (max-width: $mantine-breakpoint-xl) {
+        display: none;
+    }
+}

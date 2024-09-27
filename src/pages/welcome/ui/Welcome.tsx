@@ -11,6 +11,7 @@ import {
 } from "@mantine/core"
 import { IconCheck } from "@tabler/icons-react"
 import { useHistory } from "react-router-dom"
+import { Dots } from "src/pages/welcome/ui/Dots"
 import image from "../resources/image.svg"
 import classes from "./Welcome.module.css"
 import { FormattedMessage } from "react-intl"
@@ -23,6 +24,12 @@ export const Welcome = () => {
 
     return (
         <Flex align="center" className={classes.rootFlex}>
+            <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
+            <Dots className={classes.dots} style={{ left: 0, top: 140 }} />
+            <Dots className={classes.dots} style={{ left: 60, top: 140 }} />
+            <Dots className={classes.dots} style={{ right: 0, top: 60 }} />
+            <Dots className={classes.dots} style={{ right: 60, top: 240 }} />
+            <Dots className={classes.dots} style={{ right: 20, top: 400 }} />
             <Container>
                 <Flex>
                     <Flex direction="column">
