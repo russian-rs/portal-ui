@@ -6,4 +6,10 @@
 
 .logo {
     height: rem(32px);
+    width: rem(64px);
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        height: rem(24px);
+        width: rem(48px);
+    }
 }
