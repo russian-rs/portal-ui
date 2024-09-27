@@ -5,7 +5,7 @@ import {
     BrowserRouter as Router,
     Switch,
 } from 'react-router-dom'
-import NotFound from 'src/pages/notFound'
+import NotFound from 'src/shared/ui/notFound'
 
 const PrivateApp = lazy(() => import('src/app/PrivateApp'))
 const PublicApp = lazy(() => import('src/app/PublicApp'))

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Center } from '@mantine/core'
 
 export const CenterContainer = styled(Center)`
-    height: 100vh;
+    height: 100%;
 `
 
 export const StyledImage = styled.img`
