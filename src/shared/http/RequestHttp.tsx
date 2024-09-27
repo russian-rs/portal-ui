@@ -1,18 +1,18 @@
-import Axios, { AxiosError } from 'axios'
-import { SimpleLocalStorageService } from 'src/shared/localStorage/SimpleLocalStorageService'
-import { LocalStorageKeys } from 'src/shared/localStorage/constants'
-import { history } from 'src/shared/constants/History'
+import Axios, { AxiosError } from "axios"
+import { SimpleLocalStorageService } from "src/shared/localStorage/SimpleLocalStorageService"
+import { LocalStorageKeys } from "src/shared/localStorage/constants"
+import { history } from "src/shared/constants/History"
 
 export const RequestHttp = Axios.create({
-    baseURL: '/api',
+    baseURL: "/api",
     headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Cache: 'no-cache',
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Cache: "no-cache",
     },
     withXSRFToken: true,
-    xsrfCookieName: 'XSRF-TOKEN',
-    xsrfHeaderName: 'X-XSRF-TOKEN',
+    xsrfCookieName: "XSRF-TOKEN",
+    xsrfHeaderName: "X-XSRF-TOKEN",
 })
 
 RequestHttp.interceptors.response.use(
@@ -23,7 +23,7 @@ RequestHttp.interceptors.response.use(
         if (error.response?.status === 401) {
             SimpleLocalStorageService.removeItem(LocalStorageKeys.user)
             history.replace({
-                pathname: '/api/oauth2/login/authentik',
+                pathname: "/api/oauth2/login/authentik",
             })
             location.reload()
         }

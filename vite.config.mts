@@ -1,30 +1,32 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { resolve } from 'node:path'
+import { defineConfig } from "vite"
+import react from "@vitejs/plugin-react"
+import { resolve } from "node:path"
 
 export default defineConfig(({ mode }) => {
     return {
-        plugins: [ react({
-            babel: {
-                plugins: getBabelPlugins(mode),
-                parserOpts: {
-                    plugins: [ 'classProperties' ],
+        plugins: [
+            react({
+                babel: {
+                    plugins: getBabelPlugins(mode),
+                    parserOpts: {
+                        plugins: ["classProperties"],
+                    },
                 },
-            },
-        }) ],
+            }),
+        ],
         resolve: {
             alias: {
-                src: resolve(__dirname, './src'),
+                src: resolve(__dirname, "./src"),
             },
         },
         server: {
             port: 3000,
             proxy: {
-                '/api': {
-                    target: 'http://localhost:8081',
+                "/api": {
+                    target: "http://localhost:8081",
                     changeOrigin: false,
                     secure: false,
-                    rewrite: (path) => path.replace(/^\/api/, ''),
+                    rewrite: (path) => path.replace(/^\/api/, ""),
                 },
             },
             cors: false,
@@ -33,24 +35,25 @@ export default defineConfig(({ mode }) => {
 })
 
 const getBabelPlugins = (mode: string) => {
-    const plugins: [ string, Record<string, unknown> ][] = []
+    const plugins: [string, Record<string, unknown>][] = []
 
-    if (mode === 'development') {
-        plugins.push([ 'babel-plugin-styled-components', { ssr: false, displayName: true, fileName: true } ])
+    if (mode === "development") {
+        plugins.push([
+            "babel-plugin-styled-components",
+            { ssr: false, displayName: true, fileName: true },
+        ])
     } else {
-        plugins.push(
-            [
-                'babel-plugin-styled-components',
-                {
-                    ssr: false,
-                    pure: true,
-                    minify: true,
-                    transpileTemplateLiterals: true,
-                    displayName: false,
-                    fileName: false,
-                },
-            ],
-        )
+        plugins.push([
+            "babel-plugin-styled-components",
+            {
+                ssr: false,
+                pure: true,
+                minify: true,
+                transpileTemplateLiterals: true,
+                displayName: false,
+                fileName: false,
+            },
+        ])
     }
 
     return plugins

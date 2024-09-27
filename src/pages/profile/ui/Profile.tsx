@@ -1,7 +1,7 @@
-import { useContext } from 'react'
-import { UserContext } from 'src/app/providers/UserContext'
-import { Button } from '@mantine/core'
-import { useHistory } from 'react-router-dom'
+import { useContext } from "react"
+import { UserContext } from "src/app/providers/UserContext"
+import { Button } from "@mantine/core"
+import { useHistory } from "react-router-dom"
 
 export const Profile = () => {
     const { user } = useContext(UserContext)
@@ -10,7 +10,7 @@ export const Profile = () => {
     return (
         <>
             <h1>Hello, {user?.fullName}</h1>
-            <Button onClick={() => history.push('/logout')}>Logout</Button>
+            <Button onClick={() => history.push("/logout")}>Logout</Button>
         </>
     )
 }

@@ -1,1 +1,1 @@
-export { Logout as default } from './ui/Logout'
+export { Logout as default } from "./ui/Logout"

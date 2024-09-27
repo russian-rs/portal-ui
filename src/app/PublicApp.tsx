@@ -1,4 +1,4 @@
-import PublicRouter from 'src/app/router/PublicRouter'
+import PublicRouter from "src/app/router/PublicRouter"
 
 // @ts-ignore
 const PublicApp = ({ match }) => {

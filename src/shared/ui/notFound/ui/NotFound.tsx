@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom'
+import { useHistory } from "react-router-dom"
 import {
     Text,
     SimpleGrid,
@@ -7,7 +7,7 @@ import {
     Flex,
     Group,
     Center,
-} from '@mantine/core'
+} from "@mantine/core"
 import {
     Content,
     Description,
@@ -16,10 +16,10 @@ import {
     StyledGrip,
     StyledImage404,
     StyledTitle,
-} from './NotFound.styles'
-import { locale } from 'src/shared/ui/notFound/lib/locale'
-import { FormattedMessage } from 'react-intl'
-import { useSetDocumentTitleByLocale } from 'src/shared/hooks/useDocumentTitle'
+} from "./NotFound.styles"
+import { locale } from "src/shared/ui/notFound/lib/locale"
+import { FormattedMessage } from "react-intl"
+import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 
 export const NotFound = () => {
     useSetDocumentTitleByLocale(locale.documentTitle)
@@ -52,7 +52,7 @@ export const NotFound = () => {
                                 variant="outline"
                                 mt="xl"
                                 component={StyledButton}
-                                onClick={() => history.push('/')}
+                                onClick={() => history.push("/")}
                             >
                                 <FormattedMessage id={locale.homeButton} />
                             </Button>

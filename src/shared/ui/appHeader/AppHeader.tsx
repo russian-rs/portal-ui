@@ -1,8 +1,8 @@
-import { Anchor, Group, Image } from '@mantine/core'
-import { ThemeSwitcher } from 'src/shared/ui/theme/ThemeSwitcher'
-import { LocaleSwitcher } from 'src/shared/ui/locale/LocaleSwitcher'
-import image from '/resources/pv_logo_light.png'
-import classes from './AppHeader.module.css'
+import { Anchor, Group, Image } from "@mantine/core"
+import { ThemeSwitcher } from "src/shared/ui/theme/ThemeSwitcher"
+import { LocaleSwitcher } from "src/shared/ui/locale/LocaleSwitcher"
+import image from "/resources/pv_logo_light.png"
+import classes from "./AppHeader.module.css"
 
 export const AppHeader = () => {
     return (
