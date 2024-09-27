@@ -10,7 +10,7 @@ export const AppHeader = () => {
             <Group grow className={classes.rootGroup}>
                 <Group>
                     <Anchor href="/">
-                        <Image src={image} height={32} />
+                        <Image src={image} className={classes.logo} />
                     </Anchor>
                 </Group>
                 <Group justify="flex-end">

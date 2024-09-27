@@ -1,11 +1,12 @@
 import { Group, Text } from '@mantine/core'
 import { FormattedMessage } from 'react-intl'
-import { FooterBody } from 'src/shared/ui/appFooter/AppFooter.styles'
+import { FooterContainer } from 'src/shared/ui/appFooter/AppFooter.styles'
+import classes from './AppFooter.module.css'
 
 export const AppFooter = () => {
     return (
         <>
-            <FooterBody>
+            <FooterContainer className={classes.footerContainer}>
                 <Group grow>
                     <Group justify="end">
                         <Text c="dimmed">
@@ -13,7 +14,7 @@ export const AppFooter = () => {
                         </Text>
                     </Group>
                 </Group>
-            </FooterBody>
+            </FooterContainer>
         </>
     )
 }

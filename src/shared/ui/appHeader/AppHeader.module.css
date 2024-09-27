@@ -1,5 +1,9 @@
 .rootGroup {
-    height: 50px;
-    padding: 10px;
+    height: rem(48px);
+    padding: rem(6px) rem(16px);
     border-bottom: 1px solid var(--mantine-color-default-border);
+}
+
+.logo {
+    height: rem(32px);
 }
