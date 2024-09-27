@@ -7,6 +7,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from 'src/shared/constants/Query'
 import Footer from 'src/shared/ui/footer/Footer'
 import { theme } from 'src/shared/ui/theme/CustomMantineTheme'
+import GlobalHeader from 'src/shared/ui/globalHeader/GlobalHeader'
 
 /**
  * Root component
@@ -19,6 +20,9 @@ export const Root = () => {
             <QueryClientProvider client={queryClient}>
                 <LanguageContextProvider>
                     <AppShell>
+                        <AppShell.Header>
+                            <GlobalHeader />
+                        </AppShell.Header>
                         <AppShell.Main>
                             <UserContextProvider>
                                 <RootRouter />
