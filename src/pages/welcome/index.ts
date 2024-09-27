@@ -1,1 +1,1 @@
-export { Welcome as default } from './ui/Welcome'
+export { Welcome as default } from "./ui/Welcome"

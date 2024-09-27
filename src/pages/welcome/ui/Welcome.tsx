@@ -8,14 +8,14 @@ import {
     List,
     ThemeIcon,
     Flex,
-} from '@mantine/core'
-import { IconCheck } from '@tabler/icons-react'
-import { useHistory } from 'react-router-dom'
-import image from '../resources/image.svg'
-import classes from './Welcome.module.css'
-import { FormattedMessage } from 'react-intl'
-import { locale } from 'src/pages/welcome/lib/locale'
-import { useSetDocumentTitleByLocale } from 'src/shared/hooks/useDocumentTitle'
+} from "@mantine/core"
+import { IconCheck } from "@tabler/icons-react"
+import { useHistory } from "react-router-dom"
+import image from "../resources/image.svg"
+import classes from "./Welcome.module.css"
+import { FormattedMessage } from "react-intl"
+import { locale } from "src/pages/welcome/lib/locale"
+import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 
 export const Welcome = () => {
     useSetDocumentTitleByLocale(locale.documentTitle)
@@ -52,8 +52,8 @@ export const Welcome = () => {
                                     <FormattedMessage
                                         id={locale.benefitName1}
                                     />
-                                </b>{' '}
-                                –{' '}
+                                </b>{" "}
+                                –{" "}
                                 <FormattedMessage
                                     id={locale.benefitDescription1}
                                 />
@@ -63,8 +63,8 @@ export const Welcome = () => {
                                     <FormattedMessage
                                         id={locale.benefitName2}
                                     />
-                                </b>{' '}
-                                –{' '}
+                                </b>{" "}
+                                –{" "}
                                 <FormattedMessage
                                     id={locale.benefitDescription2}
                                 />
@@ -74,8 +74,8 @@ export const Welcome = () => {
                                     <FormattedMessage
                                         id={locale.benefitName3}
                                     />
-                                </b>{' '}
-                                –{' '}
+                                </b>{" "}
+                                –{" "}
                                 <FormattedMessage
                                     id={locale.benefitDescription3}
                                 />
@@ -87,7 +87,7 @@ export const Welcome = () => {
                                 radius="xl"
                                 size="md"
                                 className={classes.control}
-                                onClick={() => history.push('/profile')}
+                                onClick={() => history.push("/profile")}
                             >
                                 <FormattedMessage id={locale.buttonLogin} />
                             </Button>
@@ -96,7 +96,7 @@ export const Welcome = () => {
                                 radius="xl"
                                 size="md"
                                 className={classes.control}
-                                onClick={() => history.push('/not-found')}
+                                onClick={() => history.push("/not-found")}
                             >
                                 <FormattedMessage
                                     id={locale.buttonApplication}

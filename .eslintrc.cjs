@@ -1,7 +1,7 @@
 module.exports = {
-    parser: '@typescript-eslint/parser',
+    parser: "@typescript-eslint/parser",
     parserOptions: {
-        project: ['./tsconfig.json'],
+        project: ["./tsconfig.json"],
         warnOnUnsupportedTypeScriptVersion: true,
     },
     env: {
@@ -12,15 +12,15 @@ module.exports = {
     },
     settings: {
         react: {
-            version: 'detect',
+            version: "detect",
         },
     },
-    plugins: ['@typescript-eslint', 'react-hooks', 'jest'],
-    extends: ['prettier/prettier', 'plugin:react-hooks/recommended'],
+    plugins: ["@typescript-eslint", "react-hooks", "jest"],
+    extends: ["prettier/prettier", "plugin:react-hooks/recommended"],
     rules: {
-        '@typescript-eslint/no-unused-vars': 'error',
-        '@typescript-eslint/dot-notation': [
-            'error',
+        "@typescript-eslint/no-unused-vars": "error",
+        "@typescript-eslint/dot-notation": [
+            "error",
             {
                 allowIndexSignaturePropertyAccess: true,
             },
@@ -28,40 +28,46 @@ module.exports = {
     },
     overrides: [
         {
-            files: ['**/*.spec.ts', '**/*.spec.tsx'],
-            env: { 'jest/globals': true },
-            plugins: ['jest'],
-            extends: ['plugin:jest/all'],
+            files: ["**/*.spec.ts", "**/*.spec.tsx"],
+            env: { "jest/globals": true },
+            plugins: ["jest"],
+            extends: ["plugin:jest/all"],
             rules: {
-                'jest/max-expects': [
-                    'error',
+                "jest/max-expects": [
+                    "error",
                     {
                         max: 10,
                     },
                 ],
-                'jest/prefer-expect-assertions': ['error', { onlyFunctionsWithAsyncKeyword: true }],
-                'jest/prefer-lowercase-title': ['error', { ignore: ['describe'] }],
-                '@typescript-eslint/no-non-null-assertion': 'off',
+                "jest/prefer-expect-assertions": [
+                    "error",
+                    { onlyFunctionsWithAsyncKeyword: true },
+                ],
+                "jest/prefer-lowercase-title": [
+                    "error",
+                    { ignore: ["describe"] },
+                ],
+                "@typescript-eslint/no-non-null-assertion": "off",
             },
         },
         {
-            files: ['src/**/*.tsx'],
+            files: ["src/**/*.tsx"],
             rules: {
-                '@typescript-eslint/no-use-before-define': 'off',
+                "@typescript-eslint/no-use-before-define": "off",
             },
         },
         {
-            files: ['src/**/*.ts*'],
+            files: ["src/**/*.ts*"],
             rules: {
-                'no-unused-vars': 'off',
-                '@typescript-eslint/no-unused-vars': [
-                    'warn',
+                "no-unused-vars": "off",
+                "@typescript-eslint/no-unused-vars": [
+                    "warn",
                     {
-                        args: 'none',
+                        args: "none",
                         ignoreRestSiblings: true,
                     },
                 ],
             },
         },
     ],
-};
+}

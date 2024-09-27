@@ -1,7 +1,7 @@
-import { useCallback } from 'react'
-import { useIntl } from 'react-intl'
+import { useCallback } from "react"
+import { useIntl } from "react-intl"
 
-import { FormatXMLElementFn, PrimitiveType } from 'intl-messageformat'
+import { FormatXMLElementFn, PrimitiveType } from "intl-messageformat"
 
 type Values = Record<
     string,

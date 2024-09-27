@@ -1,9 +1,9 @@
-import React, { createContext, ReactNode, useEffect, useState } from 'react'
-import { UserInfo } from '@russian-rs/portal-api-axios'
-import { defaultFunction } from 'src/shared/lib/defaultFunction'
-import { LoadingScreen } from 'src/shared/ui/loadingScreen/LoadingScreen'
-import { SimpleLocalStorageService } from 'src/shared/localStorage/SimpleLocalStorageService'
-import { LAST_LOGIN, USER } from 'src/shared/constants/Storage'
+import React, { createContext, ReactNode, useEffect, useState } from "react"
+import { UserInfo } from "@russian-rs/portal-api-axios"
+import { defaultFunction } from "src/shared/lib/defaultFunction"
+import { LoadingScreen } from "src/shared/ui/loadingScreen/LoadingScreen"
+import { SimpleLocalStorageService } from "src/shared/localStorage/SimpleLocalStorageService"
+import { LAST_LOGIN, USER } from "src/shared/constants/Storage"
 
 interface UserContextType {
     user: UserInfo | null

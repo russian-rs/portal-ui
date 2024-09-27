@@ -1,10 +1,10 @@
-import { Locale } from 'src/shared/constants/Locales'
-import { SimpleLocalStorageService } from 'src/shared/localStorage/SimpleLocalStorageService'
-import { LOCALE } from 'src/shared/constants/Storage'
-import { createContext, ReactNode } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { flatten } from 'flat'
-import { IntlProvider, ResolvedIntlConfig } from 'react-intl'
+import { Locale } from "src/shared/constants/Locales"
+import { SimpleLocalStorageService } from "src/shared/localStorage/SimpleLocalStorageService"
+import { LOCALE } from "src/shared/constants/Storage"
+import { createContext, ReactNode } from "react"
+import { useQuery } from "@tanstack/react-query"
+import { flatten } from "flat"
+import { IntlProvider, ResolvedIntlConfig } from "react-intl"
 
 function loadLocale(locale: Locale) {
     return import(`src/shared/locales/${locale}.json`)
@@ -40,10 +40,10 @@ export const LanguageContextProvider = ({
     children?: ReactNode
 }) => {
     const { data: messages = {}, isLoading } = useQuery({
-        queryKey: ['loadLocale'],
+        queryKey: ["loadLocale"],
         queryFn: async () => {
             const locales = await loadLocale(defaultContextValue.locale)
-            return flatten(locales.default) as ResolvedIntlConfig['messages']
+            return flatten(locales.default) as ResolvedIntlConfig["messages"]
         },
         retry: 3,
     })

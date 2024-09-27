@@ -2,9 +2,9 @@ import {
     CenterContainer,
     CustomLoader,
     StyledImage,
-} from './LoadingScreen.styles'
-import { Center, Flex, Image } from '@mantine/core'
-import { useEffect, useState } from 'react'
+} from "./LoadingScreen.styles"
+import { Center, Flex, Image } from "@mantine/core"
+import { useEffect, useState } from "react"
 
 export const LoadingScreen = () => {
     const [visible, setVisible] = useState(false)

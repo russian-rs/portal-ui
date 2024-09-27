@@ -1,7 +1,7 @@
-import { ActionIcon, Text } from '@mantine/core'
-import { useContext } from 'react'
-import { LocaleContext } from 'src/app/providers/LocaleContext'
-import { Locale } from 'src/shared/constants/Locales'
+import { ActionIcon, Text } from "@mantine/core"
+import { useContext } from "react"
+import { LocaleContext } from "src/app/providers/LocaleContext"
+import { Locale } from "src/shared/constants/Locales"
 
 export const LocaleSwitcher = () => {
     const { locale, setLocale } = useContext(LocaleContext)

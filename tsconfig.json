@@ -1,45 +1,32 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true, // must be 'true' for correct vite work
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": "./",
-    "paths": {
-      "src/*": ["src/*"],
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true, // must be 'true' for correct vite work
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "baseUrl": "./",
+        "paths": {
+            "src/*": ["src/*"]
+        },
+        "types": ["vite/client"],
+        "typeRoots": [
+            "src/app/types",
+            "src/shared/typings",
+            "./node_modules/@types",
+            "./node_modules"
+        ]
     },
-    "types": [
-      "vite/client",
-    ],
-    "typeRoots": [
-      "src/app/types",
-      "src/shared/typings",
-      "./node_modules/@types",
-      "./node_modules",
-    ],
-  },
-  "files": [
-    ".eslintrc.cjs",
-    "vite.config.mts",
-  ],
-  "include": [
-    "src",
-    "tests",
-    "src/vite-env.d.ts"
-  ],
+    "files": [".eslintrc.cjs", "vite.config.mts"],
+    "include": ["src", "tests", "src/vite-env.d.ts"]
 }

@@ -1,4 +1,4 @@
-import PrivateRouter from 'src/app/router/PrivateRouter'
+import PrivateRouter from "src/app/router/PrivateRouter"
 
 const PrivateApp = () => {
     return (

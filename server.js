@@ -1,27 +1,27 @@
-'use strict'
+"use strict"
 
-const path = require('path')
-const express = require('express')
+const path = require("path")
+const express = require("express")
 
 const app = express()
 
 // Setup view engine
-app.set('view engine', 'jade')
-app.use(express.static('dist'))
+app.set("view engine", "jade")
+app.use(express.static("dist"))
 
-app.all('/api*', (_req, res) => {
-    res.status(502).send('Bad Gateway')
+app.all("/api*", (_req, res) => {
+    res.status(502).send("Bad Gateway")
 })
 
-app.get('/health', (_req, res) => {
+app.get("/health", (_req, res) => {
     res.sendStatus(200)
 })
 
-app.get('*', (_req, res) => {
-    res.sendFile(path.join(__dirname, 'dist/index.html'))
+app.get("*", (_req, res) => {
+    res.sendFile(path.join(__dirname, "dist/index.html"))
 })
 
-const server = app.listen(process.env.PORT || 3000, '0.0.0.0', function () {
+const server = app.listen(process.env.PORT || 3000, "0.0.0.0", function () {
     const port = server.address().port
-    console.log('App started on port %s', port)
+    console.log("App started on port %s", port)
 })

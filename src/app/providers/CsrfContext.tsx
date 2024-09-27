@@ -1,17 +1,17 @@
-import { createContext, ReactNode, useEffect, useState } from 'react'
-import { RequestHttp } from 'src/shared/http/RequestHttp'
-import { getCookie } from 'src/shared/http/Cookies'
+import { createContext, ReactNode, useEffect, useState } from "react"
+import { RequestHttp } from "src/shared/http/RequestHttp"
+import { getCookie } from "src/shared/http/Cookies"
 
-export const CsrfContext = createContext<String>('')
+export const CsrfContext = createContext<String>("")
 
 export const CsrfContextProvider = ({ children }: { children?: ReactNode }) => {
-    const [token, setToken] = useState<string>('')
+    const [token, setToken] = useState<string>("")
 
     useEffect(() => {
         // Request is dummy, after first POST request, server returns CSRF token in response cookie
-        RequestHttp.post('/csrf').then(
+        RequestHttp.post("/csrf").then(
             (_) => {
-                setToken(getCookie('XSRF-TOKEN'))
+                setToken(getCookie("XSRF-TOKEN"))
             },
             (_) => {}
         )

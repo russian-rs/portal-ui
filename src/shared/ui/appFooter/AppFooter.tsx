@@ -1,7 +1,7 @@
-import { Group, Text } from '@mantine/core'
-import { FormattedMessage } from 'react-intl'
-import { FooterContainer } from 'src/shared/ui/appFooter/AppFooter.styles'
-import classes from './AppFooter.module.css'
+import { Group, Text } from "@mantine/core"
+import { FormattedMessage } from "react-intl"
+import { FooterContainer } from "src/shared/ui/appFooter/AppFooter.styles"
+import classes from "./AppFooter.module.css"
 
 export const AppFooter = () => {
     return (

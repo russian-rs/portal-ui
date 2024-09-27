@@ -1,17 +1,17 @@
-import { lazy } from 'react'
-import { RouteProps } from 'react-router-dom'
+import { lazy } from "react"
+import { RouteProps } from "react-router-dom"
 
-const Welcome = lazy(() => import('src/pages/welcome'))
-const Application = lazy(() => import('src/pages/application'))
+const Welcome = lazy(() => import("src/pages/welcome"))
+const Application = lazy(() => import("src/pages/application"))
 
 export const routes: RouteProps[] = [
     {
-        path: '/application',
+        path: "/application",
         exact: true,
         component: Application,
     },
     {
-        path: '/',
+        path: "/",
         exact: true,
         component: Welcome,
     },
