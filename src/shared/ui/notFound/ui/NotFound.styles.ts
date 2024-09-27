@@ -1,9 +1,9 @@
 import { Flex, SimpleGrid, Title, Text } from '@mantine/core'
 import styled from 'styled-components'
-import { Image404 } from 'src/pages/notFound/resources/Image404'
+import { Image404 } from 'src/shared/ui/notFound/resources/Image404'
 
 export const Root = styled.div`
-    height: 100vh;
+    height: 100%;
 `
 
 export const StyledGrip = styled(SimpleGrid)`

@@ -1,7 +1,7 @@
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { Suspense, useMemo } from 'react'
 import { routes } from 'src/app/router/routes.public'
-import { LoadingScreen } from 'src/shared/ui/loading-screen/LoadingScreen'
+import { LoadingScreen } from 'src/shared/ui/loadingScreen/LoadingScreen'
 
 // @ts-ignore
 const PublicRouter = ({ match }) => {

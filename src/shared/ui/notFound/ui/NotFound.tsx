@@ -17,7 +17,7 @@ import {
     StyledImage404,
     StyledTitle,
 } from './NotFound.styles'
-import { locale } from 'src/pages/notFound/lib/locale'
+import { locale } from 'src/shared/ui/notFound/lib/locale'
 import { FormattedMessage } from 'react-intl'
 import { useSetDocumentTitleByLocale } from 'src/shared/hooks/useDocumentTitle'
 

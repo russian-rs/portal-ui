@@ -1,13 +1,13 @@
 import { Group, Image } from '@mantine/core'
 import { ThemeSwitcher } from 'src/shared/ui/theme/ThemeSwitcher'
 import { LocaleSwitcher } from 'src/shared/ui/locale/LocaleSwitcher'
-import { StyledGroup } from './GlobalHeader.styles'
+import { HeaderBody } from 'src/shared/ui/appHeader/AppHeader.styles'
 import image from '/resources/pv_logo_light.png'
 
-export const GlobalHeader = () => {
+export const AppHeader = () => {
     return (
         <>
-            <Group grow component={StyledGroup}>
+            <Group grow component={HeaderBody}>
                 <Group>
                     <Image src={image} height={32} />
                 </Group>
@@ -20,4 +20,4 @@ export const GlobalHeader = () => {
     )
 }
 
-export default GlobalHeader
+export default AppHeader
