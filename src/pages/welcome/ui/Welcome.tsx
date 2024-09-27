@@ -31,19 +31,13 @@ export const Welcome = () => {
                                 <FormattedMessage id={locale.title} />
                             </span>
                         </Title>
-                        <Text
-                            c="dimmed"
-                            mt="md"
-                            size="xl"
-                            className={classes.description}
-                        >
+                        <Text c="dimmed" className={classes.description}>
                             <FormattedMessage id={locale.subTitle} />
                         </Text>
 
                         <List
-                            mt={30}
                             spacing="sm"
-                            size="md"
+                            className={classes.list}
                             icon={
                                 <ThemeIcon size={20} radius="xl">
                                     <IconCheck
