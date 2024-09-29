@@ -1,5 +1,29 @@
 .footerContainer {
-    height: rem(48px);
-    padding: rem(12px) rem(24px);
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    z-index: 200;
+    position: fixed;
     align-content: center;
+    height: calc(var(--mantine-spacing-md) * 3);
+    background-color: var(--mantine-color-gray-0);
+    border-top: 1px solid var(--mantine-color-default-border);
+    padding: calc(var(--mantine-spacing-md) / 2) var(--mantine-spacing-md);
+
+    @mixin dark {
+        background-color: var(--mantine-color-dark-filled);
+    }
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        height: calc(var(--mantine-spacing-md) * 2);
+        padding: calc(var(--mantine-spacing-md) / 3) var(--mantine-spacing-md);
+    }
+}
+
+.footerContent {
+    justify-content: end;
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        justify-content: center;
+    }
 }

@@ -1,4 +1,5 @@
-import { Group, Text } from "@mantine/core"
+import { Anchor, Center, Group, Text } from "@mantine/core"
+import { IconBrandTelegram, IconWorld } from "@tabler/icons-react"
 import { FormattedMessage } from "react-intl"
 import { FooterContainer } from "src/shared/ui/appFooter/AppFooter.styles"
 import classes from "./AppFooter.module.css"
@@ -8,10 +9,23 @@ export const AppFooter = () => {
         <>
             <FooterContainer className={classes.footerContainer}>
                 <Group grow>
-                    <Group justify="end">
-                        <Text c="dimmed">
+                    <Group className={classes.footerContent}>
+                        <Text c="dimmed" size="sm">
                             <FormattedMessage id="footer.copyright" />
                         </Text>
+                        <Anchor href="https://russian.rs" target="_blank">
+                            <Center>
+                                <IconWorld size={16} />
+                            </Center>
+                        </Anchor>
+                        <Anchor
+                            href="https://t.me/relocateserbia"
+                            target="_blank"
+                        >
+                            <Center>
+                                <IconBrandTelegram size={16} />
+                            </Center>
+                        </Anchor>
                     </Group>
                 </Group>
             </FooterContainer>

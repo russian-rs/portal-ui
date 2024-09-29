@@ -26,6 +26,7 @@
         "react-dom": "^18.3.1",
         "react-intl": "^6.7.0",
         "react-router-dom": "5.3.4",
+        "sass": "^1.79.4",
         "styled-components": "^6.1.13",
         "stylelint": "^16.9.0",
         "stylelint-config-standard-scss": "^13.1.0"

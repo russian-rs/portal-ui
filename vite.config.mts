@@ -31,6 +31,13 @@ export default defineConfig(({ mode }) => {
             },
             cors: false,
         },
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    additionalData: `@import "./src/_mantine";`,
+                },
+            },
+        },
     }
 })
 
