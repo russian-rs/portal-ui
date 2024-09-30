@@ -1,11 +1,12 @@
 .rootFlex {
-    height: 100%;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    margin-top: calc(var(--mantine-spacing-md) * 3);
+    margin-bottom: calc(var(--mantine-spacing-md) * 3);
+    min-height: calc(100vh - var(--mantine-spacing-md) * 6);
 
     @media (max-width: $mantine-breakpoint-xs) {
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
+        min-height: calc(100vh - var(--mantine-spacing-md) * 5);
+        margin-bottom: calc(var(--mantine-spacing-md) * 2);
+        padding-bottom: calc(var(--mantine-spacing-md) * 5);
     }
 }
 
