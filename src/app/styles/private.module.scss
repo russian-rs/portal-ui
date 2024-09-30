@@ -1,16 +1,18 @@
 .appShell {
     display: flex;
     position: fixed;
-}
-
-.appShellMain {
-    padding: var(--mantine-spacing-md);
     margin-top: calc(var(--mantine-spacing-md) * 3);
     margin-bottom: calc(var(--mantine-spacing-md) * 3);
 
     @media (max-width: $mantine-breakpoint-xs) {
-        margin-top: calc(var(--mantine-spacing-md) * 3);
         margin-bottom: calc(var(--mantine-spacing-md) * 2);
-        margin-left: 0;
+    }
+}
+
+.appShellMain {
+    padding: var(--mantine-spacing-md);
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        padding: var(--mantine-spacing-xs);
     }
 }
