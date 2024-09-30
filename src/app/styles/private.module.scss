@@ -1,6 +1,7 @@
 .appShell {
     display: flex;
     position: fixed;
+    width: 100%;
     margin-top: calc(var(--mantine-spacing-md) * 3);
     margin-bottom: calc(var(--mantine-spacing-md) * 3);
 
@@ -10,9 +11,12 @@
 }
 
 .appShellMain {
+    flex-grow: 1;
     padding: var(--mantine-spacing-md);
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
 
     @media (max-width: $mantine-breakpoint-xs) {
+        width: 100vw;
         padding: var(--mantine-spacing-xs);
     }
 }

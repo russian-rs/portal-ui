@@ -1,0 +1,56 @@
+.upperSpace {
+  height: 4rem;
+}
+
+.commonInfo {
+  width: 20rem;
+  height: 27rem;
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+  border-radius: var(--mantine-radius-lg);
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    width: 100%;
+  }
+}
+
+.avatar {
+  width: 8rem;
+  height: 8rem;
+  margin-top: -3rem;
+  margin-left:  1rem;
+}
+
+.settingsButton {
+  margin-top: 1rem;
+  margin-right: 1rem;
+  margin-left: auto;
+}
+
+.userName {
+  margin-top:  1rem;
+  margin-left:  1rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.programDescription {
+  margin-left: calc(1rem + 1px);
+}
+
+.divider {
+  width: 100%;
+  margin-top:  1rem;
+  border-top: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+
+.propertyBox {
+  margin-left: calc(1rem + 1px);
+  margin-top:  1rem;
+}
+
+.prolongationButton {
+  margin-left: calc(1rem + 1px);
+  margin-right: calc(1rem + 1px);
+  margin-top:  1rem;
+}
+
