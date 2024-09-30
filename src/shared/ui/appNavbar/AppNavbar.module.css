@@ -13,7 +13,8 @@
 
 .navbar {
     background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
-    padding: var(--mantine-spacing-md);
+    padding-left: var(--mantine-spacing-md);
+    padding-right: var(--mantine-spacing-md);
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -21,8 +22,6 @@
 }
 
 .header {
-    padding: var(--mantine-spacing-md);
-    padding-top: 0;
     margin-left: calc(var(--mantine-spacing-md) * -1);
     margin-right: calc(var(--mantine-spacing-md) * -1);
     color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
@@ -40,3 +39,24 @@
     padding-bottom: var(--mantine-spacing-md);
 }
 
+.footer {
+    border-top: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+    margin-left: calc(var(--mantine-spacing-md) * -1);
+    margin-right: calc(var(--mantine-spacing-md) * -1);
+    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+    border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+
+.control {
+    font-weight: 500;
+    display: block;
+    width: 100%;
+    color: var(--mantine-color-text);
+    font-size: var(--mantine-font-size-sm);
+    padding: var(--mantine-spacing-md);
+
+    @mixin hover {
+        background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+        color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
+    }
+}

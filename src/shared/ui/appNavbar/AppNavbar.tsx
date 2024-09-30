@@ -1,4 +1,13 @@
-import { AppShell, ScrollArea, Transition } from "@mantine/core"
+import {
+    AppShell,
+    Box,
+    Group,
+    rem,
+    ScrollArea,
+    ThemeIcon,
+    Transition,
+    UnstyledButton,
+} from "@mantine/core"
 import {
     IconNotes,
     IconCalendarStats,
@@ -7,53 +16,53 @@ import {
     IconFileAnalytics,
     IconAdjustments,
     IconLock,
+    IconSubmarine,
+    IconHelp,
+    IconHelmet,
+    IconHelpOctagon,
+    IconHelpCircle,
+    IconUsers,
+    IconLogout,
+    IconChevronRight,
 } from "@tabler/icons-react"
-import { useContext, useEffect } from "react"
+import React, { useContext, useEffect } from "react"
+import { useHistory } from "react-router-dom"
 import { NavbarContext } from "src/app/providers/NavbarProvider"
 import { useDesktop } from "src/shared/hooks/useDesktop"
+import { UserButton } from "src/shared/ui/appNavbar/userButton/UserButton"
 import { LinksGroup } from "./links/NavbarLinksGroup"
 import classes from "./AppNavbar.module.css"
 
 const mockdata = [
-    { label: "Dashboard", icon: IconGauge },
     {
-        label: "Market news",
-        icon: IconNotes,
+        label: "Отчетность",
+        icon: IconFileAnalytics,
         initiallyOpened: true,
         links: [
-            { label: "Overview", link: "/" },
-            { label: "Forecasts", link: "/" },
-            { label: "Outlook", link: "/" },
-            { label: "Real time", link: "/" },
+            { label: "Мои отчеты", link: "/reports" },
+            { label: "Отчет по внутренней программе", link: "/" },
         ],
     },
     {
-        label: "Releases",
-        icon: IconCalendarStats,
+        label: "Волонтеры",
+        icon: IconUsers,
         links: [
             { label: "Upcoming releases", link: "/" },
             { label: "Previous releases", link: "/" },
             { label: "Releases schedule", link: "/" },
         ],
     },
-    { label: "Analytics", icon: IconPresentationAnalytics },
-    { label: "Contracts", icon: IconFileAnalytics },
-    { label: "Settings", icon: IconAdjustments },
-    {
-        label: "Security",
-        icon: IconLock,
-        links: [
-            { label: "Enable 2FA", link: "/" },
-            { label: "Change password", link: "/" },
-            { label: "Recovery codes", link: "/" },
-        ],
-    },
+    { label: "Аналитика", icon: IconPresentationAnalytics },
+    { label: "Настройки", icon: IconAdjustments },
+    { label: "Написать в поддержку", icon: IconHelp },
 ]
 
 export const AppNavbar = () => {
     const isDesktop = useDesktop()
 
     const { menuOpened, setMenuOpened } = useContext(NavbarContext)
+
+    const history = useHistory()
 
     useEffect(() => {
         setMenuOpened(isDesktop)
@@ -76,12 +85,42 @@ export const AppNavbar = () => {
                 >
                     <nav className={classes.navbar}>
                         <div className={classes.header}>
-                            <div className={classes.footer}>Фото</div>
+                            <UserButton />
                         </div>
 
                         <ScrollArea className={classes.links}>
                             <div className={classes.linksInner}>{links}</div>
                         </ScrollArea>
+
+                        <div className={classes.footer}>
+                            <UnstyledButton
+                                className={classes.control}
+                                onClick={() => history.push("/logout")}
+                            >
+                                <Group justify="space-between" gap={0}>
+                                    <Box
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <ThemeIcon
+                                            variant="light"
+                                            size={30}
+                                            color="red"
+                                        >
+                                            <IconLogout
+                                                style={{
+                                                    width: rem(18),
+                                                    height: rem(18),
+                                                }}
+                                            />
+                                        </ThemeIcon>
+                                        <Box ml="md">Выход</Box>
+                                    </Box>
+                                </Group>
+                            </UnstyledButton>
+                        </div>
                     </nav>
                 </AppShell.Navbar>
             )}
