@@ -31,7 +31,7 @@ import { NavbarContext } from "src/app/providers/NavbarProvider"
 import { useDesktop } from "src/shared/hooks/useDesktop"
 import { UserButton } from "src/shared/ui/appNavbar/userButton/UserButton"
 import { LinksGroup } from "./links/NavbarLinksGroup"
-import classes from "./AppNavbar.module.css"
+import classes from "src/shared/ui/appNavbar/AppNavbar.module.scss"
 
 const mockdata = [
     {
@@ -49,6 +49,13 @@ const mockdata = [
         links: [
             { label: "Upcoming releases", link: "/" },
             { label: "Previous releases", link: "/" },
+            { label: "Releases schedule", link: "/" },
+            { label: "Releases schedule", link: "/" },
+            { label: "Releases schedule", link: "/" },
+            { label: "Releases schedule", link: "/" },
+            { label: "Releases schedule", link: "/" },
+            { label: "Releases schedule", link: "/" },
+            { label: "Releases schedule", link: "/" },
             { label: "Releases schedule", link: "/" },
         ],
     },
