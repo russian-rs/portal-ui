@@ -34,6 +34,7 @@ export default defineConfig(({ mode }) => {
         css: {
             preprocessorOptions: {
                 scss: {
+                    api: 'modern-compiler',
                     additionalData: `@import "./src/_mantine";`,
                 },
             },
