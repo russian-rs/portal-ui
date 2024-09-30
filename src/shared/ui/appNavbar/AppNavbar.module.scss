@@ -38,7 +38,7 @@
     margin-right: calc(var(--mantine-spacing-md) * -1);
 
     @media (max-width: $mantine-breakpoint-xs) {
-        max-height: calc(100vh - var(--mantine-spacing-md) * 19);
+        max-height: calc(100vh - var(--mantine-spacing-md) * 20);
     }
 }
 
