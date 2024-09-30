@@ -16,7 +16,7 @@ export function UserButton() {
         >
             <Group>
                 <Avatar
-                    src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
+                    src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png"
                     radius="md"
                     size={48}
                 />
