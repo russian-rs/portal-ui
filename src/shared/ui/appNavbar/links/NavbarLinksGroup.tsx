@@ -54,10 +54,7 @@ export function LinksGroup({
                     {hasLinks && (
                         <IconChevronRight
                             className={classes.chevron}
-                            stroke={1.5}
                             style={{
-                                width: rem(16),
-                                height: rem(16),
                                 transform: opened ? "rotate(-90deg)" : "none",
                             }}
                         />

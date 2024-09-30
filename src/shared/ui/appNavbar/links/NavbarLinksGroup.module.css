@@ -31,4 +31,6 @@
 
 .chevron {
     transition: transform 200ms ease;
+    width: 1rem;
+    height: 1rem;
 }
