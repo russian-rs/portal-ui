@@ -18,7 +18,7 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    max-height: calc(100vh - var(--mantine-spacing-md) * 6);
+    max-height: calc(100vh - var(--mantine-spacing-md) * 5);
 }
 
 .header {
@@ -40,11 +40,16 @@
 }
 
 .footer {
+    position: fixed;
+    left: 0;
+    bottom: calc(var(--mantine-spacing-md) * 6);
+    width: 100%;
     border-top: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
-    margin-left: calc(var(--mantine-spacing-md) * -1);
-    margin-right: calc(var(--mantine-spacing-md) * -1);
     color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
-    border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        bottom: calc(var(--mantine-spacing-md) * 5);
+    }
 }
 
 .control {
