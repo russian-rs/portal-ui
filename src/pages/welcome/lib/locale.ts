@@ -3,7 +3,7 @@ export const locale = {
     documentTitle: "pages.welcome.documentTitle",
     subTitle: "pages.welcome.subTitle",
     bottomText: "pages.welcome.bottomText",
-    buttonLogin: "pages.welcome.buttons.login",
+    buttonLogin: "common.buttons.login",
     buttonApplication: "pages.welcome.buttons.application",
     benefitName1: "pages.welcome.benefits.1.name",
     benefitDescription1: "pages.welcome.benefits.1.description",

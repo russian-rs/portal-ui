@@ -1,37 +1,41 @@
 {
-    "footer": {
-        "copyright": "© «Ruska Dijaspora u Srbiji»"
-    },
-    "pages": {
-        "notFound": {
-            "title": "Nešto je pošlo po zlu...",
-            "documentTitle": "Stranica nije pronađena",
-            "description": "Stranica koju pokušavate da otvorite ne postoji. Možda ste pogrešno uneli adresu ili je stranica premeštena na drugu URL adresu. Ako mislite da je ovo greška, obratite se podršci.",
-            "homeButton": "Početna stranica"
-        },
-        "welcome": {
-            "title": "Portal volontera",
-            "documentTitle": "Portal volontera",
-            "subTitle": "platforma na kojoj vaša pomoć društvu postaje još efikasnija",
-            "bottomText": "Pridružite nam se i učinite svet boljim mestom!",
-            "benefits": {
-                "1": {
-                    "name": "Pogodno izveštavanje",
-                    "description": "Lako i brzo predajte izveštaje o svojim volonterskim aktivnostima."
-                },
-                "2": {
-                    "name": "Provera i podrška",
-                    "description": "Naši administratori pažljivo proveravaju vaše izveštavanje, osiguravajući transparentnost i integritet procesa. Uvek možete dobiti savete i trikove za poboljšanje svog rada."
-                },
-                "3": {
-                    "name": "Prijavite se za pridruživanje",
-                    "description": "Želite da budete deo tima? Popunite prijavu za pridruživanje ruskoj dijaspori. Pomoći ćemo vam da pronađete odgovarajući volonterski program u kojem će vaši napori imati najviše koristi."
-                }
-            },
-            "buttons": {
-                "login": "Prijavite se",
-                "application": "Želite da volontirate?"
-            }
-        }
+  "common": {
+    "buttons": {
+      "login": "Prijavite se"
     }
+  },
+  "footer": {
+    "copyright": "© «Ruska Dijaspora u Srbiji»"
+  },
+  "pages": {
+    "notFound": {
+      "title": "Nešto je pošlo po zlu...",
+      "documentTitle": "Stranica nije pronađena",
+      "description": "Stranica koju pokušavate da otvorite ne postoji. Možda ste pogrešno uneli adresu ili je stranica premeštena na drugu URL adresu. Ako mislite da je ovo greška, obratite se podršci.",
+      "homeButton": "Početna stranica"
+    },
+    "welcome": {
+      "title": "Portal volontera",
+      "documentTitle": "Portal volontera",
+      "subTitle": "platforma na kojoj vaša pomoć društvu postaje još efikasnija",
+      "bottomText": "Pridružite nam se i učinite svet boljim mestom!",
+      "benefits": {
+        "1": {
+          "name": "Pogodno izveštavanje",
+          "description": "Lako i brzo predajte izveštaje o svojim volonterskim aktivnostima."
+        },
+        "2": {
+          "name": "Provera i podrška",
+          "description": "Naši administratori pažljivo proveravaju vaše izveštavanje, osiguravajući transparentnost i integritet procesa. Uvek možete dobiti savete i trikove za poboljšanje svog rada."
+        },
+        "3": {
+          "name": "Prijavite se za pridruživanje",
+          "description": "Želite da budete deo tima? Popunite prijavu za pridruživanje ruskoj dijaspori. Pomoći ćemo vam da pronađete odgovarajući volonterski program u kojem će vaši napori imati najviše koristi."
+        }
+      },
+      "buttons": {
+        "application": "Želite da volontirate?"
+      }
+    }
+  }
 }
