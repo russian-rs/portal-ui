@@ -1,4 +1,4 @@
-import { UnstyledButton, Group, Avatar, Text, rem } from "@mantine/core"
+import { Avatar, Group, Text, UnstyledButton } from "@mantine/core"
 import { IconChevronRight } from "@tabler/icons-react"
 import { useContext } from "react"
 import { useHistory } from "react-router-dom"
@@ -12,7 +12,9 @@ export function UserButton() {
     return (
         <UnstyledButton
             className={classes.user}
-            onClick={() => history.push("/profile")}
+            onClick={() => {
+                history.push("/profile")
+            }}
         >
             <Group>
                 <Avatar

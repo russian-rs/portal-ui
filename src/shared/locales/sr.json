@@ -1,7 +1,8 @@
 {
   "common": {
     "buttons": {
-      "login": "Prijavite se"
+      "login": "Prijavite se",
+      "logout": "Odjava"
     }
   },
   "footer": {

@@ -2,8 +2,6 @@ import image from "/resources/pv_logo.png"
 import { Anchor, Burger, Group, Image } from "@mantine/core"
 import { useContext } from "react"
 import { NavbarContext } from "src/app/providers/NavbarProvider"
-import { LocaleSwitcher } from "src/shared/ui/locale/LocaleSwitcher"
-import { ThemeSwitcher } from "src/shared/ui/theme/ThemeSwitcher"
 import classes from "./AppHeader.module.css"
 
 export const AppHeader = () => {
@@ -21,10 +19,6 @@ export const AppHeader = () => {
                     <Anchor href="/">
                         <Image src={image} className={classes.logo} />
                     </Anchor>
-                </Group>
-                <Group justify="flex-end">
-                    <LocaleSwitcher />
-                    <ThemeSwitcher />
                 </Group>
             </Group>
         </>
