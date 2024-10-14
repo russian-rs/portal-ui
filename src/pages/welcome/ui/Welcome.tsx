@@ -37,9 +37,9 @@ export const Welcome = () => {
                         <Flex>
                             <Flex direction="column">
                                 <Title className={classes.title}>
-                                    <span className={classes.highlight}>
+                                    <Flex className={classes.highlight}>
                                         <FormattedMessage id={locale.title} />
-                                    </span>
+                                    </Flex>
                                 </Title>
                                 <Text
                                     c="dimmed"
