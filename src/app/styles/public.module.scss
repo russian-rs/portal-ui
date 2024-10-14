@@ -19,6 +19,7 @@
 }
 
 .appShellHeader {
-  padding: rem(6px);
-  max-height: calc(var(--mantine-spacing-md) * 3);
+  border: none;
+  padding: calc(var(--mantine-spacing-md) / 3) var(--mantine-spacing-md);
+  height: calc(var(--mantine-spacing-md) * 3);
 }
