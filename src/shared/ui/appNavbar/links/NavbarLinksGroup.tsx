@@ -1,15 +1,15 @@
-import React, { useState } from "react"
 import {
-    Group,
     Box,
     Collapse,
-    ThemeIcon,
-    Text,
-    UnstyledButton,
+    Group,
     rem,
+    Text,
+    ThemeIcon,
+    UnstyledButton,
 } from "@mantine/core"
 import { IconCalendarStats, IconChevronRight } from "@tabler/icons-react"
-import classes from "./NavbarLinksGroup.module.css"
+import React, { useState } from "react"
+import classes from "src/shared/ui/appNavbar/links/NavbarLinksGroup.module.scss"
 
 interface LinksGroupProps {
     icon: React.FC<any>

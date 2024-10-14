@@ -1,8 +1,8 @@
 import { Anchor, Center, Group, Text } from "@mantine/core"
 import { IconBrandTelegram, IconWorld } from "@tabler/icons-react"
 import { FormattedMessage } from "react-intl"
+import classes from "src/shared/ui/appFooter/AppFooter.module.scss"
 import { FooterContainer } from "src/shared/ui/appFooter/AppFooter.styles"
-import classes from "./AppFooter.module.css"
 
 export const AppFooter = () => {
     return (

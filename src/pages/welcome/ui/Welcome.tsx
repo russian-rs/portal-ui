@@ -15,9 +15,9 @@ import { FormattedMessage } from "react-intl"
 import { useHistory } from "react-router-dom"
 import { locale } from "src/pages/welcome/lib/locale"
 import { Dots } from "src/pages/welcome/ui/Dots"
+import classes from "src/pages/welcome/ui/Welcome.module.scss"
 import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import image from "../resources/image.svg"
-import classes from "./Welcome.module.css"
 
 export const Welcome = () => {
     useSetDocumentTitleByLocale(locale.documentTitle)

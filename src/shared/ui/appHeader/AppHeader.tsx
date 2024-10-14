@@ -2,7 +2,7 @@ import image from "/resources/pv_logo.png"
 import { Anchor, Burger, Group, Image } from "@mantine/core"
 import { useContext } from "react"
 import { NavbarContext } from "src/app/providers/NavbarProvider"
-import classes from "./AppHeader.module.css"
+import classes from "src/shared/ui/appHeader/AppHeader.module.scss"
 
 export const AppHeader = () => {
     const { menuOpened, setMenuOpened } = useContext(NavbarContext)
