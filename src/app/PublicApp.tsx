@@ -1,17 +1,15 @@
-import { useContext, useEffect } from "react"
+import { AppShell, AppShellHeader, Group } from "@mantine/core"
+import { useContext } from "react"
 import { Redirect } from "react-router-dom"
-import { NavbarContext } from "src/app/providers/NavbarProvider"
 import { UserContext } from "src/app/providers/UserContext"
 import PublicRouter from "src/app/router/PublicRouter"
+import classes from "src/app/styles/public.module.scss"
+import { LocaleSwitcher } from "src/shared/ui/locale/LocaleSwitcher"
+import { ThemeSwitcher } from "src/shared/ui/theme/ThemeSwitcher"
 
 // @ts-ignore
 const PublicApp = ({ match }) => {
-    const { setMenuVisible } = useContext(NavbarContext)
     const { user } = useContext(UserContext)
-
-    useEffect(() => {
-        setMenuVisible(false)
-    }, [setMenuVisible])
 
     if (user) {
         return <Redirect to="/profile" />
@@ -19,7 +17,17 @@ const PublicApp = ({ match }) => {
 
     return (
         <>
-            <PublicRouter match={match} />
+            <AppShell className={classes.appShell}>
+                <AppShellHeader className={classes.appShellHeader}>
+                    <Group justify="flex-end">
+                        <LocaleSwitcher />
+                        <ThemeSwitcher />
+                    </Group>
+                </AppShellHeader>
+                <Group className={classes.appShellMain}>
+                    <PublicRouter match={match} />
+                </Group>
+            </AppShell>
         </>
     )
 }

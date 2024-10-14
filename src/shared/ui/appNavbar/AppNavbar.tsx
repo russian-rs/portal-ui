@@ -9,29 +9,20 @@ import {
     UnstyledButton,
 } from "@mantine/core"
 import {
-    IconNotes,
-    IconCalendarStats,
-    IconGauge,
-    IconPresentationAnalytics,
-    IconFileAnalytics,
     IconAdjustments,
-    IconLock,
-    IconSubmarine,
+    IconFileAnalytics,
     IconHelp,
-    IconHelmet,
-    IconHelpOctagon,
-    IconHelpCircle,
-    IconUsers,
     IconLogout,
-    IconChevronRight,
+    IconPresentationAnalytics,
+    IconUsers,
 } from "@tabler/icons-react"
 import React, { useContext, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import { NavbarContext } from "src/app/providers/NavbarProvider"
 import { useDesktop } from "src/shared/hooks/useDesktop"
+import classes from "src/shared/ui/appNavbar/AppNavbar.module.scss"
 import { UserButton } from "src/shared/ui/appNavbar/userButton/UserButton"
 import { LinksGroup } from "./links/NavbarLinksGroup"
-import classes from "src/shared/ui/appNavbar/AppNavbar.module.scss"
 
 const mockdata = [
     {

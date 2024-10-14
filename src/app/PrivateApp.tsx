@@ -1,20 +1,14 @@
-import { useContext, useEffect } from "react"
-import { NavbarContext } from "src/app/providers/NavbarProvider"
-import classes from "src/app/styles/private.module.scss"
 import { AppShell } from "@mantine/core"
 import PrivateRouter from "src/app/router/PrivateRouter"
+import classes from "src/app/styles/private.module.scss"
+import AppHeader from "src/shared/ui/appHeader/AppHeader"
 import { AppNavbar } from "src/shared/ui/appNavbar/AppNavbar"
 
 const PrivateApp = () => {
-    const { setMenuVisible } = useContext(NavbarContext)
-
-    useEffect(() => {
-        setMenuVisible(true)
-    }, [])
-
     return (
         <>
             <AppShell className={classes.appShell}>
+                <AppHeader />
                 <AppNavbar />
                 <AppShell.Main className={classes.appShellMain}>
                     <PrivateRouter />
