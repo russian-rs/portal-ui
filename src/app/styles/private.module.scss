@@ -1,7 +1,7 @@
 .appShell {
   display: flex;
   position: fixed;
-  width: 100%;
+  width: 100dvw;
   margin-top: calc(var(--mantine-spacing-md) * 3);
   margin-bottom: calc(var(--mantine-spacing-md) * 3);
 
@@ -14,9 +14,17 @@
   flex-grow: 1;
   padding: var(--mantine-spacing-md);
   background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  min-height: calc(100dvh - var(--mantine-spacing-md) * 6);
+  max-height: calc(100dvh - var(--mantine-spacing-md) * 6);
 
   @media (max-width: $mantine-breakpoint-xs) {
     width: 100dvw;
     padding: var(--mantine-spacing-xs);
+    min-height: calc(100dvh - var(--mantine-spacing-md) * 5);
+    max-height: calc(100dvh - var(--mantine-spacing-md) * 5);
   }
+}
+
+.appShellMainScroll {
+  height: 100%;
 }

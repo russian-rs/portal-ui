@@ -1,18 +1,8 @@
-import {
-    AppShell,
-    Box,
-    Group,
-    rem,
-    ScrollArea,
-    ThemeIcon,
-    Transition,
-    UnstyledButton,
-} from "@mantine/core"
+import { AppShell, Group, ScrollArea, Transition } from "@mantine/core"
 import {
     IconAdjustments,
     IconFileAnalytics,
     IconHelp,
-    IconLogout,
     IconPresentationAnalytics,
     IconUsers,
 } from "@tabler/icons-react"
@@ -21,7 +11,10 @@ import { useHistory } from "react-router-dom"
 import { NavbarContext } from "src/app/providers/NavbarProvider"
 import { useDesktop } from "src/shared/hooks/useDesktop"
 import classes from "src/shared/ui/appNavbar/AppNavbar.module.scss"
+import { LogoutButton } from "src/shared/ui/appNavbar/logoutButton/LogoutButton"
 import { UserButton } from "src/shared/ui/appNavbar/userButton/UserButton"
+import { LocaleSwitcher } from "src/shared/ui/locale/LocaleSwitcher"
+import { ThemeSwitcher } from "src/shared/ui/theme/ThemeSwitcher"
 import { LinksGroup } from "./links/NavbarLinksGroup"
 
 const mockdata = [
@@ -90,35 +83,16 @@ export const AppNavbar = () => {
                             <div className={classes.linksInner}>{links}</div>
                         </ScrollArea>
 
-                        <div className={classes.footer}>
-                            <UnstyledButton
-                                className={classes.control}
-                                onClick={() => history.push("/logout")}
-                            >
-                                <Group justify="space-between" gap={0}>
-                                    <Box
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <ThemeIcon
-                                            variant="light"
-                                            size={30}
-                                            color="red"
-                                        >
-                                            <IconLogout
-                                                style={{
-                                                    width: rem(18),
-                                                    height: rem(18),
-                                                }}
-                                            />
-                                        </ThemeIcon>
-                                        <Box ml="md">Выход</Box>
-                                    </Box>
-                                </Group>
-                            </UnstyledButton>
-                        </div>
+                        <Group
+                            className={classes.footer}
+                            justify="space-between"
+                        >
+                            <LogoutButton />
+                            <Group justify="flex-end">
+                                <LocaleSwitcher />
+                                <ThemeSwitcher />
+                            </Group>
+                        </Group>
                     </nav>
                 </AppShell.Navbar>
             )}

@@ -1,5 +1,6 @@
 import {
     ActionIcon,
+    MantineColor,
     useComputedColorScheme,
     useMantineColorScheme,
 } from "@mantine/core"
@@ -23,24 +24,32 @@ export const ThemeSwitcher = () => {
         if (currentTheme === "light") {
             return (
                 <IconMoon
-                    style={{ width: "70%", height: "70%" }}
+                    style={{ width: "60%", height: "60%" }}
                     stroke={1.5}
                 />
             )
         } else {
             return (
-                <IconSun style={{ width: "70%", height: "70%" }} stroke={1.5} />
+                <IconSun style={{ width: "60%", height: "60%" }} stroke={1.5} />
             )
+        }
+    }
+
+    const getColor = (currentTheme: "light" | "dark"): MantineColor => {
+        if (currentTheme === "light") {
+            return "grey"
+        } else {
+            return "white"
         }
     }
 
     return (
         <>
             <ActionIcon
-                variant="default"
-                color="gray"
+                variant="light"
+                color={getColor(computedColorScheme)}
                 size="lg"
-                radius="md"
+                radius={0}
                 aria-label="Switch color scheme"
                 onClick={switchColorScheme}
             >
