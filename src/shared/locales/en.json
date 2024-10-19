@@ -37,6 +37,19 @@
       "buttons": {
         "application": "Submit an application"
       }
+    },
+    "profile": {
+      "documentTitle": "Profile",
+      "props": {
+        "city": "City",
+        "address": "Address",
+        "birthDate": "Birth date",
+        "phone": "Phone"
+      },
+      "buttons": {
+        "edit": "Edit",
+        "editTooltip": "This functionality is under development, please contact support for editing"
+      }
     }
   }
 }

@@ -37,6 +37,19 @@
       "buttons": {
         "application": "Želite da volontirate?"
       }
+    },
+    "profile": {
+      "documentTitle": "Profil",
+      "props": {
+        "city": "Grad",
+        "address": "Adresa",
+        "birthDate": "Datum rođenja",
+        "phone": "Telefon"
+      },
+      "buttons": {
+        "edit": "Uredi",
+        "editTooltip": "Ova funkcionalnost je u razvoju, za uređivanje pogledajte podršku"
+      }
     }
   }
 }
