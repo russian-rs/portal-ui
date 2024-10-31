@@ -1,13 +1,13 @@
+import { AccountDto } from "@russian-rs/portal-api-axios"
 import React, { createContext, ReactNode, useEffect, useState } from "react"
-import { UserInfo } from "@russian-rs/portal-api-axios"
-import { defaultFunction } from "src/shared/lib/defaultFunction"
-import { LoadingScreen } from "src/shared/ui/loadingScreen/LoadingScreen"
-import { SimpleLocalStorageService } from "src/shared/localStorage/SimpleLocalStorageService"
 import { LAST_LOGIN, USER } from "src/shared/constants/Storage"
+import { defaultFunction } from "src/shared/lib/defaultFunction"
+import { SimpleLocalStorageService } from "src/shared/localStorage/SimpleLocalStorageService"
+import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 
 interface UserContextType {
-    user: UserInfo | null
-    setUser: React.Dispatch<React.SetStateAction<UserInfo | null>>
+    user: AccountDto | null
+    setUser: React.Dispatch<React.SetStateAction<AccountDto | null>>
 }
 
 const defaultContextValue: UserContextType = {
@@ -20,7 +20,7 @@ const SESSION_DURATION: number = 30
 export const UserContext = createContext<UserContextType>(defaultContextValue)
 
 export const UserContextProvider = ({ children }: { children?: ReactNode }) => {
-    const [user, setUser] = useState<UserInfo | null>(null)
+    const [user, setUser] = useState<AccountDto | null>(null)
     const [loading, setLoading] = useState(true)
 
     /**

@@ -17,6 +17,9 @@ export const PropertyBox = ({
     justify?: string
     className?: string
 }) => {
+    if (!value) {
+        return <Flex />
+    }
     return (
         <Flex direction="column" className={className}>
             <Text

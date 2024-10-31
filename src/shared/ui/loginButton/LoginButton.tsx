@@ -14,7 +14,7 @@ export const LoginButton = () => {
                 color="blue"
                 radius={0}
                 rightSection={<IconLogin2 size={18} />}
-                onClick={() => history.push("/profile")}
+                onClick={() => history.push("/login")}
             >
                 <Flex className={classes.text}>
                     <FormattedMessage id="common.buttons.login" />

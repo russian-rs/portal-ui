@@ -13,7 +13,7 @@ export function UserButton() {
         <UnstyledButton
             className={classes.user}
             onClick={() => {
-                history.push("/profile")
+                history.push(`/profile/${user?.username}`)
             }}
         >
             <Group>

@@ -21,7 +21,6 @@ const mockdata = [
     {
         label: "Отчетность",
         icon: IconFileAnalytics,
-        initiallyOpened: true,
         links: [
             { label: "Мои отчеты", link: "/reports" },
             { label: "Отчет по внутренней программе", link: "/" },

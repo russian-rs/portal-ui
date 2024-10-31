@@ -1,49 +1,50 @@
 import { Button, Container, Flex } from "@mantine/core"
+import { UserInfoDto } from "@russian-rs/portal-api-axios"
 import { IconBrandTelegram, IconPhone } from "@tabler/icons-react"
-import { useContext } from "react"
 import { FormattedMessage } from "react-intl"
-import { UserContext } from "src/app/providers/UserContext"
 import commonClasses from "src/app/styles/private.module.scss"
 import classes from "src/pages/profile/Profile.module.scss"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { TooltipLocalized } from "src/shared/ui/tooltip/TooltipLocalized"
 
-export const CommonInfoContainer = () => {
-    const { user } = useContext(UserContext)
-
+export const CommonInfoContainer = ({
+    userInfo,
+}: {
+    userInfo: UserInfoDto | undefined
+}) => {
     return (
         <Flex direction="column">
             <PropertyBox
                 name={"pages.profile.props.city"}
-                value={"Beograd"}
+                value={userInfo?.city}
                 className={classes.propertyBox}
             />
             <PropertyBox
                 name={"pages.profile.props.address"}
-                value={"11050, Ustanićka 128/53"}
+                value={userInfo?.address}
                 className={classes.propertyBox}
             />
             <PropertyBox
                 name={"pages.profile.props.birthDate"}
-                value={"03.11.1998"}
+                value={userInfo?.birthDate}
                 className={classes.propertyBox}
             />
             <Container className={commonClasses.divider} />
             <PropertyBox
                 name={"Email"}
-                value={user?.email}
+                value={userInfo?.email}
                 className={classes.propertyBox}
             />
             <PropertyBox
                 name={"Telegram"}
-                value={"aminovmaksim"}
+                value={userInfo?.telegram}
                 icon={<IconBrandTelegram size={18} />}
-                href={"https://t.me/zortan3302"}
+                href={`https://t.me/${userInfo?.telegram}`}
                 className={classes.propertyBox}
             />
             <PropertyBox
                 name={"pages.profile.props.phone"}
-                value={"+381677621034"}
+                value={userInfo?.phone}
                 icon={<IconPhone size={18} />}
                 className={classes.propertyBox}
             />
