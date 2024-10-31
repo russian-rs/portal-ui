@@ -1,10 +1,7 @@
-import {
-    CenterContainer,
-    CustomLoader,
-    StyledImage,
-} from "./LoadingScreen.styles"
 import { Center, Flex, Image } from "@mantine/core"
 import { useEffect, useState } from "react"
+import CustomLoader from "src/shared/ui/loading/CustomLoader"
+import classes from "./LoadingScreen.module.scss"
 
 export const LoadingScreen = () => {
     const [visible, setVisible] = useState(false)
@@ -20,10 +17,13 @@ export const LoadingScreen = () => {
     }
 
     return (
-        <Center component={CenterContainer}>
+        <Center className={classes.center}>
             <Flex justify="center" align="center" direction="column" gap="lg">
                 <CustomLoader />
-                <Image src="/resources/pv_title.png" component={StyledImage} />
+                <Image
+                    src="/resources/pv_title.png"
+                    className={classes.image}
+                />
                 <CustomLoader />
             </Flex>
         </Center>

@@ -1,7 +1,12 @@
+import { Text } from "@mantine/core"
+import { notifications } from "@mantine/notifications"
+import { ErrorResponse } from "@russian-rs/portal-api-axios"
 import Axios, { AxiosError } from "axios"
-import { SimpleLocalStorageService } from "src/shared/localStorage/SimpleLocalStorageService"
-import { LocalStorageKeys } from "src/shared/localStorage/constants"
+import { FormattedMessage } from "react-intl"
 import { history } from "src/shared/constants/History"
+import { LocalStorageKeys } from "src/shared/localStorage/constants"
+import { SimpleLocalStorageService } from "src/shared/localStorage/SimpleLocalStorageService"
+import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 
 export const RequestHttp = Axios.create({
     baseURL: "/api",
@@ -20,12 +25,35 @@ RequestHttp.interceptors.response.use(
         return res
     },
     (error: AxiosError) => {
+        if (error.response?.status === 404) {
+            history.replace({ pathname: "/not-found" })
+            location.reload()
+            return
+        }
         if (error.response?.status === 401) {
             SimpleLocalStorageService.removeItem(LocalStorageKeys.user)
             history.replace({
                 pathname: "/api/oauth2/login/authentik",
             })
             location.reload()
+            return
+        } else {
+            let message: string = error.message
+            if (error.response?.data) {
+                const errorResponse = error.response.data as ErrorResponse
+                message = errorResponse.message
+            }
+            notifications.show(
+                ErrorNotification(
+                    <Text fw="bold" size="sm">
+                        <FormattedMessage
+                            id="errors.request"
+                            values={{ url: error.config?.url }}
+                        />
+                    </Text>,
+                    <Text size="sm">{message}</Text>
+                )
+            )
         }
         return Promise.reject(error)
     }

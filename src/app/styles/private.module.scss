@@ -12,7 +12,6 @@
 
 .appShellMain {
     flex-grow: 1;
-    padding: var(--mantine-spacing-md);
     background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
     min-height: calc(100dvh - var(--mantine-spacing-md) * 6);
     max-height: calc(100dvh - var(--mantine-spacing-md) * 6);

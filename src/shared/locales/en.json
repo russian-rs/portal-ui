@@ -51,5 +51,8 @@
         "editTooltip": "This functionality is under development, please contact support for editing"
       }
     }
+  },
+  "errors": {
+    "request": "Request error occurred - {url}"
   }
 }

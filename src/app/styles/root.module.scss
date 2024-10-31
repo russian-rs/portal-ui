@@ -1,0 +1,13 @@
+.notifications {
+    display: flex;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100dvw;
+    padding: var(--mantine-spacing-md);
+    justify-content: center;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        padding: var(--mantine-spacing-xs);
+    }
+}

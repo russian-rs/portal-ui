@@ -24,7 +24,7 @@ export const ThemeSwitcher = () => {
         if (currentTheme === "light") {
             return (
                 <IconMoon
-                    style={{ width: "60%", height: "60%" }}
+                    style={{ width: "50%", height: "50%" }}
                     stroke={1.5}
                 />
             )
@@ -37,9 +37,9 @@ export const ThemeSwitcher = () => {
 
     const getColor = (currentTheme: "light" | "dark"): MantineColor => {
         if (currentTheme === "light") {
-            return "grey"
+            return "blue"
         } else {
-            return "white"
+            return "green"
         }
     }
 

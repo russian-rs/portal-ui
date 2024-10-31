@@ -1,0 +1,26 @@
+.root {
+    width: 26rem;
+    margin-top: 0.5rem;
+    background-color: var(--mantine-color-red-5);
+
+    &::before {
+        background-color: var(--mantine-color-white);
+    }
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        width: 100%;
+    }
+}
+
+.description,
+.title {
+    color: var(--mantine-color-white);
+}
+
+.closeButton {
+    color: var(--mantine-color-white);
+
+    @mixin hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+}

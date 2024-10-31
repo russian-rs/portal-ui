@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react"
-import { UserApiService } from "src/shared/api/userApiService/UserApiService"
-import { UserContext } from "src/app/providers/UserContext"
-import { LoadingScreen } from "src/shared/ui/loadingScreen/LoadingScreen"
 import { useHistory } from "react-router-dom"
-import { SimpleLocalStorageService } from "src/shared/localStorage/SimpleLocalStorageService"
+import { UserContext } from "src/app/providers/UserContext"
+import { UserApiService } from "src/shared/api/UserApiService"
 import { LAST_LOGIN, USER } from "src/shared/constants/Storage"
+import { SimpleLocalStorageService } from "src/shared/localStorage/SimpleLocalStorageService"
+import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 
 export const Login = () => {
     const history = useHistory()
@@ -13,12 +13,15 @@ export const Login = () => {
     useEffect(() => {
         SimpleLocalStorageService.removeItem(USER)
         SimpleLocalStorageService.removeItem(LAST_LOGIN)
-        UserApiService.info().then((res) => {
+        UserApiService.getCurrentAccount().then((res) => {
             SimpleLocalStorageService.setItem(LAST_LOGIN, new Date())
-            userContext.setUser(res.data)
-            history.push("/profile")
+            const account = res.data
+            userContext.setUser(account)
+            history.push(`/profile/${account.username}`)
         })
     }, [userContext, history])
 
     return <LoadingScreen />
 }
+
+export default Login

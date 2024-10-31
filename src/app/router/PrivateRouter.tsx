@@ -1,8 +1,8 @@
-import { Redirect, Route, Switch } from "react-router-dom"
 import { Suspense, useContext, useMemo } from "react"
+import { Redirect, Route, Switch } from "react-router-dom"
 import { UserContext } from "src/app/providers/UserContext"
 import { routes } from "src/app/router/routes.private"
-import { LoadingScreen } from "src/shared/ui/loadingScreen/LoadingScreen"
+import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 
 const PrivateRouter = () => {
     const { user } = useContext(UserContext)

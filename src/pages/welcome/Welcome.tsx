@@ -14,10 +14,10 @@ import { IconCheck } from "@tabler/icons-react"
 import { FormattedMessage } from "react-intl"
 import { useHistory } from "react-router-dom"
 import { locale } from "src/pages/welcome/lib/locale"
+import image from "src/pages/welcome/resources/image.svg"
 import { Dots } from "src/pages/welcome/ui/Dots"
-import classes from "src/pages/welcome/ui/Welcome.module.scss"
+import classes from "src/pages/welcome/Welcome.module.scss"
 import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
-import image from "../resources/image.svg"
 
 export const Welcome = () => {
     useSetDocumentTitleByLocale(locale.documentTitle)
@@ -100,7 +100,7 @@ export const Welcome = () => {
                                         radius="xl"
                                         size="md"
                                         className={classes.control}
-                                        onClick={() => history.push("/profile")}
+                                        onClick={() => history.push(`/login`)}
                                     >
                                         <FormattedMessage
                                             id={locale.buttonLogin}
@@ -129,3 +129,5 @@ export const Welcome = () => {
         </Flex>
     )
 }
+
+export default Welcome

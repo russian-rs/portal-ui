@@ -13,7 +13,7 @@ const PublicApp = ({ match }) => {
     const { user } = useContext(UserContext)
 
     if (user) {
-        return <Redirect to="/profile" />
+        return <Redirect to={`/profile/${user.username}`} />
     }
 
     return (

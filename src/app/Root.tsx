@@ -1,12 +1,14 @@
 import { MantineProvider } from "@mantine/core"
 import "@mantine/core/styles.css"
-import RootRouter from "src/app/router/RootRouter"
-import { UserContextProvider } from "src/app/providers/UserContext"
-import { LanguageContextProvider } from "src/app/providers/LocaleContext"
+import { Notifications } from "@mantine/notifications"
 import { QueryClientProvider } from "@tanstack/react-query"
+import { LanguageContextProvider } from "src/app/providers/LocaleContext"
+import { UserContextProvider } from "src/app/providers/UserContext"
+import RootRouter from "src/app/router/RootRouter"
 import { queryClient } from "src/shared/constants/Query"
-import { theme } from "src/shared/ui/theme/CustomMantineTheme"
 import { AppShell } from "src/shared/ui/appShell/AppShell"
+import { theme } from "src/shared/ui/theme/CustomMantineTheme"
+import classes from "./styles/root.module.scss"
 
 /**
  * Root component
@@ -19,6 +21,7 @@ export const Root = () => {
             <QueryClientProvider client={queryClient}>
                 <LanguageContextProvider>
                     <AppShell>
+                        <Notifications className={classes.notifications} />
                         <UserContextProvider>
                             <RootRouter />
                         </UserContextProvider>

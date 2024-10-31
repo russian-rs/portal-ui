@@ -1,3 +1,15 @@
+.root {
+    padding: var(--mantine-spacing-md);
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        padding: 0;
+    }
+}
+
+.loader {
+    width: 100%;
+}
+
 .upperSpace {
     height: 4rem;
 }
@@ -19,6 +31,7 @@
 }
 
 .userName {
+    margin-top: var(--mantine-spacing-md);
     font-size: 2rem;
     font-weight: bold;
 }
@@ -36,5 +49,6 @@
 
 .button {
     margin-top: auto;
+    border-radius: 8px;
 }
 

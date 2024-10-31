@@ -51,5 +51,8 @@
         "editTooltip": "Ova funkcionalnost je u razvoju, za uređivanje pogledajte podršku"
       }
     }
+  },
+  "errors": {
+    "request": "Došlo je do greške u zahtevu - {url}"
   }
 }

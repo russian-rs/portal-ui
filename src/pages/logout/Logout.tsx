@@ -1,8 +1,8 @@
 import { useEffect } from "react"
-import { UserApiService } from "src/shared/api/userApiService/UserApiService"
-import { LoadingScreen } from "src/shared/ui/loadingScreen/LoadingScreen"
-import { SimpleLocalStorageService } from "src/shared/localStorage/SimpleLocalStorageService"
+import { UserApiService } from "src/shared/api/UserApiService"
 import { LAST_LOGIN, USER } from "src/shared/constants/Storage"
+import { SimpleLocalStorageService } from "src/shared/localStorage/SimpleLocalStorageService"
+import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 
 export const Logout = () => {
     useEffect(() => {
@@ -16,3 +16,5 @@ export const Logout = () => {
 
     return <LoadingScreen />
 }
+
+export default Logout
