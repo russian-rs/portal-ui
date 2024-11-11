@@ -7,7 +7,6 @@ import {
     IconUsers,
 } from "@tabler/icons-react"
 import React, { useContext, useEffect } from "react"
-import { useHistory } from "react-router-dom"
 import { NavbarContext } from "src/app/providers/NavbarProvider"
 import { useDesktop } from "src/shared/hooks/useDesktop"
 import classes from "src/shared/ui/appNavbar/AppNavbar.module.scss"
@@ -33,13 +32,6 @@ const mockdata = [
             { label: "Upcoming releases", link: "/" },
             { label: "Previous releases", link: "/" },
             { label: "Releases schedule", link: "/" },
-            { label: "Releases schedule", link: "/" },
-            { label: "Releases schedule", link: "/" },
-            { label: "Releases schedule", link: "/" },
-            { label: "Releases schedule", link: "/" },
-            { label: "Releases schedule", link: "/" },
-            { label: "Releases schedule", link: "/" },
-            { label: "Releases schedule", link: "/" },
         ],
     },
     { label: "Аналитика", icon: IconPresentationAnalytics },
@@ -51,8 +43,6 @@ export const AppNavbar = () => {
     const isDesktop = useDesktop()
 
     const { menuOpened, setMenuOpened } = useContext(NavbarContext)
-
-    const history = useHistory()
 
     useEffect(() => {
         setMenuOpened(isDesktop)

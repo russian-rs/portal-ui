@@ -18,7 +18,6 @@
 
     @media (max-width: $mantine-breakpoint-xs) {
         width: 100dvw;
-        padding: var(--mantine-spacing-xs);
         min-height: calc(100dvh - var(--mantine-spacing-md) * 5);
         max-height: calc(100dvh - var(--mantine-spacing-md) * 5);
     }
