@@ -18,9 +18,10 @@ export function UserButton() {
         >
             <Group>
                 <Avatar
-                    src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png"
+                    src={user?.avatar?.link}
                     radius="md"
                     size={48}
+                    color="blue"
                 />
 
                 <div style={{ flex: 1 }}>

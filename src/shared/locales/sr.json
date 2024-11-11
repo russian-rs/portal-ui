@@ -44,12 +44,15 @@
         "city": "Grad",
         "address": "Adresa",
         "birthDate": "Datum rođenja",
-        "phone": "Telefon"
+        "phone": "Telefon",
+        "email": "Email",
+        "telegram": "Telegram"
       },
       "buttons": {
         "edit": "Uredi",
         "editTooltip": "Ova funkcionalnost je u razvoju, za uređivanje pogledajte podršku"
-      }
+      },
+      "avatarUpdated": "Slika profila je uspešno ažurirana"
     }
   },
   "errors": {

@@ -44,12 +44,15 @@
         "city": "City",
         "address": "Address",
         "birthDate": "Birth date",
-        "phone": "Phone"
+        "phone": "Phone",
+        "email": "Email",
+        "telegram": "Telegram"
       },
       "buttons": {
         "edit": "Edit",
         "editTooltip": "This functionality is under development, please contact support for editing"
-      }
+      },
+      "avatarUpdated": "Profile image updated successfully"
     }
   },
   "errors": {

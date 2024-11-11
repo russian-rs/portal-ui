@@ -31,12 +31,12 @@ export const CommonInfoContainer = ({
             />
             <Container className={commonClasses.divider} />
             <PropertyBox
-                name={"Email"}
+                name={"pages.profile.props.email"}
                 value={userInfo?.email}
                 className={classes.propertyBox}
             />
             <PropertyBox
-                name={"Telegram"}
+                name={"pages.profile.props.telegram"}
                 value={userInfo?.telegram}
                 icon={<IconBrandTelegram size={18} />}
                 href={`https://t.me/${userInfo?.telegram}`}
