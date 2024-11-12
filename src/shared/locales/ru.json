@@ -57,5 +57,22 @@
   },
   "errors": {
     "request": "Возникла ошибка в запросе - {url}"
+  },
+  "navbar": {
+    "reports": {
+      "reporting": "Отчетность",
+      "my-reports": "Мои отчеты",
+      "new-report": "Новый отчет",
+      "report": "Отчет",
+      "summary": "Сводка"
+    },
+    "volunteers": {
+      "volunteers": "Волонтеры",
+      "all-volunteers": "Все волонтеры",
+      "applications": "Новые заявки",
+      "statistics": "Статистика"
+    },
+    "account-settings": "Настройки уч. записи",
+    "support": "Написать в поддержку"
   }
 }

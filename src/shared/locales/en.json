@@ -57,5 +57,22 @@
   },
   "errors": {
     "request": "Request error occurred - {url}"
+  },
+  "navbar": {
+    "reports": {
+      "reporting": "Reporting",
+      "my-reports": "My reports",
+      "new-report": "New report",
+      "report": "Report",
+      "summary": "Summary"
+    },
+    "volunteers": {
+      "volunteers": "Volunteers",
+      "all-volunteers": "All volunteers",
+      "applications": "Applications",
+      "statistics": "Statistics"
+    },
+    "account-settings": "Account settings",
+    "support": "Contact support"
   }
 }

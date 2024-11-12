@@ -57,5 +57,22 @@
   },
   "errors": {
     "request": "Došlo je do greške u zahtevu - {url}"
+  },
+  "navbar": {
+    "reports": {
+      "reporting": "Izveštavanje",
+      "my-reports": "Moji izveštaji",
+      "new-report": "Novi izveštaj",
+      "report": "Izveštaj",
+      "summary": "Rezime"
+    },
+    "volunteers": {
+      "volunteers": "Volonteri",
+      "all-volunteers": "Svi volonteri",
+      "applications": "Aplikacije",
+      "statistics": "Statistika"
+    },
+    "account-settings": "Podešavanja naloga",
+    "support": "Kontaktirajte podršku"
   }
 }
