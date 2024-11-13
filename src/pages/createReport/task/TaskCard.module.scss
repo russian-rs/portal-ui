@@ -1,0 +1,13 @@
+.taskCard {
+    width: 100%;
+    padding: var(--mantine-spacing-xs);
+    border-radius: var(--mantine-spacing-xs);
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    box-shadow: 0 0 0.5rem 0.5rem light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
+
+    transition: box-shadow 0.5s ease;
+
+    &:hover {
+        box-shadow: 0 0 0.5rem 0.3rem light-dark(var(--mantine-color-blue-2), var(--mantine-color-blue-9));
+    }
+}
