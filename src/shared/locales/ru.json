@@ -53,6 +53,21 @@
         "editTooltip": "Данный функционал в разработке, для редактирования обратитесь в поддержку"
       },
       "avatarUpdated": "Изображение профиля успешно обновлено"
+    },
+    "new-report": {
+      "title": "Создать новый отчет",
+      "description": "Добавьте одну или несколько задач",
+      "task": "Задача {index}",
+      "task-name": "Название",
+      "task-description": "Описание",
+      "task-description-description": "Краткое описание того, что вы сделали",
+      "task-result": "Результат",
+      "task-result-description": "Ссылка на статью, поcт, Google Docs, GitHub и др.",
+      "task-time-spent": "Кол-во часов",
+      "task-time-spent-description": "Сколько времени было затрачено",
+      "task-time-spent-suffix": " ч.",
+      "task-date": "Дата",
+      "task-date-description": "Когда была выполнена задача"
     }
   },
   "errors": {

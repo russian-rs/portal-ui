@@ -1,9 +1,4 @@
-import {
-    IconAdjustments,
-    IconFileAnalytics,
-    IconHelp,
-    IconUsers,
-} from "@tabler/icons-react"
+import { IconAdjustments, IconFileAnalytics, IconHelp, IconUsers } from "@tabler/icons-react"
 
 export const Content = [
     {
@@ -12,15 +7,15 @@ export const Content = [
         links: [
             {
                 label: "navbar.reports.my-reports",
-                link: "/my-reports",
+                link: "/reports",
             },
             {
                 label: "navbar.reports.new-report",
-                link: "/new-report",
+                link: "/reports/create",
             },
             {
                 label: "navbar.reports.summary",
-                link: "/reports-summary",
+                link: "/reports/summary",
             },
         ],
     },

@@ -1,0 +1,46 @@
+.root {
+    padding: var(--mantine-spacing-xl);
+    padding-top: var(--mantine-spacing-sm);
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        padding: var(--mantine-spacing-md);
+    }
+}
+
+.title {
+    font-weight: bold;
+    font-size: xx-large;
+    color: light-dark(var(--mantine-color-dark-5), var(--mantine-color-white));
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        font-size: x-large;
+    }
+}
+
+.description {
+    color: light-dark(var(--mantine-color-dark-3), var(--mantine-color-dark-0));
+    font-size: large;
+    margin-bottom: var(--mantine-spacing-md);
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        font-size: medium;
+    }
+}
+
+.taskContainer {
+    width: 36rem;
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        width: 100%
+    }
+}
+
+.buttonAddTask {
+
+    transition: transform 0.2s;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
