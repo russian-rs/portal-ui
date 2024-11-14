@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { defaultTask, locales } from "src/pages/createReport/constants"
 import classes from "src/pages/createReport/CreateReport.module.scss"
-import { Functions, TaskCard } from "src/pages/createReport/task/TaskCard"
+import { TaskCard, TaskCardInterface } from "src/pages/createReport/task/TaskCard"
 import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { v4 as uuid } from "uuid"
 
@@ -13,7 +13,7 @@ export const CreateReport = () => {
     useSetDocumentTitleByLocale(locales.title)
 
     const [tasks, setTasks] = useState<TaskDto[]>([defaultTask])
-    const taskRefs = useRef<{ [key: string]: React.RefObject<Functions> }>({})
+    const taskRefs = useRef<{ [key: string]: React.RefObject<TaskCardInterface> }>({})
 
     const handleTaskChange = (id: string, updatedTask: TaskDto) => {
         setTasks((prevTasks) => prevTasks.map((task) => (task.id === id ? updatedTask : task)))
@@ -50,10 +50,19 @@ export const CreateReport = () => {
     }, [tasks])
 
     const onSend = () => {
-        tasks.forEach((task) => {
-            const cardRef = taskRefs.current[task.id]
-            cardRef.current?.validate()
-        })
+        for (let i = 0; i < tasks.length; i++) {
+            const cardRef = taskRefs.current[tasks[i].id]
+            if (cardRef.current) {
+                const validationResult = cardRef.current.validate()
+                if (validationResult?.hasErrors) {
+                    cardRef.current?.scrollIntoView()
+                    return
+                } else {
+                    tasks[i] = cardRef.current.getValues()
+                }
+            }
+        }
+        console.log(tasks)
     }
 
     return (
