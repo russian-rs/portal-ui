@@ -30,7 +30,7 @@
 .taskContainer {
     width: 36rem;
 
-    @media (max-width: $mantine-breakpoint-xs) {
+    @media (max-width: $mantine-breakpoint-md) {
         width: 100%
     }
 }

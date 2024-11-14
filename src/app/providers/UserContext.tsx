@@ -15,7 +15,7 @@ const defaultContextValue: UserContextType = {
     setUser: defaultFunction,
 }
 
-const SESSION_DURATION: number = 30
+const SESSION_DURATION: number = 2 * 24 * 60 // 48 hours
 
 export const UserContext = createContext<UserContextType>(defaultContextValue)
 
@@ -53,9 +53,5 @@ export const UserContextProvider = ({ children }: { children?: ReactNode }) => {
         return <LoadingScreen />
     }
 
-    return (
-        <UserContext.Provider value={{ user, setUser }}>
-            {children}
-        </UserContext.Provider>
-    )
+    return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>
 }

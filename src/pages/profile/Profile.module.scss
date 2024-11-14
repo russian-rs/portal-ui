@@ -12,6 +12,10 @@
 
 .upperSpace {
     height: 4rem;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        height: 3rem;
+    }
 }
 
 .infoContainer {

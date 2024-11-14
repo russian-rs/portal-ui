@@ -1,39 +1,29 @@
-import { Avatar, Group, Text, UnstyledButton } from "@mantine/core"
+import { Avatar, Flex, Text, UnstyledButton } from "@mantine/core"
 import { IconChevronRight } from "@tabler/icons-react"
 import { useContext } from "react"
-import { useHistory } from "react-router-dom"
 import { UserContext } from "src/app/providers/UserContext"
 import classes from "./UserButton.module.scss"
 
 export function UserButton() {
     const { user } = useContext(UserContext)
-    const history = useHistory()
 
     return (
-        <UnstyledButton
-            className={classes.user}
-            onClick={() => {
-                history.push(`/profile/${user?.username}`)
-            }}
-        >
-            <Group>
-                <Avatar
-                    src={user?.avatar?.link}
-                    radius="md"
-                    size={48}
-                    color="blue"
-                />
+        <UnstyledButton className={classes.user} component="a" href={`/profile/${user?.username}`}>
+            <Flex justify="center" align="center" columnGap={12}>
+                <Avatar src={user?.avatar?.link} radius="md" size={48} color="initials" name={user?.fullName} />
 
                 <div style={{ flex: 1 }}>
-                    <Text fw={500}>{user?.fullName}</Text>
+                    <Text fw={500} truncate="end">
+                        {user?.fullName}
+                    </Text>
 
-                    <Text c="dimmed" size="xs">
+                    <Text c="dimmed" size="xs" truncate="end">
                         {user?.email}
                     </Text>
                 </div>
 
                 <IconChevronRight className={classes.chevron} />
-            </Group>
+            </Flex>
         </UnstyledButton>
     )
 }
