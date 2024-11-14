@@ -35,7 +35,8 @@
     "styled-components": "^6.1.13",
     "stylelint": "^16.9.0",
     "stylelint-config-standard-scss": "^13.1.0",
-    "uuid": "^11.0.3"
+    "uuid": "^11.0.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

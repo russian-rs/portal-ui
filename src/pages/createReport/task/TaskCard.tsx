@@ -1,6 +1,6 @@
 import { ActionIcon, Badge, Flex, NumberInput, Select, SimpleGrid, Textarea, TextInput } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
-import { useForm } from "@mantine/form"
+import { useForm, zodResolver } from "@mantine/form"
 import { FormValidationResult } from "@mantine/form/lib/types"
 import { TaskDto } from "@russian-rs/portal-api-axios"
 import { IconCalendar, IconChecklist, IconClock, IconLink, IconTrashX, IconUser } from "@tabler/icons-react"
@@ -10,6 +10,7 @@ import React, { forwardRef, useImperativeHandle, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { UserApiService } from "src/shared/api/UserApiService"
 import { DropzoneArea } from "src/shared/ui/dropzone/DropzoneArea"
+import { z } from "zod"
 import { locales } from "./constants"
 import classes from "./TaskCard.module.scss"
 
@@ -20,28 +21,19 @@ interface TaskCardProps {
     onDelete: (id: string) => void
 }
 
-export interface Functions {
+export interface TaskCardInterface {
     validate: () => FormValidationResult
+    getValues: () => TaskDto
     scrollIntoView: () => void
 }
 
-export const TaskCard = forwardRef<Functions, TaskCardProps>((props, ref) => {
+export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref) => {
     const [searchValue, setSearchValue] = useState("")
     const cardRef = useRef<HTMLDivElement>(null)
 
     const form = useForm({
         mode: "uncontrolled",
-        initialValues: {
-            name: "",
-            description: "",
-            result: "",
-            timeSpent: "",
-            date: "",
-            customer: "",
-        },
-        validate: {
-            name: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid name"),
-        },
+        validate: zodResolver(validationSchema),
     })
 
     useImperativeHandle(ref, () => ({
@@ -49,6 +41,19 @@ export const TaskCard = forwardRef<Functions, TaskCardProps>((props, ref) => {
             cardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
         },
         validate: () => form.validate(),
+        getValues: () => {
+            const values = form.getValues()
+            return {
+                id: props.task.id,
+                name: values.name.trim(),
+                description: values.description.trim(),
+                result: values.result,
+                timeSpent: values.timeSpent * 60,
+                date: dayjs(values.date).format("YYYY-MM-DD"),
+                customer: values.customer,
+                files: props.task.files,
+            }
+        },
     }))
 
     const { data: users = [], isFetching } = useQuery({
@@ -56,22 +61,10 @@ export const TaskCard = forwardRef<Functions, TaskCardProps>((props, ref) => {
         queryFn: () => UserApiService.searchUsers(searchValue, {}).then((response) => response.data.content),
     })
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target
-        props.onChange(props.task.id, { ...props.task, [name]: value })
-    }
-
     return (
-        <Flex direction="column" className={classes.taskCard} ref={cardRef} key={props.task.id}>
+        <Flex direction="column" className={classes.taskCard} ref={cardRef} key={props.task.id} rowGap={10}>
             <Flex>
-                <Badge
-                    mb="sm"
-                    size="lg"
-                    color="grape"
-                    radius="md"
-                    variant="light"
-                    leftSection={<IconChecklist size={16} />}
-                >
+                <Badge size="lg" color="grape" radius="md" variant="light" leftSection={<IconChecklist size={16} />}>
                     <FormattedMessage id={locales.task} values={{ index: props.index + 1 }} />
                 </Badge>
                 {props.index != 0 && (
@@ -82,20 +75,19 @@ export const TaskCard = forwardRef<Functions, TaskCardProps>((props, ref) => {
             </Flex>
             <TextInput
                 name="name"
+                withAsterisk
                 key={form.key("name")}
                 {...form.getInputProps("name")}
-                mb="xs"
-                withAsterisk
                 label={<FormattedMessage id={locales.taskName} />}
             />
             <Textarea
-                name="description"
-                key={form.key("description")}
-                {...form.getInputProps("description")}
-                mb="xs"
                 autosize
                 minRows={3}
                 maxRows={3}
+                withAsterisk
+                name="description"
+                key={form.key("description")}
+                {...form.getInputProps("description")}
                 label={<FormattedMessage id={locales.taskDescription} />}
                 description={<FormattedMessage id={locales.taskDescriptionDescription} />}
             />
@@ -103,51 +95,51 @@ export const TaskCard = forwardRef<Functions, TaskCardProps>((props, ref) => {
                 name="result"
                 key={form.key("result")}
                 {...form.getInputProps("result")}
-                mb="xs"
                 label={<FormattedMessage id={locales.result} />}
                 description={<FormattedMessage id={locales.resultDescription} />}
                 leftSection={<IconLink size={18} />}
             />
-            <SimpleGrid cols={2} mb="xs">
+            <SimpleGrid cols={2}>
                 <NumberInput
-                    name="timeSpent"
-                    key={form.key("timeSpent")}
-                    {...form.getInputProps("timeSpent")}
-                    withAsterisk
-                    label={<FormattedMessage id={locales.timeSpent} />}
-                    description={<FormattedMessage id={locales.timeSpentDescription} />}
-                    suffix=" ч."
                     min={1}
                     max={40}
                     mt="auto"
+                    withAsterisk
+                    suffix=" ч."
+                    name="timeSpent"
+                    key={form.key("timeSpent")}
+                    {...form.getInputProps("timeSpent")}
+                    label={<FormattedMessage id={locales.timeSpent} />}
+                    description={<FormattedMessage id={locales.timeSpentDescription} />}
                     leftSection={<IconClock size={18} />}
+                    inputWrapperOrder={["label", "description", "error", "input"]}
                 />
                 <DateInput
+                    mt="auto"
                     name="date"
+                    withAsterisk
+                    valueFormat="DD MMM YYYY"
                     key={form.key("date")}
                     {...form.getInputProps("date")}
-                    mt="auto"
-                    withAsterisk
                     label={<FormattedMessage id={locales.taskDate} />}
                     description={<FormattedMessage id={locales.taskDateDescription} />}
-                    valueFormat="DD MMM YYYY"
                     minDate={dayjs(new Date()).subtract(16, "day").toDate()}
                     maxDate={new Date()}
                     leftSection={<IconCalendar size={18} />}
+                    inputWrapperOrder={["label", "description", "error", "input"]}
                 />
             </SimpleGrid>
             <Select
-                name="customer"
-                key={form.key("customer")}
-                {...form.getInputProps("customer")}
-                mb="md"
-                label="Заказчик"
-                description="Кто был инициатором задачи (опционально)"
-                nothingFoundMessage="Пользователей не найдено"
-                placeholder="Имя Фамилия"
                 data={[]}
                 clearable
                 searchable
+                name="customer"
+                label="Заказчик"
+                key={form.key("customer")}
+                {...form.getInputProps("customer")}
+                description="Кто был инициатором задачи (опционально)"
+                nothingFoundMessage="Пользователей не найдено"
+                placeholder="Имя Фамилия"
                 searchValue={searchValue}
                 onSearchChange={setSearchValue}
                 leftSection={<IconUser size={18} />}
@@ -155,4 +147,14 @@ export const TaskCard = forwardRef<Functions, TaskCardProps>((props, ref) => {
             <DropzoneArea />
         </Flex>
     )
+})
+
+const requiredMessage = { message: "Обязательно" }
+
+const validationSchema = z.object({
+    name: z.string(requiredMessage).min(10, "Minimum 10 letters"),
+    description: z.string(requiredMessage).min(20, "Minimum 20 letters"),
+    result: z.string().url().optional().or(z.literal("")),
+    timeSpent: z.number(requiredMessage).min(1, "Минимум 1 час"),
+    date: z.date(requiredMessage),
 })
