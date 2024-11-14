@@ -44,7 +44,7 @@ export const CreateReport = () => {
     }
 
     useEffect(() => {
-        if (tasks.length > 0) {
+        if (tasks.length > 1) {
             scrollToCard(tasks.length - 1)
         }
     }, [tasks])

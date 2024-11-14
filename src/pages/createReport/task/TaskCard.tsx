@@ -1,5 +1,7 @@
 import { ActionIcon, Badge, Flex, NumberInput, Select, SimpleGrid, Textarea, TextInput } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
+import { useForm } from "@mantine/form"
+import { FormValidationResult } from "@mantine/form/lib/types"
 import { TaskDto } from "@russian-rs/portal-api-axios"
 import { IconCalendar, IconChecklist, IconClock, IconLink, IconTrashX, IconUser } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
@@ -19,7 +21,7 @@ interface TaskCardProps {
 }
 
 export interface Functions {
-    validate: () => void
+    validate: () => FormValidationResult
     scrollIntoView: () => void
 }
 
@@ -27,13 +29,26 @@ export const TaskCard = forwardRef<Functions, TaskCardProps>((props, ref) => {
     const [searchValue, setSearchValue] = useState("")
     const cardRef = useRef<HTMLDivElement>(null)
 
+    const form = useForm({
+        mode: "uncontrolled",
+        initialValues: {
+            name: "",
+            description: "",
+            result: "",
+            timeSpent: "",
+            date: "",
+            customer: "",
+        },
+        validate: {
+            name: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid name"),
+        },
+    })
+
     useImperativeHandle(ref, () => ({
         scrollIntoView: () => {
             cardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
         },
-        validate: () => {
-            console.log("Validating " + props.index)
-        },
+        validate: () => form.validate(),
     }))
 
     const { data: users = [], isFetching } = useQuery({
@@ -65,9 +80,18 @@ export const TaskCard = forwardRef<Functions, TaskCardProps>((props, ref) => {
                     </ActionIcon>
                 )}
             </Flex>
-            <TextInput name="name" mb="xs" withAsterisk label={<FormattedMessage id={locales.taskName} />} />
+            <TextInput
+                name="name"
+                key={form.key("name")}
+                {...form.getInputProps("name")}
+                mb="xs"
+                withAsterisk
+                label={<FormattedMessage id={locales.taskName} />}
+            />
             <Textarea
                 name="description"
+                key={form.key("description")}
+                {...form.getInputProps("description")}
                 mb="xs"
                 autosize
                 minRows={3}
@@ -77,6 +101,8 @@ export const TaskCard = forwardRef<Functions, TaskCardProps>((props, ref) => {
             />
             <TextInput
                 name="result"
+                key={form.key("result")}
+                {...form.getInputProps("result")}
                 mb="xs"
                 label={<FormattedMessage id={locales.result} />}
                 description={<FormattedMessage id={locales.resultDescription} />}
@@ -85,6 +111,8 @@ export const TaskCard = forwardRef<Functions, TaskCardProps>((props, ref) => {
             <SimpleGrid cols={2} mb="xs">
                 <NumberInput
                     name="timeSpent"
+                    key={form.key("timeSpent")}
+                    {...form.getInputProps("timeSpent")}
                     withAsterisk
                     label={<FormattedMessage id={locales.timeSpent} />}
                     description={<FormattedMessage id={locales.timeSpentDescription} />}
@@ -96,6 +124,8 @@ export const TaskCard = forwardRef<Functions, TaskCardProps>((props, ref) => {
                 />
                 <DateInput
                     name="date"
+                    key={form.key("date")}
+                    {...form.getInputProps("date")}
                     mt="auto"
                     withAsterisk
                     label={<FormattedMessage id={locales.taskDate} />}
@@ -108,6 +138,8 @@ export const TaskCard = forwardRef<Functions, TaskCardProps>((props, ref) => {
             </SimpleGrid>
             <Select
                 name="customer"
+                key={form.key("customer")}
+                {...form.getInputProps("customer")}
                 mb="md"
                 label="Заказчик"
                 description="Кто был инициатором задачи (опционально)"
