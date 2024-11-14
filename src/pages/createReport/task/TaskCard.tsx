@@ -1,15 +1,14 @@
-import { ActionIcon, Badge, Flex, NumberInput, Select, SimpleGrid, Textarea, TextInput } from "@mantine/core"
+import { ActionIcon, Badge, Flex, NumberInput, SimpleGrid, Textarea, TextInput } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { FormValidationResult } from "@mantine/form/lib/types"
 import { TaskDto } from "@russian-rs/portal-api-axios"
-import { IconCalendar, IconChecklist, IconClock, IconLink, IconTrashX, IconUser } from "@tabler/icons-react"
-import { useQuery } from "@tanstack/react-query"
+import { IconCalendar, IconChecklist, IconClock, IconLink, IconTrashX } from "@tabler/icons-react"
 import dayjs from "dayjs"
-import React, { forwardRef, useImperativeHandle, useRef, useState } from "react"
+import React, { forwardRef, useImperativeHandle, useRef } from "react"
 import { FormattedMessage } from "react-intl"
-import { UserApiService } from "src/shared/api/UserApiService"
 import { DropzoneArea } from "src/shared/ui/dropzone/DropzoneArea"
+import { UserSearch } from "src/shared/ui/userSearch/UserSearch"
 import { z } from "zod"
 import { locales } from "./constants"
 import classes from "./TaskCard.module.scss"
@@ -28,7 +27,6 @@ export interface TaskCardInterface {
 }
 
 export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref) => {
-    const [searchValue, setSearchValue] = useState("")
     const cardRef = useRef<HTMLDivElement>(null)
 
     const form = useForm({
@@ -55,11 +53,6 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
             }
         },
     }))
-
-    const { data: users = [], isFetching } = useQuery({
-        queryKey: ["searchUsers", searchValue],
-        queryFn: () => UserApiService.searchUsers(searchValue, {}).then((response) => response.data.content),
-    })
 
     return (
         <Flex direction="column" className={classes.taskCard} ref={cardRef} key={props.task.id} rowGap={10}>
@@ -129,21 +122,7 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                     inputWrapperOrder={["label", "description", "error", "input"]}
                 />
             </SimpleGrid>
-            <Select
-                data={[]}
-                clearable
-                searchable
-                name="customer"
-                label="Заказчик"
-                key={form.key("customer")}
-                {...form.getInputProps("customer")}
-                description="Кто был инициатором задачи (опционально)"
-                nothingFoundMessage="Пользователей не найдено"
-                placeholder="Имя Фамилия"
-                searchValue={searchValue}
-                onSearchChange={setSearchValue}
-                leftSection={<IconUser size={18} />}
-            />
+            <UserSearch form={form} path="customer" label="Заказчик" description="Кто был инициатором задачи" />
             <DropzoneArea />
         </Flex>
     )
@@ -157,4 +136,5 @@ const validationSchema = z.object({
     result: z.string().url().optional().or(z.literal("")),
     timeSpent: z.number(requiredMessage).min(1, "Минимум 1 час"),
     date: z.date(requiredMessage),
+    customer: z.string().optional(),
 })
