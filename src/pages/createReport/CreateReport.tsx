@@ -62,7 +62,6 @@ export const CreateReport = () => {
                 }
             }
         }
-        console.log(tasks)
     }
 
     return (
