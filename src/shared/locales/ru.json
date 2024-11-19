@@ -3,6 +3,20 @@
     "buttons": {
       "login": "Войти",
       "logout": "Выйти"
+    },
+    "file-uploader": {
+      "title": "Перенесите файлы или нажмите для выбора",
+      "description": "Макс. кол-во: {maxFiles}, размер до {maxSize} Мб",
+      "file-name": "Файл {fileName}",
+      "errors": {
+        "file-invalid-type": "Невалидный формат файла",
+        "file-too-large": "Размер файла больше {maxSize} Мб",
+        "file-too-small": "Слишком маленький размер файла",
+        "too-many-files": "Слишком много файлов"
+      }
+    },
+    "user-search": {
+      "placeholder": "Имя Фамилия"
     }
   },
   "footer": {
@@ -67,11 +81,18 @@
       "task-time-spent-description": "Сколько времени было затрачено",
       "task-time-spent-suffix": " ч.",
       "task-date": "Дата",
-      "task-date-description": "Когда была выполнена задача"
+      "task-date-description": "Когда была выполнена задача",
+      "task-customer": "Заказчик",
+      "task-customer-description": "Кто был инициатором задачи",
+      "required": "Обязательно",
+      "min-letters": "Минимум {count} символов",
+      "invalid-url": "Невалидный формат ссылки",
+      "add-task-button": "Добавить задачу",
+      "send-button": "Отправить"
     }
   },
   "errors": {
-    "request": "Возникла ошибка в запросе - {url}"
+    "request": "Возникла ошибка в запросе"
   },
   "navbar": {
     "reports": {

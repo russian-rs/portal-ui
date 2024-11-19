@@ -11,3 +11,27 @@
         box-shadow: 0 0 0.5rem 0.3rem light-dark(var(--mantine-color-blue-2), var(--mantine-color-blue-9));
     }
 }
+
+.filesContainer {
+    width: 100%;
+    max-width: 100%;
+    column-gap: 0.5rem;
+    row-gap: 0.5rem;
+}
+
+.filePill {
+    background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-gray-8));
+}
+
+.filePillText {
+    height: 100%;
+    max-width: 14rem;
+    font-size: 0.8rem;
+    justify-content: center;
+    align-content: center;
+}
+
+.filePillLoader {
+    height: 1rem;
+    width: 1rem;
+}

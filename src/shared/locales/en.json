@@ -3,6 +3,20 @@
     "buttons": {
       "login": "Login",
       "logout": "Logout"
+    },
+    "file-uploader": {
+      "title": "Drag files or click to choose",
+      "description": "Max files: {maxFiles}, size up to {maxSize} Mb",
+      "file-name": "File {fileName}",
+      "errors": {
+        "file-invalid-type": "Invalid file format",
+        "file-too-large": "File size exceeds {maxSize} Mb limit",
+        "file-too-small": "Too little file size",
+        "too-many-files": "Too many files"
+      }
+    },
+    "user-search": {
+      "placeholder": "Name Surname"
     }
   },
   "footer": {
@@ -53,10 +67,32 @@
         "editTooltip": "This functionality is under development, please contact support for editing"
       },
       "avatarUpdated": "Profile image updated successfully"
+    },
+    "new-report": {
+      "title": "Create new report",
+      "description": "Add one or more tasks",
+      "task": "Task {index}",
+      "task-name": "Name",
+      "task-description": "Description",
+      "task-description-description": "A brief description of what you did",
+      "task-result": "Result",
+      "task-result-description": "Link to article, post, Google Docs, GitHub, etc.",
+      "task-time-spent": "Time spent",
+      "task-time-spent-description": "How much time was spent",
+      "task-time-spent-suffix": " h.",
+      "task-date": "Date",
+      "task-date-description": "When the task was completed",
+      "task-customer": "Customer",
+      "task-customer-description": "Who initiated the task?",
+      "required": "Required",
+      "min-letters": "Minimum {count} letters",
+      "invalid-url": "Invalid URL format",
+      "add-task-button": "Add task",
+      "send-button": "Submit"
     }
   },
   "errors": {
-    "request": "Request error occurred - {url}"
+    "request": "Request error occurred"
   },
   "navbar": {
     "reports": {
