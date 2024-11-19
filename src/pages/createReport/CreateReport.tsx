@@ -96,10 +96,10 @@ export const CreateReport = () => {
                     rightSection={<IconPlus size={20} />}
                     onClick={handleTaskAdd}
                 >
-                    Добавить задачу
+                    <FormattedMessage id={locales.addButton} />
                 </Button>
                 <Button ml="auto" rightSection={<IconChevronRight size={18} />} onClick={onSend}>
-                    Отправить
+                    <FormattedMessage id={locales.sendButton} />
                 </Button>
             </Flex>
         </Flex>

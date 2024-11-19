@@ -3,19 +3,22 @@ import { UseFormReturnType } from "@mantine/form"
 import { UserInfoDto } from "@russian-rs/portal-api-axios"
 import { IconUser } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
-import React, { useEffect, useState } from "react"
+import React, { ReactNode, useEffect, useState } from "react"
+import { useIntl } from "react-intl"
 import { UserApiService } from "src/shared/api/UserApiService"
 import classes from "./UserSearch.module.scss"
 
 interface UserSearchProps {
-    label?: string
-    description?: string
+    label?: ReactNode
+    description?: ReactNode
     form?: UseFormReturnType<any>
     path?: string
     onUserChange?: (user: UserInfoDto | null) => void
 }
 
 export const UserSearch = ({ label, description, form, path, onUserChange }: UserSearchProps) => {
+    const intl = useIntl()
+
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
     })
@@ -33,7 +36,6 @@ export const UserSearch = ({ label, description, form, path, onUserChange }: Use
     }, [search])
 
     useEffect(() => {
-        console.log(selectedUser)
         if (onUserChange) {
             onUserChange(selectedUser)
         }
@@ -91,7 +93,7 @@ export const UserSearch = ({ label, description, form, path, onUserChange }: Use
                             setSearch("")
                         }
                     }}
-                    placeholder="Имя Фамилия"
+                    placeholder={intl.formatMessage({ id: "common.user-search.placeholder" })}
                     rightSectionPointerEvents="none"
                     leftSection={
                         selectedUser ? (

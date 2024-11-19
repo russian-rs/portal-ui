@@ -46,10 +46,7 @@ RequestHttp.interceptors.response.use(
             notifications.show(
                 ErrorNotification(
                     <Text fw="bold" size="sm">
-                        <FormattedMessage
-                            id="errors.request"
-                            values={{ url: error.config?.url }}
-                        />
+                        <FormattedMessage id="errors.request" />
                     </Text>,
                     <Text size="sm">{message}</Text>
                 )

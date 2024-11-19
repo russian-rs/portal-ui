@@ -3,6 +3,20 @@
     "buttons": {
       "login": "Prijavite se",
       "logout": "Odjava"
+    },
+    "file-uploader": {
+      "title": "Prenesite datoteke ili kliknite da biste izabrali",
+      "description": "Max. broj: {maxFiles}, veličina do {maxSize} Mb",
+      "file-name": "Fajl {fileName}",
+      "errors": {
+        "file-invalid-type": "Nevalidni format fajla",
+        "file-too-large": "Veličina fajla je veća od {maxSize} Mb",
+        "file-too-small": "Premala veličina fajla",
+        "too-many-files": "Previše datoteka"
+      }
+    },
+    "user-search": {
+      "placeholder": "Ime Prezime"
     }
   },
   "footer": {
@@ -53,10 +67,32 @@
         "editTooltip": "Ova funkcionalnost je u razvoju, za uređivanje pogledajte podršku"
       },
       "avatarUpdated": "Slika profila je uspešno ažurirana"
+    },
+    "new-report": {
+      "title": "Napravite novi izveštaj",
+      "description": "Dodajte jedan ili više zadataka",
+      "task": "Zadatak {index}",
+      "task-name": "Naziv",
+      "task-description": "Opis",
+      "task-description-description": "Kratak opis onoga što ste uradili",
+      "task-result": "Rezultat",
+      "task-result-description": "Link do članka, post, Google Docs, GitHub i još mnogo toga",
+      "task-time-spent": "Broj sati",
+      "task-time-spent-description": "Koliko je vremena potrošeno",
+      "task-time-spent-suffix": " sat.",
+      "task-date": "Datum",
+      "task-date-description": "Kada je zadatak završen",
+      "task-customer": "Kupac",
+      "task-customer-description": "Ko je bio inicijator zadatka",
+      "required": "Obavezno",
+      "min-letters": "Najmanje {count} znakova",
+      "invalid-url": "Nevalidni format URL",
+      "add-task-button": "Dodaj zadatak",
+      "send-button": "Pošaljite"
     }
   },
   "errors": {
-    "request": "Došlo je do greške u zahtevu - {url}"
+    "request": "Došlo je do greške u zahtevu"
   },
   "navbar": {
     "reports": {

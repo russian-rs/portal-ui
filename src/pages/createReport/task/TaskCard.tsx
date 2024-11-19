@@ -1,13 +1,24 @@
-import { ActionIcon, Badge, Flex, NumberInput, SimpleGrid, Textarea, TextInput } from "@mantine/core"
+import {
+    ActionIcon,
+    Badge,
+    Flex,
+    Loader,
+    NumberInput,
+    Pill,
+    SimpleGrid,
+    Text,
+    Textarea,
+    TextInput,
+} from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { FormValidationResult } from "@mantine/form/lib/types"
-import { TaskDto } from "@russian-rs/portal-api-axios"
+import { FileInfoDto, TaskDto } from "@russian-rs/portal-api-axios"
 import { IconCalendar, IconChecklist, IconClock, IconLink, IconTrashX } from "@tabler/icons-react"
 import dayjs from "dayjs"
-import React, { forwardRef, useImperativeHandle, useRef } from "react"
-import { FormattedMessage } from "react-intl"
-import { DropzoneArea } from "src/shared/ui/dropzone/DropzoneArea"
+import React, { createRef, forwardRef, useImperativeHandle, useRef, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
+import { FileUploader, FileUploaderInterface } from "src/shared/ui/fileUploader/FileUploader"
 import { UserSearch } from "src/shared/ui/userSearch/UserSearch"
 import { z } from "zod"
 import { locales } from "./constants"
@@ -29,10 +40,31 @@ export interface TaskCardInterface {
 export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref) => {
     const cardRef = useRef<HTMLDivElement>(null)
 
+    const intl = useIntl()
+
+    const requiredMessage = { message: intl.formatMessage({ id: locales.required }) }
+
+    const validationSchema = z.object({
+        name: z.string(requiredMessage).min(10, intl.formatMessage({ id: locales.minLetters }, { count: 10 })),
+        description: z.string(requiredMessage).min(20, intl.formatMessage({ id: locales.minLetters }, { count: 20 })),
+        result: z
+            .string()
+            .url(intl.formatMessage({ id: locales.invalidUrl }))
+            .optional()
+            .or(z.literal("")),
+        timeSpent: z.number(requiredMessage).min(1),
+        date: z.date(requiredMessage),
+        customer: z.string().optional(),
+    })
+
     const form = useForm({
         mode: "uncontrolled",
         validate: zodResolver(validationSchema),
     })
+
+    const fileUploaderRef = createRef<FileUploaderInterface>()
+    const [uploadedFiles, setUploadedFiles] = useState<FileInfoDto[]>([])
+    const [loadingFiles, setLoadingFiles] = useState<String[]>([])
 
     useImperativeHandle(ref, () => ({
         scrollIntoView: () => {
@@ -49,7 +81,7 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                 timeSpent: values.timeSpent * 60,
                 date: dayjs(values.date).format("YYYY-MM-DD"),
                 customer: values.customer,
-                files: props.task.files,
+                files: uploadedFiles,
             }
         },
     }))
@@ -98,7 +130,7 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                     max={40}
                     mt="auto"
                     withAsterisk
-                    suffix=" ч."
+                    suffix={intl.formatMessage({ id: locales.timeSpentSuffix })}
                     name="timeSpent"
                     key={form.key("timeSpent")}
                     {...form.getInputProps("timeSpent")}
@@ -122,19 +154,45 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                     inputWrapperOrder={["label", "description", "error", "input"]}
                 />
             </SimpleGrid>
-            <UserSearch form={form} path="customer" label="Заказчик" description="Кто был инициатором задачи" />
-            <DropzoneArea />
+            <UserSearch
+                form={form}
+                path="customer"
+                label={<FormattedMessage id={locales.customer} />}
+                description={<FormattedMessage id={locales.customerDescription} />}
+            />
+            <FileUploader
+                ref={fileUploaderRef}
+                onFilesUploaded={(files) => setUploadedFiles(files)}
+                onFilesLoading={(files) => setLoadingFiles(files)}
+            />
+            <Flex className={classes.filesContainer} wrap="wrap">
+                {uploadedFiles.map((file) => {
+                    return (
+                        <Pill
+                            key={file.id}
+                            withRemoveButton
+                            className={classes.filePill}
+                            onRemove={() => fileUploaderRef.current?.delete(file.id)}
+                        >
+                            <Text className={classes.filePillText} truncate="end">
+                                {file.name}
+                            </Text>
+                        </Pill>
+                    )
+                })}
+                {loadingFiles.map((file, index) => {
+                    return (
+                        <Pill key={index} className={classes.filePill}>
+                            <Flex justify="center" align="center" columnGap={6}>
+                                <Text className={classes.filePillText} truncate="end" c="dimmed">
+                                    {file}
+                                </Text>
+                                <Loader size={10} stroke="4" />
+                            </Flex>
+                        </Pill>
+                    )
+                })}
+            </Flex>
         </Flex>
     )
-})
-
-const requiredMessage = { message: "Обязательно" }
-
-const validationSchema = z.object({
-    name: z.string(requiredMessage).min(10, "Minimum 10 letters"),
-    description: z.string(requiredMessage).min(20, "Minimum 20 letters"),
-    result: z.string().url().optional().or(z.literal("")),
-    timeSpent: z.number(requiredMessage).min(1, "Минимум 1 час"),
-    date: z.date(requiredMessage),
-    customer: z.string().optional(),
 })

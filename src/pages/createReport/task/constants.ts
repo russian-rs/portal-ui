@@ -10,4 +10,9 @@ export const locales = {
     timeSpentSuffix: "pages.new-report.task-time-spent-suffix",
     taskDate: "pages.new-report.task-date",
     taskDateDescription: "pages.new-report.task-date-description",
+    customer: "pages.new-report.task-customer",
+    customerDescription: "pages.new-report.task-customer-description",
+    required: "pages.new-report.required",
+    minLetters: "pages.new-report.min-letters",
+    invalidUrl: "pages.new-report.invalid-url",
 }
