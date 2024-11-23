@@ -1,0 +1,27 @@
+.root {
+    height: $app-shell-height;
+    width: 100%;
+    padding: var(--mantine-spacing-xl);
+    flex-direction: column;
+    row-gap: 1rem;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        padding: var(--mantine-spacing-md);
+    }
+}
+
+.title {
+    font-size: x-large;
+    font-weight: bolder;
+}
+
+.reportDescription {
+    width: 36rem;
+    column-gap: 2rem;
+    row-gap: 1rem;
+    flex-wrap: wrap;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 100%
+    }
+}

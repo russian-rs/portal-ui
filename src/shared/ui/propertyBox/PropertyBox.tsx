@@ -22,22 +22,20 @@ export const PropertyBox = ({
     }
     return (
         <Flex direction="column" className={className}>
-            <Text
-                c="dimmed"
-                size="xs"
-                ms={justify === "flex-end" ? "auto" : ""}
-            >
+            <Text c="dimmed" size="xs" ms={justify === "flex-end" ? "auto" : ""}>
                 <FormattedMessage id={name} />
             </Text>
             {icon ? (
                 <Flex align="center" mt={4} gap="xs" justify={justify}>
                     {icon}
                     {href ? (
-                        <Anchor href={href} target="_blank">
-                            <Text mt={4}>{value}</Text>
+                        <Anchor href={href} target="_blank" style={{ maxWidth: "90%" }}>
+                            <Text truncate="end" style={{ maxWidth: "100%" }}>
+                                {value}
+                            </Text>
                         </Anchor>
                     ) : (
-                        <Text mt={4}>{value}</Text>
+                        <Text>{value}</Text>
                     )}
                 </Flex>
             ) : (

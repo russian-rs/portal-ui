@@ -17,6 +17,10 @@
     },
     "user-search": {
       "placeholder": "Имя Фамилия"
+    },
+    "report-status": {
+      "CREATED": "Создан",
+      "ACCEPTED": "Принят"
     }
   },
   "footer": {
@@ -68,6 +72,19 @@
       },
       "avatarUpdated": "Изображение профиля успешно обновлено"
     },
+    "report": {
+      "document-title": "Отчет",
+      "report-from": "Отчет от {date}",
+      "creator": "Волонтер",
+      "creation-date": "Дата заполнения отчета",
+      "time-spent-total": "Суммарное кол-во времени",
+      "time-spent-hours": "{h} ч",
+      "time-spent-minutes": "{m} мин",
+      "task-date": "Дата выполнения",
+      "task-customer": "Заказчик",
+      "task-result": "Результат работы",
+      "task-files": "Приложенные файлы"
+    },
     "new-report": {
       "title": "Создать новый отчет",
       "description": "Добавьте одну или несколько задач",
@@ -92,7 +109,8 @@
     }
   },
   "errors": {
-    "request": "Возникла ошибка в запросе"
+    "request": "Возникла ошибка в запросе",
+    "file-download": "Ошибка загрузки файла"
   },
   "navbar": {
     "reports": {

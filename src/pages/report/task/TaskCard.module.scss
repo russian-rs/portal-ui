@@ -1,0 +1,35 @@
+.task {
+    width: 36rem;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    padding: var(--mantine-spacing-xs);
+    border-radius: var(--mantine-spacing-xs);
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    box-shadow: 0 0 0.3rem 0.3rem light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
+
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 100%
+    }
+}
+
+.name {
+    max-width: 65%;
+}
+
+.clock {
+    color: #0c8599;
+    margin-left: auto;
+    column-gap: 0.3rem;
+    align-items: center;
+}
+
+.taskDescription {
+    column-gap: 2rem;
+    row-gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.fileButton {
+    max-width: 16rem;
+}

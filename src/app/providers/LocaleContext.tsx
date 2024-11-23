@@ -1,10 +1,14 @@
-import { Locale } from "src/shared/constants/Locales"
-import { SimpleLocalStorageService } from "src/shared/localStorage/SimpleLocalStorageService"
-import { LOCALE } from "src/shared/constants/Storage"
-import { createContext, ReactNode } from "react"
 import { useQuery } from "@tanstack/react-query"
+import dayjs from "dayjs"
+import "dayjs/locale/ru"
+import "dayjs/locale/en"
+import "dayjs/locale/sr"
 import { flatten } from "flat"
+import { createContext, ReactNode, useEffect } from "react"
 import { IntlProvider, ResolvedIntlConfig } from "react-intl"
+import { Locale } from "src/shared/constants/Locales"
+import { LOCALE } from "src/shared/constants/Storage"
+import { SimpleLocalStorageService } from "src/shared/localStorage/SimpleLocalStorageService"
 
 function loadLocale(locale: Locale) {
     return import(`src/shared/locales/${locale}.json`)
@@ -34,11 +38,7 @@ const defaultContextValue: LocaleContextType = {
 
 export const LocaleContext = createContext(defaultContextValue)
 
-export const LanguageContextProvider = ({
-    children,
-}: {
-    children?: ReactNode
-}) => {
+export const LanguageContextProvider = ({ children }: { children?: ReactNode }) => {
     const { data: messages = {}, isLoading } = useQuery({
         queryKey: ["loadLocale"],
         queryFn: async () => {
@@ -48,12 +48,13 @@ export const LanguageContextProvider = ({
         retry: 3,
     })
 
+    useEffect(() => {
+        dayjs.locale(defaultContextValue.locale)
+    }, [])
+
     return (
         <LocaleContext.Provider value={defaultContextValue}>
-            <IntlProvider
-                locale={defaultContextValue.locale}
-                messages={messages}
-            >
+            <IntlProvider locale={defaultContextValue.locale} messages={messages}>
                 {isLoading ? null : children}
             </IntlProvider>
         </LocaleContext.Provider>

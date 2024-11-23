@@ -3,9 +3,11 @@ import { TaskDto } from "@russian-rs/portal-api-axios"
 import { IconChevronRight, IconPlus } from "@tabler/icons-react"
 import React, { useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
+import { useHistory } from "react-router-dom"
 import { defaultTask, locales } from "src/pages/createReport/constants"
 import classes from "src/pages/createReport/CreateReport.module.scss"
 import { TaskCard, TaskCardInterface } from "src/pages/createReport/task/TaskCard"
+import { ReportApiService } from "src/shared/api/ReportApiService"
 import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { v4 as uuid } from "uuid"
 
@@ -14,6 +16,9 @@ export const CreateReport = () => {
 
     const [tasks, setTasks] = useState<TaskDto[]>([defaultTask])
     const taskRefs = useRef<{ [key: string]: React.RefObject<TaskCardInterface> }>({})
+
+    const history = useHistory()
+    const [isSending, setIsSending] = useState(false)
 
     const handleTaskChange = (id: string, updatedTask: TaskDto) => {
         setTasks((prevTasks) => prevTasks.map((task) => (task.id === id ? updatedTask : task)))
@@ -62,6 +67,16 @@ export const CreateReport = () => {
                 }
             }
         }
+        if (tasks.length > 0) {
+            setIsSending(true)
+            ReportApiService.createReport({ tasks: tasks, id: uuid() })
+                .then((r) => {
+                    history.push(`/report/${r.data.id}`)
+                })
+                .catch((_) => {
+                    setIsSending(false)
+                })
+        }
     }
 
     return (
@@ -98,7 +113,13 @@ export const CreateReport = () => {
                 >
                     <FormattedMessage id={locales.addButton} />
                 </Button>
-                <Button ml="auto" rightSection={<IconChevronRight size={18} />} onClick={onSend}>
+                <Button
+                    ml="auto"
+                    rightSection={<IconChevronRight size={18} />}
+                    onClick={onSend}
+                    loading={isSending}
+                    disabled={isSending}
+                >
                     <FormattedMessage id={locales.sendButton} />
                 </Button>
             </Flex>

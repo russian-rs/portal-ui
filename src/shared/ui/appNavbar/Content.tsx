@@ -11,7 +11,7 @@ export const Content = [
             },
             {
                 label: "navbar.reports.new-report",
-                link: "/reports/create",
+                link: "/report/create",
             },
             {
                 label: "navbar.reports.summary",

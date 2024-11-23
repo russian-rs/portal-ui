@@ -6,6 +6,8 @@ $mantine-breakpoint-md: '62em';
 $mantine-breakpoint-lg: '75em';
 $mantine-breakpoint-xl: '88em';
 
+$app-shell-height: calc(100dvh - var(--mantine-spacing-md) * 6);
+
 @function rem($value) {
     @return #{math.div(math.div($value, $value * 0 + 1), 16)}rem;
 }
