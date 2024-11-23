@@ -165,34 +165,36 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                 onFilesUploaded={(files) => setUploadedFiles(files)}
                 onFilesLoading={(files) => setLoadingFiles(files)}
             />
-            <Flex className={classes.filesContainer} wrap="wrap">
-                {uploadedFiles.map((file) => {
-                    return (
-                        <Pill
-                            key={file.id}
-                            withRemoveButton
-                            className={classes.filePill}
-                            onRemove={() => fileUploaderRef.current?.delete(file.id)}
-                        >
-                            <Text className={classes.filePillText} truncate="end">
-                                {file.name}
-                            </Text>
-                        </Pill>
-                    )
-                })}
-                {loadingFiles.map((file, index) => {
-                    return (
-                        <Pill key={index} className={classes.filePill}>
-                            <Flex justify="center" align="center" columnGap={6}>
-                                <Text className={classes.filePillText} truncate="end" c="dimmed">
-                                    {file}
+            {(uploadedFiles.length !== 0 || loadingFiles.length !== 0) && (
+                <Flex className={classes.filesContainer} wrap="wrap">
+                    {uploadedFiles.map((file) => {
+                        return (
+                            <Pill
+                                key={file.id}
+                                withRemoveButton
+                                className={classes.filePill}
+                                onRemove={() => fileUploaderRef.current?.delete(file.id)}
+                            >
+                                <Text className={classes.filePillText} truncate="end">
+                                    {file.name}
                                 </Text>
-                                <Loader size={10} stroke="4" />
-                            </Flex>
-                        </Pill>
-                    )
-                })}
-            </Flex>
+                            </Pill>
+                        )
+                    })}
+                    {loadingFiles.map((file, index) => {
+                        return (
+                            <Pill key={index} className={classes.filePill}>
+                                <Flex justify="center" align="center" columnGap={6}>
+                                    <Text className={classes.filePillText} truncate="end" c="dimmed">
+                                        {file}
+                                    </Text>
+                                    <Loader size={10} stroke="4" />
+                                </Flex>
+                            </Pill>
+                        )
+                    })}
+                </Flex>
+            )}
         </Flex>
     )
 })

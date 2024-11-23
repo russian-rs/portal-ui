@@ -25,12 +25,13 @@ RequestHttp.interceptors.response.use(
         return res
     },
     (error: AxiosError) => {
-        if (error.response?.status === 404) {
+        const status = error.response?.status
+        if (status === 404 || status === 400) {
             history.replace({ pathname: "/not-found" })
             location.reload()
             return
         }
-        if (error.response?.status === 401) {
+        if (status === 401) {
             SimpleLocalStorageService.removeItem(LocalStorageKeys.user)
             history.replace({
                 pathname: "/api/oauth2/login/authentik",

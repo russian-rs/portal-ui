@@ -1,5 +1,6 @@
 import { Container, Flex, SimpleGrid, Skeleton, Text } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
+import { useState } from "react"
 import { useParams } from "react-router-dom"
 import commonClasses from "src/app/styles/private.module.scss"
 import { ProfileAvatar } from "src/pages/profile/ui/avatar/ProfileAvatar"
@@ -12,13 +13,21 @@ import classes from "./Profile.module.scss"
 export const Profile = () => {
     useSetDocumentTitleByLocale("pages.profile.documentTitle")
 
+    const [loading, setLoading] = useState(true)
     const { login } = useParams<{ login: string }>()
 
     const { data: userInfo, isFetching } = useQuery({
         queryKey: ["getInfo", login],
         queryFn: () =>
-            UserApiService.getInfo(login).then((response) => response.data),
+            UserApiService.getInfo(login).then((response) => {
+                setLoading(false)
+                return response.data
+            }),
     })
+
+    if (loading) {
+        return <CustomLoader visible={true} className={classes.loader} />
+    }
 
     return (
         <>
@@ -33,14 +42,9 @@ export const Profile = () => {
                     className={classes.root}
                 >
                     <Skeleton visible={isFetching} radius="lg">
-                        <Flex
-                            direction="column"
-                            className={classes.infoContainer}
-                        >
+                        <Flex direction="column" className={classes.infoContainer}>
                             <ProfileAvatar link={userInfo?.avatar?.link} />
-                            <Text className={classes.userName}>
-                                {userInfo?.fullName}
-                            </Text>
+                            <Text className={classes.userName}>{userInfo?.fullName}</Text>
                             <Text c="dimmed">{userInfo?.program}</Text>
                             <Container className={commonClasses.divider} />
                             <CommonInfoContainer userInfo={userInfo} />

@@ -17,6 +17,10 @@
     },
     "user-search": {
       "placeholder": "Name Surname"
+    },
+    "report-status": {
+      "CREATED": "Created",
+      "ACCEPTED": "Accepted"
     }
   },
   "footer": {
@@ -68,6 +72,19 @@
       },
       "avatarUpdated": "Profile image updated successfully"
     },
+    "report": {
+      "document-title": "Report",
+      "report-from": "Report from {date}",
+      "creator": "Volunteer",
+      "creation-date": "Date of report completion",
+      "time-spent-total": "Total amount of time",
+      "time-spent-hours": "{h} h",
+      "time-spent-minutes": "{m} min",
+      "task-date": "Completion date",
+      "task-customer": "Customer",
+      "task-result": "Result of work",
+      "task-files": "Attached files"
+    },
     "new-report": {
       "title": "Create new report",
       "description": "Add one or more tasks",
@@ -92,7 +109,8 @@
     }
   },
   "errors": {
-    "request": "Request error occurred"
+    "request": "Request error occurred",
+    "file-download": "Error downloading file"
   },
   "navbar": {
     "reports": {

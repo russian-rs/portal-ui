@@ -17,6 +17,10 @@
     },
     "user-search": {
       "placeholder": "Ime Prezime"
+    },
+    "report-status": {
+      "CREATED": "Stvoren",
+      "ACCEPTED": "Prihvaćen"
     }
   },
   "footer": {
@@ -68,6 +72,19 @@
       },
       "avatarUpdated": "Slika profila je uspešno ažurirana"
     },
+    "report": {
+      "document-title": "Izveštaj",
+      "report-from": "Izveštaj od {date}",
+      "creator": "Volonter",
+      "creation-date": "Datum popunjavanja izveštaja",
+      "time-spent-total": "Ukupna količina vremena",
+      "time-spent-hours": "{h} sat.",
+      "time-spent-minutes": "{m} min",
+      "task-date": "Datum izvršenja",
+      "task-customer": "Kupac",
+      "task-result": "Rezultat",
+      "task-files": "Priložene datoteke"
+    },
     "new-report": {
       "title": "Napravite novi izveštaj",
       "description": "Dodajte jedan ili više zadataka",
@@ -92,7 +109,8 @@
     }
   },
   "errors": {
-    "request": "Došlo je do greške u zahtevu"
+    "request": "Došlo je do greške u zahtevu",
+    "file-download": "Greška pri preuzimanju datoteke"
   },
   "navbar": {
     "reports": {
