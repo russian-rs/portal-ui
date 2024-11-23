@@ -19,7 +19,7 @@ export const TaskCard = ({ task, users }: TaskCardProps) => {
     const intl = useIntl()
 
     return (
-        <Flex className={classes.task} key={task.id}>
+        <Flex className={classes.task}>
             <Flex columnGap="xs" align="start">
                 <Text fw="bold" className={classes.name}>
                     {task.name}

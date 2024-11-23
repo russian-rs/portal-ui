@@ -84,7 +84,7 @@ export const ReportPage = () => {
             </Flex>
             <Flex direction="column" rowGap="lg" mt="md">
                 {report.tasks.map((task) => (
-                    <TaskCard task={task} users={users} />
+                    <TaskCard task={task} users={users} key={task.id} />
                 ))}
             </Flex>
         </Flex>
