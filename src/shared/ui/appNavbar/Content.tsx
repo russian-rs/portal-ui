@@ -7,7 +7,7 @@ export const Content = [
         links: [
             {
                 label: "navbar.reports.my-reports",
-                link: "/reports",
+                link: "/reports/personal",
             },
             {
                 label: "navbar.reports.new-report",

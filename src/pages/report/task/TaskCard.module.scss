@@ -12,8 +12,15 @@
     }
 }
 
+.topArea {
+    width: 100%;
+    column-gap: 1rem;
+    align-items: flex-start;
+}
+
 .name {
-    max-width: 65%;
+    max-width: 75%;
+    word-break: break-word;
 }
 
 .clock {
@@ -24,10 +31,20 @@
 }
 
 .taskDescription {
+    word-break: break-word;
+}
+
+.taskProperties {
     column-gap: 2rem;
     row-gap: 1rem;
     flex-wrap: wrap;
     margin-top: 0.5rem;
+}
+
+.taskResult {
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 20rem;
+    }
 }
 
 .fileButton {

@@ -21,6 +21,14 @@
     "report-status": {
       "CREATED": "Stvoren",
       "ACCEPTED": "Prihvaćen"
+    },
+    "week-picker": {
+      "label": "Nedelja",
+      "empty": "Nije izabrano"
+    },
+    "report-status-select": {
+      "label": "Status",
+      "empty": "Nije izabrano"
     }
   },
   "footer": {
@@ -106,6 +114,19 @@
       "invalid-url": "Nevalidni format URL",
       "add-task-button": "Dodaj zadatak",
       "send-button": "Pošaljite"
+    },
+    "my-reports": {
+      "title": "Moji izveštaji",
+      "total": "Ukupno: {total}",
+      "filters": "Filteri",
+      "reset-filter": "Resetujti filtere",
+      "empty-reports": "Ništa nije pronađeno",
+      "report": {
+        "created": "Stvoren",
+        "status": "Status",
+        "task-count": "Broj zadataka",
+        "time-spent": "Broj sati"
+      }
     }
   },
   "errors": {
