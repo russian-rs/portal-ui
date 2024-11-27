@@ -1,5 +1,5 @@
 import { Anchor, Flex, Text } from "@mantine/core"
-import { ReactElement } from "react"
+import { ReactElement, ReactNode } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const PropertyBox = ({
@@ -11,7 +11,7 @@ export const PropertyBox = ({
     className,
 }: {
     name: string
-    value?: string
+    value?: ReactNode
     icon?: ReactElement
     href?: string
     justify?: string

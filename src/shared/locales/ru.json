@@ -21,6 +21,14 @@
     "report-status": {
       "CREATED": "Создан",
       "ACCEPTED": "Принят"
+    },
+    "week-picker": {
+      "label": "Неделя",
+      "empty": "Не выбрано"
+    },
+    "report-status-select": {
+      "label": "Статус",
+      "empty": "Не выбрано"
     }
   },
   "footer": {
@@ -106,6 +114,19 @@
       "invalid-url": "Невалидный формат ссылки",
       "add-task-button": "Добавить задачу",
       "send-button": "Отправить"
+    },
+    "my-reports": {
+      "title": "Мои отчеты",
+      "total": "Всего: {total}",
+      "filters": "Фильтры",
+      "reset-filter": "Сбросить фильтры",
+      "empty-reports": "Отчетов не найдено",
+      "report": {
+        "created": "Создан",
+        "status": "Статус",
+        "task-count": "Кол-во задач",
+        "time-spent": "Кол-во часов"
+      }
     }
   },
   "errors": {

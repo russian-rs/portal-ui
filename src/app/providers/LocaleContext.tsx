@@ -1,3 +1,4 @@
+import { DatesProvider } from "@mantine/dates"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import "dayjs/locale/ru"
@@ -49,13 +50,13 @@ export const LanguageContextProvider = ({ children }: { children?: ReactNode }) 
     })
 
     useEffect(() => {
-        dayjs.locale(defaultContextValue.locale)
+        dayjs.locale(selectedLocale)
     }, [])
 
     return (
         <LocaleContext.Provider value={defaultContextValue}>
             <IntlProvider locale={defaultContextValue.locale} messages={messages}>
-                {isLoading ? null : children}
+                <DatesProvider settings={{ locale: selectedLocale }}>{isLoading ? null : children}</DatesProvider>
             </IntlProvider>
         </LocaleContext.Provider>
     )

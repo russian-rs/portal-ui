@@ -1,7 +1,11 @@
-import { MantineColor } from "@mantine/core"
-import { TaskDto } from "@russian-rs/portal-api-axios"
+import { ReportDto, TaskDto } from "@russian-rs/portal-api-axios"
 import { IntlShape } from "react-intl"
 import { locales } from "src/pages/report/constants"
+
+export const getSpentTimeFromReport = (report: ReportDto, intl: IntlShape): string => {
+    const timeInMinutes = report.tasks.map((it) => it.timeSpent).reduce((acc, val) => acc + val, 0)
+    return getSpentTime(timeInMinutes, intl)
+}
 
 export const getSpentTimeFromTasks = (tasks: TaskDto[], intl: IntlShape): string => {
     const timeInMinutes = tasks.map((it) => it.timeSpent).reduce((acc, val) => acc + val, 0)
@@ -19,16 +23,5 @@ export const getSpentTime = (timeInMinutes: number, intl: IntlShape): string => 
         return `${hoursText} ${minutesText}`
     } else {
         return hoursText
-    }
-}
-
-export const getReportStatusColor = (status: string | undefined): MantineColor => {
-    switch (status) {
-        case "CREATED":
-            return "blue"
-        case "ACCEPTED":
-            return "green"
-        default:
-            return "blue"
     }
 }

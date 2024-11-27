@@ -4,7 +4,7 @@ import { IconCalendar, IconClock, IconLink } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import React from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-import { getSpentTime } from "src/pages/report/utils"
+import { getSpentTime } from "src/shared/report/timeSpent"
 import { FileButton } from "src/shared/ui/fileButton/FileButton"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { locales } from "./constants"
@@ -20,7 +20,7 @@ export const TaskCard = ({ task, users }: TaskCardProps) => {
 
     return (
         <Flex className={classes.task}>
-            <Flex columnGap="xs" align="start">
+            <Flex className={classes.topArea}>
                 <Text fw="bold" className={classes.name}>
                     {task.name}
                 </Text>
@@ -29,8 +29,10 @@ export const TaskCard = ({ task, users }: TaskCardProps) => {
                     <Text size="sm">{getSpentTime(task.timeSpent, intl)}</Text>
                 </Flex>
             </Flex>
-            <Text c="dimmed">{task.description}</Text>
-            <Flex className={classes.taskDescription}>
+            <Text c="dimmed" className={classes.taskDescription}>
+                {task.description}
+            </Text>
+            <Flex className={classes.taskProperties}>
                 <PropertyBox
                     name={locales.taskDate}
                     value={dayjs(task.date).format("DD MMM YYYY")}
@@ -58,6 +60,7 @@ export const TaskCard = ({ task, users }: TaskCardProps) => {
                     value={task.result}
                     href={task.result}
                     icon={<IconLink size={16} />}
+                    className={classes.taskResult}
                 />
             )}
             {task.files?.length !== 0 && (

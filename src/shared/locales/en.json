@@ -21,6 +21,14 @@
     "report-status": {
       "CREATED": "Created",
       "ACCEPTED": "Accepted"
+    },
+    "week-picker": {
+      "label": "Week",
+      "empty": "Not selected"
+    },
+    "report-status-select": {
+      "label": "Status",
+      "empty": "Not selected"
     }
   },
   "footer": {
@@ -106,6 +114,19 @@
       "invalid-url": "Invalid URL format",
       "add-task-button": "Add task",
       "send-button": "Submit"
+    },
+    "my-reports": {
+      "title": "My reports",
+      "total": "Total: {total}",
+      "filters": "Filters",
+      "reset-filter": "Reset filters",
+      "empty-reports": "Nothing found",
+      "report": {
+        "created": "Created",
+        "status": "Status",
+        "task-count": "Total tasks",
+        "time-spent": "Time spent"
+      }
     }
   },
   "errors": {
