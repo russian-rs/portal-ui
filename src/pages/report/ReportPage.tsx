@@ -54,7 +54,7 @@ export const ReportPage = () => {
                         values={{ date: dayjs(report.createTime).format("DD MMMM YYYY") }}
                     />
                 </Text>
-                <Badge color={getReportStatusColor(report.status)} size="lg">
+                <Badge color={getReportStatusColor(report.status)} size="lg" radius="md" variant="light">
                     <FormattedMessage id={`common.report-status.${report.status}`} />
                 </Badge>
             </Flex>
