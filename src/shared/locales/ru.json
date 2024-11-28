@@ -121,6 +121,7 @@
       "filters": "Фильтры",
       "reset-filter": "Сбросить фильтры",
       "empty-reports": "Отчетов не найдено",
+      "new-report": "Новый отчет",
       "report": {
         "created": "Создан",
         "status": "Статус",

@@ -1,6 +1,6 @@
-import { Badge, Flex, Pagination, Text } from "@mantine/core"
+import { Badge, Button, Flex, Pagination, Text } from "@mantine/core"
 import { PageRequest, ReportFilter } from "@russian-rs/portal-api-axios"
-import { IconChevronRight, IconClockCheck, IconListCheck, IconUfo } from "@tabler/icons-react"
+import { IconChevronRight, IconClockCheck, IconListCheck, IconPlus, IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
@@ -87,9 +87,22 @@ export const MyReports = () => {
             <CustomLoader visible={isFetching} className={classes.loader} />
             <Flex className={classes.root}>
                 <Flex direction="column" gap="md">
-                    <Text className={classes.title}>
-                        <FormattedMessage id={locales.documentTitle} />
-                    </Text>
+                    <Flex columnGap="xl" rowGap="md" align="center" wrap="wrap-reverse">
+                        <Text className={classes.title}>
+                            <FormattedMessage id={locales.documentTitle} />
+                        </Text>
+                        <Button
+                            className={classes.newReportButton}
+                            variant="light"
+                            size="sm"
+                            leftSection={<IconPlus size={16} />}
+                            onClick={() => history.push("/report/create")}
+                        >
+                            <Text size="sm">
+                                <FormattedMessage id={locales.newReport} />
+                            </Text>
+                        </Button>
+                    </Flex>
                     <Flex className={classes.content}>
                         <Flex className={classes.filterArea}>
                             <Text mb={8}>
