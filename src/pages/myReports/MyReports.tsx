@@ -1,6 +1,6 @@
-import { Flex, Pagination, Text } from "@mantine/core"
+import { Badge, Flex, Pagination, Text } from "@mantine/core"
 import { PageRequest, ReportFilter } from "@russian-rs/portal-api-axios"
-import { IconAlignBoxLeftTop, IconChevronRight, IconClockCheck, IconListCheck, IconUfo } from "@tabler/icons-react"
+import { IconChevronRight, IconClockCheck, IconListCheck, IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
@@ -60,11 +60,10 @@ export const MyReports = () => {
                 <PropertyBox
                     name={locales.reportStatus}
                     value={
-                        <Text c={getReportStatusColor(report.status)}>
+                        <Badge color={getReportStatusColor(report.status)} radius="md" variant="light">
                             <FormattedMessage id={`common.report-status.${report.status}`} />
-                        </Text>
+                        </Badge>
                     }
-                    icon={<IconAlignBoxLeftTop size={16} color={getReportStatusColor(report.status)} />}
                 />
             </Flex>
             <Flex className={classes.reportRight}>

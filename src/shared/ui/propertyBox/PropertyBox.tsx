@@ -35,11 +35,11 @@ export const PropertyBox = ({
                             </Text>
                         </Anchor>
                     ) : (
-                        <Text>{value}</Text>
+                        <Text size="sm">{value}</Text>
                     )}
                 </Flex>
             ) : (
-                <Text mt={4} ms={justify === "flex-end" ? "auto" : ""}>
+                <Text mt={4} ms={justify === "flex-end" ? "auto" : ""} size="sm">
                     {value}
                 </Text>
             )}
