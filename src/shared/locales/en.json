@@ -121,6 +121,7 @@
       "filters": "Filters",
       "reset-filter": "Reset filters",
       "empty-reports": "Nothing found",
+      "new-report": "New report",
       "report": {
         "created": "Created",
         "status": "Status",
