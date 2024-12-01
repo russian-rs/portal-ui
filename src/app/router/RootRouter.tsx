@@ -1,11 +1,6 @@
 import { lazy, Suspense } from "react"
-import {
-    BrowserRouter as Router,
-    Redirect,
-    Route,
-    Switch,
-} from "react-router-dom"
-import NotFound from "src/shared/ui/notFound"
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom"
+import NotFound from "src/shared/ui/notFound/NotFound"
 
 const PrivateApp = lazy(() => import("src/app/PrivateApp"))
 const PublicApp = lazy(() => import("src/app/PublicApp"))
