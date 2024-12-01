@@ -3,4 +3,5 @@ export const locales = {
     documentTitle: "pages.notFound.documentTitle",
     description: "pages.notFound.description",
     homeButton: "pages.notFound.homeButton",
+    backButton: "pages.notFound.backButton",
 }
