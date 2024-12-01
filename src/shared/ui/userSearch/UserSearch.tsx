@@ -56,7 +56,8 @@ export const UserSearch = ({ label, description, form, path, onUserChange }: Use
             <Combobox.Option value={userDto.userId} key={userDto.userId}>
                 <Flex align="center" columnGap={12}>
                     <Avatar src={userDto.avatar?.link} size="sm" color="initials" name={userDto.fullName} />
-                    <Text>{userDto.fullName}</Text>
+                    <Text className={classes.name}>{userDto.fullName}</Text>
+                    <Text className={classes.email}>{userDto.email}</Text>
                 </Flex>
             </Combobox.Option>
         )
