@@ -42,6 +42,13 @@
       "homeButton": "Home page",
       "backButton": "Go back"
     },
+    "unauthorized": {
+      "title": "No access",
+      "documentTitle": "Insufficient rights",
+      "description": "You do not have sufficient rights to view the content. If you believe this is an error, please contact support.",
+      "homeButton": "Home page",
+      "backButton": "Go back"
+    },
     "welcome": {
       "title": "Volunteer portal",
       "documentTitle": "Volunteer portal",
