@@ -38,21 +38,25 @@ RequestHttp.interceptors.response.use(
             })
             location.reload()
             return
-        } else {
-            let message: string = error.message
-            if (error.response?.data) {
-                const errorResponse = error.response.data as ErrorResponse
-                message = errorResponse.message
-            }
-            notifications.show(
-                ErrorNotification(
-                    <Text fw="bold" size="sm">
-                        <FormattedMessage id="errors.request" />
-                    </Text>,
-                    <Text size="sm">{message}</Text>
-                )
-            )
         }
+        if (status === 403) {
+            history.replace({ pathname: "/unauthorized" })
+            location.reload()
+            return
+        }
+        let message: string = error.message
+        if (error.response?.data) {
+            const errorResponse = error.response.data as ErrorResponse
+            message = errorResponse.message
+        }
+        notifications.show(
+            ErrorNotification(
+                <Text fw="bold" size="sm">
+                    <FormattedMessage id="errors.request" />
+                </Text>,
+                <Text size="sm">{message}</Text>
+            )
+        )
         return Promise.reject(error)
     }
 )
