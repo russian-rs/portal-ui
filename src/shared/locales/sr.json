@@ -42,6 +42,13 @@
       "homeButton": "Početna",
       "backButton": "Nazad"
     },
+    "unauthorized": {
+      "title": "Nema pristupa",
+      "documentTitle": "Nedovoljna prava",
+      "description": "Nemate dovoljno dozvola za pregled sadržaja. Ako mislite da je ovo greška, obratite se podršci.",
+      "homeButton": "Početna",
+      "backButton": "Nazad"
+    },
     "welcome": {
       "title": "Portal volontera",
       "documentTitle": "Portal volontera",

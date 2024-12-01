@@ -1,0 +1,32 @@
+.root {
+    padding: 1rem;
+    flex-direction: column;
+    height: $app-shell-height;
+    justify-content: center;
+    align-items: center;
+    row-gap: 1rem;
+}
+
+.image {
+    opacity: 0.3;
+    color: #0c8599;
+    width: 10rem;
+    height: 10rem;
+}
+
+.title {
+    font-weight: bolder;
+    font-size: x-large;
+    color: #0c8599;
+}
+
+.description {
+    text-align: center;
+    font-size: small;
+    color: #0c8599;
+    width: 24rem;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        width: 100%;
+    }
+}
