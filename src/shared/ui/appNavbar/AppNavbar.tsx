@@ -1,6 +1,7 @@
 import { AppShell, Group, ScrollArea, Transition } from "@mantine/core"
 import React, { useContext, useEffect } from "react"
 import { NavbarContext } from "src/app/providers/NavbarProvider"
+import { UserContext } from "src/app/providers/UserContext"
 import { useDesktop } from "src/shared/hooks/useDesktop"
 import classes from "src/shared/ui/appNavbar/AppNavbar.module.scss"
 import { Content } from "src/shared/ui/appNavbar/Content"
@@ -10,8 +11,24 @@ import { LocaleSwitcher } from "src/shared/ui/locale/LocaleSwitcher"
 import { ThemeSwitcher } from "src/shared/ui/theme/ThemeSwitcher"
 import { LinksGroup } from "./links/NavbarLinksGroup"
 
+export interface ItemProps {
+    label: string
+    link: string
+    roles?: string[]
+}
+
+export interface ItemGroupProps {
+    icon: React.FC<any>
+    label: string
+    initiallyOpened?: boolean
+    items?: ItemProps[]
+    link?: string
+    roles?: string[]
+}
+
 export const AppNavbar = () => {
     const isDesktop = useDesktop()
+    const { user } = useContext(UserContext)
 
     const { menuOpened, setMenuOpened } = useContext(NavbarContext)
 
@@ -19,34 +36,33 @@ export const AppNavbar = () => {
         setMenuOpened(isDesktop)
     }, [isDesktop])
 
-    const links = Content.map((item) => (
-        <LinksGroup {...item} key={item.label} />
-    ))
+    const items = Content.filter((item) => {
+        if (item.roles) {
+            if (user) {
+                const groups = user.groups
+                return groups.some((group) => item.roles?.includes(group))
+            } else {
+                return item.roles.length == 0
+            }
+        } else {
+            return true
+        }
+    }).map((item) => <LinksGroup {...item} key={item.label} />)
 
     return (
-        <Transition
-            mounted={menuOpened}
-            transition="scale-x"
-            timingFunction="ease"
-        >
+        <Transition mounted={menuOpened} transition="scale-x" timingFunction="ease">
             {(styles) => (
-                <AppShell.Navbar
-                    style={styles}
-                    className={classes.appShellNavbar}
-                >
+                <AppShell.Navbar style={styles} className={classes.appShellNavbar}>
                     <nav className={classes.navbar}>
                         <div className={classes.header}>
                             <UserButton />
                         </div>
 
                         <ScrollArea className={classes.links}>
-                            <div className={classes.linksInner}>{links}</div>
+                            <div className={classes.linksInner}>{items}</div>
                         </ScrollArea>
 
-                        <Group
-                            className={classes.footer}
-                            justify="space-between"
-                        >
+                        <Group className={classes.footer} justify="space-between">
                             <LogoutButton />
                             <Group justify="flex-end">
                                 <LocaleSwitcher />

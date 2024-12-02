@@ -1,10 +1,11 @@
 import { IconAdjustments, IconFileAnalytics, IconHelp, IconUsers } from "@tabler/icons-react"
+import { ItemGroupProps } from "src/shared/ui/appNavbar/AppNavbar"
 
-export const Content = [
+export const Content: ItemGroupProps[] = [
     {
         label: "navbar.reports.reporting",
         icon: IconFileAnalytics,
-        links: [
+        items: [
             {
                 label: "navbar.reports.my-reports",
                 link: "/reports/personal",
@@ -14,15 +15,21 @@ export const Content = [
                 link: "/report/create",
             },
             {
+                label: "navbar.reports.all",
+                link: "/reports/all",
+                roles: ["ADMIN_VOLUNTEER"],
+            },
+            {
                 label: "navbar.reports.summary",
                 link: "/reports/summary",
+                roles: ["ADMIN_VOLUNTEER"],
             },
         ],
     },
     {
         label: "navbar.volunteers.volunteers",
         icon: IconUsers,
-        links: [
+        items: [
             {
                 label: "navbar.volunteers.all-volunteers",
                 link: "/volunteers",
@@ -36,6 +43,7 @@ export const Content = [
                 link: "/volunteers-stats",
             },
         ],
+        roles: ["ADMIN_SSO", "ADMIN_VOLUNTEER"],
     },
     {
         label: "navbar.account-settings",
