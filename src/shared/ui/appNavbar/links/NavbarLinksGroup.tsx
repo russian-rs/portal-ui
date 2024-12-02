@@ -1,45 +1,34 @@
-import {
-    Box,
-    Collapse,
-    Group,
-    rem,
-    Text,
-    ThemeIcon,
-    UnstyledButton,
-} from "@mantine/core"
+import { Box, Collapse, Group, rem, Text, ThemeIcon, UnstyledButton } from "@mantine/core"
 import { IconChevronRight } from "@tabler/icons-react"
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import { FormattedMessage } from "react-intl"
+import { UserContext } from "src/app/providers/UserContext"
+import { ItemGroupProps } from "src/shared/ui/appNavbar/AppNavbar"
 import classes from "src/shared/ui/appNavbar/links/NavbarLinksGroup.module.scss"
 
-interface LinksGroupProps {
-    icon: React.FC<any>
-    label: string
-    initiallyOpened?: boolean
-    links?: { label: string; link: string }[]
-    link?: string
-}
-
-export function LinksGroup({
-    icon: Icon,
-    label,
-    initiallyOpened,
-    links,
-    link,
-}: LinksGroupProps) {
-    const hasLinks = Array.isArray(links)
+export function LinksGroup({ icon: Icon, label, initiallyOpened, items, link, roles }: ItemGroupProps) {
+    const hasChildren = Array.isArray(items)
+    const { user } = useContext(UserContext)
     const [opened, setOpened] = useState(initiallyOpened || false)
 
-    const items = (hasLinks ? links : []).map((link) => (
-        <Text<"a">
-            component="a"
-            className={classes.link}
-            href={link.link}
-            key={link.label}
-        >
-            <FormattedMessage id={link.label} />
-        </Text>
-    ))
+    const children = (hasChildren ? items : [])
+        ?.filter((item) => {
+            if (item.roles) {
+                if (user) {
+                    const groups = user.groups
+                    return groups.some((group) => item.roles?.includes(group))
+                } else {
+                    return item.roles.length == 0
+                }
+            } else {
+                return true
+            }
+        })
+        .map((item) => (
+            <Text<"a"> component="a" className={classes.link} href={item.link} key={item.label}>
+                <FormattedMessage id={item.label} />
+            </Text>
+        ))
 
     return (
         <>
@@ -59,7 +48,7 @@ export function LinksGroup({
                             <FormattedMessage id={label} />
                         </Box>
                     </Box>
-                    {hasLinks && (
+                    {hasChildren && (
                         <IconChevronRight
                             className={classes.chevron}
                             style={{
@@ -69,7 +58,7 @@ export function LinksGroup({
                     )}
                 </Group>
             </UnstyledButton>
-            {hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
+            {hasChildren ? <Collapse in={opened}>{children}</Collapse> : null}
         </>
     )
 }
