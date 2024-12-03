@@ -9,6 +9,7 @@ import { LogoutButton } from "src/shared/ui/appNavbar/logoutButton/LogoutButton"
 import { UserButton } from "src/shared/ui/appNavbar/userButton/UserButton"
 import { LocaleSwitcher } from "src/shared/ui/locale/LocaleSwitcher"
 import { ThemeSwitcher } from "src/shared/ui/theme/ThemeSwitcher"
+import { hasPermission } from "src/shared/user/roles"
 import { LinksGroup } from "./links/NavbarLinksGroup"
 
 export interface ItemProps {
@@ -36,18 +37,9 @@ export const AppNavbar = () => {
         setMenuOpened(isDesktop)
     }, [isDesktop])
 
-    const items = Content.filter((item) => {
-        if (item.roles) {
-            if (user) {
-                const groups = user.groups
-                return groups.some((group) => item.roles?.includes(group))
-            } else {
-                return item.roles.length == 0
-            }
-        } else {
-            return true
-        }
-    }).map((item) => <LinksGroup {...item} key={item.label} />)
+    const items = Content.filter((item) => hasPermission(user, item.roles)).map((item) => (
+        <LinksGroup {...item} key={item.label} />
+    ))
 
     return (
         <Transition mounted={menuOpened} transition="scale-x" timingFunction="ease">

@@ -136,6 +136,33 @@
         "task-count": "Total tasks",
         "time-spent": "Time spent"
       }
+    },
+    "user-list": {
+      "title": "All volunteers",
+      "total": "Total: {total}",
+      "search": "Search",
+      "new-user": "New user",
+      "first-name": "First name",
+      "last-name": "Last name",
+      "full-name": "Name Surname",
+      "email": "e-mail",
+      "username": "Username",
+      "create-button": "Create",
+      "menu-common": "Common",
+      "menu-control": "Control",
+      "menu-view": "View",
+      "menu-contact": "Contact",
+      "menu-reports": "Reports",
+      "menu-activate": "Activate",
+      "menu-deactivate": "Deactivate",
+      "empty": "Nothing found",
+      "required": "Required",
+      "min-letters": "At least {count} symbols",
+      "max-letters": "At most {count} symbols",
+      "invalid-email": "Invalid e-mail",
+      "invalid-name": "Invalid characters",
+      "invalid-username": "Only latin letters and numbers, cannot start with a number",
+      "user-created-message": "User successfully created"
     }
   },
   "errors": {

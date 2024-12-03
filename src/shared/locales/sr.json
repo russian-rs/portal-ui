@@ -136,6 +136,33 @@
         "task-count": "Broj zadataka",
         "time-spent": "Broj sati"
       }
+    },
+    "user-list": {
+      "title": "Svi volonteri",
+      "total": "Ukupno: {total}",
+      "search": "Pretraga",
+      "new-user": "Novi volonter",
+      "first-name": "Ime",
+      "last-name": "Prezime",
+      "full-name": "Ime Prezime",
+      "email": "e-mail",
+      "username": "Korisničko ime",
+      "create-button": "Stvoriti",
+      "menu-common": "Opšte",
+      "menu-control": "Upravljanje",
+      "menu-view": "Pogledajte",
+      "menu-contact": "Pisati",
+      "menu-reports": "Izveštaji",
+      "menu-activate": "Aktiviraj",
+      "menu-deactivate": "Deaktiviraj",
+      "empty": "Nije pronađen nijedan korisnik",
+      "required": "Obavezno",
+      "min-letters": "Minimum {count}",
+      "max-letters": "Maximum {count}",
+      "invalid-email": "Neverni e-mail",
+      "invalid-name": "Nevažeći znakovi",
+      "invalid-username": "Samo latinična slova i brojevi, ne može početi sa brojem",
+      "user-created-message": "Korisnik je uspešno kreiran"
     }
   },
   "errors": {

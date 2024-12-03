@@ -136,6 +136,33 @@
         "task-count": "Кол-во задач",
         "time-spent": "Кол-во часов"
       }
+    },
+    "user-list": {
+      "title": "Все волонтеры",
+      "total": "Всего: {total}",
+      "search": "Поиск",
+      "new-user": "Новый пользователь",
+      "first-name": "Имя",
+      "last-name": "Фамилия",
+      "full-name": "Имя Фамилия",
+      "email": "e-mail",
+      "username": "Логин",
+      "create-button": "Создать",
+      "menu-common": "Общее",
+      "menu-control": "Управление",
+      "menu-view": "Посмотреть",
+      "menu-contact": "Написать",
+      "menu-reports": "Отчеты",
+      "menu-activate": "Активировать",
+      "menu-deactivate": "Деактивировать",
+      "empty": "Пользователей не найдено",
+      "required": "Обязательно",
+      "min-letters": "Минимум {count}",
+      "max-letters": "Максимум {count}",
+      "invalid-email": "Неверный e-mail",
+      "invalid-name": "Недопустимые символы",
+      "invalid-username": "Только латинские буквы и цифры, не может начинаться с цифры",
+      "user-created-message": "Пользователь успешно создан"
     }
   },
   "errors": {

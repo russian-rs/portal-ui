@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl"
 import { UserContext } from "src/app/providers/UserContext"
 import { ItemGroupProps } from "src/shared/ui/appNavbar/AppNavbar"
 import classes from "src/shared/ui/appNavbar/links/NavbarLinksGroup.module.scss"
+import { hasPermission } from "src/shared/user/roles"
 
 export function LinksGroup({ icon: Icon, label, initiallyOpened, items, link, roles }: ItemGroupProps) {
     const hasChildren = Array.isArray(items)
@@ -12,18 +13,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, items, link, ro
     const [opened, setOpened] = useState(initiallyOpened || false)
 
     const children = (hasChildren ? items : [])
-        ?.filter((item) => {
-            if (item.roles) {
-                if (user) {
-                    const groups = user.groups
-                    return groups.some((group) => item.roles?.includes(group))
-                } else {
-                    return item.roles.length == 0
-                }
-            } else {
-                return true
-            }
-        })
+        ?.filter((item) => hasPermission(user, item.roles))
         .map((item) => (
             <Text<"a"> component="a" className={classes.link} href={item.link} key={item.label}>
                 <FormattedMessage id={item.label} />
