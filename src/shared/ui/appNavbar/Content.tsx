@@ -43,7 +43,7 @@ export const Content: ItemGroupProps[] = [
                 link: "/volunteers-stats",
             },
         ],
-        roles: ["ADMIN_SSO", "ADMIN_VOLUNTEER"],
+        roles: ["ADMIN", "ADMIN_VOLUNTEER", "ADMIN_SSO"],
     },
     {
         label: "navbar.account-settings",
