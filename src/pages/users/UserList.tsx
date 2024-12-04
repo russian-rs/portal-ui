@@ -51,7 +51,7 @@ export const UserList = () => {
     })
 
     const rows = content.map((user) => (
-        <Table.Tr key={user.userId}>
+        <Table.Tr key={user.id}>
             <Table.Td>
                 <Flex columnGap={16} align="center" className={classes.columnName}>
                     <Avatar src={user.avatar?.link} size={36} name={user.fullName} />
