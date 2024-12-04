@@ -49,11 +49,11 @@ export const UserSearch = ({ label, description, form, path, onUserChange }: Use
         queryFn: () => UserApiService.searchUsers(debouncedSearch, {}).then((response) => response.data.content),
     })
 
-    const userMap = new Map(users.map((user) => [user.userId, user]))
+    const userMap = new Map(users.map((user) => [user.id.toString(), user]))
 
     const options = users.map((userDto) => {
         return (
-            <Combobox.Option value={userDto.userId} key={userDto.userId}>
+            <Combobox.Option value={userDto.id.toString()} key={userDto.id}>
                 <Flex align="center" columnGap={12}>
                     <Avatar src={userDto.avatar?.link} size="sm" color="initials" name={userDto.fullName} />
                     <Text className={classes.name}>{userDto.fullName}</Text>

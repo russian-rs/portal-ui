@@ -3,6 +3,7 @@ import { PageRequest, PageResponse, UserCreateRequest } from "@russian-rs/portal
 export const defaultPage: PageRequest = {
     pageNumber: 0,
     pageSize: 10,
+    sort: ["version;desc"],
 }
 
 export const defaultPageResponse: PageResponse = {
