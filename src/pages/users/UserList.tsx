@@ -52,13 +52,22 @@ export const UserList = () => {
 
     const rows = content.map((user) => (
         <Table.Tr key={user.userId}>
-            <Table.Td className={classes.columnName}>
-                <Flex columnGap={16} align="center">
+            <Table.Td>
+                <Flex columnGap={16} align="center" className={classes.columnName}>
                     <Avatar src={user.avatar?.link} size={36} name={user.fullName} />
                     <Text truncate="end">{user.fullName}</Text>
                 </Flex>
             </Table.Td>
             <Table.Td>{user.email}</Table.Td>
+            <Table.Td>
+                <Flex align="start" direction="column">
+                    {user.groups.map((group) => (
+                        <Text className={classes.role} truncate="end">
+                            <FormattedMessage id={`common.roles.${group}`} />
+                        </Text>
+                    ))}
+                </Flex>
+            </Table.Td>
             <Table.Td>
                 <Flex align="center" justify="end">
                     {!user.active && <IconLock size={16} color="red" />}
@@ -96,6 +105,9 @@ export const UserList = () => {
                             </Table.Th>
                             <Table.Th className={classes.columnEmail}>
                                 <FormattedMessage id={locales.email} />
+                            </Table.Th>
+                            <Table.Th className={classes.columnRoles}>
+                                <FormattedMessage id={locales.roles} />
                             </Table.Th>
                         </Table.Tr>
                     </Table.Thead>

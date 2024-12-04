@@ -29,6 +29,17 @@
     "report-status-select": {
       "label": "Status",
       "empty": "Nije izabrano"
+    },
+    "roles": {
+      "ADMIN": "Administrator",
+      "ADMIN_SSO": "Administrator SSO",
+      "ADMIN_VOLUNTEER": "Administrator volontiranja",
+      "INSIDE_VOLUNTEER": "Unutrašnji volonter",
+      "MAIN_VOLUNTEER": "Volonter osnovnog pr.",
+      "GUIDES": "Autor vodiča",
+      "LAWYERS": "Advokat",
+      "MEDIA": "Autor",
+      "MEMBER": "Član organizacije"
     }
   },
   "footer": {
@@ -147,6 +158,7 @@
       "full-name": "Ime Prezime",
       "email": "e-mail",
       "username": "Korisničko ime",
+      "roles": "Uloge",
       "create-button": "Stvoriti",
       "menu-common": "Opšte",
       "menu-control": "Upravljanje",
