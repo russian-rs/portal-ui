@@ -1,6 +1,7 @@
 .appShellNavbar {
     position: relative;
     width: calc(var(--mantine-spacing-md) * 22);
+    min-width: calc(var(--mantine-spacing-md) * 19);
 
     @media (max-width: $mantine-breakpoint-xs) {
         position: fixed;
