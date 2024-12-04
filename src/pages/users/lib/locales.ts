@@ -7,6 +7,7 @@ export const locales = {
     lastName: "pages.user-list.last-name",
     fullName: "pages.user-list.full-name",
     email: "pages.user-list.email",
+    roles: "pages.user-list.roles",
     username: "pages.user-list.username",
     createButton: "pages.user-list.create-button",
     menuCommon: "pages.user-list.menu-common",

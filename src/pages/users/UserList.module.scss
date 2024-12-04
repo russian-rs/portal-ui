@@ -1,4 +1,4 @@
-$table-width: 36rem;
+$table-width: 52rem;
 
 .root {
     padding: 1rem 1rem 2rem 2rem;
@@ -21,12 +21,21 @@ $table-width: 36rem;
 }
 
 .columnName {
-    max-width: 16rem;
-    padding: 0.8rem;
+    width: 16rem;
+    padding: 0.3rem;
 }
 
 .columnEmail {
     width: 16rem;
+}
+
+.columnRoles {
+    width: 16rem;
+}
+
+.role {
+    font-size: small;
+    color: #0c8599;
 }
 
 .pagination {

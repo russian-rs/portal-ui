@@ -29,6 +29,17 @@
     "report-status-select": {
       "label": "Status",
       "empty": "Not selected"
+    },
+    "roles": {
+      "ADMIN": "Admin",
+      "ADMIN_SSO": "Admin SSO",
+      "ADMIN_VOLUNTEER": "Admin of volunteers",
+      "INSIDE_VOLUNTEER": "Internal volunteer",
+      "MAIN_VOLUNTEER": "Main volunteer",
+      "GUIDES": "Guide author",
+      "LAWYERS": "Lawyer",
+      "MEDIA": "Media author",
+      "MEMBER": "Member"
     }
   },
   "footer": {
@@ -147,6 +158,7 @@
       "full-name": "Name Surname",
       "email": "e-mail",
       "username": "Username",
+      "roles": "Roles",
       "create-button": "Create",
       "menu-common": "Common",
       "menu-control": "Control",

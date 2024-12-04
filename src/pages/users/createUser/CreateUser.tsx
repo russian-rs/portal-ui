@@ -44,12 +44,24 @@ export const CreateUser = () => {
     const form = useForm({
         mode: "uncontrolled",
         validate: zodResolver(validationSchema),
-        onValuesChange: (values) => {
-            setRequest({
-                fullName: `${values["firstName"].trim()} ${values["secondName"].trim()}`,
-                email: (values["email"] as string).toLowerCase().trim(),
-                username: (values["username"] as string).toLowerCase().trim(),
-            })
+        onValuesChange: (values, previous) => {
+            if (values["firstName"] && values["secondName"]) {
+                setRequest({ ...request, fullName: `${values["firstName"].trim()} ${values["secondName"].trim()}` })
+            }
+            if (values["email"]) {
+                const email = (values["email"] as string).toLowerCase().trim()
+                setRequest({ ...request, email: email })
+                if (values["email"] !== previous["email"]) {
+                    if (email.includes("@")) {
+                        form.setFieldValue("username", email.split("@")[0])
+                    } else {
+                        form.setFieldValue("username", email)
+                    }
+                }
+            }
+            if (values["username"]) {
+                setRequest({ ...request, username: (values["username"] as string).toLowerCase().trim() })
+            }
         },
     })
 
@@ -121,7 +133,7 @@ export const CreateUser = () => {
                     </Button>
                 </Flex>
             </Drawer>
-            <Button variant="outline" leftSection={<IconUserPlus size={16} />} onClick={open}>
+            <Button variant="transparent" leftSection={<IconUserPlus size={16} />} onClick={open}>
                 <FormattedMessage id={locales.newUser} />
             </Button>
         </>

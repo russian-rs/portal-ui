@@ -29,6 +29,17 @@
     "report-status-select": {
       "label": "Статус",
       "empty": "Не выбрано"
+    },
+    "roles": {
+      "ADMIN": "Администратор",
+      "ADMIN_SSO": "Администратор SSO",
+      "ADMIN_VOLUNTEER": "Администратор волонтерства",
+      "INSIDE_VOLUNTEER": "Внутренний волонтер",
+      "MAIN_VOLUNTEER": "Волонтер основной пр.",
+      "GUIDES": "Автор гайдов",
+      "LAWYERS": "Юрист",
+      "MEDIA": "Автор",
+      "MEMBER": "Член организации"
     }
   },
   "footer": {
@@ -145,8 +156,9 @@
       "first-name": "Имя",
       "last-name": "Фамилия",
       "full-name": "Имя Фамилия",
-      "email": "e-mail",
+      "email": "E-mail",
       "username": "Логин",
+      "roles": "Роли",
       "create-button": "Создать",
       "menu-common": "Общее",
       "menu-control": "Управление",
