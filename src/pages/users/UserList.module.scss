@@ -20,6 +20,12 @@ $table-width: 52rem;
     width: $table-width
 }
 
+.avatar {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
 .columnName {
     width: 16rem;
     padding: 0.3rem;

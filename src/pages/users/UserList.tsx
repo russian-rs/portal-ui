@@ -54,7 +54,13 @@ export const UserList = () => {
         <Table.Tr key={user.id}>
             <Table.Td>
                 <Flex columnGap={16} align="center" className={classes.columnName}>
-                    <Avatar src={user.avatar?.link} size={36} name={user.fullName} />
+                    <Avatar
+                        size={36}
+                        src={user.avatar?.link}
+                        name={user.fullName}
+                        className={classes.avatar}
+                        onClick={() => history.push(`/profile/${user.username}`)}
+                    />
                     <Text truncate="end">{user.fullName}</Text>
                 </Flex>
             </Table.Td>
