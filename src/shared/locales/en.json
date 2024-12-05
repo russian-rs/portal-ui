@@ -148,6 +148,18 @@
         "time-spent": "Time spent"
       }
     },
+    "report-list": {
+      "title": "All reports",
+      "volunteer": "Volunteer",
+      "creation-date": "Creation date",
+      "weeks": "Reporting weeks",
+      "status": "Status",
+      "time-spent": "Time spent",
+      "task-count": "Tasks: {count}",
+      "files-count": "Attachments: {count}",
+      "total": "Total: {count}",
+      "empty": "Reports not found"
+    },
     "user-list": {
       "title": "All volunteers",
       "total": "Total: {total}",

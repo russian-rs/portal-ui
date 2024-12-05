@@ -148,6 +148,18 @@
         "time-spent": "Broj sati"
       }
     },
+    "report-list": {
+      "title": "Svi izveštaji",
+      "volunteer": "Volonter",
+      "creation-date": "Datum popunjavanja",
+      "weeks": "Izveštajne nedelje",
+      "status": "Status",
+      "time-spent": "Potrošeni sati",
+      "task-count": "Zadataka: {count}",
+      "files-count": "Priloga: {count}",
+      "total": "Ukupno: {count}",
+      "empty": "Nije pronađen nijedan izveštaj"
+    },
     "user-list": {
       "title": "Svi volonteri",
       "total": "Ukupno: {total}",

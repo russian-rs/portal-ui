@@ -148,6 +148,18 @@
         "time-spent": "Кол-во часов"
       }
     },
+    "report-list": {
+      "title": "Все отчеты",
+      "volunteer": "Волонтер",
+      "creation-date": "Дата заполнения",
+      "weeks": "Отчетные недели",
+      "status": "Статус",
+      "time-spent": "Затрачено часов",
+      "task-count": "Задач: {count}",
+      "files-count": "Вложений: {count}",
+      "total": "Всего: {count}",
+      "empty": "Отчетов не найдено"
+    },
     "user-list": {
       "title": "Все волонтеры",
       "total": "Всего: {total}",

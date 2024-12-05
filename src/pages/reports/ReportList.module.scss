@@ -1,0 +1,98 @@
+$table-width: 58rem;
+
+.root {
+    padding: 1rem 1rem 2rem 2rem;
+    flex-direction: column;
+    row-gap: 1rem;
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+
+    @media (max-width: $mantine-breakpoint-md) {
+        padding: 0.5rem;
+    }
+}
+
+.loader {
+    width: 100%;
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+}
+
+.title {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.filters {
+    width: 100%;
+    align-items: end;
+    column-gap: 1rem;
+}
+
+.userSearch {
+    width: 18rem;
+}
+
+.table {
+    width: $table-width
+}
+
+.row {
+    transition: transform 0.2s ease;
+
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.02);
+    }
+}
+
+.avatar {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.columnVolunteer {
+    width: 12rem;
+    padding: 0.3rem;
+}
+
+.columnDate {
+    width: 12rem;
+}
+
+.columnWeeks {
+    width: 8rem;
+}
+
+.columnTimeSpent {
+    width: 8rem;
+}
+
+.columnStatus {
+    width: 8rem;
+}
+
+.columnStats {
+    width: 10rem;
+}
+
+.stats {
+    font-size: small;
+}
+
+.pagination {
+    align-items: center;
+    column-gap: 1rem;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 100%;
+    }
+}
+
+.emptyState {
+    height: 100%;
+    flex-direction: column;
+    row-gap: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
