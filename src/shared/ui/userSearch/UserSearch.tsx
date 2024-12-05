@@ -13,10 +13,11 @@ interface UserSearchProps {
     description?: ReactNode
     form?: UseFormReturnType<any>
     path?: string
+    className?: string
     onUserChange?: (user: UserInfoDto | null) => void
 }
 
-export const UserSearch = ({ label, description, form, path, onUserChange }: UserSearchProps) => {
+export const UserSearch = ({ label, description, form, path, className, onUserChange }: UserSearchProps) => {
     const intl = useIntl()
 
     const combobox = useCombobox({
@@ -56,8 +57,10 @@ export const UserSearch = ({ label, description, form, path, onUserChange }: Use
             <Combobox.Option value={userDto.id.toString()} key={userDto.id}>
                 <Flex align="center" columnGap={12}>
                     <Avatar src={userDto.avatar?.link} size="sm" color="initials" name={userDto.fullName} />
-                    <Text className={classes.name}>{userDto.fullName}</Text>
-                    <Text className={classes.email}>{userDto.email}</Text>
+                    <Flex wrap="wrap" align="center" columnGap={8}>
+                        <Text className={classes.name}>{userDto.fullName}</Text>
+                        <Text className={classes.email}>{userDto.email}</Text>
+                    </Flex>
                 </Flex>
             </Combobox.Option>
         )
@@ -81,6 +84,7 @@ export const UserSearch = ({ label, description, form, path, onUserChange }: Use
                     label={label}
                     description={description}
                     value={search}
+                    className={className}
                     onChange={(event) => {
                         combobox.openDropdown()
                         combobox.updateSelectedOptionIndex()
