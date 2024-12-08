@@ -1,7 +1,7 @@
 import { Button, Flex, Text } from "@mantine/core"
 import { IconChevronLeft, IconHome } from "@tabler/icons-react"
 import { FormattedMessage } from "react-intl"
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router"
 import { locales } from "src/pages/notFound/lib/locales"
 import { Image404 } from "src/pages/notFound/resources/Image404"
 import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
@@ -10,7 +10,7 @@ import classes from "./NotFound.module.scss"
 export const NotFound = () => {
     useSetDocumentTitleByLocale(locales.documentTitle)
 
-    const history = useHistory()
+    const navigate = useNavigate()
 
     return (
         <Flex className={classes.root}>
@@ -25,12 +25,12 @@ export const NotFound = () => {
                 <Button
                     variant="light"
                     color="cyan"
-                    onClick={() => history.goBack()}
+                    onClick={() => navigate(-1)}
                     leftSection={<IconChevronLeft size={16} />}
                 >
                     <FormattedMessage id={locales.backButton} />
                 </Button>
-                <Button variant="light" onClick={() => history.push("/")} leftSection={<IconHome size={16} />}>
+                <Button variant="light" onClick={() => navigate("/")} leftSection={<IconHome size={16} />}>
                     <FormattedMessage id={locales.homeButton} />
                 </Button>
             </Flex>

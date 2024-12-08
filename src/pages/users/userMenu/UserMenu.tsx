@@ -11,7 +11,7 @@ import {
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import { FormattedMessage } from "react-intl"
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router"
 import { UserApiService } from "src/shared/api/UserApiService"
 import { locales } from "../lib/locales"
 import classes from "./UserMenu.module.scss"
@@ -21,7 +21,7 @@ interface UserMenuProps {
 }
 
 export const UserMenu = ({ user }: UserMenuProps) => {
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const [userDto, setUserDto] = useState(user)
 
@@ -53,10 +53,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
                 <Menu.Label>
                     <FormattedMessage id={locales.menuCommon} />
                 </Menu.Label>
-                <Menu.Item
-                    leftSection={<IconEye size={14} />}
-                    onClick={() => history.push(`/profile/${userDto.username}`)}
-                >
+                <Menu.Item leftSection={<IconEye size={14} />} onClick={() => navigate(`/profile/${userDto.username}`)}>
                     <FormattedMessage id={locales.menuView} />
                 </Menu.Item>
                 <Menu.Item leftSection={<IconMessageCircle size={14} />} disabled={true}>

@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { defaultFilter, defaultPage, defaultPageResponse, locales } from "src/pages/myReports/constants"
 import { ReportApiService } from "src/shared/api/ReportApiService"
@@ -23,7 +23,7 @@ export const MyReports = () => {
     useSetDocumentTitleByLocale(locales.documentTitle)
     const { user } = useContext(UserContext)
     const intl = useIntl()
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const [pageRequest, setPageRequest] = useState<PageRequest>(defaultPage)
     const [filter, setFilter] = useState<ReportFilter>(defaultFilter)
@@ -50,7 +50,7 @@ export const MyReports = () => {
     }
 
     const rows = response.content.map((report) => (
-        <Flex key={report.id} className={classes.report} onClick={() => history.push(`/report/${report.id}`)}>
+        <Flex key={report.id} className={classes.report} onClick={() => navigate(`/report/${report.id}`)}>
             <Flex className={classes.reportLeft}>
                 <PropertyBox
                     name={locales.reportCreated}
@@ -96,7 +96,7 @@ export const MyReports = () => {
                             variant="light"
                             size="sm"
                             leftSection={<IconPlus size={16} />}
-                            onClick={() => history.push("/report/create")}
+                            onClick={() => navigate("/report/create")}
                         >
                             <Text size="sm">
                                 <FormattedMessage id={locales.newReport} />

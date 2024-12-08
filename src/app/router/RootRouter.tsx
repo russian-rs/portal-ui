@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react"
-import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom"
+import { BrowserRouter, Navigate, Route, Routes } from "react-router"
+import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 
 const PrivateApp = lazy(() => import("src/app/PrivateApp"))
 const PublicApp = lazy(() => import("src/app/PublicApp"))
@@ -9,20 +10,18 @@ const Unauthorized = lazy(() => import("src/pages/unauthorized/UnauthorizedPage"
 
 const RootRouter = () => {
     return (
-        <Router>
-            <Suspense>
-                <Switch>
-                    <Route path="/welcome" component={PublicApp} />
-                    <Route path="/not-found" exact component={NotFound} />
-                    <Route path="/unauthorized" exact component={Unauthorized} />
-                    <Route path="/" exact>
-                        <Redirect to="/welcome" />
-                    </Route>
-                    <Route path="/login" exact component={Login} />
-                    <Route path="/" component={PrivateApp} />
-                </Switch>
+        <BrowserRouter>
+            <Suspense fallback={<LoadingScreen />}>
+                <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/welcome" element={<PublicApp />} />
+                    <Route path="/not-found" element={<NotFound />} />
+                    <Route path="/unauthorized" element={<Unauthorized />} />
+                    <Route path="/" element={<Navigate to="/welcome" />} />
+                    <Route path="*" element={<PrivateApp />} />
+                </Routes>
             </Suspense>
-        </Router>
+        </BrowserRouter>
     )
 }
 

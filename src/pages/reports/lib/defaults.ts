@@ -13,12 +13,14 @@ export const defaultPageResponse: PageResponse = {
     totalElements: 0,
 }
 
-export const defaultFilter: ReportFilter = {
-    login: null,
-    dateFrom: null,
-    dateTo: null,
-    status: null,
-    program: null,
+export const defaultFilter = (login: string | null): ReportFilter => {
+    return {
+        login: login ? login : null,
+        dateFrom: null,
+        dateTo: null,
+        status: null,
+        program: null,
+    }
 }
 
 export const defaultUser = (username: string): UserInfoDto => {

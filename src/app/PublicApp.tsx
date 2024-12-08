@@ -1,6 +1,6 @@
 import { AppShell, AppShellHeader, Group } from "@mantine/core"
 import { useContext } from "react"
-import { Redirect } from "react-router-dom"
+import { Navigate } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import PublicRouter from "src/app/router/PublicRouter"
 import classes from "src/app/styles/public.module.scss"
@@ -9,11 +9,11 @@ import { LoginButton } from "src/shared/ui/loginButton/LoginButton"
 import { ThemeSwitcher } from "src/shared/ui/theme/ThemeSwitcher"
 
 // @ts-ignore
-const PublicApp = ({ match }) => {
+const PublicApp = () => {
     const { user } = useContext(UserContext)
 
     if (user) {
-        return <Redirect to={`/profile/${user.username}`} />
+        return <Navigate to={`/profile/${user.username}`} />
     }
 
     return (
@@ -31,7 +31,7 @@ const PublicApp = ({ match }) => {
                     </Group>
                 </AppShellHeader>
                 <Group className={classes.appShellMain}>
-                    <PublicRouter match={match} />
+                    <PublicRouter />
                 </Group>
             </AppShell>
         </>

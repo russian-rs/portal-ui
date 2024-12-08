@@ -4,7 +4,7 @@ import { IconLock, IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { CreateUser } from "src/pages/users/createUser/CreateUser"
 import { defaultPage, defaultPageResponse } from "src/pages/users/lib/defaults"
@@ -21,7 +21,7 @@ export const UserList = () => {
     useSetDocumentTitleByLocale(locales.title)
 
     const { user } = useContext(UserContext)
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const [search, setSearch] = useState("")
     const [debouncedSearch, setDebouncedSearch] = useState(search)
@@ -38,7 +38,7 @@ export const UserList = () => {
     }, [search])
 
     if (!hasPermission(user, allowedRoles)) {
-        history.push("/unauthorized")
+        navigate("/unauthorized")
     }
 
     const {
@@ -59,7 +59,7 @@ export const UserList = () => {
                         src={user.avatar?.link}
                         name={user.fullName}
                         className={classes.avatar}
-                        onClick={() => history.push(`/profile/${user.username}`)}
+                        onClick={() => navigate(`/profile/${user.username}`)}
                     />
                     <Text truncate="end">{user.fullName}</Text>
                 </Flex>
@@ -68,7 +68,7 @@ export const UserList = () => {
             <Table.Td>
                 <Flex align="start" direction="column">
                     {user.groups.map((group) => (
-                        <Text className={classes.role} truncate="end">
+                        <Text key={group} className={classes.role} truncate="end">
                             <FormattedMessage id={`common.roles.${group}`} />
                         </Text>
                     ))}

@@ -1,32 +1,21 @@
 import { Suspense, useMemo } from "react"
-import { Redirect, Route, Switch } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router"
 import { routes } from "src/app/router/routes.public"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 
-// @ts-ignore
-const PublicRouter = ({ match }) => {
+const PublicRouter = () => {
     const pages = useMemo(() => {
         return routes.map((route) => {
-            const path = `${match.path}${route.path}`
-            return (
-                <Route
-                    key={path}
-                    exact={Boolean(route.exact)}
-                    path={path}
-                    component={route.component}
-                />
-            )
+            return <Route key={route.path} path={route.path} element={route.element} />
         })
     }, [])
 
     return (
         <Suspense fallback={<LoadingScreen />}>
-            <Switch>
+            <Routes>
                 {pages}
-                <Route path="*">
-                    <Redirect to="/not-found" />
-                </Route>
-            </Switch>
+                <Route path="*" element={<Navigate to="/not-found" replace={true} />} />
+            </Routes>
         </Suspense>
     )
 }

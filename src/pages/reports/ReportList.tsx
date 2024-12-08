@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-import { useHistory } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { ReportApiService } from "src/shared/api/ReportApiService"
 import { resolveUsers } from "src/shared/api/UserApiService"
@@ -25,16 +25,17 @@ import classes from "./ReportList.module.scss"
 export const ReportList = () => {
     useSetDocumentTitleByLocale(locales.title)
 
+    const [searchParams] = useSearchParams()
     const { user } = useContext(UserContext)
-    const history = useHistory()
+    const navigate = useNavigate()
     const intl = useIntl()
 
     const [pageRequest, setPageRequest] = useState<PageRequest>(defaultPage)
-    const [filter, setFilter] = useState<ReportFilter>(defaultFilter)
+    const [filter, setFilter] = useState<ReportFilter>(defaultFilter(searchParams.get("login")))
     const [logins, setLogins] = useState<string[]>([])
 
     if (!hasPermission(user, allowedRoles)) {
-        history.push("/unauthorized")
+        navigate("/unauthorized")
     }
 
     const {
@@ -73,7 +74,7 @@ export const ReportList = () => {
         const timeSpent = getSpentTimeFromReport(report, intl)
         const filesCount = getReportFilesCount(report)
         return (
-            <Table.Tr key={report.id} className={classes.row} onClick={() => history.push(`/report/${report.id}`)}>
+            <Table.Tr key={report.id} className={classes.row} onClick={() => navigate(`/report/${report.id}`)}>
                 <Table.Td>
                     <Text>{createTime}</Text>
                 </Table.Td>
