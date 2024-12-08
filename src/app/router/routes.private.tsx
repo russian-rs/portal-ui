@@ -1,5 +1,5 @@
 import { lazy } from "react"
-import { RouteProps } from "react-router-dom"
+import { RouteProps } from "react-router"
 
 const Logout = lazy(() => import("src/pages/logout/Logout"))
 const Profile = lazy(() => import("src/pages/profile/Profile"))
@@ -12,37 +12,30 @@ const UserList = lazy(() => import("src/pages/users/UserList"))
 export const routes: RouteProps[] = [
     {
         path: "/logout",
-        exact: true,
-        component: Logout,
+        element: <Logout />,
     },
     {
         path: "/profile/:login",
-        exact: true,
-        component: Profile,
+        element: <Profile />,
     },
     {
         path: "/report/create",
-        exact: true,
-        component: NewReport,
+        element: <NewReport />,
     },
     {
         path: "/report/:id",
-        exact: true,
-        component: Report,
+        element: <Report />,
     },
     {
         path: "/reports/personal",
-        exact: true,
-        component: MyReports,
+        element: <MyReports />,
     },
     {
         path: "/reports",
-        exact: true,
-        component: ReportList,
+        element: <ReportList />,
     },
     {
         path: "/volunteers",
-        exact: true,
-        component: UserList,
+        element: <UserList />,
     },
 ]

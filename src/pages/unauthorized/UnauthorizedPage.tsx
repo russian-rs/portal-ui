@@ -1,7 +1,7 @@
 import { Button, Flex, Text } from "@mantine/core"
 import { IconChevronLeft, IconHome, IconLockAccess } from "@tabler/icons-react"
 import { FormattedMessage } from "react-intl"
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router"
 import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { locales } from "./lib/locales"
 import classes from "./UnauthorizedPage.module.scss"
@@ -9,7 +9,7 @@ import classes from "./UnauthorizedPage.module.scss"
 export const UnauthorizedPage = () => {
     useSetDocumentTitleByLocale(locales.documentTitle)
 
-    const history = useHistory()
+    const navigate = useNavigate()
 
     return (
         <Flex className={classes.root}>
@@ -24,12 +24,12 @@ export const UnauthorizedPage = () => {
                 <Button
                     variant="light"
                     color="cyan"
-                    onClick={() => history.goBack()}
+                    onClick={() => navigate(-1)}
                     leftSection={<IconChevronLeft size={16} />}
                 >
                     <FormattedMessage id={locales.backButton} />
                 </Button>
-                <Button variant="light" onClick={() => history.push("/")} leftSection={<IconHome size={16} />}>
+                <Button variant="light" onClick={() => navigate("/")} leftSection={<IconHome size={16} />}>
                     <FormattedMessage id={locales.homeButton} />
                 </Button>
             </Flex>

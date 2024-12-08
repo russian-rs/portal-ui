@@ -3,7 +3,7 @@ import { TaskDto } from "@russian-rs/portal-api-axios"
 import { IconChevronRight, IconPlus } from "@tabler/icons-react"
 import React, { useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router"
 import { defaultTask, locales } from "src/pages/createReport/constants"
 import classes from "src/pages/createReport/CreateReport.module.scss"
 import { TaskCard, TaskCardInterface } from "src/pages/createReport/task/TaskCard"
@@ -17,7 +17,7 @@ export const CreateReport = () => {
     const [tasks, setTasks] = useState<TaskDto[]>([defaultTask])
     const taskRefs = useRef<{ [key: string]: React.RefObject<TaskCardInterface> }>({})
 
-    const history = useHistory()
+    const navigate = useNavigate()
     const [isSending, setIsSending] = useState(false)
 
     const handleTaskChange = (id: string, updatedTask: TaskDto) => {
@@ -71,7 +71,7 @@ export const CreateReport = () => {
             setIsSending(true)
             ReportApiService.createReport({ tasks: tasks, id: uuid() })
                 .then((r) => {
-                    history.push(`/report/${r.data.id}`)
+                    navigate(`/report/${r.data.id}`)
                 })
                 .catch((_) => {
                     setIsSending(false)

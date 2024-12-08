@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router"
 import { locales } from "src/pages/report/constants"
 import { TaskCard } from "src/pages/report/task/TaskCard"
 import { ReportApiService } from "src/shared/api/ReportApiService"
@@ -19,16 +19,20 @@ import classes from "./ReportPage.module.scss"
 export const ReportPage = () => {
     useSetDocumentTitleByLocale(locales.documentTitle)
 
+    const { id } = useParams()
     const intl = useIntl()
-
-    const { id } = useParams<{ id: string }>()
+    const navigate = useNavigate()
     const [logins, setLogins] = useState<string[]>([])
+
+    if (!id) {
+        navigate("/not-found")
+    }
 
     const { data: report, isFetching: isFetchingReport } = useQuery({
         queryKey: ["getReport", id],
         initialData: { id: "", tasks: [] },
         queryFn: () =>
-            ReportApiService.getReport(id).then((response) => {
+            ReportApiService.getReport(id!!).then((response) => {
                 const report = response.data
                 setLogins([report.user, ...report.tasks.map((it) => it.customer)].filter((it) => it != undefined))
                 return report

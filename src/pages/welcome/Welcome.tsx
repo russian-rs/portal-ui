@@ -1,18 +1,7 @@
-import {
-    Button,
-    Container,
-    Flex,
-    Group,
-    Image,
-    List,
-    ScrollArea,
-    Text,
-    ThemeIcon,
-    Title,
-} from "@mantine/core"
+import { Button, Container, Flex, Group, Image, List, ScrollArea, Text, ThemeIcon, Title } from "@mantine/core"
 import { IconCheck } from "@tabler/icons-react"
 import { FormattedMessage } from "react-intl"
-import { useHistory } from "react-router-dom"
+import { useNavigate } from "react-router"
 import { locale } from "src/pages/welcome/lib/locale"
 import image from "src/pages/welcome/resources/image.svg"
 import { Dots } from "src/pages/welcome/ui/Dots"
@@ -21,7 +10,7 @@ import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 
 export const Welcome = () => {
     useSetDocumentTitleByLocale(locale.documentTitle)
-    const history = useHistory()
+    const navigate = useNavigate()
 
     return (
         <Flex className={classes.rootFlex}>
@@ -41,10 +30,7 @@ export const Welcome = () => {
                                         <FormattedMessage id={locale.title} />
                                     </Flex>
                                 </Title>
-                                <Text
-                                    c="dimmed"
-                                    className={classes.description}
-                                >
+                                <Text c="dimmed" className={classes.description}>
                                     <FormattedMessage id={locale.subTitle} />
                                 </Text>
 
@@ -53,45 +39,27 @@ export const Welcome = () => {
                                     className={classes.list}
                                     icon={
                                         <ThemeIcon size={20} radius="xl">
-                                            <IconCheck
-                                                className={classes.iconCheck}
-                                                stroke={1.5}
-                                            />
+                                            <IconCheck className={classes.iconCheck} stroke={1.5} />
                                         </ThemeIcon>
                                     }
                                 >
                                     <List.Item>
                                         <b>
-                                            <FormattedMessage
-                                                id={locale.benefitName1}
-                                            />
+                                            <FormattedMessage id={locale.benefitName1} />
                                         </b>{" "}
-                                        –{" "}
-                                        <FormattedMessage
-                                            id={locale.benefitDescription1}
-                                        />
+                                        – <FormattedMessage id={locale.benefitDescription1} />
                                     </List.Item>
                                     <List.Item>
                                         <b>
-                                            <FormattedMessage
-                                                id={locale.benefitName2}
-                                            />
+                                            <FormattedMessage id={locale.benefitName2} />
                                         </b>{" "}
-                                        –{" "}
-                                        <FormattedMessage
-                                            id={locale.benefitDescription2}
-                                        />
+                                        – <FormattedMessage id={locale.benefitDescription2} />
                                     </List.Item>
                                     <List.Item>
                                         <b>
-                                            <FormattedMessage
-                                                id={locale.benefitName3}
-                                            />
+                                            <FormattedMessage id={locale.benefitName3} />
                                         </b>{" "}
-                                        –{" "}
-                                        <FormattedMessage
-                                            id={locale.benefitDescription3}
-                                        />
+                                        – <FormattedMessage id={locale.benefitDescription3} />
                                     </List.Item>
                                 </List>
 
@@ -100,24 +68,18 @@ export const Welcome = () => {
                                         radius="xl"
                                         size="md"
                                         className={classes.control}
-                                        onClick={() => history.push(`/login`)}
+                                        onClick={() => navigate(`/login`)}
                                     >
-                                        <FormattedMessage
-                                            id={locale.buttonLogin}
-                                        />
+                                        <FormattedMessage id={locale.buttonLogin} />
                                     </Button>
                                     <Button
                                         variant="default"
                                         radius="xl"
                                         size="md"
                                         className={classes.control}
-                                        onClick={() =>
-                                            history.push("/not-found")
-                                        }
+                                        onClick={() => navigate("/not-found")}
                                     >
-                                        <FormattedMessage
-                                            id={locale.buttonApplication}
-                                        />
+                                        <FormattedMessage id={locale.buttonApplication} />
                                     </Button>
                                 </Group>
                             </Flex>

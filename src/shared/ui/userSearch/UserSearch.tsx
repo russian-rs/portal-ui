@@ -1,4 +1,4 @@
-import { Avatar, Combobox, Flex, InputBase, Loader, Text, useCombobox } from "@mantine/core"
+import { Avatar, CloseButton, Combobox, Flex, InputBase, Loader, Text, useCombobox } from "@mantine/core"
 import { UseFormReturnType } from "@mantine/form"
 import { UserInfoDto } from "@russian-rs/portal-api-axios"
 import { IconUser } from "@tabler/icons-react"
@@ -99,7 +99,6 @@ export const UserSearch = ({ label, description, form, path, className, onUserCh
                         }
                     }}
                     placeholder={intl.formatMessage({ id: "common.user-search.placeholder" })}
-                    rightSectionPointerEvents="none"
                     leftSection={
                         selectedUser ? (
                             <Avatar
@@ -112,7 +111,21 @@ export const UserSearch = ({ label, description, form, path, className, onUserCh
                             <IconUser size={20} />
                         )
                     }
-                    rightSection={isFetching ? <Loader size={20} /> : <Combobox.Chevron />}
+                    rightSection={
+                        isFetching ? (
+                            <Loader size={20} />
+                        ) : selectedUser ? (
+                            <CloseButton
+                                aria-label="Clear input"
+                                onClick={() => {
+                                    setSelectedUser(null)
+                                    setSearch("")
+                                }}
+                            />
+                        ) : (
+                            <Combobox.Chevron />
+                        )
+                    }
                 />
             </Combobox.Target>
 
