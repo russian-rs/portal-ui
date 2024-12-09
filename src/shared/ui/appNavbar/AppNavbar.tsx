@@ -16,6 +16,7 @@ export interface ItemProps {
     label: string
     link: string
     roles?: string[]
+    hideFrom?: string[]
 }
 
 export interface ItemGroupProps {

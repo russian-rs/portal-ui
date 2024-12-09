@@ -158,7 +158,8 @@
       "task-count": "Zadataka: {count}",
       "files-count": "Priloga: {count}",
       "total": "Ukupno: {count}",
-      "empty": "Nije pronađen nijedan izveštaj"
+      "empty": "Nije pronađen nijedan izveštaj",
+      "reset": "Resetujte filtere"
     },
     "user-list": {
       "title": "Svi volonteri",
@@ -187,6 +188,33 @@
       "invalid-name": "Nevažeći znakovi",
       "invalid-username": "Samo latinična slova i brojevi, ne može početi sa brojem",
       "user-created-message": "Korisnik je uspešno kreiran"
+    },
+    "playgrounds": {
+      "title": "Izveštaj o igralištu",
+      "description": "Uputstvo za punjenje",
+      "requirements": "Volonter je dužan da prati najmanje 3 igrališta i da mu posveti najmanje 10 sati svake nedelje",
+      "whats-new": "Obrazac za popunjavanje izveštaja objedinjen je za volontere svih programa ruske dijaspore. Sada se izveštaj o praćenju igrališta mora popuniti samo jednom nedeljno, informacije o sva 3 igrališta moraju se uneti u jedan izveštaj",
+      "steps": {
+        "1": {
+          "title": "Idite na stranicu za kreiranje izveštaja",
+          "link": "<a href='/report/create'>Na ovom linku</a> ili preko bočnog menija"
+        },
+        "2": {
+          "title": "Popunite Excel datoteku prema šablonu",
+          "description": "1 igralište = 1 popunjena datoteka",
+          "link": "Možete preuzeti šablon <a href='https://docs.google.com/spreadsheets/d/1Vu1m7sVkMmSn8blN6K2-9eL6KGCiMwcvze9Ydn3HrTA' target='_blank'>po linku</a>",
+          "hint": "Kopirajte datoteku na sebe <i>Datoteka - Napravite kopiju</i>.<br/>Popunite tabelu i preuzmite kao .xlsx fajl <i>Datoteka - Preuzimanje</i>"
+        },
+        "3": {
+          "title": "Unesite informacije o tri igrališta",
+          "description": "1 igralište = 1 zadatak",
+          "fields": "U polju <strong>Naziv</strong> navedite ime lokacije, na primer <i>Igralište u parku Šumice</i>. U polju <strong>Opis</strong> popunite svoj prošireni komentar o igralištu. U polju <strong>Rezultat</strong> navedite vezu do igrališta na Google mapama. Polje <strong>kupac</strong> nije neophodno za popunjavanje.<br/>Ukupna količina potrošenih sati na svim igralištima treba da bude najmanje 10.<br/>U datoteke priložite fotografiju igrališta i datoteku ispunjenu Excel-om sa opcijama igrališta."
+        },
+        "4": {
+          "title": "Sve je spremno!",
+          "hint": "Ne zaboravite da pritisnete dugme <strong>Pošalji</strong>"
+        }
+      }
     }
   },
   "errors": {
@@ -198,6 +226,7 @@
       "reporting": "Izveštavanje",
       "my-reports": "Moji izveštaji",
       "new-report": "Novi izveštaj",
+      "new-report-playground": "Izveštaj o igralištu",
       "report": "Izveštaj",
       "all": "Svi izveštaji",
       "summary": "Rezime"

@@ -9,4 +9,5 @@ export const locales = {
     filesCount: "pages.report-list.files-count",
     total: "pages.report-list.total",
     empty: "pages.report-list.empty",
+    reset: "pages.report-list.reset",
 }

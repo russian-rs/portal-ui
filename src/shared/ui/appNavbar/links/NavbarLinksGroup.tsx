@@ -13,7 +13,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, items, link, ro
     const [opened, setOpened] = useState(initiallyOpened || false)
 
     const children = (hasChildren ? items : [])
-        ?.filter((item) => hasPermission(user, item.roles))
+        ?.filter((item) => hasPermission(user, item.roles, item.hideFrom))
         .map((item) => (
             <Text<"a"> component="a" className={classes.link} href={item.link} key={item.label}>
                 <FormattedMessage id={item.label} />

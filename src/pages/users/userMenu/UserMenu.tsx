@@ -59,7 +59,10 @@ export const UserMenu = ({ user }: UserMenuProps) => {
                 <Menu.Item leftSection={<IconMessageCircle size={14} />} disabled={true}>
                     <FormattedMessage id={locales.menuContact} />
                 </Menu.Item>
-                <Menu.Item leftSection={<IconCheckupList size={14} />} disabled={true}>
+                <Menu.Item
+                    leftSection={<IconCheckupList size={14} />}
+                    onClick={() => navigate(`/reports?login=${userDto.username}`)}
+                >
                     <FormattedMessage id={locales.menuReports} />
                 </Menu.Item>
                 <Menu.Divider />

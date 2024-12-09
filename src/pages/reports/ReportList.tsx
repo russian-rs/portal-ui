@@ -1,4 +1,4 @@
-import { Avatar, Flex, Pagination, Table, Text } from "@mantine/core"
+import { Avatar, Button, Flex, Pagination, Table, Text } from "@mantine/core"
 import { PageRequest, ReportDto, ReportFilter, UserInfoDto } from "@russian-rs/portal-api-axios"
 import { IconFile, IconListCheck, IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
@@ -26,12 +26,13 @@ export const ReportList = () => {
     useSetDocumentTitleByLocale(locales.title)
 
     const [searchParams] = useSearchParams()
+    const loginParam = searchParams.get("login")
     const { user } = useContext(UserContext)
     const navigate = useNavigate()
     const intl = useIntl()
 
     const [pageRequest, setPageRequest] = useState<PageRequest>(defaultPage)
-    const [filter, setFilter] = useState<ReportFilter>(defaultFilter(searchParams.get("login")))
+    const [filter, setFilter] = useState<ReportFilter>(defaultFilter(loginParam))
     const [logins, setLogins] = useState<string[]>([])
 
     if (!hasPermission(user, allowedRoles)) {
@@ -66,6 +67,10 @@ export const ReportList = () => {
         const startDate = start ? dayjs(start).format(DEFAULT_DATE_FORMAT) : null
         const endDate = end ? dayjs(end).format(DEFAULT_DATE_FORMAT) : null
         setFilter({ ...filter, dateFrom: startDate, dateTo: endDate })
+    }
+
+    const isFiltered = () => {
+        return filter.login || filter.status || filter.program || filter.dateFrom || filter.dateTo
     }
 
     const rows = reports.map((report) => {
@@ -129,9 +134,15 @@ export const ReportList = () => {
                         className={classes.userSearch}
                         description={<FormattedMessage id={locales.volunteer} />}
                         onUserChange={onUserSelected}
+                        initialSearch={loginParam ? loginParam : ""}
                     />
                     <WeekPicker onChange={onWeekChange} />
                     <ReportStatusSelect onChange={onStatusChange} />
+                    {isFiltered() && (
+                        <Button variant="transparent" onClick={() => setFilter(defaultFilter())}>
+                            <FormattedMessage id={locales.reset} />
+                        </Button>
+                    )}
                 </Flex>
                 <Table stickyHeader highlightOnHover className={classes.table}>
                     <Table.Thead>

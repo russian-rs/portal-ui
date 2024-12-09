@@ -5,6 +5,7 @@ import { FormattedMessage } from "react-intl"
 import { ReportStatus } from "src/shared/report/status"
 
 interface ReportStatusSelectProps {
+    className?: string
     onChange?: (status: string | null) => void
 }
 
@@ -44,6 +45,7 @@ export const ReportStatusSelect = (props: ReportStatusSelectProps) => {
                         component="button"
                         type="button"
                         pointer
+                        className={props.className}
                         onClick={() => combobox.toggleDropdown()}
                         leftSection={<IconAlignBoxLeftTop size={16} />}
                         rightSectionPointerEvents={value === null ? "none" : "all"}
