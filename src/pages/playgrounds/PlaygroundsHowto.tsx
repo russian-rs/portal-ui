@@ -29,9 +29,7 @@ export const PlaygroundsHowto = () => {
             <Text className={classes.requirements}>
                 <FormattedMessage id={locales.requirements} />
             </Text>
-            <Text className={classes.whatsNew}>
-                <FormattedMessage id={locales.whatsNew} />
-            </Text>
+            <Text className={classes.whatsNew}>{parse(intl.formatMessage({ id: locales.whatsNew }))}</Text>
             <Timeline bulletSize={32} lineWidth={4} active={3}>
                 <Timeline.Item bullet={<IconCircleNumber1 />} title={<FormattedMessage id={locales.step1Title} />}>
                     <Flex columnGap={4}>
