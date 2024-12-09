@@ -5,6 +5,7 @@ export const Content: ItemGroupProps[] = [
     {
         label: "navbar.reports.reporting",
         icon: IconFileAnalytics,
+        initiallyOpened: true,
         items: [
             {
                 label: "navbar.reports.my-reports",
@@ -13,6 +14,11 @@ export const Content: ItemGroupProps[] = [
             {
                 label: "navbar.reports.new-report",
                 link: "/report/create",
+            },
+            {
+                label: "navbar.reports.new-report-playground",
+                link: "/playgrounds",
+                roles: ["MAIN_VOLUNTEER", "ADMIN_VOLUNTEER", "ADMIN"],
             },
             {
                 label: "navbar.reports.all",

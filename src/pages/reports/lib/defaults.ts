@@ -13,7 +13,7 @@ export const defaultPageResponse: PageResponse = {
     totalElements: 0,
 }
 
-export const defaultFilter = (login: string | null): ReportFilter => {
+export const defaultFilter = (login: string | null = null): ReportFilter => {
     return {
         login: login ? login : null,
         dateFrom: null,

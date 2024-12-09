@@ -105,11 +105,8 @@ export const MyReports = () => {
                     </Flex>
                     <Flex className={classes.content}>
                         <Flex className={classes.filterArea}>
-                            <Text mb={8}>
-                                <FormattedMessage id={locales.filters} />
-                            </Text>
-                            <WeekPicker onChange={onWeekChange} />
-                            <ReportStatusSelect onChange={onStatusChange} />
+                            <WeekPicker onChange={onWeekChange} className={classes.filterWeek} />
+                            <ReportStatusSelect onChange={onStatusChange} className={classes.filterStatus} />
                         </Flex>
                         <Flex className={classes.reportContainer}>
                             {rows.length == 0 && (
@@ -125,15 +122,15 @@ export const MyReports = () => {
                     </Flex>
                     {response.page.totalPages > 1 && (
                         <Flex className={classes.pagination}>
-                            <Text c="dimmed">
-                                <FormattedMessage id={locales.total} values={{ total: response.page.totalElements }} />
-                            </Text>
                             <Pagination
                                 total={response.page.totalPages}
                                 value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
                                 disabled={isFetching}
                                 onChange={(page) => setPageRequest({ ...pageRequest, pageNumber: page - 1 })}
                             />
+                            <Text c="dimmed">
+                                <FormattedMessage id={locales.total} values={{ total: response.page.totalElements }} />
+                            </Text>
                         </Flex>
                     )}
                 </Flex>

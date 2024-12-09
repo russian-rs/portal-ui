@@ -15,9 +15,18 @@ interface UserSearchProps {
     path?: string
     className?: string
     onUserChange?: (user: UserInfoDto | null) => void
+    initialSearch?: string
 }
 
-export const UserSearch = ({ label, description, form, path, className, onUserChange }: UserSearchProps) => {
+export const UserSearch = ({
+    label,
+    description,
+    form,
+    path,
+    className,
+    onUserChange,
+    initialSearch,
+}: UserSearchProps) => {
     const intl = useIntl()
 
     const combobox = useCombobox({
@@ -25,7 +34,7 @@ export const UserSearch = ({ label, description, form, path, className, onUserCh
     })
 
     const [selectedUser, setSelectedUser] = useState<UserInfoDto | null>(null)
-    const [search, setSearch] = useState("")
+    const [search, setSearch] = useState(initialSearch ? initialSearch : "")
     const [debouncedSearch, setDebouncedSearch] = useState(search)
 
     // Debounce search input by 500ms

@@ -158,7 +158,8 @@
       "task-count": "Tasks: {count}",
       "files-count": "Attachments: {count}",
       "total": "Total: {count}",
-      "empty": "Reports not found"
+      "empty": "Reports not found",
+      "reset": "Reset filters"
     },
     "user-list": {
       "title": "All volunteers",
@@ -187,6 +188,33 @@
       "invalid-name": "Invalid characters",
       "invalid-username": "Only latin letters and numbers, cannot start with a number",
       "user-created-message": "User successfully created"
+    },
+    "playgrounds": {
+      "title": "Playgrounds report",
+      "description": "Instructions for filling",
+      "requirements": "A volunteer is required to monitor at least 3 playgrounds and devote at least 10 hours to this every week.",
+      "whats-new": "The form for filling out reports has been unified for volunteers of all Russian Diaspora programs. Now the site monitoring report must be filled out and sent only once a week, information about all 3 sites must be entered into one report",
+      "steps": {
+        "1": {
+          "title": "Go to the report creation page",
+          "link": "<a href='/report/create'>Follow this link</a> or via the side menu"
+        },
+        "2": {
+          "title": "Fill in the Excel file using the template",
+          "description": "1 playground = 1 completed file",
+          "link": "You can download the template <a href='https://docs.google.com/spreadsheets/d/1Vu1m7sVkMmSn8blN6K2-9eL6KGCiMwcvze9Ydn3HrTA' target='_blank'>by link</a>",
+          "hint": "Copy the file to yourself <i>File - Make a copy</i>.<br/>Fill in the table and download as .xlsx file <i>File - Download</i>"
+        },
+        "3": {
+          "title": "Enter information about three playgrounds",
+          "description": "1 playground = 1 task",
+          "fields": "In the <strong>Name</strong> field, specify the name of the site, for example <i>Playground in Šumice Park</i>. In the <strong>Description</strong> field, fill in your detailed comment on the playground. In the <strong>Result</strong> field, enter the link to the playground on Google Maps. The <strong>Customer</strong> field is not required.<br/>The total number of hours spent across all playgrounds must be at least 10.<br/>Please attach a photo of the playground and a completed Excel file with the playground parameters to the files."
+        },
+        "4": {
+          "title": "All is ready!",
+          "hint": "Don't forget to click the <strong>Submit</strong> button"
+        }
+      }
     }
   },
   "errors": {
@@ -198,6 +226,7 @@
       "reporting": "Reporting",
       "my-reports": "My reports",
       "new-report": "New report",
+      "new-report-playground": "Playground report",
       "report": "Report",
       "all": "All reports",
       "summary": "Summary"

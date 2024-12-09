@@ -16,7 +16,7 @@ module.exports = {
         },
     },
     plugins: ["@typescript-eslint", "react-hooks", "jest"],
-    extends: ["prettier/prettier", "plugin:react-hooks/recommended"],
+    extends: ["prettier/prettier", "plugin:react-hooks/recommended", "eslint:recommended"],
     rules: {
         "@typescript-eslint/no-unused-vars": "error",
         "@typescript-eslint/dot-notation": [

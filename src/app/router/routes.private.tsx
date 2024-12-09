@@ -8,6 +8,7 @@ const NewReport = lazy(() => import("src/pages/createReport/CreateReport"))
 const MyReports = lazy(() => import("src/pages/myReports/MyReports"))
 const ReportList = lazy(() => import("src/pages/reports/ReportList"))
 const UserList = lazy(() => import("src/pages/users/UserList"))
+const PlaygroundsHowto = lazy(() => import("src/pages/playgrounds/PlaygroundsHowto"))
 
 export const routes: RouteProps[] = [
     {
@@ -37,5 +38,9 @@ export const routes: RouteProps[] = [
     {
         path: "/volunteers",
         element: <UserList />,
+    },
+    {
+        path: "/playgrounds",
+        element: <PlaygroundsHowto />,
     },
 ]

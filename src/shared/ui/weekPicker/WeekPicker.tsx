@@ -7,6 +7,7 @@ import { FormattedMessage } from "react-intl"
 import classes from "./WeekPicker.module.scss"
 
 interface WeekPickerProps {
+    className?: string
     onChange?: (week: number | null, start: Date | null, end: Date | null) => void
 }
 
@@ -65,7 +66,7 @@ export const WeekPicker = (props: WeekPickerProps) => {
                         <FormattedMessage id="common.week-picker.label" />
                     </Text>
                     <Input
-                        className={classes.input}
+                        className={`${classes.input} ${props.className}`}
                         component="button"
                         pointer
                         rightSectionPointerEvents="all"
