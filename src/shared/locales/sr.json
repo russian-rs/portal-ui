@@ -193,7 +193,7 @@
       "title": "Izveštaj o igralištu",
       "description": "Uputstvo za punjenje",
       "requirements": "Volonter je dužan da prati najmanje 3 igrališta i da mu posveti najmanje 10 sati svake nedelje",
-      "whats-new": "Obrazac za popunjavanje izveštaja objedinjen je za volontere svih programa ruske dijaspore. Sada se izveštaj o praćenju igrališta mora popuniti samo jednom nedeljno, informacije o sva 3 igrališta moraju se uneti u jedan izveštaj",
+      "whats-new": "Obrazac za popunjavanje izveštaja objedinjen je za volontere svih programa ruske dijaspore. Sada se izveštaj o praćenju igrališta mora popuniti samo jednom nedeljno, informacije o sva 3 igrališta moraju se uneti u jedan izveštaj.<br/>Nije potrebno popuniti plan puta.",
       "steps": {
         "1": {
           "title": "Idite na stranicu za kreiranje izveštaja",
