@@ -40,6 +40,14 @@
       "LAWYERS": "Lawyer",
       "MEDIA": "Media author",
       "MEMBER": "Member"
+    },
+    "contract-type": {
+      "REGULAR": "Regular (with residence permit)",
+      "ASSOCIATED": "Associated",
+      "select": {
+        "label": "Contract type",
+        "empty": "Not selected"
+      }
     }
   },
   "footer": {
@@ -169,6 +177,9 @@
       "first-name": "First name",
       "last-name": "Last name",
       "full-name": "Name Surname",
+      "contract-info": "Contract info",
+      "contract-from": "Start date",
+      "contract-until": "End date",
       "email": "e-mail",
       "username": "Username",
       "roles": "Roles",

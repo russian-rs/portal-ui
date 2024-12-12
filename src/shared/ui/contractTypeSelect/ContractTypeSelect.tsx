@@ -1,0 +1,88 @@
+import { CloseButton, Combobox, Flex, Input, InputBase, useCombobox } from "@mantine/core"
+import { UseFormReturnType } from "@mantine/form"
+import { IconContract } from "@tabler/icons-react"
+import React, { ReactNode, useEffect, useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { ContractType } from "src/shared/user/contracts"
+
+interface ContractTypeSelectProps {
+    className?: string
+    onChange?: (type: string | null) => void
+    form?: UseFormReturnType<any>
+    path?: string
+    error?: ReactNode
+}
+
+export const ContractTypeSelect = (props: ContractTypeSelectProps) => {
+    const combobox = useCombobox({
+        onDropdownClose: () => combobox.resetSelectedOption(),
+    })
+
+    const [value, setValue] = useState<string | null>(null)
+
+    useEffect(() => {
+        if (props.onChange) {
+            props.onChange(value)
+        }
+        if (props.form && props.path) {
+            props.form.setFieldValue(props.path, value)
+        }
+    }, [value])
+
+    const options = Object.values(ContractType).map((item) => (
+        <Combobox.Option value={item} key={item}>
+            <FormattedMessage id={`common.contract-type.${item}`} />
+        </Combobox.Option>
+    ))
+
+    return (
+        <Flex direction="column">
+            <Combobox
+                store={combobox}
+                onOptionSubmit={(val) => {
+                    setValue(val)
+                    combobox.closeDropdown()
+                }}
+            >
+                <Combobox.Target>
+                    <InputBase
+                        component="button"
+                        type="button"
+                        pointer
+                        withAsterisk
+                        error={props.error}
+                        label={<FormattedMessage id={"common.contract-type.select.label"} />}
+                        className={props.className}
+                        onClick={() => combobox.toggleDropdown()}
+                        leftSection={<IconContract size={16} />}
+                        rightSectionPointerEvents={value === null ? "none" : "all"}
+                        rightSection={
+                            value !== null ? (
+                                <CloseButton
+                                    size="sm"
+                                    onMouseDown={(event) => event.preventDefault()}
+                                    onClick={() => setValue(null)}
+                                    aria-label="Clear value"
+                                />
+                            ) : (
+                                <Combobox.Chevron />
+                            )
+                        }
+                    >
+                        {value ? (
+                            <FormattedMessage id={`common.contract-type.${value}`} />
+                        ) : (
+                            <Input.Placeholder>
+                                <FormattedMessage id="common.contract-type.select.empty" />
+                            </Input.Placeholder>
+                        )}
+                    </InputBase>
+                </Combobox.Target>
+
+                <Combobox.Dropdown>
+                    <Combobox.Options>{options}</Combobox.Options>
+                </Combobox.Dropdown>
+            </Combobox>
+        </Flex>
+    )
+}
