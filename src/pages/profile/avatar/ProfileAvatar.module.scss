@@ -1,4 +1,4 @@
-.avatarRoot {
+.avatarRootEditable {
     position: relative;
     display: inline-block;
     width: 8rem;
@@ -16,6 +16,16 @@
     @media (max-width: $mantine-breakpoint-sm) {
         box-shadow: 0 0 0.5rem 0.5rem light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
     }
+}
+
+.avatarRoot {
+    position: relative;
+    display: inline-block;
+    width: 8rem;
+    height: 8rem;
+    margin-top: -4rem;
+    border-radius: 100%;
+    box-shadow: 0 0 1rem 1rem light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
 }
 
 .label {

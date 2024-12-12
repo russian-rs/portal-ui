@@ -105,7 +105,15 @@
         "edit": "Uredi",
         "editTooltip": "Ova funkcionalnost je u razvoju, za uređivanje pogledajte podršku"
       },
-      "avatarUpdated": "Slika profila je uspešno ažurirana"
+      "avatarUpdated": "Slika profila je uspešno ažurirana",
+      "contract": {
+        "title": "Informacije o trenutnom ugovoru",
+        "date-until": "Datum završetka",
+        "type": "Vrsta ugovora",
+        "days-left": "Još dana: {count}",
+        "prolongation": "Produži",
+        "prolongation-info": "Ugovor se može produžiti najranije 3 meseca pre isteka tekućeg"
+      }
     },
     "report": {
       "document-title": "Izveštaj",
