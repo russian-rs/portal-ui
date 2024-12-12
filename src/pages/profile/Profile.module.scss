@@ -1,5 +1,6 @@
 .root {
-    padding: var(--mantine-spacing-md);
+    column-gap: 2rem;
+    padding: var(--mantine-spacing-xl);
 
     @media (max-width: $mantine-breakpoint-sm) {
         padding: var(--mantine-spacing-sm);
@@ -18,36 +19,9 @@
     }
 }
 
-.infoContainer {
-    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
-    border-radius: var(--mantine-radius-lg);
-    padding: 1rem;
-    box-shadow: 0 0 0.5rem 0.5rem light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
-}
-
-.idNumber {
-    margin-left: auto;
-}
-
-.userName {
-    margin-top: var(--mantine-spacing-md);
-    font-size: 2rem;
-    font-weight: bold;
-}
-
 .header {
     font-size: 1.5rem;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 1rem;
 }
-
-.propertyBox {
-    margin-bottom: 1rem;
-}
-
-.button {
-    margin-top: auto;
-    border-radius: 8px;
-}
-

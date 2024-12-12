@@ -1,0 +1,22 @@
+.infoContainer {
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    border-radius: var(--mantine-radius-lg);
+    padding: 1rem;
+    box-shadow: 0 0 0.5rem 0.5rem light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
+}
+
+.userName {
+    margin-top: var(--mantine-spacing-md);
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+
+.propertyBox {
+    margin-bottom: 1rem;
+}
+
+.button {
+    margin-top: auto;
+    border-radius: 8px;
+}

@@ -1,0 +1,28 @@
+.root {
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    border-radius: var(--mantine-radius-lg);
+    padding: 1rem;
+    box-shadow: 0 0 0.5rem 0.5rem light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
+    flex-direction: column;
+    row-gap: 1rem;
+    justify-content: center;
+    text-align: center;
+}
+
+.title {
+
+}
+
+.props {
+    flex-wrap: wrap;
+    column-gap: 2rem;
+    row-gap: 1rem;
+    justify-content: center;
+}
+
+.daysLeft {
+    margin-bottom: -0.5rem;
+    text-align: center;
+    color: #0b7285;
+    font-size: small;
+}
