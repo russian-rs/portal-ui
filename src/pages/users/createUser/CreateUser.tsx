@@ -1,16 +1,20 @@
 import { Button, Drawer, Flex, Loader, Text, TextInput } from "@mantine/core"
+import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { useDisclosure } from "@mantine/hooks"
 import { notifications } from "@mantine/notifications"
 import { UserCreateRequest } from "@russian-rs/portal-api-axios"
-import { IconAt, IconUser, IconUserPlus } from "@tabler/icons-react"
+import { IconAt, IconCalendarMonth, IconCalendarOff, IconUser, IconUserPlus } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
+import dayjs from "dayjs"
 import React, { useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { defaultCreateRequest, defaultCreateUserFormValues } from "src/pages/users/lib/defaults"
 import { locales } from "src/pages/users/lib/locales"
 import { UserApiService } from "src/shared/api/UserApiService"
+import { DEFAULT_DATE_FORMAT } from "src/shared/datetime/formats"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
+import { ContractTypeSelect } from "src/shared/ui/contractTypeSelect/ContractTypeSelect"
 import { z } from "zod"
 import classes from "./CreateUser.module.scss"
 
@@ -39,18 +43,22 @@ export const CreateUser = () => {
             .min(6, minMessage(6))
             .max(16, maxMessage(16))
             .regex(/^[a-zA-Z][a-zA-Z0-9]*$/, intl.formatMessage({ id: locales.invalidUsername })),
+        contractFrom: z.date(requiredMessage),
+        contractUntil: z.date(requiredMessage),
+        contractType: z.string(requiredMessage),
     })
 
     const form = useForm({
         mode: "uncontrolled",
         validate: zodResolver(validationSchema),
         onValuesChange: (values, previous) => {
+            const currentRequest = request
             if (values["firstName"] && values["secondName"]) {
-                setRequest({ ...request, fullName: `${values["firstName"].trim()} ${values["secondName"].trim()}` })
+                currentRequest.fullName = `${values["firstName"].trim()} ${values["secondName"].trim()}`
             }
             if (values["email"]) {
                 const email = (values["email"] as string).toLowerCase().trim()
-                setRequest({ ...request, email: email })
+                currentRequest.email = email
                 if (values["email"] !== previous["email"]) {
                     if (email.includes("@")) {
                         form.setFieldValue("username", email.split("@")[0])
@@ -60,8 +68,29 @@ export const CreateUser = () => {
                 }
             }
             if (values["username"]) {
-                setRequest({ ...request, username: (values["username"] as string).toLowerCase().trim() })
+                currentRequest.username = (values["username"] as string).toLowerCase().trim()
             }
+            if (values["contractUntil"]) {
+                const date = dayjs(values["contractUntil"]).format(DEFAULT_DATE_FORMAT)
+                currentRequest.contract = { ...currentRequest.contract, endDate: date }
+            }
+            if (values["contractFrom"]) {
+                if (
+                    !previous["contractFrom"] ||
+                    (values["contractFrom"] as Date).toISOString() !== (previous["contractFrom"] as Date).toISOString()
+                ) {
+                    const date = dayjs(values["contractFrom"])
+                    form.setFieldValue("contractUntil", date.add(1, "year").toDate())
+                    currentRequest.contract = {
+                        ...currentRequest.contract,
+                        startDate: date.format(DEFAULT_DATE_FORMAT),
+                    }
+                }
+            }
+            if (values["contractType"]) {
+                currentRequest.contract = { ...currentRequest.contract, type: values["contractType"] }
+            }
+            setRequest(currentRequest)
         },
     })
 
@@ -69,7 +98,7 @@ export const CreateUser = () => {
         enabled: false,
         queryKey: ["createUser", request],
         queryFn: () =>
-            UserApiService.createUser(request).then((response) => {
+            UserApiService.createUser(request).then((_) => {
                 notifications.show(
                     SuccessNotification(
                         <Text size="sm">
@@ -124,7 +153,30 @@ export const CreateUser = () => {
                         leftSection={<IconUser size={16} />}
                         {...form.getInputProps("username")}
                     ></TextInput>
+                    <Text c="dimmed" size="sm" mt="md">
+                        <FormattedMessage id={locales.contractInfo} />
+                    </Text>
+                    <Flex columnGap={8}>
+                        <DateInput
+                            withAsterisk
+                            className={classes.contractFrom}
+                            key={form.key("contractFrom")}
+                            leftSection={<IconCalendarMonth size={16} />}
+                            label={<FormattedMessage id={locales.contractFrom} />}
+                            {...form.getInputProps("contractFrom")}
+                        ></DateInput>
+                        <DateInput
+                            withAsterisk
+                            className={classes.contractUntil}
+                            key={form.key("contractUntil")}
+                            leftSection={<IconCalendarOff size={16} />}
+                            label={<FormattedMessage id={locales.contractUntil} />}
+                            {...form.getInputProps("contractUntil")}
+                        ></DateInput>
+                    </Flex>
+                    <ContractTypeSelect form={form} path={"contractType"} {...form.getInputProps("contractType")} />
                     <Button
+                        mt="md"
                         disabled={isFetching}
                         rightSection={isFetching ? <Loader size={16} /> : <IconUserPlus size={16} />}
                         onClick={onClickCreate}

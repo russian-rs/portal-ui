@@ -40,6 +40,14 @@
       "LAWYERS": "Юрист",
       "MEDIA": "Автор",
       "MEMBER": "Член организации"
+    },
+    "contract-type": {
+      "REGULAR": "Обычный (с ВНЖ)",
+      "ASSOCIATED": "Ассоциированный",
+      "select": {
+        "label": "Тип договора",
+        "empty": "Не выбрано"
+      }
     }
   },
   "footer": {
@@ -169,6 +177,9 @@
       "first-name": "Имя",
       "last-name": "Фамилия",
       "full-name": "Имя Фамилия",
+      "contract-info": "Информация о договоре",
+      "contract-from": "Дата начала",
+      "contract-until": "Дата окончания",
       "email": "E-mail",
       "username": "Логин",
       "roles": "Роли",

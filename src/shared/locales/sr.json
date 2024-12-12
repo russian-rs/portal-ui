@@ -40,6 +40,14 @@
       "LAWYERS": "Advokat",
       "MEDIA": "Autor",
       "MEMBER": "Član organizacije"
+    },
+    "contract-type": {
+      "REGULAR": "Redovno (sa boravokom)",
+      "ASSOCIATED": "Pridruženi",
+      "select": {
+        "label": "Vrsta ugovora",
+        "empty": "Nije izabrano"
+      }
     }
   },
   "footer": {
@@ -169,6 +177,9 @@
       "first-name": "Ime",
       "last-name": "Prezime",
       "full-name": "Ime Prezime",
+      "contract-info": "Informacije o ugovoru",
+      "contract-from": "Datum početka",
+      "contract-until": "Datum završetka",
       "email": "e-mail",
       "username": "Korisničko ime",
       "roles": "Uloge",
