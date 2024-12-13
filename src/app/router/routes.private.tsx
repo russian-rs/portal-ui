@@ -43,4 +43,8 @@ export const routes: RouteProps[] = [
         path: "/playgrounds",
         element: <PlaygroundsHowto />,
     },
+    {
+        path: "/",
+        element: <MyReports />,
+    },
 ]

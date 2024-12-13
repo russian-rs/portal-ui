@@ -1,7 +1,4 @@
 import { AppShell, AppShellHeader, Group } from "@mantine/core"
-import { useContext } from "react"
-import { Navigate } from "react-router"
-import { UserContext } from "src/app/providers/UserContext"
 import PublicRouter from "src/app/router/PublicRouter"
 import classes from "src/app/styles/public.module.scss"
 import { LocaleSwitcher } from "src/shared/ui/locale/LocaleSwitcher"
@@ -10,12 +7,6 @@ import { ThemeSwitcher } from "src/shared/ui/theme/ThemeSwitcher"
 
 // @ts-ignore
 const PublicApp = () => {
-    const { user } = useContext(UserContext)
-
-    if (user) {
-        return <Navigate to={`/profile/${user.username}`} />
-    }
-
     return (
         <>
             <AppShell className={classes.appShell}>

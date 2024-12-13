@@ -47,6 +47,7 @@ export const UserContextProvider = ({ children }: { children?: ReactNode }) => {
 
     useEffect(() => {
         SimpleLocalStorageService.setItem(USER, user)
+        SimpleLocalStorageService.setItem(LAST_LOGIN, new Date())
     }, [user])
 
     if (loading) {
