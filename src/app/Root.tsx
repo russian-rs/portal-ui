@@ -31,12 +31,12 @@ export const Root = () => {
         <MantineProvider defaultColorScheme="auto" theme={theme}>
             <QueryClientProvider client={queryClient}>
                 <LanguageContextProvider>
-                    <AppShell>
-                        <Notifications className={classes.notifications} />
-                        <UserContextProvider>
+                    <UserContextProvider>
+                        <AppShell>
+                            <Notifications className={classes.notifications} />
                             <RootRouter />
-                        </UserContextProvider>
-                    </AppShell>
+                        </AppShell>
+                    </UserContextProvider>
                 </LanguageContextProvider>
             </QueryClientProvider>
         </MantineProvider>

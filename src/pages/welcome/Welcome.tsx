@@ -77,7 +77,7 @@ export const Welcome = () => {
                                         radius="xl"
                                         size="md"
                                         className={classes.control}
-                                        onClick={() => navigate("/not-found")}
+                                        onClick={() => navigate("/application")}
                                     >
                                         <FormattedMessage id={locale.buttonApplication} />
                                     </Button>
