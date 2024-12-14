@@ -1,6 +1,7 @@
 import react from "@vitejs/plugin-react"
 import { resolve } from "node:path"
 import { defineConfig } from "vite"
+import { Mode, plugin as markDownPlugin } from "vite-plugin-markdown"
 
 export default defineConfig(({ mode }) => {
     return {
@@ -10,7 +11,7 @@ export default defineConfig(({ mode }) => {
                     plugins: [ "classProperties" ],
                 },
             },
-        }) ], optimizeDeps: {
+        }), markDownPlugin({ mode: [ Mode.MARKDOWN ] }) ], optimizeDeps: {
             include: [ "@tabler/icons-react" ], // Explicitly include the library for pre-bundling
         }, resolve: {
             alias: {
@@ -31,7 +32,7 @@ export default defineConfig(({ mode }) => {
                     api: "modern-compiler", additionalData: `@use "./src/_mantine" as *;`,
                 },
             },
-        },
+        }, assetsInclude: [ "*/*.md" ],
     }
 })
 
