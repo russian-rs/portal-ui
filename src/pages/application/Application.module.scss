@@ -1,0 +1,7 @@
+.root {
+    width: 60%;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 100%;
+    }
+}

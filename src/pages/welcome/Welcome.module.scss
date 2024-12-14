@@ -1,7 +1,7 @@
 .rootFlex {
     width: 100%;
-    max-height: 100%;
-    padding-top: var(--mantine-spacing-md);
+    height: calc(100dvh - var(--mantine-spacing-md) * 6);
+    padding-top: var(--mantine-spacing-xl);
     padding-bottom: var(--mantine-spacing-md);
 }
 
@@ -78,4 +78,8 @@
     @media (max-width: $mantine-breakpoint-xl) {
         display: none;
     }
+}
+
+.login {
+    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
 }

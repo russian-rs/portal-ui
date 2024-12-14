@@ -1,25 +1,28 @@
 .appShell {
-  display: flex;
-  position: fixed;
-  width: 100vw;
+    display: flex;
+    position: fixed;
+    width: 100dvw;
+    height: 100dvh;
 }
 
 .appShellMain {
-  width: 100%;
-  margin-top: calc(var(--mantine-spacing-md) * 3);
-  margin-bottom: calc(var(--mantine-spacing-md) * 3);
-  min-height: calc(100dvh - var(--mantine-spacing-md) * 6);
-  max-height: calc(100dvh - var(--mantine-spacing-md) * 6);
-
-  @media (max-width: $mantine-breakpoint-xs) {
+    flex-grow: 1;
+    margin-top: calc(var(--mantine-spacing-md) * 3);
     margin-bottom: calc(var(--mantine-spacing-md) * 2);
-    min-height: calc(100dvh - var(--mantine-spacing-md) * 5);
-    max-height: calc(100dvh - var(--mantine-spacing-md) * 5);
-  }
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        margin-bottom: calc(var(--mantine-spacing-md) * 2);
+    }
 }
 
 .appShellHeader {
-  border: none;
-  padding: var(--mantine-spacing-md);
-  height: calc(var(--mantine-spacing-md) * 3);
+    border: none;
+    padding: var(--mantine-spacing-md);
+    height: calc(var(--mantine-spacing-md) * 3);
+}
+
+.appShellMainScroll {
+    height: 100%;
+    width: 100%;
+    justify-content: center;
 }
