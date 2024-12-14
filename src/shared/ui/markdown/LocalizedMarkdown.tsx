@@ -8,12 +8,12 @@ interface LocalizedMarkdownProps {
 
 export const LocalizedMarkdown = ({ id }: LocalizedMarkdownProps) => {
     const { locale } = useContext(LocaleContext)
-    const [markdownContent, setMarkdownContent] = useState("")
+    const [markdownContent, setMarkdownContent] = useState()
 
     useEffect(() => {
-        fetch(`src/shared/locales/markdown/${locale}/${id}.md`)
-            .then((response) => response.text())
-            .then((text) => setMarkdownContent(text))
+        import(`src/shared/locales/markdown/${locale}/${id}.md`).then((file) => {
+            setMarkdownContent(file.markdown)
+        })
     }, [])
 
     return (
