@@ -38,7 +38,7 @@ export const ContractInfo = ({ contracts }: ContractInfoProps) => {
                 <FormattedMessage id={locales.daysLeft} values={{ count: getDaysLeft(contracts) }} />
             </Text>
             <TooltipLocalized text={locales.prolongationInfo} position="bottom">
-                <Button disabled={getDaysLeft(contracts) > 90}>
+                <Button disabled={getDaysLeft(contracts) > 90} variant="light">
                     <FormattedMessage id={locales.prolongation} />
                 </Button>
             </TooltipLocalized>
