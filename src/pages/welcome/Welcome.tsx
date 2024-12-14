@@ -1,5 +1,5 @@
 import { Button, Container, Flex, Group, Image, List, ScrollArea, Text, ThemeIcon, Title } from "@mantine/core"
-import { IconCheck } from "@tabler/icons-react"
+import { IconCheck, IconLogin2 } from "@tabler/icons-react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 import { locale } from "src/pages/welcome/lib/locale"
@@ -13,7 +13,7 @@ export const Welcome = () => {
     const navigate = useNavigate()
 
     return (
-        <Flex className={classes.rootFlex}>
+        <Flex className={classes.rootFlex} align="center">
             <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
             <Dots className={classes.dots} style={{ left: 0, top: 140 }} />
             <Dots className={classes.dots} style={{ left: 60, top: 140 }} />
@@ -65,17 +65,20 @@ export const Welcome = () => {
 
                                 <Group className={classes.controlGroup}>
                                     <Button
-                                        radius="xl"
-                                        size="md"
+                                        radius={0}
+                                        color="blue"
                                         className={classes.control}
+                                        rightSection={<IconLogin2 size={18} />}
                                         onClick={() => navigate(`/login`)}
+                                        variant="light"
                                     >
-                                        <FormattedMessage id={locale.buttonLogin} />
+                                        <Flex className={classes.login}>
+                                            <FormattedMessage id={locale.buttonLogin} />
+                                        </Flex>
                                     </Button>
                                     <Button
                                         variant="default"
-                                        radius="xl"
-                                        size="md"
+                                        radius={0}
                                         className={classes.control}
                                         onClick={() => navigate("/application")}
                                     >

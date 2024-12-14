@@ -1,4 +1,4 @@
-import { AppShell, AppShellHeader, Group } from "@mantine/core"
+import { AppShell, AppShellHeader, Flex, Group, ScrollArea } from "@mantine/core"
 import PublicRouter from "src/app/router/PublicRouter"
 import classes from "src/app/styles/public.module.scss"
 import { LocaleSwitcher } from "src/shared/ui/locale/LocaleSwitcher"
@@ -21,9 +21,13 @@ const PublicApp = () => {
                         </Group>
                     </Group>
                 </AppShellHeader>
-                <Group className={classes.appShellMain}>
-                    <PublicRouter />
-                </Group>
+                <ScrollArea className={classes.appShellMainScroll}>
+                    <Flex className={classes.appShellMainScroll}>
+                        <Flex className={classes.appShellMain} align="center" justify="center">
+                            <PublicRouter />
+                        </Flex>
+                    </Flex>
+                </ScrollArea>
             </AppShell>
         </>
     )
