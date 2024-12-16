@@ -123,7 +123,8 @@
         "type": "Vrsta ugovora",
         "days-left": "Još dana: {count}",
         "prolongation": "Produži",
-        "prolongation-info": "Ugovor se može produžiti najranije 3 meseca pre isteka tekućeg"
+        "prolongation-info": "Ugovor se može produžiti najranije 3 meseca pre isteka tekućeg",
+        "prolongation-disable": "Ova funkcionalnost je još uvek u razvoju"
       }
     },
     "report": {

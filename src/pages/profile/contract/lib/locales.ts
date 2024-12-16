@@ -5,4 +5,5 @@ export const locales = {
     daysLeft: "pages.profile.contract.days-left",
     prolongation: "pages.profile.contract.prolongation",
     prolongationInfo: "pages.profile.contract.prolongation-info",
+    prolongationDisable: "pages.profile.contract.prolongation-disable",
 }

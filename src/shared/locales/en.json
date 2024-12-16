@@ -123,7 +123,8 @@
         "type": "Contract type",
         "days-left": "Days left: {count}",
         "prolongation": "Extend",
-        "prolongation-info": "The contract can be extended no earlier than 3 months before the expiration of the current one"
+        "prolongation-info": "The contract can be extended no earlier than 3 months before the expiration of the current one",
+        "prolongation-disable": "This functionality is still under development"
       }
     },
     "report": {
