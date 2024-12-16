@@ -16,6 +16,7 @@ export const locales = {
 export const defaultPage: PageRequest = {
     pageNumber: 0,
     pageSize: 5,
+    sort: ["createTime;desc"],
 }
 
 export const defaultPageResponse: PageResponse = {
