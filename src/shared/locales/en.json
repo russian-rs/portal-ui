@@ -312,6 +312,10 @@
         "refuse-reason": "Reason for refusal: {reason}",
         "questions": "If you have any questions about the application, you can send them to <a href='mailto:info@russian.rs' target='_blank'>info@russian.rs</a>",
         "link": "This page is always accessible via the current link"
+      },
+      "existing": {
+        "title": "You don't need to fill out the form",
+        "description": "The volunteer form is only for new members of the organization"
       }
     }
   },
