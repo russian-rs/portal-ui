@@ -24,12 +24,11 @@ export const Content: ItemGroupProps[] = [
                 label: "navbar.reports.all",
                 link: "/reports",
                 roles: ["ADMIN_VOLUNTEER"],
-            },
-            {
-                label: "navbar.reports.summary",
-                link: "/reports/summary",
-                roles: ["ADMIN_VOLUNTEER"],
-            },
+            }, // {
+            //     label: "navbar.reports.summary",
+            //     link: "/reports/summary",
+            //     roles: ["ADMIN_VOLUNTEER"],
+            // },
         ],
     },
     {
@@ -39,15 +38,14 @@ export const Content: ItemGroupProps[] = [
             {
                 label: "navbar.volunteers.all-volunteers",
                 link: "/volunteers",
-            },
-            {
-                label: "navbar.volunteers.applications",
-                link: "/applications",
-            },
-            {
-                label: "navbar.volunteers.statistics",
-                link: "/volunteers-stats",
-            },
+            }, // {
+            //     label: "navbar.volunteers.applications",
+            //     link: "/applications",
+            // },
+            // {
+            //     label: "navbar.volunteers.statistics",
+            //     link: "/volunteers-stats",
+            // },
         ],
         roles: ["ADMIN", "ADMIN_VOLUNTEER", "ADMIN_SSO"],
     },
@@ -59,6 +57,6 @@ export const Content: ItemGroupProps[] = [
     {
         label: "navbar.support",
         icon: IconHelp,
-        link: "https://t.me/ruskadijaspora_bot",
+        link: "https://t.me/c/1842141044/5106",
     },
 ]
