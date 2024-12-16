@@ -49,6 +49,16 @@
         "label": "Тип договора",
         "empty": "Не выбрано"
       }
+    },
+    "application-status": {
+      "CREATED": "Создано",
+      "IN_PROGRESS": "В обработке",
+      "CLARIFICATION": "Уточнение",
+      "READY_TO_SEND": "Готово к отправке",
+      "DOCS_SENT": "Документы отправлены",
+      "DOCS_RECEIVED": "Документы получены",
+      "DONE": "Завершено",
+      "DENY": "Отказ"
     }
   },
   "footer": {
@@ -253,6 +263,7 @@
         "max-letters": "Максимальная длина - {count}",
         "form-error": "Анкета заполнена неверно",
         "captcha-error": "Проверка Captcha не пройдена",
+        "application-sent": "Vaša prijava je poslata",
         "email": "Ваш e-mail",
         "email-invalid": "Некорректный формат e-mail",
         "name": "Имя Фамилия",
@@ -293,6 +304,14 @@
         "skills-description": "Разработка, графический дизайн, психология, фотосъемка и т.д.",
         "goal": "С какой целью вы хотите стать членом организации?",
         "bio": "Напишите краткую биографию о себе"
+      },
+      "view": {
+        "title": "Статус вашей заявки на волонтерство",
+        "last-status": "Последний статус: {status}",
+        "last-update": "Последнее обновление: {date}",
+        "refuse-reason": "Причина отказа: {reason}",
+        "questions": "Если у вас есть вопросы по заявке, то можете написать их на почту <a href='mailto:info@russian.rs' target='_blank'>info@russian.rs</a>",
+        "link": "Данная страница всегда доступна по текущей ссылке"
       }
     }
   },

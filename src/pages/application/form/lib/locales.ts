@@ -7,6 +7,7 @@ export const locales = {
     maxLetters: "pages.application.form.max-letters",
     formError: "pages.application.form.form-error",
     captchaError: "pages.application.form.captcha-error",
+    applicationSent: "pages.application.form.application-sent",
 
     email: "pages.application.form.email",
     emailInvalid: "pages.application.form.email-invalid",
