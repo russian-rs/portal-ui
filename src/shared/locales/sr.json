@@ -312,6 +312,10 @@
         "refuse-reason": "Razlog odbijanja: {reason}",
         "questions": "Ako imate pitanja u vezi sa prijavom, možete ih poslati na <a href='mailto:info@russian.rs' target='_blank'>info@russian.rs</a>",
         "link": "Ova stranica je uvek dostupna preko trenutnog linka"
+      },
+      "existing": {
+        "title": "Ne morate da popunjavate anketu",
+        "description": "Anketu za volontiranje popunjavaju samo novi članovi organizacije"
       }
     }
   },
