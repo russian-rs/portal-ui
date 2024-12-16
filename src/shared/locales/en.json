@@ -49,6 +49,16 @@
         "label": "Contract type",
         "empty": "Not selected"
       }
+    },
+    "application-status": {
+      "CREATED": "Created",
+      "IN_PROGRESS": "In Progress",
+      "CLARIFICATION": "Clarification",
+      "READY_TO_SEND": "Ready to Send",
+      "DOCS_SENT": "Documents Sent",
+      "DOCS_RECEIVED": "Documents Received",
+      "DONE": "Completed",
+      "DENY": "Denied"
     }
   },
   "footer": {
@@ -253,6 +263,7 @@
         "max-letters": "Maximum length - {count}",
         "form-error": "The form is filled out incorrectly",
         "captcha-error": "Captcha verification failed",
+        "application-sent": "Your application received",
         "email": "Your e-mail",
         "email-invalid": "Invalid e-mail format",
         "name": "First Name Last Name",
@@ -293,6 +304,14 @@
         "skills-description": "Development, graphic design, psychology, photography, etc.",
         "goal": "Why do you want to become a member of the organization?",
         "bio": "Write a brief biography about yourself"
+      },
+      "view": {
+        "title": "The status of your volunteer application",
+        "last-status": "Last status: {status}",
+        "last-update": "Last update: {date}",
+        "refuse-reason": "Reason for refusal: {reason}",
+        "questions": "If you have any questions about the application, you can send them to <a href='mailto:info@russian.rs' target='_blank'>info@russian.rs</a>",
+        "link": "This page is always accessible via the current link"
       }
     }
   },

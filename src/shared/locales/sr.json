@@ -49,6 +49,16 @@
         "label": "Vrsta ugovora",
         "empty": "Nije izabrano"
       }
+    },
+    "application-status": {
+      "CREATED": "Kreirano",
+      "IN_PROGRESS": "U obradi",
+      "CLARIFICATION": "Pojašnjenje",
+      "READY_TO_SEND": "Spremno za slanje",
+      "DOCS_SENT": "Dokumenti poslati",
+      "DOCS_RECEIVED": "Dokumenti primljeni",
+      "DONE": "Završeno",
+      "DENY": "Odbijeno"
     }
   },
   "footer": {
@@ -253,6 +263,7 @@
         "max-letters": "Maksimalna dužina - {count}",
         "form-error": "Prijava nije ispravno popunjena",
         "captcha-error": "Captcha provera nije prošla",
+        "application-sent": "",
         "email": "Vaš e-mail",
         "email-invalid": "Neispravan format e-maila",
         "name": "Ime Prezime",
@@ -293,6 +304,14 @@
         "skills-description": "Razvoj, grafički dizajn, psihologija, fotografija itd.",
         "goal": "Koji je vaš cilj za članstvo u organizaciji?",
         "bio": "Napišite kratku biografiju o sebi"
+      },
+      "view": {
+        "title": "Status vaše prijave za volontiranje",
+        "last-status": "Poslednji status: {status}",
+        "last-update": "Poslednje ažuriranje: {date}",
+        "refuse-reason": "Razlog odbijanja: {reason}",
+        "questions": "Ako imate pitanja u vezi sa prijavom, možete ih poslati na <a href='mailto:info@russian.rs' target='_blank'>info@russian.rs</a>",
+        "link": "Ova stranica je uvek dostupna preko trenutnog linka"
       }
     }
   },

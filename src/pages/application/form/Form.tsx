@@ -1,12 +1,15 @@
-import { Button, Checkbox, Flex, SegmentedControl, Text, Textarea, TextInput } from "@mantine/core"
+import { Button, Checkbox, Flex, Loader, SegmentedControl, Text, Textarea, TextInput } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
+import { notifications } from "@mantine/notifications"
+import { ApplicationDto } from "@russian-rs/portal-api-axios"
 import {
     IconAlertCircle,
     IconAt,
     IconBrandTelegram,
     IconBriefcase,
     IconCake,
+    IconCheck,
     IconEPassport,
     IconLanguageHiragana,
     IconLogin2,
@@ -15,18 +18,26 @@ import {
     IconSignature,
     IconWorld,
 } from "@tabler/icons-react"
+import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
+import { useNavigate } from "react-router"
+import { defaultRequest } from "src/pages/application/form/lib/defaults"
 import { locales } from "src/pages/application/form/lib/locales"
+import { mapValuesToRequest } from "src/pages/application/form/lib/mapper"
+import { PublicApplicationApiService } from "src/shared/api/PublicApplicationApiService"
+import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { CaptchaSolver } from "src/shared/ui/captcha/CaptchaSolver"
 import { z } from "zod"
 import classes from "./Form.module.scss"
 
 export const Form = () => {
     const intl = useIntl()
+    const navigate = useNavigate()
     const [captchaToken, setCaptchaToken] = useState<string | null>(null)
 
+    const [request, setRequest] = useState<ApplicationDto>(defaultRequest)
     const [location, setLocation] = useState("IN")
     const [residence, setResidence] = useState("REQUIRED")
     const [experience, setExperience] = useState(false)
@@ -106,8 +117,54 @@ export const Form = () => {
         validate: zodResolver(validationSchema),
         onValuesChange: (values) => {
             setFormError(null)
+            setRequest(mapValuesToRequest(values, request))
         },
     })
+
+    const { isFetching, refetch } = useQuery({
+        enabled: false,
+        queryKey: ["sendApplication", request],
+        queryFn: () =>
+            PublicApplicationApiService.createApplication(captchaToken!!, request).then((res) => {
+                notifications.show(
+                    SuccessNotification(
+                        <Text size="sm">
+                            <FormattedMessage id={locales.applicationSent} />
+                        </Text>,
+                        null
+                    )
+                )
+                navigate(`/application/${res.data.id}`)
+            }),
+    })
+
+    const onSend = () => {
+        if (captchaToken) {
+            if (form.validate().hasErrors) {
+                setFormError(intl.formatMessage({ id: locales.formError }))
+            } else {
+                refetch()
+            }
+        }
+    }
+
+    useEffect(() => {
+        setFormError(null)
+        setRequest({
+            ...request,
+            inSerbia: location == "IN",
+            residenceRequired: residence == "REQUIRED",
+            hasExperience: experience,
+        })
+    }, [location, residence, experience])
+
+    useEffect(() => {
+        if (captchaToken) {
+            setFormError(null)
+        } else {
+            setFormError(intl.formatMessage({ id: locales.captchaError }))
+        }
+    }, [captchaToken])
 
     const addressArea = (
         <Flex className={classes.innerFlex}>
@@ -121,6 +178,7 @@ export const Form = () => {
                 leftSection={<IconLogin2 size={16} />}
                 key={form.key("enterDate")}
                 {...form.getInputProps("enterDate")}
+                disabled={isFetching}
             />
             <TextInput
                 label={<FormattedMessage id={locales.address} />}
@@ -131,6 +189,7 @@ export const Form = () => {
                 leftSection={<IconMap2 size={16} />}
                 key={form.key("address")}
                 {...form.getInputProps("address")}
+                disabled={isFetching}
             />
             <TextInput
                 label={<FormattedMessage id={locales.phone} />}
@@ -141,6 +200,7 @@ export const Form = () => {
                 leftSection={<IconPhone size={16} />}
                 key={form.key("phone")}
                 {...form.getInputProps("phone")}
+                disabled={isFetching}
             />
         </Flex>
     )
@@ -152,56 +212,38 @@ export const Form = () => {
                 label={<FormattedMessage id={locales.agreement1} />}
                 key={form.key("agreement1")}
                 {...form.getInputProps("agreement1")}
+                disabled={isFetching}
             />
             <Checkbox
                 radius={0}
                 label={<FormattedMessage id={locales.agreement2} />}
                 key={form.key("agreement2")}
                 {...form.getInputProps("agreement2")}
+                disabled={isFetching}
             />
             <Checkbox
                 radius={0}
                 label={<FormattedMessage id={locales.agreement3} />}
                 key={form.key("agreement3")}
                 {...form.getInputProps("agreement3")}
+                disabled={isFetching}
             />
             <Checkbox
                 radius={0}
                 label={<FormattedMessage id={locales.agreement4} />}
                 key={form.key("agreement4")}
                 {...form.getInputProps("agreement4")}
+                disabled={isFetching}
             />
             <Checkbox
                 radius={0}
                 label={<FormattedMessage id={locales.agreement5} />}
                 key={form.key("agreement5")}
                 {...form.getInputProps("agreement5")}
+                disabled={isFetching}
             />
         </Flex>
     )
-
-    const onSend = () => {
-        if (captchaToken) {
-            if (form.validate().hasErrors) {
-                setFormError(intl.formatMessage({ id: locales.formError }))
-                console.log("Invalid")
-            } else {
-                console.log("Valid")
-            }
-        }
-    }
-
-    useEffect(() => {
-        setFormError(null)
-    }, [location, residence, experience])
-
-    useEffect(() => {
-        if (captchaToken) {
-            setFormError(null)
-        } else {
-            setFormError(intl.formatMessage({ id: locales.captchaError }))
-        }
-    }, [captchaToken])
 
     return (
         <Flex className={classes.root}>
@@ -216,6 +258,7 @@ export const Form = () => {
                 leftSection={<IconAt size={16} />}
                 key={form.key("email")}
                 {...form.getInputProps("email")}
+                disabled={isFetching}
             />
             <TextInput
                 label={<FormattedMessage id={locales.name} />}
@@ -226,6 +269,7 @@ export const Form = () => {
                 leftSection={<IconSignature size={16} />}
                 key={form.key("name")}
                 {...form.getInputProps("name")}
+                disabled={isFetching}
             />
             <TextInput
                 label={<FormattedMessage id={locales.patronymic} />}
@@ -235,6 +279,7 @@ export const Form = () => {
                 withAsterisk
                 key={form.key("patronymic")}
                 {...form.getInputProps("patronymic")}
+                disabled={isFetching}
             />
             <DateInput
                 label={<FormattedMessage id={locales.birthDate} />}
@@ -248,6 +293,7 @@ export const Form = () => {
                 leftSection={<IconCake size={16} />}
                 key={form.key("birthDate")}
                 {...form.getInputProps("birthDate")}
+                disabled={isFetching}
             />
             <TextInput
                 label={<FormattedMessage id={locales.passport} />}
@@ -258,6 +304,7 @@ export const Form = () => {
                 leftSection={<IconEPassport size={16} />}
                 key={form.key("passport")}
                 {...form.getInputProps("passport")}
+                disabled={isFetching}
             />
             <TextInput
                 label={<FormattedMessage id={locales.citizenship} />}
@@ -267,6 +314,7 @@ export const Form = () => {
                 leftSection={<IconWorld size={16} />}
                 key={form.key("citizenship")}
                 {...form.getInputProps("citizenship")}
+                disabled={isFetching}
             />
             <TextInput
                 label={<FormattedMessage id={locales.telegram} />}
@@ -277,6 +325,7 @@ export const Form = () => {
                 leftSection={<IconBrandTelegram size={16} />}
                 key={form.key("telegram")}
                 {...form.getInputProps("telegram")}
+                disabled={isFetching}
             />
             <SegmentedControl
                 fullWidth
@@ -290,6 +339,7 @@ export const Form = () => {
                         label: <FormattedMessage id={locales.outSerbia} />,
                     },
                 ]}
+                disabled={isFetching}
             />
             {location == "IN" && addressArea}
             <SegmentedControl
@@ -304,6 +354,7 @@ export const Form = () => {
                     },
                     { value: "NOT_REQUIRED", label: <FormattedMessage id={locales.residenceNotRequired} /> },
                 ]}
+                disabled={isFetching}
             />
             {residenceArea}
             <TextInput
@@ -314,11 +365,13 @@ export const Form = () => {
                 leftSection={<IconBriefcase size={16} />}
                 key={form.key("occupation")}
                 {...form.getInputProps("occupation")}
+                disabled={isFetching}
             />
             <Checkbox
                 radius={0}
                 label={<FormattedMessage id={locales.checkExperience} />}
                 onChange={(e) => setExperience(e.currentTarget.checked)}
+                disabled={isFetching}
             />
             {experience && (
                 <Textarea
@@ -329,6 +382,7 @@ export const Form = () => {
                     withAsterisk
                     key={form.key("experience")}
                     {...form.getInputProps("experience")}
+                    disabled={isFetching}
                 />
             )}
             <TextInput
@@ -340,6 +394,7 @@ export const Form = () => {
                 leftSection={<IconLanguageHiragana size={16} />}
                 key={form.key("languages")}
                 {...form.getInputProps("languages")}
+                disabled={isFetching}
             />
             <Textarea
                 label={<FormattedMessage id={locales.skills} />}
@@ -350,6 +405,7 @@ export const Form = () => {
                 withAsterisk
                 key={form.key("skills")}
                 {...form.getInputProps("skills")}
+                disabled={isFetching}
             />
             <Textarea
                 label={<FormattedMessage id={locales.goal} />}
@@ -359,6 +415,7 @@ export const Form = () => {
                 withAsterisk
                 key={form.key("goal")}
                 {...form.getInputProps("goal")}
+                disabled={isFetching}
             />
             <Textarea
                 label={<FormattedMessage id={locales.bio} />}
@@ -368,6 +425,7 @@ export const Form = () => {
                 withAsterisk
                 key={form.key("bio")}
                 {...form.getInputProps("bio")}
+                disabled={isFetching}
             />
             <CaptchaSolver
                 className={classes.captcha}
@@ -381,7 +439,13 @@ export const Form = () => {
                         <Text className={classes.errorMessage}>{formError}</Text>
                     </Flex>
                 )}
-                <Button className={classes.button} variant="gradient" onClick={onSend}>
+                <Button
+                    className={classes.button}
+                    variant="gradient"
+                    onClick={onSend}
+                    disabled={isFetching}
+                    leftSection={isFetching ? <Loader size={16} /> : <IconCheck size={16} />}
+                >
                     <FormattedMessage id={locales.buttonSend} />
                 </Button>
             </Flex>
