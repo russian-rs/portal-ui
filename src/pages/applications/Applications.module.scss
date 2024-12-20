@@ -1,4 +1,4 @@
-$table-width: 52rem;
+$table-width: 64rem;
 
 .root {
     padding: 1rem 1rem 2rem 2rem;
@@ -23,4 +23,15 @@ $table-width: 52rem;
 
 .table {
     width: $table-width
+}
+
+.pagination {
+    width: $table-width;
+    margin-top: 1rem;
+    align-items: center;
+    column-gap: 1rem;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 100%;
+    }
 }

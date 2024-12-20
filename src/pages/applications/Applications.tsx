@@ -116,7 +116,7 @@ export const Applications = () => {
                             onChange={(page) => setPageRequest({ ...pageRequest, pageNumber: page - 1 })}
                         />
                         <Text c="dimmed">
-                            <FormattedMessage id={locales.total} values={{ total: page.totalElements }} />
+                            <FormattedMessage id={locales.total} values={{ count: page.totalElements }} />
                         </Text>
                     </Flex>
                 )}
