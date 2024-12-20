@@ -8,6 +8,7 @@ import { ApplicationMenu } from "src/pages/applications/menu/ApplicationMenu"
 import { PrivateApplicationApiService } from "src/shared/api/PrivateApplicationApiService"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
+import { getMantineColor } from "src/shared/ui/theme/CustomMantineTheme"
 import classes from "./ApplicationRow.module.scss"
 
 interface ApplicationRowProps {
@@ -40,6 +41,7 @@ export const ApplicationRow = ({ applicationDto }: ApplicationRowProps) => {
                     <Avatar
                         name={application.name}
                         size={24}
+                        color={getMantineColor(application.name)}
                         className={classes.avatar}
                         onClick={() => window.open(`/application/${application.id}`)}
                     />
