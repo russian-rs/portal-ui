@@ -9,7 +9,7 @@ import { locales } from "src/pages/report/constants"
 import { TaskCard } from "src/pages/report/task/TaskCard"
 import { ReportApiService } from "src/shared/api/ReportApiService"
 import { resolveUsers } from "src/shared/api/UserApiService"
-import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
+import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { getReportStatusColor } from "src/shared/report/status"
 import { getSpentTimeFromTasks } from "src/shared/report/timeSpent"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
@@ -17,7 +17,7 @@ import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import classes from "./ReportPage.module.scss"
 
 export const ReportPage = () => {
-    useSetDocumentTitleByLocale(locales.documentTitle)
+    setDocumentTitleByLocale(locales.documentTitle)
 
     const { id } = useParams()
     const intl = useIntl()

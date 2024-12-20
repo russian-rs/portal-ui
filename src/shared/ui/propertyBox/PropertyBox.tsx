@@ -30,7 +30,7 @@ export const PropertyBox = ({
                     {icon}
                     {href ? (
                         <Anchor href={href} target="_blank" style={{ maxWidth: "90%" }}>
-                            <Text truncate="end" style={{ maxWidth: "100%" }}>
+                            <Text truncate="end" style={{ maxWidth: "100%" }} size="sm">
                                 {value}
                             </Text>
                         </Anchor>

@@ -1,0 +1,48 @@
+.root {
+    padding: 2rem;
+    flex-direction: column;
+    row-gap: 1rem;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        padding: 1rem;
+    }
+}
+
+.title {
+    font-size: large;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        font-size: large;
+    }
+}
+
+.name {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.statusSelect {
+    width: 14rem;
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    border-radius: 5px;
+    padding-left: 10px;
+}
+
+.fields {
+    width: 32rem;
+    flex-wrap: wrap;
+    column-gap: 2rem;
+    row-gap: 1rem;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        width: 100%
+    }
+}
+
+.textCard {
+    width: 32rem;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        width: 100%
+    }
+}

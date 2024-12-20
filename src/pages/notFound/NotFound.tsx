@@ -4,11 +4,11 @@ import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 import { locales } from "src/pages/notFound/lib/locales"
 import { Image404 } from "src/pages/notFound/resources/Image404"
-import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
+import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import classes from "./NotFound.module.scss"
 
 export const NotFound = () => {
-    useSetDocumentTitleByLocale(locales.documentTitle)
+    setDocumentTitleByLocale(locales.documentTitle)
 
     const navigate = useNavigate()
 

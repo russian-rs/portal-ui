@@ -5,12 +5,12 @@ import { useNavigate, useParams } from "react-router"
 import { ContractInfo } from "src/pages/profile/contract/ContractInfo"
 import { ProfileInfo } from "src/pages/profile/info/ProfileInfo"
 import { UserApiService } from "src/shared/api/UserApiService"
-import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
+import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import classes from "./Profile.module.scss"
 
 export const Profile = () => {
-    useSetDocumentTitleByLocale("pages.profile.documentTitle")
+    setDocumentTitleByLocale("pages.profile.documentTitle")
 
     const { login } = useParams()
     const navigate = useNavigate()

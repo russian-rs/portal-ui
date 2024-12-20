@@ -48,7 +48,6 @@ export const ReportStatusSelect = (props: ReportStatusSelectProps) => {
                         className={props.className}
                         onClick={() => combobox.toggleDropdown()}
                         leftSection={<IconAlignBoxLeftTop size={16} />}
-                        rightSectionPointerEvents={value === null ? "none" : "all"}
                         rightSection={
                             value !== null ? (
                                 <CloseButton

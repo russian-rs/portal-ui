@@ -19,7 +19,7 @@
     "@mantine/hooks": "^7.14.3",
     "@mantine/notifications": "^7.14.3",
     "@newrelic/browser-agent": "^1.273.0",
-    "@russian-rs/portal-api-axios": "1.8.0",
+    "@russian-rs/portal-api-axios": "1.8.2",
     "@tabler/icons-react": "^3.24.0",
     "@tanstack/react-query": "^5.56.3",
     "@types/node": "^22.10.1",

@@ -34,15 +34,17 @@ export const Content: ItemGroupProps[] = [
     {
         label: "navbar.volunteers.volunteers",
         icon: IconUsers,
+        initiallyOpened: true,
         items: [
             {
                 label: "navbar.volunteers.all-volunteers",
                 link: "/volunteers",
+            },
+            {
+                label: "navbar.volunteers.applications",
+                link: "/applications",
+                roles: ["ADMIN_VOLUNTEER", "ADMIN"],
             }, // {
-            //     label: "navbar.volunteers.applications",
-            //     link: "/applications",
-            // },
-            // {
             //     label: "navbar.volunteers.statistics",
             //     link: "/volunteers-stats",
             // },

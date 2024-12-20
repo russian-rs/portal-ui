@@ -1,30 +1,29 @@
-import { Avatar, CloseButton, Flex, Input, Pagination, Table, Text } from "@mantine/core"
+import { CloseButton, Flex, Input, Pagination, Table, Text } from "@mantine/core"
 import { PageRequest } from "@russian-rs/portal-api-axios"
-import { IconLock, IconUfo } from "@tabler/icons-react"
+import { IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
-import { CreateUser } from "src/pages/users/createUser/CreateUser"
-import { defaultPage, defaultPageResponse } from "src/pages/users/lib/defaults"
-import { allowedRoles } from "src/pages/users/lib/roles"
-import { UserMenu } from "src/pages/users/userMenu/UserMenu"
-import { UserApiService } from "src/shared/api/UserApiService"
+import { allowedRoles } from "src/pages/applications/lib/roles"
+import { ApplicationRow } from "src/pages/applications/row/ApplicationRow"
+import { PrivateApplicationApiService } from "src/shared/api/PrivateApplicationApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { hasPermission } from "src/shared/user/roles"
+import classes from "./Applications.module.scss"
+import { defaultPage, defaultPageResponse } from "./lib/defaults"
 import { locales } from "./lib/locales"
-import classes from "./UserList.module.scss"
 
-export const UserList = () => {
+export const Applications = () => {
     setDocumentTitleByLocale(locales.title)
 
     const { user } = useContext(UserContext)
     const navigate = useNavigate()
 
-    const [search, setSearch] = useState("")
-    const [debouncedSearch, setDebouncedSearch] = useState(search)
+    const [searchQuery, setSearchQuery] = useState("")
+    const [debouncedSearch, setDebouncedSearch] = useState(searchQuery)
 
     const [pageRequest, setPageRequest] = useState<PageRequest>(defaultPage)
 
@@ -32,10 +31,10 @@ export const UserList = () => {
     useEffect(() => {
         const handler = setTimeout(() => {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
-            setDebouncedSearch(search.trim())
+            setDebouncedSearch(searchQuery.trim())
         }, 500)
         return () => clearTimeout(handler)
-    }, [search])
+    }, [searchQuery])
 
     if (!hasPermission(user, allowedRoles)) {
         navigate("/unauthorized")
@@ -46,75 +45,56 @@ export const UserList = () => {
         isFetching,
     } = useQuery({
         initialData: { content: [], page: defaultPageResponse },
-        queryKey: ["searchUsers", debouncedSearch, pageRequest],
-        queryFn: () => UserApiService.searchUsers(debouncedSearch, pageRequest).then((response) => response.data),
+        queryKey: ["getApplications", debouncedSearch, pageRequest],
+        queryFn: () =>
+            PrivateApplicationApiService.getApplications(pageRequest, debouncedSearch).then(
+                (response) => response.data
+            ),
     })
 
-    const rows = content.map((user) => (
-        <Table.Tr key={user.id}>
-            <Table.Td>
-                <Flex columnGap={16} align="center" className={classes.columnName}>
-                    <Avatar
-                        size={36}
-                        src={user.avatar?.link}
-                        name={user.fullName}
-                        className={classes.avatar}
-                        onClick={() => navigate(`/profile/${user.username}`)}
-                    />
-                    <Text truncate="end">{user.fullName}</Text>
-                </Flex>
-            </Table.Td>
-            <Table.Td>{user.email}</Table.Td>
-            <Table.Td>
-                <Flex align="start" direction="column">
-                    {user.groups.map((group) => (
-                        <Text key={group} className={classes.role} truncate="end">
-                            <FormattedMessage id={`common.roles.${group}`} />
-                        </Text>
-                    ))}
-                </Flex>
-            </Table.Td>
-            <Table.Td>
-                <Flex align="center" justify="end">
-                    {!user.active && <IconLock size={16} color="red" />}
-                    <UserMenu user={user} />
-                </Flex>
-            </Table.Td>
-        </Table.Tr>
-    ))
+    const rows = content.map((application) => <ApplicationRow key={application.id} applicationDto={application} />)
 
     return (
         <Flex direction="column">
             <CustomLoader visible={isFetching} className={classes.loader} />
             <Flex className={classes.root}>
+                <Text className={classes.title} variant="gradient">
+                    <FormattedMessage id={locales.title} />
+                </Text>
                 <Flex align="center" columnGap="8">
                     <Input
                         placeholder={"Поиск"}
-                        value={search}
-                        onChange={(event) => setSearch(event.currentTarget.value)}
+                        value={searchQuery}
+                        onChange={(event) => setSearchQuery(event.currentTarget.value)}
                         rightSectionPointerEvents="all"
                         rightSection={
                             <CloseButton
                                 aria-label="Clear input"
-                                onClick={() => setSearch("")}
-                                style={{ display: search ? undefined : "none" }}
+                                onClick={() => setSearchQuery("")}
+                                style={{ display: searchQuery ? undefined : "none" }}
                             />
                         }
                     />
-                    <CreateUser />
                 </Flex>
                 <Table stickyHeader highlightOnHover className={classes.table}>
                     <Table.Thead>
                         <Table.Tr>
-                            <Table.Th className={classes.columnName}>
-                                <FormattedMessage id={locales.fullName} />
+                            <Table.Th>
+                                <FormattedMessage id={locales.created} />
                             </Table.Th>
-                            <Table.Th className={classes.columnEmail}>
+                            <Table.Th>
+                                <FormattedMessage id={locales.type} />
+                            </Table.Th>
+                            <Table.Th>
+                                <FormattedMessage id={locales.name} />
+                            </Table.Th>
+                            <Table.Th>
                                 <FormattedMessage id={locales.email} />
                             </Table.Th>
-                            <Table.Th className={classes.columnRoles}>
-                                <FormattedMessage id={locales.roles} />
+                            <Table.Th>
+                                <FormattedMessage id={locales.status} />
                             </Table.Th>
+                            <Table.Th></Table.Th>
                         </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>{rows}</Table.Tbody>
@@ -145,4 +125,4 @@ export const UserList = () => {
     )
 }
 
-export default UserList
+export default Applications

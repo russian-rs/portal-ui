@@ -6,10 +6,10 @@ import { locale } from "src/pages/welcome/lib/locale"
 import image from "src/pages/welcome/resources/image.svg"
 import { Dots } from "src/pages/welcome/ui/Dots"
 import classes from "src/pages/welcome/Welcome.module.scss"
-import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
+import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 
 export const Welcome = () => {
-    useSetDocumentTitleByLocale(locale.documentTitle)
+    setDocumentTitleByLocale(locale.documentTitle)
     const navigate = useNavigate()
 
     return (

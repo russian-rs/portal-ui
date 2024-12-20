@@ -10,10 +10,10 @@ import { UserContext } from "src/app/providers/UserContext"
 import { ReportApiService } from "src/shared/api/ReportApiService"
 import { resolveUsers } from "src/shared/api/UserApiService"
 import { DEFAULT_DATE_FORMAT } from "src/shared/datetime/formats"
-import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
+import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { getSpentTimeFromReport } from "src/shared/report/timeSpent"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
-import { ReportStatusSelect } from "src/shared/ui/statusSelect/ReportStatusSelect"
+import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
 import { UserSearch } from "src/shared/ui/userSearch/UserSearch"
 import { WeekPicker } from "src/shared/ui/weekPicker/WeekPicker"
 import { hasPermission } from "src/shared/user/roles"
@@ -23,7 +23,7 @@ import { allowedRoles } from "./lib/roles"
 import classes from "./ReportList.module.scss"
 
 export const ReportList = () => {
-    useSetDocumentTitleByLocale(locales.title)
+    setDocumentTitleByLocale(locales.title)
 
     const [searchParams] = useSearchParams()
     const loginParam = searchParams.get("login")
@@ -75,7 +75,7 @@ export const ReportList = () => {
 
     const rows = reports.map((report) => {
         const creator = users[report.user!!] || defaultUser(report.user!!)
-        const createTime = dayjs(report.createTime).format("DD MMM YYYY hh:mm")
+        const createTime = dayjs(report.createTime).format("DD MMM YYYY HH:mm")
         const timeSpent = getSpentTimeFromReport(report, intl)
         const filesCount = getReportFilesCount(report)
         return (

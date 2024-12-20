@@ -2,12 +2,12 @@ import { Button, Flex, Text } from "@mantine/core"
 import { IconChevronLeft, IconHome, IconLockAccess } from "@tabler/icons-react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
-import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
+import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { locales } from "./lib/locales"
 import classes from "./UnauthorizedPage.module.scss"
 
 export const UnauthorizedPage = () => {
-    useSetDocumentTitleByLocale(locales.documentTitle)
+    setDocumentTitleByLocale(locales.documentTitle)
 
     const navigate = useNavigate()
 

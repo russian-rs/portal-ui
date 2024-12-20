@@ -5,7 +5,8 @@ import classes from "./SuccessNotification.module.scss"
 
 export const SuccessNotification = (
     title: ReactNode,
-    body: ReactNode
+    body: ReactNode,
+    icon: ReactNode = <IconCheck />
 ): NotificationData => {
     return {
         color: "green",
@@ -15,6 +16,6 @@ export const SuccessNotification = (
         classNames: classes,
         autoClose: 5000,
         withCloseButton: true,
-        icon: <IconCheck />,
+        icon: icon,
     }
 }

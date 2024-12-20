@@ -1,0 +1,8 @@
+.copyable {
+    width: fit-content;
+    cursor: pointer;
+
+    &:hover {
+        border-bottom: 2px dotted var(--mantine-color-gray-5);
+    }
+}
