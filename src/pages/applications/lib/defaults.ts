@@ -2,7 +2,7 @@ import { PageRequest, PageResponse } from "@russian-rs/portal-api-axios"
 
 export const defaultPage: PageRequest = {
     pageNumber: 0,
-    pageSize: 20,
+    pageSize: 10,
     sort: ["created;desc"],
 }
 

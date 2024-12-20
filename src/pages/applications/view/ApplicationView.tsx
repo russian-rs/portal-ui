@@ -3,7 +3,6 @@ import {
     IconArrowRight,
     IconAt,
     IconBrandTelegram,
-    IconBriefcase,
     IconBriefcaseOff,
     IconCake,
     IconClock,
@@ -179,13 +178,7 @@ export const ApplicationView = () => {
             <Flex direction="column" rowGap="md">
                 {application.occupation && <PropertyBox name={locales.occupation} value={application.occupation} />}
             </Flex>
-            {application.hasExperience && (
-                <PropertyBox
-                    name={locales.experience}
-                    value={application.experience}
-                    icon={<IconBriefcase size={14} />}
-                />
-            )}
+            {application.hasExperience && <PropertyBox name={locales.experience} value={application.experience} />}
             {!application.hasExperience && (
                 <Flex columnGap="sm" align="center">
                     <IconBriefcaseOff size={16} color="gray" />
