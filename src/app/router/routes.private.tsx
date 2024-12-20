@@ -9,7 +9,9 @@ const MyReports = lazy(() => import("src/pages/myReports/MyReports"))
 const ReportList = lazy(() => import("src/pages/reports/ReportList"))
 const UserList = lazy(() => import("src/pages/users/UserList"))
 const PlaygroundsHowto = lazy(() => import("src/pages/playgrounds/PlaygroundsHowto"))
-const ExistingApplication = lazy(() => import("src/pages/application/existing/Existing"))
+const Application = lazy(() => import("src/pages/application/Application"))
+const ApplicationForm = lazy(() => import("src/pages/application/form/Form"))
+const ApplicationStatusView = lazy(() => import("src/pages/application/view/ViewStatus"))
 const ApplicationList = lazy(() => import("src/pages/applications/Applications"))
 const ApplicationView = lazy(() => import("src/pages/applications/view/ApplicationView"))
 
@@ -51,12 +53,20 @@ export const routes: RouteProps[] = [
         element: <ApplicationView />,
     },
     {
-        path: "/application",
-        element: <ExistingApplication />,
-    },
-    {
         path: "/applications",
         element: <ApplicationList />,
+    },
+    {
+        path: "/application",
+        element: <Application />,
+    },
+    {
+        path: "/application/form",
+        element: <ApplicationForm />,
+    },
+    {
+        path: "/application-status/:id",
+        element: <ApplicationStatusView />,
     },
     {
         path: "/",

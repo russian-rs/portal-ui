@@ -5,7 +5,7 @@ import { IconUser } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import React, { ReactNode, useEffect, useState } from "react"
 import { useIntl } from "react-intl"
-import { UserApiService } from "src/shared/api/UserApiService"
+import { UserApiService } from "src/shared/api/user/UserApiService"
 import classes from "./UserSearch.module.scss"
 
 interface UserSearchProps {

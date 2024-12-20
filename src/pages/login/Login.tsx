@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react"
 import { useNavigate } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
-import { UserApiService } from "src/shared/api/UserApiService"
+import { UserApiService } from "src/shared/api/user/UserApiService"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 
 export const Login = () => {

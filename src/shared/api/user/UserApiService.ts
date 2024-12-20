@@ -1,6 +1,8 @@
 import { UserApi, UserInfoDto } from "@russian-rs/portal-api-axios"
 import { useQuery } from "@tanstack/react-query"
+import { AxiosResponse } from "axios"
 import { RequestHttp } from "src/shared/http/RequestHttp"
+import { SimpleRequestHttp } from "src/shared/http/SimpleRequestHttp"
 
 export const UserApiService = new UserApi(undefined, undefined, RequestHttp)
 
@@ -21,4 +23,9 @@ export const resolveUsers = (logins: (string | undefined | null)[]) => {
                 )
             }),
     })
+}
+
+export const checkUserForApplication = (): Promise<AxiosResponse<UserInfoDto>> => {
+    const userApi = new UserApi(undefined, undefined, SimpleRequestHttp)
+    return userApi.getCurrentAccount()
 }

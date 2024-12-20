@@ -6,7 +6,7 @@ import { FormattedMessage } from "react-intl"
 import { UserContext } from "src/app/providers/UserContext"
 import classes from "src/pages/profile/avatar/ProfileAvatar.module.scss"
 import { FilesApiService } from "src/shared/api/FilesApiService"
-import { UserApiService } from "src/shared/api/UserApiService"
+import { UserApiService } from "src/shared/api/user/UserApiService"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 
 interface ProfileAvatarProps {

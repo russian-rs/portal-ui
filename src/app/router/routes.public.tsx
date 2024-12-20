@@ -4,7 +4,7 @@ import { RouteProps } from "react-router"
 const Welcome = lazy(() => import("src/pages/welcome/Welcome"))
 const Application = lazy(() => import("src/pages/application/Application"))
 const ApplicationForm = lazy(() => import("src/pages/application/form/Form"))
-const ApplicationView = lazy(() => import("src/pages/application/view/ViewStatus"))
+const ApplicationStatusView = lazy(() => import("src/pages/application/view/ViewStatus"))
 
 export const routes: RouteProps[] = [
     {
@@ -16,8 +16,8 @@ export const routes: RouteProps[] = [
         element: <ApplicationForm />,
     },
     {
-        path: "/application/:id",
-        element: <ApplicationView />,
+        path: "/application-status/:id",
+        element: <ApplicationStatusView />,
     },
     {
         path: "/",
