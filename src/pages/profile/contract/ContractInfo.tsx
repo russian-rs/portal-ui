@@ -6,6 +6,7 @@ import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 import { locales } from "src/pages/profile/contract/lib/locales"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
+import { TooltipLocalized } from "src/shared/ui/tooltip/TooltipLocalized"
 import classes from "./ContractInfo.module.scss"
 
 interface ContractInfoProps {
@@ -39,9 +40,11 @@ export const ContractInfo = ({ contracts }: ContractInfoProps) => {
             <Text className={classes.daysLeft}>
                 <FormattedMessage id={locales.daysLeft} values={{ count: getDaysLeft(contracts) }} />
             </Text>
-            <Button variant="light" onClick={() => navigate("/application")}>
-                <FormattedMessage id={locales.prolongation} />
-            </Button>
+            <TooltipLocalized text={locales.prolongationInfo} position="bottom">
+                <Button variant="light" onClick={() => navigate("/application")} disabled={getDaysLeft(contracts) > 90}>
+                    <FormattedMessage id={locales.prolongation} />
+                </Button>
+            </TooltipLocalized>
         </Flex>
     )
 }
