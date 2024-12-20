@@ -272,7 +272,7 @@
         "max-letters": "Максимальная длина - {count}",
         "form-error": "Анкета заполнена неверно",
         "captcha-error": "Проверка Captcha не пройдена",
-        "application-sent": "Vaša prijava je poslata",
+        "application-sent": "Ваша заявка отправлена",
         "email": "Ваш e-mail",
         "email-invalid": "Некорректный формат e-mail",
         "name": "Имя Фамилия",
