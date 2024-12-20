@@ -1,0 +1,30 @@
+export const locales = {
+    title: "pages.applications.view.title",
+
+    createdAt: "pages.applications.view.created-at",
+    status: "pages.applications.view.status",
+    type: "pages.applications.view.type",
+
+    email: "pages.applications.view.email",
+    phone: "pages.applications.view.phone",
+    telegram: "pages.applications.view.telegram",
+    birthDate: "pages.applications.view.birth",
+    passport: "pages.applications.view.passport",
+    citizenship: "pages.applications.view.citizenship",
+
+    inSerbia: "pages.applications.view.in-serbia",
+    outSerbia: "pages.applications.view.out-serbia",
+    enterDate: "pages.applications.view.enter",
+    address: "pages.applications.view.address",
+
+    residenceRequired: "pages.applications.view.residence-required",
+    residenceNotRequired: "pages.applications.view.residence-not-required",
+
+    occupation: "pages.applications.view.occupation",
+    experience: "pages.applications.view.experience",
+    noExperience: "pages.applications.view.no-experience",
+    languages: "pages.applications.view.languages",
+    skills: "pages.applications.view.skills",
+    goal: "pages.applications.view.goal",
+    bio: "pages.applications.view.bio",
+}

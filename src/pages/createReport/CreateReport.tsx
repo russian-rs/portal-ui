@@ -8,11 +8,11 @@ import { defaultTask, locales } from "src/pages/createReport/constants"
 import classes from "src/pages/createReport/CreateReport.module.scss"
 import { TaskCard, TaskCardInterface } from "src/pages/createReport/task/TaskCard"
 import { ReportApiService } from "src/shared/api/ReportApiService"
-import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
+import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { v4 as uuid } from "uuid"
 
 export const CreateReport = () => {
-    useSetDocumentTitleByLocale(locales.title)
+    setDocumentTitleByLocale(locales.title)
 
     const [tasks, setTasks] = useState<TaskDto[]>([defaultTask])
     const taskRefs = useRef<{ [key: string]: React.RefObject<TaskCardInterface> }>({})

@@ -10,6 +10,8 @@ const ReportList = lazy(() => import("src/pages/reports/ReportList"))
 const UserList = lazy(() => import("src/pages/users/UserList"))
 const PlaygroundsHowto = lazy(() => import("src/pages/playgrounds/PlaygroundsHowto"))
 const ExistingApplication = lazy(() => import("src/pages/application/existing/Existing"))
+const ApplicationList = lazy(() => import("src/pages/applications/Applications"))
+const ApplicationView = lazy(() => import("src/pages/applications/view/ApplicationView"))
 
 export const routes: RouteProps[] = [
     {
@@ -45,8 +47,16 @@ export const routes: RouteProps[] = [
         element: <PlaygroundsHowto />,
     },
     {
+        path: "/application/:id",
+        element: <ApplicationView />,
+    },
+    {
         path: "/application",
         element: <ExistingApplication />,
+    },
+    {
+        path: "/applications",
+        element: <ApplicationList />,
     },
     {
         path: "/",

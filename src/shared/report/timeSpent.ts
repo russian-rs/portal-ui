@@ -3,8 +3,7 @@ import { IntlShape } from "react-intl"
 import { locales } from "src/pages/report/constants"
 
 export const getSpentTimeFromReport = (report: ReportDto, intl: IntlShape): string => {
-    const timeInMinutes = report.tasks.map((it) => it.timeSpent).reduce((acc, val) => acc + val, 0)
-    return getSpentTime(timeInMinutes, intl)
+    return getSpentTimeFromTasks(report.tasks, intl)
 }
 
 export const getSpentTimeFromTasks = (tasks: TaskDto[], intl: IntlShape): string => {

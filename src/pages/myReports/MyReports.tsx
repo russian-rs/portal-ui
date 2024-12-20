@@ -10,17 +10,17 @@ import { UserContext } from "src/app/providers/UserContext"
 import { defaultFilter, defaultPage, defaultPageResponse, locales } from "src/pages/myReports/constants"
 import { ReportApiService } from "src/shared/api/ReportApiService"
 import { DEFAULT_DATE_FORMAT } from "src/shared/datetime/formats"
-import { useSetDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
+import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { getReportStatusColor } from "src/shared/report/status"
 import { getSpentTimeFromReport } from "src/shared/report/timeSpent"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
-import { ReportStatusSelect } from "src/shared/ui/statusSelect/ReportStatusSelect"
+import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
 import { WeekPicker } from "src/shared/ui/weekPicker/WeekPicker"
 import classes from "./MyReports.module.scss"
 
 export const MyReports = () => {
-    useSetDocumentTitleByLocale(locales.documentTitle)
+    setDocumentTitleByLocale(locales.documentTitle)
     const { user } = useContext(UserContext)
     const intl = useIntl()
     const navigate = useNavigate()

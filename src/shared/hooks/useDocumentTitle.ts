@@ -1,15 +1,11 @@
-import { useEffect } from "react"
-
 import { PrimitiveType } from "intl-messageformat"
+import { useEffect } from "react"
 
 import { useFormatMessage } from "./useFormatMessage"
 
 const DEFAULT_TITLE = "Портал волонтера"
 
-export function useSetDocumentTitleByLocale(
-    locale: string,
-    values?: Record<string, PrimitiveType>
-) {
+export function setDocumentTitleByLocale(locale: string, values?: Record<string, PrimitiveType>) {
     const formatMessage = useFormatMessage()
     const title = formatMessage(locale, values)
 
@@ -22,9 +18,7 @@ export function useSetDocumentTitleByLocale(
     }, [title])
 }
 
-export const setDocumentTitleByString = (
-    title: string | PrimitiveType[] | null | undefined
-) => {
+export const setDocumentTitleByString = (title: string | PrimitiveType[] | null | undefined) => {
     if (title) {
         if (Array.isArray(title)) {
             document.title = title.filter(Boolean).join(" | ")

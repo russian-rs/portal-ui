@@ -59,6 +59,14 @@
       "DOCS_RECEIVED": "Dokumenti primljeni",
       "DONE": "Završeno",
       "DENY": "Odbijeno"
+    },
+    "application-type": {
+      "NEW": "Nova",
+      "PROLONGATION": "Produženje"
+    },
+    "copy-text": {
+      "tooltip": "Kliknite da kopirate",
+      "notification": "Kopirano u međumemoriju"
     }
   },
   "footer": {
@@ -317,6 +325,45 @@
       "existing": {
         "title": "Ne morate da popunjavate anketu",
         "description": "Anketu za volontiranje popunjavaju samo novi članovi organizacije"
+      }
+    },
+    "applications": {
+      "title": "Prijave za članstvo",
+      "empty": "Nijedna prijava nije pronađena",
+      "total": "Ukupno: {count}",
+      "created": "Kreirano",
+      "type": "Tip",
+      "name": "Ime i Prezime",
+      "email": "E-mail",
+      "status": "Status",
+      "menu": {
+        "view": "Pogledaj",
+        "contact": "Kontaktiraj"
+      },
+      "view": {
+        "title": "Prijavni formular",
+        "created-at": "Popunjeno",
+        "status": "Status prijave",
+        "type": "Tip",
+        "email": "E-mail",
+        "phone": "Telefon",
+        "telegram": "Telegram",
+        "birth": "Datum rođenja",
+        "passport": "Broj pasoša",
+        "citizenship": "Državljanstvo",
+        "in-serbia": "Osoba je navela da je već u Srbiji i",
+        "out-serbia": "Osoba je navela da još nije u Srbiji i",
+        "enter": "Datum ulaska u Srbiju",
+        "address": "Adresa u Srbiji",
+        "residence-required": "potrebna je boravišna dozvola",
+        "residence-not-required": "nije potrebna boravišna dozvola",
+        "occupation": "Zanimanje",
+        "experience": "Ima volontersko iskustvo",
+        "no-experience": "Nema volontersko iskustvo",
+        "languages": "Poznavanje jezika",
+        "skills": "Veštine",
+        "goal": "Cilj učestvovanja u organizaciji",
+        "bio": "Kratka biografija"
       }
     }
   },

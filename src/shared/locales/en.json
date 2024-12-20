@@ -59,6 +59,14 @@
       "DOCS_RECEIVED": "Documents Received",
       "DONE": "Completed",
       "DENY": "Denied"
+    },
+    "application-type": {
+      "NEW": "New",
+      "PROLONGATION": "Prolongation"
+    },
+    "copy-text": {
+      "tooltip": "Click to copy",
+      "notification": "Copied to clipboard"
     }
   },
   "footer": {
@@ -317,6 +325,45 @@
       "existing": {
         "title": "You don't need to fill out the form",
         "description": "The volunteer form is only for new members of the organization"
+      }
+    },
+    "applications": {
+      "title": "Applications for Admission",
+      "empty": "No applications found",
+      "total": "Total: {count}",
+      "created": "Created",
+      "type": "Type",
+      "name": "First and Last Name",
+      "email": "E-mail",
+      "status": "Status",
+      "menu": {
+        "view": "View",
+        "contact": "Contact"
+      },
+      "view": {
+        "title": "Application Form",
+        "created-at": "Filled Out",
+        "status": "Application Status",
+        "type": "Type",
+        "email": "E-mail",
+        "phone": "Phone",
+        "telegram": "Telegram",
+        "birth": "Date of Birth",
+        "passport": "Passport Number",
+        "citizenship": "Citizenship",
+        "in-serbia": "The person already in Serbia and",
+        "out-serbia": "The person not yet in Serbia and",
+        "enter": "Date of Entry into Serbia",
+        "address": "Address in Serbia",
+        "residence-required": "residence permit is required",
+        "residence-not-required": "residence permit is not required",
+        "occupation": "Occupation",
+        "experience": "Has volunteering experience",
+        "no-experience": "Does not have volunteering experience",
+        "languages": "Language Proficiency",
+        "skills": "Skills",
+        "goal": "Purpose of Participation in the Organization",
+        "bio": "Brief Biography"
       }
     }
   },
