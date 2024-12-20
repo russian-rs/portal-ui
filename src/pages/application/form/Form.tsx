@@ -26,7 +26,8 @@ import { useNavigate } from "react-router"
 import { defaultRequest } from "src/pages/application/form/lib/defaults"
 import { locales } from "src/pages/application/form/lib/locales"
 import { mapValuesToRequest } from "src/pages/application/form/lib/mapper"
-import { PublicApplicationApiService } from "src/shared/api/PublicApplicationApiService"
+import { PublicApplicationApiService } from "src/shared/api/applications/PublicApplicationApiService"
+import { checkUserForApplication } from "src/shared/api/user/UserApiService"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { CaptchaSolver } from "src/shared/ui/captcha/CaptchaSolver"
 import { z } from "zod"
@@ -121,6 +122,25 @@ export const Form = () => {
         },
     })
 
+    const { data: currentUser } = useQuery({
+        queryKey: ["checkUser"],
+        queryFn: () =>
+            checkUserForApplication().then((res) => {
+                return res.data
+            }),
+    })
+
+    useEffect(() => {
+        if (currentUser) {
+            form.setFieldValue("email", currentUser.email)
+            form.setFieldValue("name", currentUser.fullName)
+            form.setFieldValue("birthDate", dayjs(currentUser.birthDate).toDate())
+            form.setFieldValue("telegram", currentUser.telegram)
+            form.setFieldValue("address", currentUser.address)
+            form.setFieldValue("phone", currentUser.phone)
+        }
+    }, [currentUser])
+
     const { isFetching, refetch } = useQuery({
         enabled: false,
         queryKey: ["sendApplication", request],
@@ -134,7 +154,7 @@ export const Form = () => {
                         null
                     )
                 )
-                navigate(`/application/${res.data.id}`)
+                navigate(`/application-status/${res.data.id}`)
             }),
     })
 
@@ -258,7 +278,7 @@ export const Form = () => {
                 leftSection={<IconAt size={16} />}
                 key={form.key("email")}
                 {...form.getInputProps("email")}
-                disabled={isFetching}
+                disabled={isFetching || currentUser !== undefined}
             />
             <TextInput
                 label={<FormattedMessage id={locales.name} />}
@@ -269,7 +289,7 @@ export const Form = () => {
                 leftSection={<IconSignature size={16} />}
                 key={form.key("name")}
                 {...form.getInputProps("name")}
-                disabled={isFetching}
+                disabled={isFetching || currentUser !== undefined}
             />
             <TextInput
                 label={<FormattedMessage id={locales.patronymic} />}

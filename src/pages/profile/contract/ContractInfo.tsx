@@ -3,9 +3,9 @@ import { ContractDto } from "@russian-rs/portal-api-axios"
 import { IconCalendar, IconContract } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import { FormattedMessage } from "react-intl"
+import { useNavigate } from "react-router"
 import { locales } from "src/pages/profile/contract/lib/locales"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
-import { TooltipLocalized } from "src/shared/ui/tooltip/TooltipLocalized"
 import classes from "./ContractInfo.module.scss"
 
 interface ContractInfoProps {
@@ -13,6 +13,8 @@ interface ContractInfoProps {
 }
 
 export const ContractInfo = ({ contracts }: ContractInfoProps) => {
+    const navigate = useNavigate()
+
     if (contracts.length == 0) {
         return <></>
     }
@@ -37,11 +39,9 @@ export const ContractInfo = ({ contracts }: ContractInfoProps) => {
             <Text className={classes.daysLeft}>
                 <FormattedMessage id={locales.daysLeft} values={{ count: getDaysLeft(contracts) }} />
             </Text>
-            <TooltipLocalized text={locales.prolongationDisable} position="bottom">
-                <Button disabled={true} variant="light">
-                    <FormattedMessage id={locales.prolongation} />
-                </Button>
-            </TooltipLocalized>
+            <Button variant="light" onClick={() => navigate("/application")}>
+                <FormattedMessage id={locales.prolongation} />
+            </Button>
         </Flex>
     )
 }

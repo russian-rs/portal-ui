@@ -17,7 +17,7 @@ import dayjs from "dayjs"
 import { FormattedMessage } from "react-intl"
 import { useNavigate, useParams } from "react-router"
 import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
-import { PrivateApplicationApiService } from "src/shared/api/PrivateApplicationApiService"
+import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
@@ -178,7 +178,12 @@ export const ApplicationView = () => {
             <Flex direction="column" rowGap="md">
                 {application.occupation && <PropertyBox name={locales.occupation} value={application.occupation} />}
             </Flex>
-            {application.hasExperience && <PropertyBox name={locales.experience} value={application.experience} />}
+            {application.hasExperience && (
+                <PropertyBox
+                    name={locales.experience}
+                    value={<Text className={classes.textCard}>{application.experience}</Text>}
+                />
+            )}
             {!application.hasExperience && (
                 <Flex columnGap="sm" align="center">
                     <IconBriefcaseOff size={16} color="gray" />

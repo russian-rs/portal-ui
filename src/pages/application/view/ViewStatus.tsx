@@ -6,7 +6,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
 import { defaultApplicationStatus } from "src/pages/application/view/lib/defaults"
 import { locales } from "src/pages/application/view/lib/locales"
-import { PublicApplicationApiService } from "src/shared/api/PublicApplicationApiService"
+import { PublicApplicationApiService } from "src/shared/api/applications/PublicApplicationApiService"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 import classes from "./ViewStatus.module.scss"
 

@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
-import { UserApiService } from "src/shared/api/UserApiService"
+import { UserApiService } from "src/shared/api/user/UserApiService"
 import { locales } from "../lib/locales"
 import classes from "./UserMenu.module.scss"
 
