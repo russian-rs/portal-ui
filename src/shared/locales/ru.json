@@ -241,8 +241,8 @@
         "2": {
           "title": "Заполните Excel файл по шаблону",
           "description": "1 площадка = 1 заполненный файл",
-          "link": "Скачать шаблон можно <a href='https://docs.google.com/spreadsheets/d/1Vu1m7sVkMmSn8blN6K2-9eL6KGCiMwcvze9Ydn3HrTA' target='_blank'>по ссылке</a>",
-          "hint": "Скопировать файл к себе <i>Файл - Создать копию</i>.<br/>Заполнить таблицу и скачать как .xlsx файл <i>Файл - Скачать</i>"
+          "link": "Скопировать себе шаблон можно <a href='https://docs.google.com/spreadsheets/d/1Vu1m7sVkMmSn8blN6K2-9eL6KGCiMwcvze9Ydn3HrTA' target='_blank'>по ссылке</a>",
+          "hint": "Скопировать файл к себе <i>Файл - Создать копию</i>.<br/>Заполнять шаблон нужно только онлайн в Google Таблицах. <br/>После заполнения скачать как .xlsx файл <i>Файл - Скачать</i>"
         },
         "3": {
           "title": "Внесите информацию о трех площадках",
