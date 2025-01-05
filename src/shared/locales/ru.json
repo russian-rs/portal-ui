@@ -41,6 +41,7 @@
       "LAWYERS": "Юрист",
       "MEDIA": "Автор",
       "TEACHER": "Учитель",
+      "SEO_MANAGER": "SEO менеджер",
       "MEMBER": "Член организации"
     },
     "contract-type": {

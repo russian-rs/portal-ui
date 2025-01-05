@@ -41,6 +41,7 @@
       "LAWYERS": "Lawyer",
       "MEDIA": "Media author",
       "TEACHER": "Teacher",
+      "SEO_MANAGER": "SEO manager",
       "MEMBER": "Member"
     },
     "contract-type": {
