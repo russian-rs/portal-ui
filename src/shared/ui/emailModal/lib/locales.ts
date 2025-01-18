@@ -1,0 +1,9 @@
+export const locales = {
+    title: "common.email-drawer.title",
+    recipients: "common.email-drawer.recipients",
+    subject: "common.email-drawer.subject",
+    send: "common.email-drawer.send",
+    emptySubject: "common.email-drawer.emptySubject",
+    emptyContent: "common.email-drawer.emptyContent",
+    success: "common.email-drawer.success",
+}

@@ -33,7 +33,7 @@ Da biste zaključili volonterski ugovor sa našom organizacijom, potrebno je da 
 - Sačekajte naš odgovor. Na osnovu vašeg upitnika možemo vas pozvati na onlajn intervju putem Telegrama ili Zoom-a.
   Međutim, to je malo verovatno ako ste već detaljno ispričali o sebi u upitniku
 - Dobijte paket dokumenata na e-mail, ako je doneta pozitivna odluka
-- Platite članarinu
+- [Platite članarinu](https://russian.rs/migration/documents/create_uplatnica)
 - Popunite dokumenta i pošaljite ih nazad u roku od 3 dana. Možete ih poslati putem sajta (forma) ili na
   e-mail [ruskadijasporausrbiji@gmail.com](mailto:ruskadijasporausrbiji@gmail.com)
 - Dobijte ugovor poštom i vratite druge primerke poštanskim putem

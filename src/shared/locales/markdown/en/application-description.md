@@ -36,7 +36,7 @@ To sign a volunteer contract with our organization, follow these five simple ste
 - Wait for our response. Based on your application, we may invite you to an online interview via Telegram or Zoom.
   However, this is unlikely if you have already provided detailed information about yourself in the form.
 - Receive the document package by email if a positive decision is made.
-- Pay the membership fees.
+- [Pay the membership fees](https://russian.rs/migration/documents/create_uplatnica)
 - Complete the documents and send them back within 3 days. You can submit them via the website (form) or email them to
   [ruskadijasporausrbiji@gmail.com](mailto:ruskadijasporausrbiji@gmail.com)
 - Receive the contract by mail and return the second copies via postal delivery.

@@ -1,7 +1,8 @@
 import { Avatar, CloseButton, Flex, Input, Pagination, Table, Text } from "@mantine/core"
-import { PageRequest } from "@russian-rs/portal-api-axios"
+import { ContractDto, PageRequest } from "@russian-rs/portal-api-axios"
 import { IconLock, IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
+import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
@@ -74,6 +75,7 @@ export const UserList = () => {
                     ))}
                 </Flex>
             </Table.Td>
+            <Table.Td>{getLastContractDate(user.contracts)}</Table.Td>
             <Table.Td>
                 <Flex align="center" justify="end">
                     {!user.active && <IconLock size={16} color="red" />}
@@ -115,6 +117,9 @@ export const UserList = () => {
                             <Table.Th className={classes.columnRoles}>
                                 <FormattedMessage id={locales.roles} />
                             </Table.Th>
+                            <Table.Th className={classes.columnContractDue}>
+                                <FormattedMessage id={locales.contractDue} />
+                            </Table.Th>
                         </Table.Tr>
                     </Table.Thead>
                     <Table.Tbody>{rows}</Table.Tbody>
@@ -143,6 +148,16 @@ export const UserList = () => {
             </Flex>
         </Flex>
     )
+}
+
+const getLastContractDate = (contracts: ContractDto[] | undefined): string => {
+    if (!contracts || contracts.length < 1) {
+        return ""
+    }
+    const lastContract = contracts.reduce((max, current) => {
+        return new Date(current.endDate) > new Date(max.endDate) ? current : max
+    }, contracts[0])
+    return dayjs(lastContract.endDate).format("DD MMM YYYY")
 }
 
 export default UserList

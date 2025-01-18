@@ -1,0 +1,184 @@
+import { Button, Drawer, Flex, Loader, Pill, Text, Textarea, TextInput } from "@mantine/core"
+import { notifications } from "@mantine/notifications"
+import { Link, RichTextEditor } from "@mantine/tiptap"
+import { IconMailForward } from "@tabler/icons-react"
+import { useQuery } from "@tanstack/react-query"
+import Highlight from "@tiptap/extension-highlight"
+import SubScript from "@tiptap/extension-subscript"
+import Superscript from "@tiptap/extension-superscript"
+import TextAlign from "@tiptap/extension-text-align"
+import Underline from "@tiptap/extension-underline"
+import { useEditor } from "@tiptap/react"
+import { StarterKit } from "@tiptap/starter-kit"
+import React, { useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
+import { MailApiService } from "src/shared/api/MailApiService"
+import EmailTemplate from "src/shared/email/EmailTemplate"
+import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
+import classes from "./EmailDrawer.module.scss"
+import { locales } from "./lib/locales"
+
+interface EmailModalProps {
+    opened: boolean
+    close: () => void
+    recipients: [{ name: string; email: string }]
+    templates?: EmailTemplate[] | undefined
+}
+
+export const EmailDrawer = (props: EmailModalProps) => {
+    const intl = useIntl()
+
+    const [topic, setTopic] = useState("")
+    const [content, setContent] = useState("")
+    const [template, setTemplate] = useState("")
+
+    const { isFetching: sending, refetch: send } = useQuery({
+        enabled: false,
+        queryKey: ["sendEmail", topic, content],
+        queryFn: () =>
+            MailApiService.sendMail(topic, content, props.recipients[0].email).then((_) => {
+                notifications.show(
+                    SuccessNotification(
+                        <Text size="sm">
+                            <FormattedMessage id={locales.success} />
+                        </Text>,
+                        null
+                    )
+                )
+                props.close()
+                setTopic("")
+                setContent("")
+                setTemplate("")
+            }),
+    })
+
+    const editor = useEditor(
+        {
+            extensions: [
+                StarterKit,
+                Underline,
+                Link,
+                Superscript,
+                SubScript,
+                Highlight,
+                TextAlign.configure({ types: ["heading", "paragraph"] }),
+            ],
+            editable: !sending,
+            content: template,
+            onUpdate: ({ editor }) => {
+                setContent(editor.getHTML())
+            },
+        },
+        [sending, template]
+    )
+
+    const onSend = () => {
+        if (topic === "") {
+            alert(intl.formatMessage({ id: locales.emptySubject }))
+            return
+        }
+        if (content === "") {
+            alert(intl.formatMessage({ id: locales.emptyContent }))
+            return
+        }
+        send()
+    }
+
+    return (
+        <Drawer
+            opened={props.opened}
+            onClose={props.close}
+            title={<FormattedMessage id={locales.title} />}
+            offset={16}
+            radius="md"
+            size="xl"
+        >
+            <Flex direction="column" className={classes.drawer}>
+                <Textarea
+                    label={<FormattedMessage id={locales.recipients} />}
+                    disabled={true}
+                    autosize
+                    minRows={1}
+                    withAsterisk
+                    value={props.recipients
+                        .map((r) => {
+                            return `${r.name} <${r.email}>`
+                        })
+                        .join(", ")}
+                />
+                <TextInput
+                    withAsterisk
+                    label={<FormattedMessage id={locales.subject} />}
+                    value={topic}
+                    onChange={(event) => {
+                        setTopic(event.target.value)
+                    }}
+                ></TextInput>
+                <RichTextEditor editor={editor}>
+                    <RichTextEditor.Toolbar sticky stickyOffset={60}>
+                        <RichTextEditor.ControlsGroup>
+                            <RichTextEditor.Bold />
+                            <RichTextEditor.Italic />
+                            <RichTextEditor.Underline />
+                            <RichTextEditor.Strikethrough />
+                            <RichTextEditor.ClearFormatting />
+                            <RichTextEditor.Highlight />
+                        </RichTextEditor.ControlsGroup>
+
+                        <RichTextEditor.ControlsGroup>
+                            <RichTextEditor.H1 />
+                            <RichTextEditor.H2 />
+                            <RichTextEditor.H3 />
+                        </RichTextEditor.ControlsGroup>
+
+                        <RichTextEditor.ControlsGroup>
+                            <RichTextEditor.Link />
+                            <RichTextEditor.Unlink />
+                        </RichTextEditor.ControlsGroup>
+
+                        <RichTextEditor.ControlsGroup>
+                            <RichTextEditor.AlignLeft />
+                            <RichTextEditor.AlignCenter />
+                            <RichTextEditor.AlignJustify />
+                            <RichTextEditor.AlignRight />
+                        </RichTextEditor.ControlsGroup>
+
+                        <RichTextEditor.ControlsGroup>
+                            <RichTextEditor.Undo />
+                            <RichTextEditor.Redo />
+                        </RichTextEditor.ControlsGroup>
+                    </RichTextEditor.Toolbar>
+
+                    <RichTextEditor.Content className={classes.editor} />
+                </RichTextEditor>
+                {props.templates && (
+                    <Flex wrap="wrap" className={classes.templates}>
+                        {props.templates.map((template) => (
+                            <Pill
+                                disabled={sending}
+                                className={classes.template}
+                                onClick={() => {
+                                    setTopic(template.topic)
+                                    setContent(template.content)
+                                    setTemplate(template.content)
+                                }}
+                            >
+                                {template.name}
+                            </Pill>
+                        ))}
+                    </Flex>
+                )}
+                <Flex>
+                    <Button
+                        onClick={onSend}
+                        className={classes.sendButton}
+                        leftSection={sending ? <Loader size={16} /> : <IconMailForward size={16} />}
+                        disabled={sending}
+                    >
+                        <FormattedMessage id={locales.send} />
+                    </Button>
+                </Flex>
+            </Flex>
+        </Drawer>
+    )
+}

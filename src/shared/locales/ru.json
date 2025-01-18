@@ -69,6 +69,15 @@
     "copy-text": {
       "tooltip": "Нажмите, чтобы скопировать",
       "notification": "Скопировано в буфер обмена"
+    },
+    "email-drawer": {
+      "title": "Отправить сообщение",
+      "recipients": "Получатели",
+      "subject": "Тема письма",
+      "send": "Отправить",
+      "emptySubject": "Тема письма обязательна",
+      "emptyContent": "Пустое тело письма",
+      "success": "Сообщение успешно отправлено"
     }
   },
   "footer": {
@@ -213,6 +222,7 @@
       "email": "E-mail",
       "username": "Логин",
       "roles": "Роли",
+      "contractDue": "Контракт до",
       "create-button": "Создать",
       "menu-common": "Общее",
       "menu-control": "Управление",

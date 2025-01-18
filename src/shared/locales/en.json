@@ -69,6 +69,15 @@
     "copy-text": {
       "tooltip": "Click to copy",
       "notification": "Copied to clipboard"
+    },
+    "email-drawer": {
+      "title": "Send Message",
+      "recipients": "Recipients",
+      "subject": "Email Subject",
+      "send": "Send",
+      "emptySubject": "Subject is required",
+      "emptyContent": "Empty email body",
+      "success": "Message sent successfully"
     }
   },
   "footer": {
@@ -213,6 +222,7 @@
       "email": "e-mail",
       "username": "Username",
       "roles": "Roles",
+      "contractDue": "Contract until",
       "create-button": "Create",
       "menu-common": "Common",
       "menu-control": "Control",
