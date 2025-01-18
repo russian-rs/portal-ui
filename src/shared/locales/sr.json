@@ -69,6 +69,15 @@
     "copy-text": {
       "tooltip": "Kliknite da kopirate",
       "notification": "Kopirano u međumemoriju"
+    },
+    "email-drawer": {
+      "title": "Pošalji Poruku",
+      "recipients": "Primaoci",
+      "subject": "Tema Emaila",
+      "send": "Pošalji",
+      "emptySubject": "Tema je obavezna",
+      "emptyContent": "Prazno telo emaila",
+      "success": "Poruka uspešno poslata"
     }
   },
   "footer": {
@@ -213,6 +222,7 @@
       "email": "e-mail",
       "username": "Korisničko ime",
       "roles": "Uloge",
+      "contractDue": "Ugovor do",
       "create-button": "Stvoriti",
       "menu-common": "Opšte",
       "menu-control": "Upravljanje",

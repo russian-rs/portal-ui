@@ -13,6 +13,7 @@ import { useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 import { UserApiService } from "src/shared/api/user/UserApiService"
+import { EmailDrawer } from "src/shared/ui/emailModal/EmailDrawer"
 import { locales } from "../lib/locales"
 import classes from "./UserMenu.module.scss"
 
@@ -24,6 +25,8 @@ export const UserMenu = ({ user }: UserMenuProps) => {
     const navigate = useNavigate()
 
     const [userDto, setUserDto] = useState(user)
+
+    const [emailDrawerOpen, setEmailDrawerOpen] = useState<boolean>(false)
 
     const { isFetching: isActivating, refetch: activate } = useQuery({
         enabled: false,
@@ -45,6 +48,11 @@ export const UserMenu = ({ user }: UserMenuProps) => {
 
     return (
         <Menu shadow="md" width={200} closeOnItemClick={false}>
+            <EmailDrawer
+                opened={emailDrawerOpen}
+                close={() => setEmailDrawerOpen(false)}
+                recipients={[{ name: user.fullName, email: user.email }]}
+            />
             <Menu.Target>
                 <IconDotsVertical size={16} className={classes.dots} />
             </Menu.Target>
@@ -56,7 +64,7 @@ export const UserMenu = ({ user }: UserMenuProps) => {
                 <Menu.Item leftSection={<IconEye size={14} />} onClick={() => navigate(`/profile/${userDto.username}`)}>
                     <FormattedMessage id={locales.menuView} />
                 </Menu.Item>
-                <Menu.Item leftSection={<IconMessageCircle size={14} />} disabled={true}>
+                <Menu.Item leftSection={<IconMessageCircle size={14} />} onClick={() => setEmailDrawerOpen(true)}>
                     <FormattedMessage id={locales.menuContact} />
                 </Menu.Item>
                 <Menu.Item

@@ -1,0 +1,22 @@
+.drawer {
+    row-gap: 1rem;
+}
+
+.editor {
+    max-height: 30dvh;
+    overflow-y: scroll;
+}
+
+
+.sendButton {
+    margin-left: auto;
+}
+
+.templates {
+    column-gap: 0.5rem;
+    row-gap: 0.5rem;
+}
+
+.template {
+    cursor: pointer;
+}
