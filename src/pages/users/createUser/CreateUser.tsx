@@ -159,6 +159,7 @@ export const CreateUser = () => {
                     <Flex columnGap={8}>
                         <DateInput
                             withAsterisk
+                            valueFormat="DD MMM YYYY"
                             className={classes.contractFrom}
                             key={form.key("contractFrom")}
                             leftSection={<IconCalendarMonth size={16} />}
@@ -167,6 +168,7 @@ export const CreateUser = () => {
                         ></DateInput>
                         <DateInput
                             withAsterisk
+                            valueFormat="DD MMM YYYY"
                             className={classes.contractUntil}
                             key={form.key("contractUntil")}
                             leftSection={<IconCalendarOff size={16} />}
