@@ -148,7 +148,7 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                     {...form.getInputProps("date")}
                     label={<FormattedMessage id={locales.taskDate} />}
                     description={<FormattedMessage id={locales.taskDateDescription} />}
-                    minDate={dayjs(new Date()).subtract(16, "day").toDate()}
+                    minDate={dayjs(new Date()).subtract(21, "day").toDate()}
                     maxDate={new Date()}
                     leftSection={<IconCalendar size={18} />}
                     inputWrapperOrder={["label", "description", "error", "input"]}

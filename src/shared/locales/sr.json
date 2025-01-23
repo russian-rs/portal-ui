@@ -78,6 +78,11 @@
       "emptySubject": "Tema je obavezna",
       "emptyContent": "Prazno telo emaila",
       "success": "Poruka uspešno poslata"
+    },
+    "confirm-modal": {
+      "confirmDefaultButton": "Potvrdi",
+      "cancelDefaultButton": "Otkaži",
+      "waitText": "Čekaj {timer} s"
     }
   },
   "footer": {
@@ -161,7 +166,7 @@
     },
     "new-report": {
       "title": "Napravite novi izveštaj",
-      "description": "Dodajte jedan ili više zadataka",
+      "description": "Izveštaj treba da sadrži ukupno najmanje 10 sati. Svaki zadatak mora imati dokaz obavljenog posla. Ako nastavite da radite zadatak od prošle nedelje, napredak (inkrement) u odnosu na prethodnu nedelju trebalo bi da bude vidljiv. U suprotnom, izveštaj možda neće biti prihvaćen.",
       "task": "Zadatak {index}",
       "task-name": "Naziv",
       "task-description": "Opis",
@@ -179,7 +184,11 @@
       "min-letters": "Najmanje {count} znakova",
       "invalid-url": "Nevalidni format URL",
       "add-task-button": "Dodaj zadatak",
-      "send-button": "Pošaljite"
+      "send-button": "Pošaljite",
+      "fill-up-button": "Popuniti",
+      "confirm-title": "Nema dovoljno sati",
+      "confirm-description": "Vaš izveštaj rezimira sve zadatke za manje od 10 sati. Izveštaj možda neće biti prihvaćen. Da li sigurno želite da ga pošaljete?",
+      "different-weeks-alert": "Zadaci se obavljaju u različitim kalendarskim nedeljama"
     },
     "my-reports": {
       "title": "Moji izveštaji",

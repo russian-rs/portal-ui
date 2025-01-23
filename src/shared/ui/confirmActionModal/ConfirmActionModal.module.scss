@@ -1,0 +1,22 @@
+
+.buttonsGroup {
+    flex-grow: 1;
+    margin-top: 1rem;
+    column-gap: 1rem;
+    align-items: center;
+}
+
+.buttonCancel {
+    flex: 1;
+}
+
+.buttonConfirm {
+    flex: 1;
+}
+
+.waitText {
+    width: 100%;
+    font-size: small;
+    margin-top: 0.5rem;
+    text-align: center;
+}

@@ -1,6 +1,8 @@
 import { Button, Flex, Text } from "@mantine/core"
+import { notifications } from "@mantine/notifications"
 import { TaskDto } from "@russian-rs/portal-api-axios"
 import { IconChevronRight, IconPlus } from "@tabler/icons-react"
+import dayjs from "dayjs"
 import React, { useEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
@@ -9,6 +11,8 @@ import classes from "src/pages/createReport/CreateReport.module.scss"
 import { TaskCard, TaskCardInterface } from "src/pages/createReport/task/TaskCard"
 import { ReportApiService } from "src/shared/api/ReportApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
+import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
+import { ConfirmActionModal } from "src/shared/ui/confirmActionModal/ConfirmActionModal"
 import { v4 as uuid } from "uuid"
 
 export const CreateReport = () => {
@@ -19,6 +23,8 @@ export const CreateReport = () => {
 
     const navigate = useNavigate()
     const [isSending, setIsSending] = useState(false)
+
+    const [confirmModalOpened, setConfirmModalOpened] = useState(false)
 
     const handleTaskChange = (id: string, updatedTask: TaskDto) => {
         setTasks((prevTasks) => prevTasks.map((task) => (task.id === id ? updatedTask : task)))
@@ -67,16 +73,33 @@ export const CreateReport = () => {
                 }
             }
         }
-        if (tasks.length > 0) {
-            setIsSending(true)
-            ReportApiService.createReport({ tasks: tasks, id: uuid() })
-                .then((r) => {
-                    navigate(`/report/${r.data.id}`)
-                })
-                .catch((_) => {
-                    setIsSending(false)
-                })
+        if (!allTasksInOneWeek(tasks)) {
+            notifications.show(
+                ErrorNotification(
+                    <Text size="sm">
+                        <FormattedMessage id={locales.differentWeeks} />
+                    </Text>
+                )
+            )
+            return
         }
+        const totalTimeSpent = tasks.map((t) => t.timeSpent).reduce((a, b) => a + b, 0)
+        if (totalTimeSpent < 600) {
+            setConfirmModalOpened(true)
+        } else {
+            sendReport()
+        }
+    }
+
+    const sendReport = () => {
+        setIsSending(true)
+        ReportApiService.createReport({ tasks: tasks, id: uuid() })
+            .then((r) => {
+                navigate(`/report/${r.data.id}`)
+            })
+            .catch((_) => {
+                setIsSending(false)
+            })
     }
 
     return (
@@ -122,9 +145,30 @@ export const CreateReport = () => {
                 >
                     <FormattedMessage id={locales.sendButton} />
                 </Button>
+                <ConfirmActionModal
+                    opened={confirmModalOpened}
+                    onClose={() => {
+                        setConfirmModalOpened(false)
+                    }}
+                    onConfirm={sendReport}
+                    title={<FormattedMessage id={locales.confirmTitle} />}
+                    description={<FormattedMessage id={locales.confirmDescription} />}
+                    confirmButtonText={<FormattedMessage id={locales.sendButton} />}
+                    cancelButtonText={<FormattedMessage id={locales.fillUpButton} />}
+                />
             </Flex>
         </Flex>
     )
+}
+
+const allTasksInOneWeek = (tasks: TaskDto[]): boolean => {
+    const week = dayjs(tasks[0].date).isoWeek()
+    for (let i = 1; i < tasks.length; i++) {
+        if (dayjs(tasks[i].date).isoWeek() != week) {
+            return false
+        }
+    }
+    return true
 }
 
 export default CreateReport

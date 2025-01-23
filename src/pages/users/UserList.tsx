@@ -7,7 +7,6 @@ import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
-import { CreateUser } from "src/pages/users/createUser/CreateUser"
 import { defaultPage, defaultPageResponse } from "src/pages/users/lib/defaults"
 import { allowedRoles } from "src/pages/users/lib/roles"
 import { UserMenu } from "src/pages/users/userMenu/UserMenu"
@@ -104,7 +103,6 @@ export const UserList = () => {
                             />
                         }
                     />
-                    <CreateUser />
                 </Flex>
                 <Table stickyHeader highlightOnHover className={classes.table}>
                     <Table.Thead>

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { allowedRoles } from "src/pages/applications/lib/roles"
 import { ApplicationRow } from "src/pages/applications/row/ApplicationRow"
+import { CreateUser } from "src/pages/users/createUser/CreateUser"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
@@ -75,6 +76,7 @@ export const Applications = () => {
                             />
                         }
                     />
+                    <CreateUser />
                 </Flex>
                 <Table stickyHeader highlightOnHover className={classes.table}>
                     <Table.Thead>
