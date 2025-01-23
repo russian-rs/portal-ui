@@ -50,11 +50,13 @@ export const ProfileInfo = ({ userInfo }: ProfileInfoProps) => {
                 icon={<IconPhone size={18} />}
                 className={classes.propertyBox}
             />
-            <TooltipLocalized text="pages.profile.buttons.editTooltip" position="bottom">
-                <Button disabled={true} className={classes.button} variant="outline">
-                    <FormattedMessage id={"pages.profile.buttons.edit"} />
-                </Button>
-            </TooltipLocalized>
+            {userInfo?.id === currentUser?.id && (
+                <TooltipLocalized text="pages.profile.buttons.editTooltip" position="bottom">
+                    <Button disabled={true} className={classes.button} variant="outline">
+                        <FormattedMessage id={"pages.profile.buttons.edit"} />
+                    </Button>
+                </TooltipLocalized>
+            )}
         </Flex>
     )
 }

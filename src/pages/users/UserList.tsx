@@ -14,6 +14,7 @@ import { UserMenu } from "src/pages/users/userMenu/UserMenu"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
+import { openTab } from "src/shared/ui/tabs/WindowFunctions"
 import { hasPermission } from "src/shared/user/roles"
 import { locales } from "./lib/locales"
 import classes from "./UserList.module.scss"
@@ -60,7 +61,7 @@ export const UserList = () => {
                         src={user.avatar?.link}
                         name={user.fullName}
                         className={classes.avatar}
-                        onClick={() => navigate(`/profile/${user.username}`)}
+                        onClick={() => openTab(`/profile/${user.username}`)}
                     />
                     <Text truncate="end">{user.fullName}</Text>
                 </Flex>
