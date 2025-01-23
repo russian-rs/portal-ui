@@ -4,11 +4,11 @@
     row-gap: 0.5rem;
     padding: var(--mantine-spacing-xs);
     border-radius: var(--mantine-spacing-xs);
-    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
-    box-shadow: 0 0 0.3rem 0.3rem light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+    box-shadow: 0 0 0.4rem 0.4rem light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
 
     @media (max-width: $mantine-breakpoint-md) {
-        width: 100%
+        width: calc(100dvw - 2 * var(--mantine-spacing-md));
     }
 }
 
@@ -49,4 +49,31 @@
 
 .fileButton {
     max-width: 16rem;
+}
+
+.image {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 0.5rem;
+
+    cursor: pointer;
+
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: scale(1.03);
+    }
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        width: 6rem;
+        height: 6rem;
+    }
+}
+
+.imagePreviewContainer {
+    width: max-content;
+    white-space: nowrap;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    column-gap: 0.5rem;
 }

@@ -1,4 +1,4 @@
-import { Avatar, Flex, Text } from "@mantine/core"
+import { Avatar, Flex, ScrollArea, Text } from "@mantine/core"
 import { TaskDto, UserInfoDto } from "@russian-rs/portal-api-axios"
 import { IconCalendar, IconClock, IconLink } from "@tabler/icons-react"
 import dayjs from "dayjs"
@@ -6,6 +6,7 @@ import React from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { getSpentTime } from "src/shared/report/timeSpent"
 import { FileButton } from "src/shared/ui/fileButton/FileButton"
+import { ImagePreview } from "src/shared/ui/imagePreview/ImagePreview"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { locales } from "./constants"
 import classes from "./TaskCard.module.scss"
@@ -64,15 +65,41 @@ export const TaskCard = ({ task, users }: TaskCardProps) => {
                 />
             )}
             {task.files?.length !== 0 && (
-                <Flex direction="column" gap={4}>
-                    <Text c="dimmed" size="xs">
-                        <FormattedMessage id={locales.taskFiles} />
-                    </Text>
-                    <Flex gap={8} wrap="wrap">
-                        {task.files?.map((file) => <FileButton file={file} className={classes.fileButton} />)}
+                <>
+                    <Flex direction="column" gap={4}>
+                        <Text c="dimmed" size="xs">
+                            <FormattedMessage id={locales.taskFiles} />
+                        </Text>
+                        <Flex gap={8} wrap="wrap">
+                            {task.files?.map((file) => (
+                                <FileButton key={file.id} file={file} className={classes.fileButton} />
+                            ))}
+                        </Flex>
                     </Flex>
-                </Flex>
+                    <ScrollArea type="auto" offsetScrollbars>
+                        <Flex className={classes.imagePreviewContainer}>
+                            {task.files
+                                ?.filter((file) => {
+                                    return isImageType(file.name)
+                                })
+                                .map((file) => <ImagePreview link={file.link} className={classes.image} />)}
+                        </Flex>
+                    </ScrollArea>
+                </>
             )}
         </Flex>
+    )
+}
+
+const isImageType = (name: string): boolean => {
+    const fileName = name.trim().toLowerCase()
+    return (
+        fileName.endsWith(".png") ||
+        fileName.endsWith(".jpg") ||
+        fileName.endsWith(".jpeg") ||
+        fileName.endsWith(".heic") ||
+        fileName.endsWith(".gif") ||
+        fileName.endsWith(".webp") ||
+        fileName.endsWith(".avif")
     )
 }

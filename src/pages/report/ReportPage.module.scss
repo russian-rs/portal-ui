@@ -1,5 +1,4 @@
 .root {
-    height: $app-shell-height;
     width: 100%;
     padding: var(--mantine-spacing-xl);
     flex-direction: column;
@@ -24,4 +23,10 @@
     @media (max-width: $mantine-breakpoint-md) {
         width: 100%
     }
+}
+
+.tasks {
+    flex-direction: column;
+    row-gap: 1rem;
+    margin-top: 1rem;
 }
