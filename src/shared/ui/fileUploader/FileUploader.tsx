@@ -85,7 +85,7 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
     }
 
     const maxSize = props.maxSize ? props.maxSize : 5
-    const maxFiles = props.maxFiles ? props.maxFiles : 3
+    const maxFiles = props.maxFiles ? props.maxFiles : 5
     const disabled = uploadedFiles.length >= maxFiles
 
     return (

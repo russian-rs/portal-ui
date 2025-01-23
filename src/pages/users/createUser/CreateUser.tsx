@@ -187,9 +187,7 @@ export const CreateUser = () => {
                     </Button>
                 </Flex>
             </Drawer>
-            <Button variant="transparent" leftSection={<IconUserPlus size={16} />} onClick={open}>
-                <FormattedMessage id={locales.newUser} />
-            </Button>
+            <Button variant="transparent" leftSection={<IconUserPlus size={16} />} onClick={open}></Button>
         </>
     )
 }

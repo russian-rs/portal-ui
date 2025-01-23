@@ -19,11 +19,13 @@
 
 .description {
     color: light-dark(var(--mantine-color-dark-3), var(--mantine-color-dark-0));
-    font-size: large;
+    max-width: 38rem;
+    font-size: small;
     margin-bottom: var(--mantine-spacing-md);
 
     @media (max-width: $mantine-breakpoint-xs) {
-        font-size: medium;
+        max-width: 100%;
+        font-size: small;
     }
 }
 

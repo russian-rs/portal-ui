@@ -78,6 +78,11 @@
       "emptySubject": "Subject is required",
       "emptyContent": "Empty email body",
       "success": "Message sent successfully"
+    },
+    "confirm-modal": {
+      "confirmDefaultButton": "Confirm",
+      "cancelDefaultButton": "Cancel",
+      "waitText": "Wait {timer} s"
     }
   },
   "footer": {
@@ -161,7 +166,7 @@
     },
     "new-report": {
       "title": "Create new report",
-      "description": "Add one or more tasks",
+      "description": "The report must contain at least 10 hours in total. Each task must have proof of work done. If you continue to do a task from last week, then progress (increment) compared to the previous week must be visible. Otherwise, the report may not be accepted.",
       "task": "Task {index}",
       "task-name": "Name",
       "task-description": "Description",
@@ -179,7 +184,11 @@
       "min-letters": "Minimum {count} letters",
       "invalid-url": "Invalid URL format",
       "add-task-button": "Add task",
-      "send-button": "Submit"
+      "send-button": "Submit",
+      "fill-up-button": "Fill up",
+      "confirm-title": "Not enough time spent",
+      "confirm-description": "Your report shows less than 10 hours total for all tasks. The report may not be accepted. Are you sure you want to send it?",
+      "different-weeks-alert": "The tasks were completed in different calendar weeks."
     },
     "my-reports": {
       "title": "My reports",
