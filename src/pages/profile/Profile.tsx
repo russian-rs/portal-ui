@@ -49,7 +49,7 @@ export const Profile = () => {
                     </Skeleton>
                     <Skeleton visible={isFetching} radius="lg">
                         <Flex direction="column">
-                            {userInfo?.contracts && <ContractInfo contracts={userInfo.contracts} />}
+                            {userInfo?.contracts && <ContractInfo userInfo={userInfo} contracts={userInfo.contracts} />}
                         </Flex>
                     </Skeleton>
                 </SimpleGrid>

@@ -14,6 +14,7 @@ import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { getSpentTimeFromReport } from "src/shared/report/timeSpent"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
+import { openTab } from "src/shared/ui/tabs/WindowFunctions"
 import { UserSearch } from "src/shared/ui/userSearch/UserSearch"
 import { WeekPicker } from "src/shared/ui/weekPicker/WeekPicker"
 import { hasPermission } from "src/shared/user/roles"
@@ -79,7 +80,7 @@ export const ReportList = () => {
         const timeSpent = getSpentTimeFromReport(report, intl)
         const filesCount = getReportFilesCount(report)
         return (
-            <Table.Tr key={report.id} className={classes.row} onClick={() => navigate(`/report/${report.id}`)}>
+            <Table.Tr key={report.id} className={classes.row} onClick={() => openTab(`/report/${report.id}`)}>
                 <Table.Td>
                     <Text>{createTime}</Text>
                 </Table.Td>

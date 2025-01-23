@@ -1,20 +1,24 @@
 import { Button, Flex, Text } from "@mantine/core"
-import { ContractDto } from "@russian-rs/portal-api-axios"
+import { ContractDto, UserInfoDto } from "@russian-rs/portal-api-axios"
 import { IconCalendar, IconContract } from "@tabler/icons-react"
 import dayjs from "dayjs"
+import { useContext } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
+import { UserContext } from "src/app/providers/UserContext"
 import { locales } from "src/pages/profile/contract/lib/locales"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { TooltipLocalized } from "src/shared/ui/tooltip/TooltipLocalized"
 import classes from "./ContractInfo.module.scss"
 
 interface ContractInfoProps {
+    userInfo: UserInfoDto
     contracts: ContractDto[]
 }
 
-export const ContractInfo = ({ contracts }: ContractInfoProps) => {
+export const ContractInfo = ({ contracts, userInfo }: ContractInfoProps) => {
     const navigate = useNavigate()
+    const { user: currentUser } = useContext(UserContext)
 
     if (contracts.length == 0) {
         return <></>
@@ -40,11 +44,17 @@ export const ContractInfo = ({ contracts }: ContractInfoProps) => {
             <Text className={classes.daysLeft}>
                 <FormattedMessage id={locales.daysLeft} values={{ count: getDaysLeft(contracts) }} />
             </Text>
-            <TooltipLocalized text={locales.prolongationInfo} position="bottom">
-                <Button variant="light" onClick={() => navigate("/application")} disabled={getDaysLeft(contracts) > 90}>
-                    <FormattedMessage id={locales.prolongation} />
-                </Button>
-            </TooltipLocalized>
+            {userInfo.id === currentUser?.id && (
+                <TooltipLocalized text={locales.prolongationInfo} position="bottom">
+                    <Button
+                        variant="light"
+                        onClick={() => navigate("/application")}
+                        disabled={getDaysLeft(contracts) > 90}
+                    >
+                        <FormattedMessage id={locales.prolongation} />
+                    </Button>
+                </TooltipLocalized>
+            )}
         </Flex>
     )
 }
