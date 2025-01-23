@@ -87,7 +87,7 @@ export const ReportPage = () => {
                     icon={<IconClock size={16} />}
                 />
             </Flex>
-            <Flex direction="column" rowGap="lg" mt="md">
+            <Flex className={classes.tasks}>
                 {report.tasks.map((task) => (
                     <TaskCard task={task} users={users} key={task.id} />
                 ))}
