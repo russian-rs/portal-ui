@@ -1,11 +1,12 @@
 import { Avatar, Badge, Flex, Text } from "@mantine/core"
-import { IconCalendar, IconClock } from "@tabler/icons-react"
+import { IconCalendar, IconClock, IconPencil } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
-import { locales } from "src/pages/report/constants"
+import { UserContext } from "src/app/providers/UserContext"
+import { locales } from "src/pages/report/lib/locales"
 import { TaskCard } from "src/pages/report/task/TaskCard"
 import { ReportApiService } from "src/shared/api/ReportApiService"
 import { resolveUsers } from "src/shared/api/user/UserApiService"
@@ -22,6 +23,7 @@ export const ReportPage = () => {
     const { id } = useParams()
     const intl = useIntl()
     const navigate = useNavigate()
+    const { user: currentUser } = useContext(UserContext)
     const [logins, setLogins] = useState<string[]>([])
 
     if (!id) {
@@ -61,6 +63,21 @@ export const ReportPage = () => {
                 <Badge color={getReportStatusColor(report.status)} size="lg" radius="md" variant="light">
                     <FormattedMessage id={`common.report-status.${report.status}`} />
                 </Badge>
+                {report.status == "REJECTED" && currentUser?.username == report.user && (
+                    <Badge
+                        color="gray"
+                        size="lg"
+                        radius="md"
+                        variant="light"
+                        leftSection={<IconPencil size={14} />}
+                        className={classes.editButton}
+                        onClick={() => {
+                            navigate(`/report/${report.id}/edit`)
+                        }}
+                    >
+                        <FormattedMessage id={locales.edit}></FormattedMessage>
+                    </Badge>
+                )}
             </Flex>
             <Flex className={classes.reportDescription}>
                 <PropertyBox

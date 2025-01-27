@@ -1,0 +1,18 @@
+export const locales = {
+    task: "pages.edit-report.task",
+    taskName: "pages.edit-report.task-name",
+    taskDescription: "pages.edit-report.task-description",
+    taskDescriptionDescription: "pages.edit-report.task-description-description",
+    result: "pages.edit-report.task-result",
+    resultDescription: "pages.edit-report.task-result-description",
+    timeSpent: "pages.edit-report.task-time-spent",
+    timeSpentDescription: "pages.edit-report.task-time-spent-description",
+    timeSpentSuffix: "pages.edit-report.task-time-spent-suffix",
+    taskDate: "pages.edit-report.task-date",
+    taskDateDescription: "pages.edit-report.task-date-description",
+    customer: "pages.edit-report.task-customer",
+    customerDescription: "pages.edit-report.task-customer-description",
+    required: "pages.edit-report.required",
+    minLetters: "pages.edit-report.min-letters",
+    invalidUrl: "pages.edit-report.invalid-url",
+}

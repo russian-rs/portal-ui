@@ -10,4 +10,5 @@ export const locales = {
     taskCustomer: "pages.report.task-customer",
     taskResult: "pages.report.task-result",
     taskFiles: "pages.report.task-files",
+    edit: "pages.report.edit",
 }

@@ -30,3 +30,14 @@
     row-gap: 1rem;
     margin-top: 1rem;
 }
+
+.editButton {
+    cursor: pointer;
+
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+        box-shadow: 0 0 0.2rem 0.1rem light-dark(var(--mantine-color-blue-2), var(--mantine-color-blue-9));
+        transform: scale(1.05);
+    }
+}

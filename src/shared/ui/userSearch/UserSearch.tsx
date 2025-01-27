@@ -59,6 +59,18 @@ export const UserSearch = ({
         queryFn: () => UserApiService.searchUsers(debouncedSearch, {}).then((response) => response.data.content),
     })
 
+    useEffect(() => {
+        if (initialSearch) {
+            UserApiService.searchUsers(initialSearch, {}).then((response) => {
+                const result = response.data.content
+                if (result.length == 1) {
+                    setSelectedUser(result[0])
+                    setSearch(result[0].fullName)
+                }
+            })
+        }
+    }, [])
+
     const userMap = new Map(users.map((user) => [user.id.toString(), user]))
 
     const options = users.map((userDto) => {

@@ -1,6 +1,6 @@
 import { ReportDto, TaskDto } from "@russian-rs/portal-api-axios"
 import { IntlShape } from "react-intl"
-import { locales } from "src/pages/report/constants"
+import { locales } from "src/pages/report/lib/locales"
 
 export const getSpentTimeFromReport = (report: ReportDto, intl: IntlShape): string => {
     return getSpentTimeFromTasks(report.tasks, intl)
