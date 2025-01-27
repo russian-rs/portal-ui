@@ -82,7 +82,9 @@ export const TaskCard = ({ task, users }: TaskCardProps) => {
                                 ?.filter((file) => {
                                     return isImageType(file.name)
                                 })
-                                .map((file) => <ImagePreview link={file.link} className={classes.image} />)}
+                                .map((file) => (
+                                    <ImagePreview link={file.link} className={classes.image} key={file.id} />
+                                ))}
                         </Flex>
                     </ScrollArea>
                 </>

@@ -58,7 +58,6 @@ $width: 36rem;
     padding: var(--mantine-spacing-xs);
     border-radius: 0.5rem;
     column-gap: 2rem;
-    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
     box-shadow: 0 0 0.3rem 0.3rem light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-8));
 
     transition: box-shadow 0.2s ease, transform 0.2s ease;

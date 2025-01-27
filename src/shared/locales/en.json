@@ -20,6 +20,7 @@
     },
     "report-status": {
       "CREATED": "Created",
+      "REJECTED": "Rejected",
       "ACCEPTED": "Accepted"
     },
     "week-picker": {
@@ -162,10 +163,12 @@
       "task-date": "Completion date",
       "task-customer": "Customer",
       "task-result": "Result of work",
-      "task-files": "Attached files"
+      "task-files": "Attached files",
+      "edit": "Edit"
     },
-    "new-report": {
+    "edit-report": {
       "title": "Create new report",
+      "title-edit": "Edit report",
       "description": "The report must contain at least 10 hours in total. Each task must have proof of work done. If you continue to do a task from last week, then progress (increment) compared to the previous week must be visible. Otherwise, the report may not be accepted.",
       "task": "Task {index}",
       "task-name": "Name",
@@ -185,6 +188,7 @@
       "invalid-url": "Invalid URL format",
       "add-task-button": "Add task",
       "send-button": "Submit",
+      "save-button": "Save",
       "fill-up-button": "Fill up",
       "confirm-title": "Not enough time spent",
       "confirm-description": "Your report shows less than 10 hours total for all tasks. The report may not be accepted. Are you sure you want to send it?",

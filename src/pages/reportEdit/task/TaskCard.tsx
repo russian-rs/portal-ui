@@ -16,17 +16,18 @@ import { FormValidationResult } from "@mantine/form/lib/types"
 import { FileInfoDto, TaskDto } from "@russian-rs/portal-api-axios"
 import { IconCalendar, IconChecklist, IconClock, IconLink, IconTrashX } from "@tabler/icons-react"
 import dayjs from "dayjs"
-import React, { createRef, forwardRef, useImperativeHandle, useRef, useState } from "react"
+import React, { createRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
+import { locales } from "src/pages/reportEdit/task/lib/locales"
 import { FileUploader, FileUploaderInterface } from "src/shared/ui/fileUploader/FileUploader"
 import { UserSearch } from "src/shared/ui/userSearch/UserSearch"
 import { z } from "zod"
-import { locales } from "./constants"
 import classes from "./TaskCard.module.scss"
 
 interface TaskCardProps {
     task: TaskDto
     index: number
+    editMode?: boolean
     onChange: (id: string, updatedTask: TaskDto) => void
     onDelete: (id: string) => void
 }
@@ -41,6 +42,8 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
     const cardRef = useRef<HTMLDivElement>(null)
 
     const intl = useIntl()
+
+    const editMode = props.editMode || false
 
     const requiredMessage = { message: intl.formatMessage({ id: locales.required }) }
 
@@ -60,6 +63,14 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
     const form = useForm({
         mode: "uncontrolled",
         validate: zodResolver(validationSchema),
+        initialValues: {
+            name: props.task.name,
+            description: props.task.description,
+            result: props.task.result ? props.task.result : "",
+            timeSpent: editMode ? props.task.timeSpent / 60 : null,
+            date: editMode ? dayjs(props.task.date).toDate() : null,
+            customer: props.task.customer,
+        },
     })
 
     const fileUploaderRef = createRef<FileUploaderInterface>()
@@ -78,13 +89,19 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                 name: values.name.trim(),
                 description: values.description.trim(),
                 result: values.result,
-                timeSpent: values.timeSpent * 60,
+                timeSpent: values.timeSpent ? values.timeSpent * 60 : 0,
                 date: dayjs(values.date).format("YYYY-MM-DD"),
                 customer: values.customer,
                 files: uploadedFiles,
             }
         },
     }))
+
+    useEffect(() => {
+        if (editMode && props.task.files) {
+            setUploadedFiles(props.task.files)
+        }
+    }, [])
 
     return (
         <Flex direction="column" className={classes.taskCard} ref={cardRef} key={props.task.id} rowGap={10}>
@@ -127,7 +144,7 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
             <SimpleGrid cols={2}>
                 <NumberInput
                     min={1}
-                    max={40}
+                    max={12}
                     mt="auto"
                     withAsterisk
                     suffix={intl.formatMessage({ id: locales.timeSpentSuffix })}
@@ -159,6 +176,7 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                 path="customer"
                 label={<FormattedMessage id={locales.customer} />}
                 description={<FormattedMessage id={locales.customerDescription} />}
+                initialSearch={editMode && props.task.customer ? props.task.customer : undefined}
             />
             <FileUploader
                 ref={fileUploaderRef}

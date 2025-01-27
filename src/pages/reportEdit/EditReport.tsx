@@ -1,22 +1,33 @@
 import { Button, Flex, Text } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { TaskDto } from "@russian-rs/portal-api-axios"
-import { IconChevronRight, IconPlus } from "@tabler/icons-react"
-import dayjs from "dayjs"
-import React, { useEffect, useRef, useState } from "react"
-import { FormattedMessage } from "react-intl"
-import { useNavigate } from "react-router"
-import { defaultTask, locales } from "src/pages/createReport/constants"
-import classes from "src/pages/createReport/CreateReport.module.scss"
-import { TaskCard, TaskCardInterface } from "src/pages/createReport/task/TaskCard"
+import { IconChevronRight, IconDeviceFloppy, IconPlus } from "@tabler/icons-react"
+import { useQuery } from "@tanstack/react-query"
+import React, { useContext, useEffect, useRef, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
+import { useLocation, useNavigate, useParams } from "react-router"
+import { UserContext } from "src/app/providers/UserContext"
+import classes from "src/pages/reportEdit/EditReport.module.scss"
+import { defaultTask } from "src/pages/reportEdit/lib/defaults"
+import { TaskCard, TaskCardInterface } from "src/pages/reportEdit/task/TaskCard"
 import { ReportApiService } from "src/shared/api/ReportApiService"
-import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
+import { setDocumentTitleByLocale, setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
+import { ReportStatus } from "src/shared/report/status"
+import { allTasksInOneWeek } from "src/shared/report/tasks"
 import { ConfirmActionModal } from "src/shared/ui/confirmActionModal/ConfirmActionModal"
+import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 import { v4 as uuid } from "uuid"
+import { locales } from "./lib/locales"
 
-export const CreateReport = () => {
+export const EditReport = () => {
     setDocumentTitleByLocale(locales.title)
+    const location = useLocation()
+    const { id } = useParams()
+    const intl = useIntl()
+
+    const { user: currentUser } = useContext(UserContext)
+    const [editMode, setEditMode] = useState<boolean>(false)
 
     const [tasks, setTasks] = useState<TaskDto[]>([defaultTask])
     const taskRefs = useRef<{ [key: string]: React.RefObject<TaskCardInterface> }>({})
@@ -25,6 +36,20 @@ export const CreateReport = () => {
     const [isSending, setIsSending] = useState(false)
 
     const [confirmModalOpened, setConfirmModalOpened] = useState(false)
+
+    useEffect(() => {
+        setEditMode(location.pathname.includes("edit"))
+    }, [location])
+
+    const { data: report, isFetching: isFetchingReport } = useQuery({
+        queryKey: ["getReport", id],
+        enabled: editMode && id != null,
+        initialData: { id: "", tasks: [] },
+        queryFn: () =>
+            ReportApiService.getReport(id!!).then((response) => {
+                return response.data
+            }),
+    })
 
     const handleTaskChange = (id: string, updatedTask: TaskDto) => {
         setTasks((prevTasks) => prevTasks.map((task) => (task.id === id ? updatedTask : task)))
@@ -60,6 +85,29 @@ export const CreateReport = () => {
         }
     }, [tasks])
 
+    useEffect(() => {
+        if (editMode) {
+            setTasks(report.tasks)
+        }
+    }, [report, editMode])
+
+    if (editMode) {
+        if (!id) {
+            navigate("/not-found")
+        }
+        if (isFetchingReport) {
+            return (
+                <Flex className={classes.root}>
+                    <LoadingScreen />
+                </Flex>
+            )
+        }
+        if (currentUser?.username != report?.user || report.status !== ReportStatus.REJECTED) {
+            navigate("/unauthorized", { replace: true })
+        }
+        setDocumentTitleByString(intl.formatMessage({ id: locales.titleEdit }))
+    }
+
     const onSend = () => {
         for (let i = 0; i < tasks.length; i++) {
             const cardRef = taskRefs.current[tasks[i].id]
@@ -93,7 +141,9 @@ export const CreateReport = () => {
 
     const sendReport = () => {
         setIsSending(true)
-        ReportApiService.createReport({ tasks: tasks, id: uuid() })
+        const reportDto = editMode ? { tasks: tasks, id: report.id } : { tasks: tasks, id: uuid() }
+        const response = editMode ? ReportApiService.updateReport(reportDto) : ReportApiService.createReport(reportDto)
+        response
             .then((r) => {
                 navigate(`/report/${r.data.id}`)
             })
@@ -105,7 +155,7 @@ export const CreateReport = () => {
     return (
         <Flex direction="column" className={classes.root}>
             <Text className={classes.title}>
-                <FormattedMessage id={locales.title} />
+                <FormattedMessage id={editMode ? locales.titleEdit : locales.title} />
             </Text>
             <Text className={classes.description}>
                 <FormattedMessage id={locales.description} />
@@ -121,6 +171,7 @@ export const CreateReport = () => {
                             ref={taskRefs.current[task.id]}
                             task={task}
                             index={index}
+                            editMode={editMode}
                             onChange={handleTaskChange}
                             onDelete={handleTaskDelete}
                         />
@@ -138,12 +189,12 @@ export const CreateReport = () => {
                 </Button>
                 <Button
                     ml="auto"
-                    rightSection={<IconChevronRight size={18} />}
+                    rightSection={editMode ? <IconDeviceFloppy size={18} /> : <IconChevronRight size={18} />}
                     onClick={onSend}
                     loading={isSending}
                     disabled={isSending}
                 >
-                    <FormattedMessage id={locales.sendButton} />
+                    <FormattedMessage id={editMode ? locales.saveButton : locales.sendButton} />
                 </Button>
                 <ConfirmActionModal
                     opened={confirmModalOpened}
@@ -153,7 +204,7 @@ export const CreateReport = () => {
                     onConfirm={sendReport}
                     title={<FormattedMessage id={locales.confirmTitle} />}
                     description={<FormattedMessage id={locales.confirmDescription} />}
-                    confirmButtonText={<FormattedMessage id={locales.sendButton} />}
+                    confirmButtonText={<FormattedMessage id={editMode ? locales.saveButton : locales.sendButton} />}
                     cancelButtonText={<FormattedMessage id={locales.fillUpButton} />}
                 />
             </Flex>
@@ -161,14 +212,4 @@ export const CreateReport = () => {
     )
 }
 
-const allTasksInOneWeek = (tasks: TaskDto[]): boolean => {
-    const week = dayjs(tasks[0].date).isoWeek()
-    for (let i = 1; i < tasks.length; i++) {
-        if (dayjs(tasks[i].date).isoWeek() != week) {
-            return false
-        }
-    }
-    return true
-}
-
-export default CreateReport
+export default EditReport

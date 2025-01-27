@@ -20,6 +20,7 @@
     },
     "report-status": {
       "CREATED": "Stvoren",
+      "REJECTED": "Odbijen",
       "ACCEPTED": "Prihvaćen"
     },
     "week-picker": {
@@ -162,10 +163,12 @@
       "task-date": "Datum izvršenja",
       "task-customer": "Kupac",
       "task-result": "Rezultat",
-      "task-files": "Priložene datoteke"
+      "task-files": "Priložene datoteke",
+      "edit": "Uredi"
     },
-    "new-report": {
+    "edit-report": {
       "title": "Napravite novi izveštaj",
+      "title-edit": "Uredi izveštaj",
       "description": "Izveštaj treba da sadrži ukupno najmanje 10 sati. Svaki zadatak mora imati dokaz obavljenog posla. Ako nastavite da radite zadatak od prošle nedelje, napredak (inkrement) u odnosu na prethodnu nedelju trebalo bi da bude vidljiv. U suprotnom, izveštaj možda neće biti prihvaćen.",
       "task": "Zadatak {index}",
       "task-name": "Naziv",
@@ -185,6 +188,7 @@
       "invalid-url": "Nevalidni format URL",
       "add-task-button": "Dodaj zadatak",
       "send-button": "Pošaljite",
+      "save-button": "Sačuvaj",
       "fill-up-button": "Popuniti",
       "confirm-title": "Nema dovoljno sati",
       "confirm-description": "Vaš izveštaj rezimira sve zadatke za manje od 10 sati. Izveštaj možda neće biti prihvaćen. Da li sigurno želite da ga pošaljete?",
