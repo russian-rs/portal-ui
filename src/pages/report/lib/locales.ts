@@ -11,4 +11,10 @@ export const locales = {
     taskResult: "pages.report.task-result",
     taskFiles: "pages.report.task-files",
     edit: "pages.report.edit",
+    accept: "pages.report.accept",
+    reject: "pages.report.reject",
+    comment: "pages.report.comment",
+    commentRequired: "pages.report.comment-required",
+    comments: "pages.report.comments",
+    moderator: "pages.report.moderator",
 }

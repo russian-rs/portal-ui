@@ -1,5 +1,20 @@
 import { UserInfoDto } from "@russian-rs/portal-api-axios"
 
+export enum UserGroup {
+    ADMIN = "ADMIN",
+    ADMIN_VOLUNTEER = "ADMIN_VOLUNTEER",
+    ADMIN_SSO = "ADMIN_SSO",
+    DEVELOPER = "DEVELOPER",
+    GUIDES = "GUIDES",
+    INSIDE_VOLUNTEER = "INSIDE_VOLUNTEER",
+    MAIN_VOLUNTEER = "MAIN_VOLUNTEER",
+    LAWYERS = "LAWYERS",
+    MEDIA = "MEDIA",
+    TEACHER = "TEACHER",
+    SEO_MANAGER = "SEO_MANAGER",
+    MEMBER = "MEMBER",
+}
+
 export const hasPermission = (
     user: UserInfoDto | null,
     allowed: string[] | undefined | null = [],

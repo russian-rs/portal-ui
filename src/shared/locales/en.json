@@ -164,7 +164,13 @@
       "task-customer": "Customer",
       "task-result": "Result of work",
       "task-files": "Attached files",
-      "edit": "Edit"
+      "edit": "Edit",
+      "accept": "Accept",
+      "reject": "Reject",
+      "comment": "Comment",
+      "comment-required": "When rejecting report comment is required",
+      "comments": "Report's comments",
+      "moderator": "Portal Moderator"
     },
     "edit-report": {
       "title": "Create new report",

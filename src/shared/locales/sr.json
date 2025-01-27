@@ -164,7 +164,13 @@
       "task-customer": "Kupac",
       "task-result": "Rezultat",
       "task-files": "Priložene datoteke",
-      "edit": "Uredi"
+      "edit": "Uredi",
+      "accept": "Prihvati",
+      "reject": "Odbaci",
+      "comment": "Komentar",
+      "comment-required": "Komentar je obavezan kada odbijete izveštaj",
+      "comments": "Komentari o izveštaju",
+      "moderator": "Moderator Portala"
     },
     "edit-report": {
       "title": "Napravite novi izveštaj",
