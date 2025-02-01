@@ -17,6 +17,7 @@ import { ReportStatus } from "src/shared/report/status"
 import { allTasksInOneWeek } from "src/shared/report/tasks"
 import { ConfirmActionModal } from "src/shared/ui/confirmActionModal/ConfirmActionModal"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
+import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { v4 as uuid } from "uuid"
 import { locales } from "./lib/locales"
 
@@ -102,7 +103,10 @@ export const EditReport = () => {
                 </Flex>
             )
         }
-        if (currentUser?.username != report?.user || report.status !== ReportStatus.REJECTED) {
+        if (currentUser?.username != report?.user && !hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER])) {
+            navigate("/unauthorized", { replace: true })
+        }
+        if (report.status !== ReportStatus.REJECTED) {
             navigate("/unauthorized", { replace: true })
         }
         setDocumentTitleByString(intl.formatMessage({ id: locales.titleEdit }))
