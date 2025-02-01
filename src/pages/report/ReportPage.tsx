@@ -1,5 +1,6 @@
 import { Avatar, Badge, Button, Flex, Paper, Text, Textarea } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
+import { ReportDto, UserInfoDto } from "@russian-rs/portal-api-axios"
 import { IconCalendar, IconCheck, IconClock, IconPencil, IconX } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -86,7 +87,7 @@ export const ReportPage = () => {
                 <Badge color={getReportStatusColor(report.status)} size="lg" radius="md" variant="light">
                     <FormattedMessage id={`common.report-status.${report.status}`} />
                 </Badge>
-                {report.status == "REJECTED" && currentUser?.username == report.user && (
+                {enableEditButton(report, currentUser) && (
                     <Badge
                         color="gray"
                         size="lg"
@@ -195,6 +196,16 @@ export const ReportPage = () => {
             )}
         </Flex>
     )
+}
+
+const enableEditButton = (report: ReportDto, currentUser: UserInfoDto | null): boolean => {
+    if (report.status != ReportStatus.REJECTED) {
+        return false
+    }
+    if (hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER])) {
+        return true
+    }
+    return currentUser?.username == report.user
 }
 
 export default ReportPage
