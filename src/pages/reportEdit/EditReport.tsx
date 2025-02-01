@@ -77,7 +77,7 @@ export const EditReport = () => {
         }
         const cardId = tasks[index].id
         const cardRef = taskRefs.current[cardId]
-        cardRef.current?.scrollIntoView()
+        cardRef?.current?.scrollIntoView()
     }
 
     useEffect(() => {
@@ -118,7 +118,7 @@ export const EditReport = () => {
             if (cardRef.current) {
                 const validationResult = cardRef.current.validate()
                 if (validationResult?.hasErrors) {
-                    cardRef.current?.scrollIntoView()
+                    cardRef.current.scrollIntoView()
                     return
                 } else {
                     tasks[i] = cardRef.current.getValues()
