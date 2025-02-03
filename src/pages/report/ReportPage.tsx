@@ -1,7 +1,7 @@
-import { Avatar, Badge, Button, Flex, Paper, Text, Textarea } from "@mantine/core"
+import { ActionIcon, Anchor, Avatar, Badge, Button, Flex, Loader, Text, Textarea } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { ReportDto, UserInfoDto } from "@russian-rs/portal-api-axios"
-import { IconCalendar, IconCheck, IconClock, IconPencil, IconX } from "@tabler/icons-react"
+import { IconCalendar, IconCheck, IconClock, IconMail, IconPencil, IconTrash, IconX } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useState } from "react"
@@ -9,6 +9,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { locales } from "src/pages/report/lib/locales"
+import { ReportNote } from "src/pages/report/note/ReportNote"
 import { TaskCard } from "src/pages/report/task/TaskCard"
 import { ReportApiService } from "src/shared/api/ReportApiService"
 import { resolveUsers } from "src/shared/api/user/UserApiService"
@@ -16,6 +17,7 @@ import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { getReportStatusColor, ReportStatus } from "src/shared/report/status"
 import { getSpentTimeFromTasks } from "src/shared/report/timeSpent"
+import { EmailDrawer } from "src/shared/ui/emailModal/EmailDrawer"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
@@ -32,6 +34,11 @@ export const ReportPage = () => {
 
     const [statusChanging, setStatusChanging] = useState(false)
     const [comment, setComment] = useState("")
+
+    const [submitDelete, setSubmitDelete] = useState<boolean>(false)
+    const [deleting, setDeleting] = useState(false)
+
+    const [emailDrawerOpen, setEmailDrawerOpen] = useState<boolean>(false)
 
     if (!id) {
         navigate("/not-found")
@@ -75,6 +82,13 @@ export const ReportPage = () => {
         })
     }
 
+    const onDelete = () => {
+        setDeleting(true)
+        ReportApiService.deleteReport(report.id).then((response) => {
+            navigate(`/reports?login=${report.user}`)
+        })
+    }
+
     return (
         <Flex className={classes.root}>
             <Flex columnGap="sm" align="center" wrap="wrap">
@@ -106,8 +120,33 @@ export const ReportPage = () => {
             <Flex className={classes.reportDescription}>
                 <PropertyBox
                     name={locales.creator}
-                    value={users[report.user || ""].fullName}
-                    href={`/profile/${report.user}`}
+                    value={
+                        <Flex align="center" columnGap="sm">
+                            <Anchor href={`/profile/${report.user}`} target="_blank">
+                                <Text>{users[report.user || ""].fullName}</Text>
+                            </Anchor>
+                            <EmailDrawer
+                                opened={emailDrawerOpen}
+                                close={() => setEmailDrawerOpen(false)}
+                                recipients={[
+                                    {
+                                        name: users[report.user || ""].fullName,
+                                        email: users[report.user || ""].email,
+                                    },
+                                ]}
+                            />
+                            {hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER]) && (
+                                <ActionIcon
+                                    size={16}
+                                    radius="1"
+                                    variant="transparent"
+                                    onClick={() => setEmailDrawerOpen(true)}
+                                >
+                                    <IconMail size={14} />
+                                </ActionIcon>
+                            )}
+                        </Flex>
+                    }
                     icon={
                         <Avatar
                             src={users[report.user || ""].avatar?.link}
@@ -133,22 +172,13 @@ export const ReportPage = () => {
                     <Text fw="bold">
                         <FormattedMessage id={locales.comments} />
                     </Text>
-                    {report.notes.map((note) => (
-                        <Paper shadow="md" radius="md" p="xs" key={note.id}>
-                            <Flex direction="column" rowGap="sm">
-                                <Flex align="center" columnGap="xs">
-                                    <Avatar size={20} />
-                                    <Text c="dimmed" size="sm">
-                                        <FormattedMessage id={locales.moderator} />
-                                    </Text>
-                                    <Text size="sm" c="dimmed">
-                                        {dayjs(note.createTime).format("HH:mm DD.MM.YYYY")}
-                                    </Text>
-                                </Flex>
-                                <Text size="sm">{note.text}</Text>
-                            </Flex>
-                        </Paper>
-                    ))}
+                    {report.notes
+                        .sort((n1, n2) => {
+                            return dayjs(n1.createTime).diff(n2.createTime)
+                        })
+                        .map((note) => (
+                            <ReportNote note={note} key={note.id} />
+                        ))}
                 </Flex>
             )}
             <Flex className={classes.tasks}>
@@ -194,16 +224,33 @@ export const ReportPage = () => {
                     </Flex>
                 </Flex>
             )}
+            {hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER]) && (
+                <Flex className={classes.deleteReportSection}>
+                    <Button
+                        disabled={deleting}
+                        variant={submitDelete ? "filled" : "outline"}
+                        color="red"
+                        size="sm"
+                        leftSection={deleting ? <Loader size={16} color="red" /> : <IconTrash size={16} />}
+                        className={classes.deleteButton}
+                        onClick={() => {
+                            submitDelete ? onDelete() : setSubmitDelete(true)
+                        }}
+                    >
+                        <FormattedMessage id={submitDelete ? locales.deleteSubmit : locales.delete} />
+                    </Button>
+                </Flex>
+            )}
         </Flex>
     )
 }
 
 const enableEditButton = (report: ReportDto, currentUser: UserInfoDto | null): boolean => {
-    if (report.status != ReportStatus.REJECTED) {
-        return false
-    }
     if (hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER])) {
         return true
+    }
+    if (report.status != ReportStatus.REJECTED) {
+        return false
     }
     return currentUser?.username == report.user
 }

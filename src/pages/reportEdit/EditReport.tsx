@@ -103,11 +103,13 @@ export const EditReport = () => {
                 </Flex>
             )
         }
-        if (currentUser?.username != report?.user && !hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER])) {
-            navigate("/unauthorized", { replace: true })
-        }
-        if (report.status !== ReportStatus.REJECTED) {
-            navigate("/unauthorized", { replace: true })
+        if (!hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER])) {
+            if (currentUser?.username != report?.user) {
+                navigate("/unauthorized", { replace: true })
+            }
+            if (report.status !== ReportStatus.REJECTED) {
+                navigate("/unauthorized", { replace: true })
+            }
         }
         setDocumentTitleByString(intl.formatMessage({ id: locales.titleEdit }))
     }
