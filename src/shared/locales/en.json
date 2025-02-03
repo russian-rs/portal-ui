@@ -170,7 +170,9 @@
       "comment": "Comment",
       "comment-required": "When rejecting report comment is required",
       "comments": "Report's comments",
-      "moderator": "Portal Moderator"
+      "moderator": "Portal Moderator",
+      "delete": "Delete report",
+      "delete-submit": "Press again to delete"
     },
     "edit-report": {
       "title": "Create new report",

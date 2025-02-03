@@ -71,6 +71,19 @@
     }
 }
 
+.deleteReportSection {
+    width: 36rem;
+    justify-content: center;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 100%
+    }
+}
+
+.deleteButton {
+    flex: 1;
+}
+
 .acceptButton {
     flex: 1;
 }
