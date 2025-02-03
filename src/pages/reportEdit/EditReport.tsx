@@ -3,6 +3,7 @@ import { notifications } from "@mantine/notifications"
 import { TaskDto } from "@russian-rs/portal-api-axios"
 import { IconChevronRight, IconDeviceFloppy, IconPlus } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
+import dayjs from "dayjs"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useLocation, useNavigate, useParams } from "react-router"
@@ -158,6 +159,9 @@ export const EditReport = () => {
             })
     }
 
+    console.log(tasks)
+    console.log(taskRefs)
+
     return (
         <Flex direction="column" className={classes.root}>
             <Text className={classes.title}>
@@ -167,22 +171,27 @@ export const EditReport = () => {
                 <FormattedMessage id={locales.description} />
             </Text>
             <Flex direction="column" className={classes.taskContainer} rowGap={24}>
-                {tasks.map((task, index) => {
-                    if (!taskRefs.current[task.id]) {
-                        taskRefs.current[task.id] = React.createRef()
-                    }
-                    return (
-                        <TaskCard
-                            key={index}
-                            ref={taskRefs.current[task.id]}
-                            task={task}
-                            index={index}
-                            editMode={editMode}
-                            onChange={handleTaskChange}
-                            onDelete={handleTaskDelete}
-                        />
-                    )
-                })}
+                {tasks
+                    .sort((t1, t2) => {
+                        return dayjs(t1.date).diff(t2.date)
+                    })
+                    .map((task, index) => {
+                        if (!taskRefs.current[task.id]) {
+                            taskRefs.current[task.id] = React.createRef()
+                        }
+                        return (
+                            <TaskCard
+                                key={task.id}
+                                ref={taskRefs.current[task.id]}
+                                task={task}
+                                index={index}
+                                deletable={tasks.length > 1}
+                                editMode={editMode}
+                                onChange={handleTaskChange}
+                                onDelete={handleTaskDelete}
+                            />
+                        )
+                    })}
             </Flex>
             <Flex mt="md" className={classes.taskContainer}>
                 <Button

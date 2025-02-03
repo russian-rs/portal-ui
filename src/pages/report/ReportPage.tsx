@@ -182,9 +182,13 @@ export const ReportPage = () => {
                 </Flex>
             )}
             <Flex className={classes.tasks}>
-                {report.tasks.map((task) => (
-                    <TaskCard task={task} users={users} key={task.id} />
-                ))}
+                {report.tasks
+                    .sort((t1, t2) => {
+                        return dayjs(t1.date).diff(t2.date)
+                    })
+                    .map((task) => (
+                        <TaskCard task={task} users={users} key={task.id} />
+                    ))}
             </Flex>
             {report.status == ReportStatus.CREATED && hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER]) && (
                 <Flex direction="column" rowGap="sm">
