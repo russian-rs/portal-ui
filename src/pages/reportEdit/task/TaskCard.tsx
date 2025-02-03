@@ -27,6 +27,7 @@ import classes from "./TaskCard.module.scss"
 interface TaskCardProps {
     task: TaskDto
     index: number
+    deletable: boolean
     editMode?: boolean
     onChange: (id: string, updatedTask: TaskDto) => void
     onDelete: (id: string) => void
@@ -109,7 +110,7 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                 <Badge size="lg" color="grape" radius="md" variant="light" leftSection={<IconChecklist size={16} />}>
                     <FormattedMessage id={locales.task} values={{ index: props.index + 1 }} />
                 </Badge>
-                {props.index != 0 && (
+                {props.deletable && (
                     <ActionIcon ml="auto" variant="light" color="red" onClick={() => props.onDelete(props.task.id)}>
                         <IconTrashX size={16} />
                     </ActionIcon>
