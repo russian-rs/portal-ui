@@ -1,1 +1,1 @@
-export const allowedRoles = ["ADMIN", "ADMIN_VOLUNTEER"]
+export const allowedRoles = ["ADMIN_VOLUNTEER"]

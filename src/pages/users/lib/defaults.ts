@@ -1,10 +1,14 @@
-import { PageRequest, PageResponse, UserCreateRequest } from "@russian-rs/portal-api-axios"
+import { PageRequest, PageResponse, UserCreateRequest, UserSearchFilter } from "@russian-rs/portal-api-axios"
 import { v4 as uuid } from "uuid"
 
 export const defaultPage: PageRequest = {
     pageNumber: 0,
     pageSize: 10,
-    sort: ["version;desc"],
+    sort: ["active;desc,fullName;asc"],
+}
+
+export const defaultFilter: UserSearchFilter = {
+    onlyInactive: false,
 }
 
 export const defaultPageResponse: PageResponse = {

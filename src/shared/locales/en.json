@@ -35,6 +35,7 @@
       "ADMIN": "Admin",
       "ADMIN_SSO": "Admin SSO",
       "ADMIN_VOLUNTEER": "Admin of volunteers",
+      "ADMIN_WP": "Admin WordPress",
       "DEVELOPER": "Developer",
       "INSIDE_VOLUNTEER": "Internal volunteer",
       "MAIN_VOLUNTEER": "Main volunteer",
@@ -43,6 +44,7 @@
       "MEDIA": "Media author",
       "TEACHER": "Teacher",
       "SEO_MANAGER": "SEO manager",
+      "INTERVIEWER": "Interviewer",
       "MEMBER": "Member"
     },
     "contract-type": {

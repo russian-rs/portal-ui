@@ -14,8 +14,10 @@ import {
 } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
+import { useContext } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate, useParams } from "react-router"
+import { UserContext } from "src/app/providers/UserContext"
 import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
@@ -23,15 +25,22 @@ import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
+import { hasPermission } from "src/shared/user/roles"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
+import { allowedRoles } from "./lib/roles"
 
 export const ApplicationView = () => {
     const { id } = useParams()
     const navigate = useNavigate()
+    const { user } = useContext(UserContext)
 
     if (!id) {
         navigate("/not-found", { replace: true })
+    }
+
+    if (!hasPermission(user, allowedRoles)) {
+        navigate("/unauthorized")
     }
 
     const { data: application, isFetching } = useQuery({
