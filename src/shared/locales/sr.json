@@ -32,9 +32,10 @@
       "empty": "Nije izabrano"
     },
     "roles": {
-      "ADMIN": "Administrator",
-      "ADMIN_SSO": "Administrator SSO",
-      "ADMIN_VOLUNTEER": "Administrator volontiranja",
+      "ADMIN": "Admin",
+      "ADMIN_SSO": "Admin SSO",
+      "ADMIN_VOLUNTEER": "Admin volontiranja",
+      "ADMIN_WP": "Admin WordPress",
       "DEVELOPER": "Programer",
       "INSIDE_VOLUNTEER": "Unutrašnji volonter",
       "MAIN_VOLUNTEER": "Volonter osnovnog pr.",
@@ -43,6 +44,7 @@
       "MEDIA": "Autor",
       "TEACHER": "Učitelj",
       "SEO_MANAGER": "SEO menadžer",
+      "INTERVIEWER": "Intervjuer",
       "MEMBER": "Član organizacije"
     },
     "contract-type": {

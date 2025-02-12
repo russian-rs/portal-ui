@@ -32,9 +32,10 @@
       "empty": "Не выбрано"
     },
     "roles": {
-      "ADMIN": "Администратор",
-      "ADMIN_SSO": "Администратор SSO",
-      "ADMIN_VOLUNTEER": "Администратор волонтерства",
+      "ADMIN": "Админ",
+      "ADMIN_SSO": "Админ SSO",
+      "ADMIN_VOLUNTEER": "Админ волонтерства",
+      "ADMIN_WP": "Админ WordPress",
       "DEVELOPER": "Разработчик",
       "INSIDE_VOLUNTEER": "Внутренний волонтер",
       "MAIN_VOLUNTEER": "Волонтер основной пр.",
@@ -43,6 +44,7 @@
       "MEDIA": "Автор",
       "TEACHER": "Учитель",
       "SEO_MANAGER": "SEO менеджер",
+      "INTERVIEWER": "Интервьюер",
       "MEMBER": "Член организации"
     },
     "contract-type": {

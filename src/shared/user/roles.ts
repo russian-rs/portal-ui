@@ -4,6 +4,7 @@ export enum UserGroup {
     ADMIN = "ADMIN",
     ADMIN_VOLUNTEER = "ADMIN_VOLUNTEER",
     ADMIN_SSO = "ADMIN_SSO",
+    ADMIN_WP = "ADMIN_WP",
     DEVELOPER = "DEVELOPER",
     GUIDES = "GUIDES",
     INSIDE_VOLUNTEER = "INSIDE_VOLUNTEER",
@@ -12,6 +13,7 @@ export enum UserGroup {
     MEDIA = "MEDIA",
     TEACHER = "TEACHER",
     SEO_MANAGER = "SEO_MANAGER",
+    INTERVIEWER = "INTERVIEWER",
     MEMBER = "MEMBER",
 }
 

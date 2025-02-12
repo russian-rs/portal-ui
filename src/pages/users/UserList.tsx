@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
-import { defaultPage, defaultPageResponse } from "src/pages/users/lib/defaults"
+import { defaultFilter, defaultPage, defaultPageResponse } from "src/pages/users/lib/defaults"
 import { allowedRoles } from "src/pages/users/lib/roles"
 import { UserMenu } from "src/pages/users/userMenu/UserMenu"
 import { UserApiService } from "src/shared/api/user/UserApiService"
@@ -27,6 +27,7 @@ export const UserList = () => {
     const [search, setSearch] = useState("")
     const [debouncedSearch, setDebouncedSearch] = useState(search)
 
+    const [filter] = useState(defaultFilter)
     const [pageRequest, setPageRequest] = useState<PageRequest>(defaultPage)
 
     // Debounce search input by 500ms
@@ -47,8 +48,9 @@ export const UserList = () => {
         isFetching,
     } = useQuery({
         initialData: { content: [], page: defaultPageResponse },
-        queryKey: ["searchUsers", debouncedSearch, pageRequest],
-        queryFn: () => UserApiService.searchUsers(debouncedSearch, pageRequest).then((response) => response.data),
+        queryKey: ["searchUsers", debouncedSearch, pageRequest, filter],
+        queryFn: () =>
+            UserApiService.searchUsers(debouncedSearch, pageRequest, filter).then((response) => response.data),
     })
 
     const rows = content.map((user) => (
