@@ -19,6 +19,7 @@ export const ApplicationMenu = (props: ApplicationMenuProps) => {
         <Menu shadow="md" width={200} closeOnItemClick={false}>
             <EmailDrawer
                 opened={emailDrawerOpen}
+                from={"Русская Диаспора <apply@russian.rs>"}
                 close={() => setEmailDrawerOpen(false)}
                 recipients={[{ name: props.applicationDto.name!!, email: props.applicationDto.email!! }]}
                 templates={applicationTemplates}
