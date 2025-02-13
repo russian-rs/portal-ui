@@ -23,11 +23,13 @@ interface EmailModalProps {
     close: () => void
     recipients: [{ name: string; email: string }]
     templates?: EmailTemplate[] | undefined
+    from?: string
 }
 
 export const EmailDrawer = (props: EmailModalProps) => {
     const intl = useIntl()
 
+    const from = props.from || "Русская Диаспора <info@russian.rs>"
     const [topic, setTopic] = useState("")
     const [content, setContent] = useState("")
     const [template, setTemplate] = useState("")
@@ -36,7 +38,7 @@ export const EmailDrawer = (props: EmailModalProps) => {
         enabled: false,
         queryKey: ["sendEmail", topic, content],
         queryFn: () =>
-            MailApiService.sendMail(topic, content, props.recipients[0].email).then((_) => {
+            MailApiService.sendMail(topic, content, from, props.recipients[0].email).then((_) => {
                 notifications.show(
                     SuccessNotification(
                         <Text size="sm">
