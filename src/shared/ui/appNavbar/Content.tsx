@@ -24,11 +24,7 @@ export const Content: ItemGroupProps[] = [
                 label: "navbar.reports.all",
                 link: "/reports",
                 roles: ["ADMIN_VOLUNTEER"],
-            }, // {
-            //     label: "navbar.reports.summary",
-            //     link: "/reports/summary",
-            //     roles: ["ADMIN_VOLUNTEER"],
-            // },
+            },
         ],
     },
     {
@@ -39,17 +35,15 @@ export const Content: ItemGroupProps[] = [
             {
                 label: "navbar.volunteers.all-volunteers",
                 link: "/volunteers",
+                roles: ["ADMIN_VOLUNTEER", "ADMIN_SSO"],
             },
             {
                 label: "navbar.volunteers.applications",
                 link: "/applications",
-                roles: ["ADMIN_VOLUNTEER", "ADMIN"],
-            }, // {
-            //     label: "navbar.volunteers.statistics",
-            //     link: "/volunteers-stats",
-            // },
+                roles: ["ADMIN_VOLUNTEER", "INTERVIEWER"],
+            },
         ],
-        roles: ["ADMIN", "ADMIN_VOLUNTEER", "ADMIN_SSO"],
+        roles: ["ADMIN_VOLUNTEER", "ADMIN_SSO", "INTERVIEWER"],
     },
     {
         label: "navbar.account-settings",
