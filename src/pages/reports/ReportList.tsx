@@ -91,7 +91,7 @@ export const ReportList = () => {
                     </Flex>
                 </Table.Td>
                 <Table.Td>
-                    <Text>{getReportWeeks(report).join(", ")}</Text>
+                    <Text>{report.week}</Text>
                 </Table.Td>
                 <Table.Td>
                     <Text>{timeSpent}</Text>
@@ -192,14 +192,6 @@ export const ReportList = () => {
             </Flex>
         </Flex>
     )
-}
-
-const getReportWeeks = (report: ReportDto): number[] => {
-    const weeks = new Set<number>()
-    report.tasks.forEach((task) => {
-        weeks.add(dayjs(task.date).isoWeek())
-    })
-    return Array.from(weeks)
 }
 
 const getReportFilesCount = (report: ReportDto): number => {

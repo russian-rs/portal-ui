@@ -215,7 +215,8 @@
         "created": "Stvoren",
         "status": "Status",
         "task-count": "Broj zadataka",
-        "time-spent": "Broj sati"
+        "time-spent": "Broj sati",
+        "week": "Nedelja"
       }
     },
     "report-list": {

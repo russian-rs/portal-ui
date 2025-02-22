@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
-import { defaultFilter, defaultPage, defaultPageResponse, locales } from "src/pages/myReports/constants"
+import { defaultFilter, defaultPage, defaultPageResponse, locales } from "src/pages/reportsPersonal/lib/constants"
 import { ReportApiService } from "src/shared/api/ReportApiService"
 import { DEFAULT_DATE_FORMAT } from "src/shared/datetime/formats"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
@@ -77,6 +77,7 @@ export const MyReports = () => {
                     value={getSpentTimeFromReport(report, intl)}
                     icon={<IconClockCheck size={16} />}
                 />
+                <PropertyBox name={locales.reportWeek} value={report.week} />
             </Flex>
             <IconChevronRight className={classes.arrow} />
         </Flex>

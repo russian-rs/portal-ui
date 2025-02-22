@@ -215,7 +215,8 @@
         "created": "Создан",
         "status": "Статус",
         "task-count": "Кол-во задач",
-        "time-spent": "Кол-во часов"
+        "time-spent": "Кол-во часов",
+        "week": "Неделя"
       }
     },
     "report-list": {

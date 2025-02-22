@@ -10,6 +10,7 @@ export const locales = {
     reportStatus: "pages.my-reports.report.status",
     reportTaskCount: "pages.my-reports.report.task-count",
     reportTimeSpent: "pages.my-reports.report.time-spent",
+    reportWeek: "pages.my-reports.report.week",
     emptyReports: "pages.my-reports.empty-reports",
 }
 
