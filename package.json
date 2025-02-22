@@ -20,7 +20,7 @@
     "@mantine/notifications": "^7.16.2",
     "@mantine/tiptap": "^7.16.2",
     "@newrelic/browser-agent": "^1.273.0",
-    "@russian-rs/portal-api-axios": "1.13.1",
+    "@russian-rs/portal-api-axios": "1.13.2",
     "@tabler/icons-react": "^3.24.0",
     "@tanstack/react-query": "^5.56.3",
     "@tiptap/extension-highlight": "^2.11.2",

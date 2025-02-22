@@ -215,7 +215,8 @@
         "created": "Created",
         "status": "Status",
         "task-count": "Total tasks",
-        "time-spent": "Time spent"
+        "time-spent": "Time spent",
+        "week": "Week"
       }
     },
     "report-list": {

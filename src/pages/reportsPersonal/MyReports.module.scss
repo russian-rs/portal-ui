@@ -57,7 +57,8 @@ $width: 36rem;
     align-items: center;
     padding: var(--mantine-spacing-xs);
     border-radius: 0.5rem;
-    column-gap: 2rem;
+    column-gap: 1rem;
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
     box-shadow: 0 0 0.3rem 0.3rem light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-8));
 
     transition: box-shadow 0.2s ease, transform 0.2s ease;
@@ -65,10 +66,6 @@ $width: 36rem;
     &:hover {
         box-shadow: 0 0 0.5rem 0.3rem light-dark(var(--mantine-color-blue-2), var(--mantine-color-blue-9));
         transform: scale(1.02);
-    }
-
-    @media (max-width: $mantine-breakpoint-md) {
-        background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-8));
     }
 }
 
