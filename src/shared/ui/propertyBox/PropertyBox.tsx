@@ -1,48 +1,30 @@
-import { Anchor, Flex, Text } from "@mantine/core"
-import { ReactElement, ReactNode } from "react"
+import { Flex, Text } from "@mantine/core"
+import { StyleProp } from "@mantine/core/lib/core"
+import React, { ReactNode } from "react"
 import { FormattedMessage } from "react-intl"
 
 export const PropertyBox = ({
     name,
     value,
-    icon,
-    href,
-    justify,
+    align,
     className,
 }: {
     name: string
     value?: ReactNode
-    icon?: ReactElement
-    href?: string
-    justify?: string
+    align?: StyleProp<React.CSSProperties["alignItems"]>
     className?: string
 }) => {
     if (!value) {
         return <Flex />
     }
     return (
-        <Flex direction="column" className={className}>
-            <Text c="dimmed" size="xs" ms={justify === "flex-end" ? "auto" : ""}>
+        <Flex direction="column" className={className} align={align}>
+            <Text c="dimmed" size="xs" ms={align === "flex-end" ? "auto" : ""}>
                 <FormattedMessage id={name} />
             </Text>
-            {icon ? (
-                <Flex align="center" mt={4} gap="xs" justify={justify}>
-                    {icon}
-                    {href ? (
-                        <Anchor href={href} target="_blank" style={{ maxWidth: "90%" }}>
-                            <Text truncate="end" style={{ maxWidth: "100%" }} size="sm">
-                                {value}
-                            </Text>
-                        </Anchor>
-                    ) : (
-                        <Text size="sm">{value}</Text>
-                    )}
-                </Flex>
-            ) : (
-                <Text mt={4} ms={justify === "flex-end" ? "auto" : ""} size="sm">
-                    {value}
-                </Text>
-            )}
+            <Flex mt={4} gap="xs" align={align}>
+                {value}
+            </Flex>
         </Flex>
     )
 }

@@ -1,9 +1,10 @@
 import { Avatar, Flex, Table, Text } from "@mantine/core"
-import { ApplicationDto } from "@russian-rs/portal-api-axios"
+import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import { ReactNode, useEffect, useState } from "react"
+import React, { ReactNode, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
+import { ContractDate } from "src/pages/applications/contract/ContractDate"
 import { ApplicationMenu } from "src/pages/applications/menu/ApplicationMenu"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
@@ -32,6 +33,10 @@ export const ApplicationRow = ({ applicationDto }: ApplicationRowProps) => {
         setApplication({ ...application, status: status })
     }
 
+    const onContractChanged = (contract: ContractDto) => {
+        setApplication({ ...application, contract: contract })
+    }
+
     return (
         <Table.Tr key={application.id}>
             <Table.Td>{dayjs(application.created).format("DD MMM YYYY")}</Table.Td>
@@ -51,9 +56,12 @@ export const ApplicationRow = ({ applicationDto }: ApplicationRowProps) => {
             <Table.Td>
                 <CopyText text={application.email} size="sm" />
             </Table.Td>
+            <Table.Td>
+                <ContractDate application={application} onChange={onContractChanged} />
+            </Table.Td>
             <Table.Td className={classes.statusSelect}>
                 <ApplicationStatusSelect
-                    initialStatus={application.status}
+                    application={application}
                     className={classes.statusSelect}
                     disabled={isUpdating}
                     onChange={onStatusUpdate}

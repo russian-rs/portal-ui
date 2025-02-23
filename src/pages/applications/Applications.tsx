@@ -94,6 +94,9 @@ export const Applications = () => {
                                 <FormattedMessage id={locales.email} />
                             </Table.Th>
                             <Table.Th>
+                                <FormattedMessage id={locales.contractStart} />
+                            </Table.Th>
+                            <Table.Th>
                                 <FormattedMessage id={locales.status} />
                             </Table.Th>
                             <Table.Th></Table.Th>
@@ -110,8 +113,9 @@ export const Applications = () => {
                     </Flex>
                 )}
                 {page.totalPages > 1 && (
-                    <Flex className={classes.pagination}>
+                    <Flex className={classes.paginationArea}>
                         <Pagination
+                            className={classes.pagination}
                             total={page.totalPages}
                             value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
                             disabled={isFetching}

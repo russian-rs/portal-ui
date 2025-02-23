@@ -14,7 +14,7 @@ import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { getReportStatusColor } from "src/shared/report/status"
 import { getSpentTimeFromReport } from "src/shared/report/timeSpent"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
-import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
+import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
 import { WeekPicker } from "src/shared/ui/weekPicker/WeekPicker"
 import classes from "./MyReports.module.scss"
@@ -52,12 +52,12 @@ export const MyReports = () => {
     const rows = response.content.map((report) => (
         <Flex key={report.id} className={classes.report} onClick={() => navigate(`/report/${report.id}`)}>
             <Flex className={classes.reportLeft}>
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.reportCreated}
                     value={dayjs(report.createTime).format("DD MMM YYYY")}
                     className={classes.date}
                 />
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.reportStatus}
                     value={
                         <Badge color={getReportStatusColor(report.status)} radius="md" variant="light">
@@ -67,17 +67,17 @@ export const MyReports = () => {
                 />
             </Flex>
             <Flex className={classes.reportRight}>
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.reportTaskCount}
                     value={report.tasks.length}
                     icon={<IconListCheck size={16} />}
                 />
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.reportTimeSpent}
                     value={getSpentTimeFromReport(report, intl)}
                     icon={<IconClockCheck size={16} />}
                 />
-                <PropertyBox name={locales.reportWeek} value={report.week} />
+                <TextPropertyBox name={locales.reportWeek} value={report.week} />
             </Flex>
             <IconChevronRight className={classes.arrow} />
         </Flex>

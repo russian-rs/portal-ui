@@ -1,10 +1,12 @@
-import { Combobox, Flex, InputBase, Text, useCombobox } from "@mantine/core"
-import React, { useEffect, useState } from "react"
+import { Combobox, Flex, InputBase, Text, Tooltip, useCombobox } from "@mantine/core"
+import { ApplicationDto } from "@russian-rs/portal-api-axios"
+import React, { ReactNode, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { ApplicationStatus, getApplicationStatusColor, getApplicationStatusIcon } from "src/shared/user/applications"
+import { locales } from "./lib/locales"
 
 interface ApplicationStatusSelectProps {
-    initialStatus: string | undefined
+    application: ApplicationDto
     className?: string
     onChange?: (status: string) => void
     label?: string
@@ -17,22 +19,27 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
         onDropdownClose: () => combobox.resetSelectedOption(),
     })
 
-    const [value, setValue] = useState<string>(props.initialStatus || ApplicationStatus.CREATED)
+    const [value, setValue] = useState<string>(props.application.status || ApplicationStatus.CREATED)
 
-    useEffect(() => {
+    const onChange = (newValue: string) => {
         if (props.onChange) {
-            props.onChange(value)
+            props.onChange(newValue)
         }
-    }, [value])
+    }
 
-    const options = Object.values(ApplicationStatus).map((item) => (
-        <Combobox.Option value={item} key={item}>
-            <Flex align="center" justify="start" columnGap="xs">
-                <Flex>{getApplicationStatusIcon(item, 16, getApplicationStatusColor(item))}</Flex>
-                <FormattedMessage id={`common.application-status.${item}`} />
-            </Flex>
-        </Combobox.Option>
-    ))
+    const options = Object.values(ApplicationStatus).map((status) => {
+        const tooltip = getTooltip(status, props.application)
+        return (
+            <Tooltip label={tooltip} key={status} hidden={tooltip == undefined}>
+                <Combobox.Option value={status} disabled={isDisabled(status, props.application)}>
+                    <Flex align="center" justify="start" columnGap="xs">
+                        <Flex>{getApplicationStatusIcon(status, 16, getApplicationStatusColor(status))}</Flex>
+                        <FormattedMessage id={`common.application-status.${status}`} />
+                    </Flex>
+                </Combobox.Option>
+            </Tooltip>
+        )
+    })
 
     return (
         <Flex direction="column">
@@ -46,6 +53,7 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
                 onOptionSubmit={(val) => {
                     setValue(val)
                     combobox.closeDropdown()
+                    onChange(val)
                 }}
             >
                 <Combobox.Target>
@@ -77,4 +85,26 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
             </Combobox>
         </Flex>
     )
+}
+
+const isDisabled = (status: ApplicationStatus, application: ApplicationDto): boolean => {
+    switch (status) {
+        case ApplicationStatus.DONE:
+            return application.contract == null
+        default:
+            return false
+    }
+}
+
+const getTooltip = (status: ApplicationStatus, application: ApplicationDto): ReactNode => {
+    switch (status) {
+        case ApplicationStatus.DONE:
+            if (!application.contract) {
+                return <FormattedMessage id={locales.contractRequired} />
+            } else {
+                return undefined
+            }
+        default:
+            return undefined
+    }
 }

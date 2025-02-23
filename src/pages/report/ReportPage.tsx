@@ -19,7 +19,7 @@ import { getReportStatusColor, ReportStatus } from "src/shared/report/status"
 import { getSpentTimeFromTasks } from "src/shared/report/timeSpent"
 import { EmailDrawer } from "src/shared/ui/emailModal/EmailDrawer"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
-import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
+import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
 import classes from "./ReportPage.module.scss"
 
@@ -118,7 +118,7 @@ export const ReportPage = () => {
                 )}
             </Flex>
             <Flex className={classes.reportDescription}>
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.creator}
                     value={
                         <Flex align="center" columnGap="sm">
@@ -156,12 +156,12 @@ export const ReportPage = () => {
                         />
                     }
                 />
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.creationDate}
                     value={dayjs(report.createTime).format("DD MMM YYYY - HH:mm")}
                     icon={<IconCalendar size={16} />}
                 />
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.timeSpentTotal}
                     value={getSpentTimeFromTasks(report.tasks, intl)}
                     icon={<IconClock size={16} />}

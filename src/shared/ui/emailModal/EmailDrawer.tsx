@@ -157,6 +157,7 @@ export const EmailDrawer = (props: EmailModalProps) => {
                     <Flex wrap="wrap" className={classes.templates}>
                         {props.templates.map((template) => (
                             <Pill
+                                key={template.name}
                                 disabled={sending}
                                 className={classes.template}
                                 onClick={() => {

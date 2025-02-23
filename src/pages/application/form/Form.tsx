@@ -64,12 +64,17 @@ export const Form = () => {
             .min(5, minMessage(5))
             .max(69, maxMessage(69)),
         patronymic: z
-            .string(fieldRequired)
+            .string()
             .regex(/^[a-zA-Z\s\-ĦħÀ-ÿ]+$/, invalidSymbols)
             .min(2, minMessage(2))
-            .max(30, maxMessage(30)),
+            .max(30, maxMessage(30))
+            .optional(),
         birthDate: z.date(fieldRequired),
-        passport: z.string(fieldRequired).regex(/^\d+$/, invalidSymbols).min(8, minMessage(8)).max(20, maxMessage(20)),
+        passport: z
+            .string(fieldRequired)
+            .regex(/^[A-Za-z0-9]+$/, invalidSymbols)
+            .min(6, minMessage(6))
+            .max(20, maxMessage(20)),
         citizenship: z.string(fieldRequired).min(2, minMessage(2)).max(100, maxMessage(100)),
         telegram: z
             .string(fieldRequired)
@@ -296,7 +301,6 @@ export const Form = () => {
                 description={<FormattedMessage id={locales.patronymicDescription} />}
                 radius={0}
                 className={classes.input}
-                withAsterisk
                 key={form.key("patronymic")}
                 {...form.getInputProps("patronymic")}
                 disabled={isFetching}

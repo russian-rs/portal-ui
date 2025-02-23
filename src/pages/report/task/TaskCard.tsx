@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { getSpentTime } from "src/shared/report/timeSpent"
 import { FileButton } from "src/shared/ui/fileButton/FileButton"
 import { ImagePreview } from "src/shared/ui/imagePreview/ImagePreview"
-import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
+import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { locales } from "./constants"
 import classes from "./TaskCard.module.scss"
 
@@ -34,13 +34,13 @@ export const TaskCard = ({ task, users }: TaskCardProps) => {
                 {task.description}
             </Text>
             <Flex className={classes.taskProperties}>
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.taskDate}
                     value={dayjs(task.date).format("DD MMM YYYY")}
                     icon={<IconCalendar size={16} />}
                 />
                 {task.customer && (
-                    <PropertyBox
+                    <TextPropertyBox
                         name={locales.taskCustomer}
                         href={`/profile/${task.customer}`}
                         icon={
@@ -56,7 +56,7 @@ export const TaskCard = ({ task, users }: TaskCardProps) => {
                 )}
             </Flex>
             {task.result && (
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.taskResult}
                     value={task.result}
                     href={task.result}

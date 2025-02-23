@@ -8,4 +8,6 @@ export const locales = {
     name: "pages.applications.name",
     email: "pages.applications.email",
     status: "pages.applications.status",
+    contractStart: "pages.applications.contractStart",
+    contractAdd: "pages.applications.contractAdd",
 }
