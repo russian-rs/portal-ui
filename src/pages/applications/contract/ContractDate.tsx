@@ -3,7 +3,7 @@ import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { useDisclosure } from "@mantine/hooks"
 import { ApplicationDto, ContractDto, ContractTypeEnum } from "@russian-rs/portal-api-axios"
-import { IconCalendarMonth, IconCalendarOff, IconDeviceFloppy, IconPencil } from "@tabler/icons-react"
+import { IconCalendarMonth, IconCalendarOff, IconDeviceFloppy, IconPencil, IconPlus } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import React, { useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -84,14 +84,14 @@ export const ContractDate = ({ application, onChange, className }: ContractEditM
             <Popover.Target>
                 <Button
                     variant="transparent"
-                    rightSection={<IconPencil size={14} />}
-                    color={application.contract ? "default" : "gray"}
+                    rightSection={application.contract ? <IconPencil size={14} /> : <IconPlus size={14} />}
+                    color={application.contract ? "blue" : "gray"}
                     onClick={toggle}
                     className={className}
                 >
                     <Text size="sm">
                         {application.contract && (
-                            <Text size="sm">{dayjs(contract.startDate).format(DEFAULT_DATE_FORMAT)}</Text>
+                            <Text size="sm">{dayjs(contract.startDate).format("DD MMM YYYY")}</Text>
                         )}
                         {!application.contract && (
                             <Text size="sm">
