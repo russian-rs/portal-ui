@@ -38,7 +38,11 @@ export const ApplicationRow = ({ applicationDto }: ApplicationRowProps) => {
 
     return (
         <Table.Tr key={application.id}>
-            <Table.Td>{dayjs(application.created).format("DD MMM YYYY")}</Table.Td>
+            <Table.Td>
+                <Text c="dimmed" size="sm">
+                    {dayjs(application.created).format("DD MMM YYYY")}
+                </Text>
+            </Table.Td>
             <Table.Td>{type(application.type)}</Table.Td>
             <Table.Td>
                 <Flex columnGap="sm" align="center">
