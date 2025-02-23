@@ -1,5 +1,5 @@
-import { CloseButton, Flex, Input, Pagination, Table, Text } from "@mantine/core"
-import { PageRequest } from "@russian-rs/portal-api-axios"
+import { Checkbox, CloseButton, Flex, Input, Pagination, Table, Text } from "@mantine/core"
+import { ApplicationsFilter, PageRequest } from "@russian-rs/portal-api-axios"
 import { IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import React, { useContext, useEffect, useState } from "react"
@@ -14,7 +14,7 @@ import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { hasPermission } from "src/shared/user/roles"
 import classes from "./Applications.module.scss"
-import { defaultPage, defaultPageResponse } from "./lib/defaults"
+import { defaultFilter, defaultPage, defaultPageResponse } from "./lib/defaults"
 import { locales } from "./lib/locales"
 
 export const Applications = () => {
@@ -27,6 +27,7 @@ export const Applications = () => {
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery)
 
     const [pageRequest, setPageRequest] = useState<PageRequest>(defaultPage)
+    const [filter, setFilter] = useState<ApplicationsFilter>(defaultFilter)
 
     // Debounce search input by 500ms
     useEffect(() => {
@@ -46,9 +47,9 @@ export const Applications = () => {
         isFetching,
     } = useQuery({
         initialData: { content: [], page: defaultPageResponse },
-        queryKey: ["getApplications", debouncedSearch, pageRequest],
+        queryKey: ["getApplications", debouncedSearch, pageRequest, filter],
         queryFn: () =>
-            PrivateApplicationApiService.getApplications(pageRequest, debouncedSearch).then(
+            PrivateApplicationApiService.getApplications(pageRequest, debouncedSearch, filter).then(
                 (response) => response.data
             ),
     })
@@ -77,6 +78,13 @@ export const Applications = () => {
                         }
                     />
                     <CreateUser />
+                    <Checkbox
+                        variant="outline"
+                        labelPosition="left"
+                        label={<FormattedMessage id={locales.showCompleted} />}
+                        checked={filter.showCompleted}
+                        onChange={() => setFilter({ ...filter, showCompleted: !filter.showCompleted })}
+                    />
                 </Flex>
                 <Table stickyHeader highlightOnHover className={classes.table}>
                     <Table.Thead>

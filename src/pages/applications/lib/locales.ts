@@ -10,4 +10,5 @@ export const locales = {
     status: "pages.applications.status",
     contractStart: "pages.applications.contractStart",
     contractAdd: "pages.applications.contractAdd",
+    showCompleted: "pages.applications.showCompleted",
 }

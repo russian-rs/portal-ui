@@ -374,6 +374,7 @@
       "status": "Status",
       "contractStart": "Contract (start)",
       "contract-required": "Contract dates must be specified to complete",
+      "showCompleted": "Show completed",
       "menu": {
         "view": "View",
         "contact": "Contact"
