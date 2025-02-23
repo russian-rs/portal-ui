@@ -1,4 +1,10 @@
-import { PageRequest, PageResponse, UserCreateRequest, UserSearchFilter } from "@russian-rs/portal-api-axios"
+import {
+    ContractTypeEnum,
+    PageRequest,
+    PageResponse,
+    UserCreateRequest,
+    UserSearchFilter,
+} from "@russian-rs/portal-api-axios"
 import { v4 as uuid } from "uuid"
 
 export const defaultPage: PageRequest = {
@@ -26,7 +32,7 @@ export const defaultCreateRequest: UserCreateRequest = {
         id: uuid(),
         startDate: "",
         endDate: "",
-        type: "",
+        type: ContractTypeEnum.Regular,
     },
 }
 
