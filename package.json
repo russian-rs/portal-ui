@@ -11,7 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@russian-rs/portal-api-axios": "1.14.0",
+    "@russian-rs/portal-api-axios": "1.14.1",
     "@formatjs/intl": "3.0.1",
     "@mantine/core": "^7.17.0",
     "@mantine/dates": "^7.17.0",

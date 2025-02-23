@@ -2,7 +2,7 @@ import { Avatar, Flex, Table, Text } from "@mantine/core"
 import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import React, { ReactNode, useEffect, useState } from "react"
+import React, { ReactNode, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
 import { ApplicationMenu } from "src/pages/applications/menu/ApplicationMenu"
@@ -18,23 +18,22 @@ interface ApplicationRowProps {
 
 export const ApplicationRow = ({ applicationDto }: ApplicationRowProps) => {
     const [application, setApplication] = useState(applicationDto)
+    const [updated, setUpdated] = useState(false)
 
-    useEffect(() => {
-        setApplication(applicationDto)
-    }, [applicationDto])
-
-    const { isFetching: isUpdating, refetch: update } = useQuery({
-        enabled: application != applicationDto,
+    const { isFetching: isUpdating } = useQuery({
+        enabled: updated,
         queryKey: ["updateApplication", application],
         queryFn: () => PrivateApplicationApiService.updateApplication(application).then((response) => response.data),
     })
 
     const onStatusUpdate = (status: string) => {
         setApplication({ ...application, status: status })
+        setUpdated(true)
     }
 
     const onContractChanged = (contract: ContractDto) => {
         setApplication({ ...application, contract: contract })
+        setUpdated(true)
     }
 
     return (

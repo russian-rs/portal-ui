@@ -1,4 +1,4 @@
-import { PageRequest, PageResponse } from "@russian-rs/portal-api-axios"
+import { ApplicationsFilter, PageRequest, PageResponse } from "@russian-rs/portal-api-axios"
 
 export const defaultPage: PageRequest = {
     pageNumber: 0,
@@ -11,4 +11,8 @@ export const defaultPageResponse: PageResponse = {
     pageSize: 20,
     totalPages: 1,
     totalElements: 0,
+}
+
+export const defaultFilter: ApplicationsFilter = {
+    showCompleted: false,
 }

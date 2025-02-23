@@ -374,6 +374,7 @@
       "status": "Status",
       "contractStart": "Ugovor (početak)",
       "contract-required": "Da biste završili, morate navesti datume ugovora",
+      "showCompleted": "Prikaži završene",
       "menu": {
         "view": "Pogledaj",
         "contact": "Kontaktiraj"
