@@ -314,7 +314,7 @@
         "name": "Ime Prezime",
         "name-description": "Kao u pasošu, latiničnim slovima",
         "patronymic": "Ime oca (Patronim)",
-        "patronymic-description": "U Srbiji se označava imenom, navedite latinicom (na primer Ivanovna – Ivan)",
+        "patronymic-description": "U Srbiji se označava imenom, navedite latinicom (na primer, Ivan)",
         "birth-date": "Datum rođenja",
         "passport": "Serija i broj pasoša (međunarodnog)",
         "passport-description": "Bez znakova i razmaka",
@@ -372,6 +372,8 @@
       "name": "Ime i Prezime",
       "email": "E-mail",
       "status": "Status",
+      "contractStart": "Ugovor (početak)",
+      "contract-required": "Da biste završili, morate navesti datume ugovora",
       "menu": {
         "view": "Pogledaj",
         "contact": "Kontaktiraj"
@@ -380,6 +382,7 @@
         "title": "Prijavni formular",
         "created-at": "Popunjeno",
         "status": "Status prijave",
+        "contract-start": "Ugovor (početak)",
         "type": "Tip",
         "email": "E-mail",
         "phone": "Telefon",
@@ -400,6 +403,15 @@
         "skills": "Veštine",
         "goal": "Cilj učestvovanja u organizaciji",
         "bio": "Kratka biografija"
+      },
+      "report": {
+        "contract-from": "Datum početka",
+        "contract-until": "Datum završetka",
+        "required": "Obavezno",
+        "contract-until-before": "Ranije od datuma početka",
+        "cancel": "Otkaži",
+        "save": "Sačuvaj",
+        "add": "Dodaj"
       }
     }
   },

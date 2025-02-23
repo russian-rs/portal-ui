@@ -7,7 +7,7 @@ import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { locales } from "src/pages/profile/contract/lib/locales"
-import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
+import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { TooltipLocalized } from "src/shared/ui/tooltip/TooltipLocalized"
 import classes from "./ContractInfo.module.scss"
 
@@ -30,12 +30,12 @@ export const ContractInfo = ({ contracts, userInfo }: ContractInfoProps) => {
                 <FormattedMessage id={locales.title} />
             </Text>
             <Flex className={classes.props}>
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.dateUntil}
                     icon={<IconCalendar size={14} />}
                     value={dayjs(getLastContractDate(contracts)).format("DD MMM YYYY")}
                 />
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.type}
                     icon={<IconContract size={14} />}
                     value={<FormattedMessage id={`common.contract-type.${getLastContract(contracts).type}`} />}

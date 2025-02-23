@@ -314,7 +314,7 @@
         "name": "First Name Last Name",
         "name-description": "As in the passport, in Latin characters",
         "patronymic": "Patronymic (Father's Name)",
-        "patronymic-description": "In Serbia, it is indicated by the name, provide it in Latin (e.g., Ivanovna – Ivan)",
+        "patronymic-description": "In Serbia, it is indicated by the name, provide it in Latin (e.g., Ivan)",
         "birth-date": "Date of Birth",
         "passport": "Passport series and number (international passport)",
         "passport-description": "Without symbols and spaces",
@@ -372,6 +372,8 @@
       "name": "First and Last Name",
       "email": "E-mail",
       "status": "Status",
+      "contractStart": "Contract (start)",
+      "contract-required": "Contract dates must be specified to complete",
       "menu": {
         "view": "View",
         "contact": "Contact"
@@ -380,6 +382,7 @@
         "title": "Application Form",
         "created-at": "Filled Out",
         "status": "Application Status",
+        "contract-start": "Contract (start)",
         "type": "Type",
         "email": "E-mail",
         "phone": "Phone",
@@ -400,6 +403,15 @@
         "skills": "Skills",
         "goal": "Purpose of Participation in the Organization",
         "bio": "Brief Biography"
+      },
+      "report": {
+        "contract-from": "Start Date",
+        "contract-until": "End Date",
+        "required": "Required",
+        "contract-until-before": "Before the start date",
+        "cancel": "Cancel",
+        "save": "Save",
+        "add": "Add"
       }
     }
   },

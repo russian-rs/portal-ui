@@ -1,9 +1,9 @@
 import { CloseButton, Combobox, Flex, Input, InputBase, useCombobox } from "@mantine/core"
 import { UseFormReturnType } from "@mantine/form"
+import { ContractTypeEnum } from "@russian-rs/portal-api-axios"
 import { IconContract } from "@tabler/icons-react"
 import React, { ReactNode, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
-import { ContractType } from "src/shared/user/contracts"
 
 interface ContractTypeSelectProps {
     className?: string
@@ -11,6 +11,7 @@ interface ContractTypeSelectProps {
     form?: UseFormReturnType<any>
     path?: string
     error?: ReactNode
+    initial?: ContractTypeEnum
 }
 
 export const ContractTypeSelect = (props: ContractTypeSelectProps) => {
@@ -18,7 +19,9 @@ export const ContractTypeSelect = (props: ContractTypeSelectProps) => {
         onDropdownClose: () => combobox.resetSelectedOption(),
     })
 
-    const [value, setValue] = useState<string | null>(null)
+    const initialValue = props.initial ? props.initial.toString() : null
+
+    const [value, setValue] = useState<string | null>(initialValue)
 
     useEffect(() => {
         if (props.onChange) {
@@ -29,7 +32,7 @@ export const ContractTypeSelect = (props: ContractTypeSelectProps) => {
         }
     }, [value])
 
-    const options = Object.values(ContractType).map((item) => (
+    const options = Object.values(ContractTypeEnum).map((item) => (
         <Combobox.Option value={item} key={item}>
             <FormattedMessage id={`common.contract-type.${item}`} />
         </Combobox.Option>
@@ -55,6 +58,7 @@ export const ContractTypeSelect = (props: ContractTypeSelectProps) => {
                         className={props.className}
                         onClick={() => combobox.toggleDropdown()}
                         leftSection={<IconContract size={16} />}
+                        defaultValue={props.initial}
                         rightSectionPointerEvents={value === null ? "none" : "all"}
                         rightSection={
                             value !== null ? (

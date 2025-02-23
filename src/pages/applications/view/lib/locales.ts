@@ -3,6 +3,7 @@ export const locales = {
 
     createdAt: "pages.applications.view.created-at",
     status: "pages.applications.view.status",
+    contractStart: "pages.applications.view.contract-start",
     type: "pages.applications.view.type",
 
     email: "pages.applications.view.email",

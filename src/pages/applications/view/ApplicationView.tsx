@@ -1,4 +1,5 @@
 import { Blockquote, Divider, Flex, Text } from "@mantine/core"
+import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import {
     IconArrowRight,
     IconAt,
@@ -14,16 +15,18 @@ import {
 } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import { useContext } from "react"
-import { FormattedMessage } from "react-intl"
+import { useContext, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
+import { ContractDate } from "src/pages/applications/contract/ContractDate"
 import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
+import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
 import { hasPermission } from "src/shared/user/roles"
 import classes from "./ApplicationView.module.scss"
@@ -34,6 +37,7 @@ export const ApplicationView = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const { user } = useContext(UserContext)
+    const intl = useIntl()
 
     if (!id) {
         navigate("/not-found", { replace: true })
@@ -43,16 +47,28 @@ export const ApplicationView = () => {
         navigate("/unauthorized")
     }
 
-    const { data: application, isFetching } = useQuery({
+    const [application, setApplication] = useState<ApplicationDto>(defaultApplicationDto)
+    setDocumentTitleByString(application.name)
+
+    const { isFetching: isLoading } = useQuery({
         queryKey: ["getApplication", id],
-        initialData: defaultApplicationDto,
         queryFn: () =>
             PrivateApplicationApiService.getApplication(id!!).then((response) => {
+                setApplication(response.data)
                 return response.data
             }),
     })
 
-    if (isFetching) {
+    useQuery({
+        enabled: application !== defaultApplicationDto,
+        queryKey: ["updateApplication", application],
+        queryFn: () =>
+            PrivateApplicationApiService.updateApplication(application).then((response) => {
+                return response.data
+            }),
+    })
+
+    if (isLoading) {
         return (
             <Flex className={classes.root} align="center" justify="center">
                 <LoadingScreen />
@@ -60,62 +76,71 @@ export const ApplicationView = () => {
         )
     }
 
-    setDocumentTitleByString(application.name)
-
     const onStatusChange = (status: string) => {
-        PrivateApplicationApiService.updateApplication({ ...application, status: status })
+        setApplication({ ...application, status: status })
+    }
+
+    const onContractChanged = (contract: ContractDto) => {
+        setApplication({ ...application, contract: contract })
     }
 
     return (
         <Flex className={classes.root}>
-            <Flex align="center" columnGap="lg">
+            <Flex direction="column">
                 <Text className={classes.title}>
                     <FormattedMessage id={locales.title} />
                 </Text>
-                <ApplicationStatusSelect
-                    initialStatus={application.status}
-                    className={classes.statusSelect}
-                    onChange={onStatusChange}
-                />
+                <Flex columnGap="md" mt={16}>
+                    <PropertyBox
+                        align="start"
+                        name={locales.status}
+                        value={
+                            <ApplicationStatusSelect
+                                withoutIcon={true}
+                                application={application}
+                                className={classes.statusSelect}
+                                onChange={onStatusChange}
+                            />
+                        }
+                    />
+                    <PropertyBox
+                        align="center"
+                        name={locales.contractStart}
+                        value={<ContractDate application={application} onChange={onContractChanged} />}
+                    />
+                </Flex>
             </Flex>
-            <Flex columnGap="sm">
-                <Text className={classes.name} variant="gradient">
-                    {application.name}
-                </Text>
-                {application.patronymic && (
-                    <Text className={classes.name} variant="gradient">
-                        ( {application.patronymic} )
-                    </Text>
-                )}
-            </Flex>
+            <Text className={classes.name} variant="gradient">
+                {application.name + (application.patronymic ? ` (${application.patronymic})` : "")}
+            </Text>
             <Flex columnGap="xl">
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.createdAt}
                     value={dayjs(application.created).format("DD MMMM YYYY, HH:mm")}
                     icon={<IconClock size={14} />}
                 />
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.type}
                     value={<FormattedMessage id={`common.application-type.${application.type}`} />}
                 />
             </Flex>
             <Flex className={classes.fields}>
                 {application.email && (
-                    <PropertyBox
+                    <TextPropertyBox
                         name={locales.email}
                         value={<CopyText text={application.email} />}
                         icon={<IconAt size={14} />}
                     />
                 )}
                 {application.phone && (
-                    <PropertyBox
+                    <TextPropertyBox
                         name={locales.phone}
                         value={<CopyText text={application.phone} />}
                         icon={<IconPhone size={14} />}
                     />
                 )}
                 {application.telegram && (
-                    <PropertyBox
+                    <TextPropertyBox
                         name={locales.telegram}
                         value={application.telegram}
                         href={`https://t.me/${application.telegram}`}
@@ -123,59 +148,51 @@ export const ApplicationView = () => {
                     />
                 )}
                 {application.birthDate && (
-                    <PropertyBox
+                    <TextPropertyBox
                         name={locales.birthDate}
                         value={dayjs(application.birthDate).format("DD MMM YYYY")}
                         icon={<IconCake size={14} />}
                     />
                 )}
                 {application.passport && (
-                    <PropertyBox
+                    <TextPropertyBox
                         name={locales.passport}
                         value={<CopyText text={application.passport} />}
                         icon={<IconEPassport size={14} />}
                     />
                 )}
                 {application.citizenship && (
-                    <PropertyBox
+                    <TextPropertyBox
                         name={locales.citizenship}
                         value={application.citizenship}
                         icon={<IconWorld size={14} />}
                     />
                 )}
             </Flex>
-            <Divider />
-            <Flex columnGap={4}>
-                {application.inSerbia ? (
-                    <Text size="sm" c="dimmed">
-                        <FormattedMessage id={locales.inSerbia} />
-                    </Text>
-                ) : (
-                    <Text size="sm" c="dimmed">
-                        <FormattedMessage id={locales.outSerbia} />
-                    </Text>
-                )}
-                {application.residenceRequired ? (
-                    <Text size="sm" c="dimmed">
-                        <FormattedMessage id={locales.residenceRequired} />
-                    </Text>
-                ) : (
-                    <Text size="sm" c="dimmed">
-                        <FormattedMessage id={locales.residenceNotRequired} />
-                    </Text>
-                )}
-            </Flex>
+            <Divider className={classes.divider} />
+            <Text size="sm" c="dimmed">
+                {(application.inSerbia
+                    ? intl.formatMessage({ id: locales.inSerbia })
+                    : intl.formatMessage({ id: locales.outSerbia })
+                )
+                    .concat(" ")
+                    .concat(
+                        application.residenceRequired
+                            ? intl.formatMessage({ id: locales.residenceRequired })
+                            : intl.formatMessage({ id: locales.residenceNotRequired })
+                    )}
+            </Text>
             {application.inSerbia && (
                 <Flex className={classes.fields}>
                     {application.enterDate && (
-                        <PropertyBox
+                        <TextPropertyBox
                             name={locales.enterDate}
                             value={dayjs(application.enterDate).format("DD MMM YYYY")}
                             icon={<IconArrowRight size={14} />}
                         />
                     )}
                     {application.address && (
-                        <PropertyBox
+                        <TextPropertyBox
                             name={locales.address}
                             value={<CopyText text={application.address} />}
                             icon={<IconLocation size={14} />}
@@ -183,12 +200,12 @@ export const ApplicationView = () => {
                     )}
                 </Flex>
             )}
-            <Divider />
+            <Divider className={classes.divider} />
             <Flex direction="column" rowGap="md">
-                {application.occupation && <PropertyBox name={locales.occupation} value={application.occupation} />}
+                {application.occupation && <TextPropertyBox name={locales.occupation} value={application.occupation} />}
             </Flex>
             {application.hasExperience && (
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.experience}
                     value={<Text className={classes.textCard}>{application.experience}</Text>}
                 />
@@ -202,17 +219,14 @@ export const ApplicationView = () => {
                 </Flex>
             )}
             {application.languages && (
-                <PropertyBox
+                <TextPropertyBox
                     name={locales.languages}
                     value={application.languages}
                     icon={<IconLanguageHiragana size={16} />}
                 />
             )}
             {application.skills && (
-                <PropertyBox
-                    name={locales.skills}
-                    value={<Text className={classes.textCard}>{application.skills}</Text>}
-                />
+                <TextPropertyBox name={locales.skills} value={application.skills} className={classes.textCard} />
             )}
             {application.goal && (
                 <PropertyBox

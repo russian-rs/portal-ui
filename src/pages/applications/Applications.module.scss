@@ -1,4 +1,4 @@
-$table-width: 64rem;
+$table-width: 100%;
 
 .root {
     padding: 1rem 1rem 2rem 2rem;
@@ -22,16 +22,23 @@ $table-width: 64rem;
 }
 
 .table {
-    width: $table-width
+
 }
 
-.pagination {
+.paginationArea {
+    position: sticky;
+    bottom: 0;
     width: $table-width;
-    margin-top: 1rem;
     align-items: center;
     column-gap: 1rem;
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
 
     @media (max-width: $mantine-breakpoint-md) {
         width: 100%;
     }
+}
+
+.pagination {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
