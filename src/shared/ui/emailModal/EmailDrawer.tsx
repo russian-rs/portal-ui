@@ -1,6 +1,7 @@
 import { Button, Drawer, Flex, Loader, Pill, Text, Textarea, TextInput } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { Link, RichTextEditor } from "@mantine/tiptap"
+import { FileInfoDto } from "@russian-rs/portal-api-axios"
 import { IconMailForward } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import Highlight from "@tiptap/extension-highlight"
@@ -10,11 +11,12 @@ import TextAlign from "@tiptap/extension-text-align"
 import Underline from "@tiptap/extension-underline"
 import { useEditor } from "@tiptap/react"
 import { StarterKit } from "@tiptap/starter-kit"
-import React, { useState } from "react"
+import React, { createRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { MailApiService } from "src/shared/api/MailApiService"
 import EmailTemplate from "src/shared/email/EmailTemplate"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
+import { FileUploader, FileUploaderInterface } from "src/shared/ui/fileUploader/FileUploader"
 import classes from "./EmailDrawer.module.scss"
 import { locales } from "./lib/locales"
 
@@ -34,11 +36,22 @@ export const EmailDrawer = (props: EmailModalProps) => {
     const [content, setContent] = useState("")
     const [template, setTemplate] = useState("")
 
+    const fileUploaderRef = createRef<FileUploaderInterface>()
+    const [uploadedFiles, setUploadedFiles] = useState<FileInfoDto[]>([])
+    const [loadingFiles, setLoadingFiles] = useState<String[]>([])
+
     const { isFetching: sending, refetch: send } = useQuery({
         enabled: false,
         queryKey: ["sendEmail", topic, content],
         queryFn: () =>
-            MailApiService.sendMail(topic, content, from, props.recipients[0].email).then((_) => {
+            MailApiService.sendMail(
+                topic,
+                content,
+                from,
+                props.recipients[0].email,
+                undefined,
+                uploadedFiles.map((f) => f.id)
+            ).then((_) => {
                 notifications.show(
                     SuccessNotification(
                         <Text size="sm">
@@ -171,12 +184,49 @@ export const EmailDrawer = (props: EmailModalProps) => {
                         ))}
                     </Flex>
                 )}
+                <FileUploader
+                    ref={fileUploaderRef}
+                    maxFiles={5}
+                    maxSize={10}
+                    onFilesUploaded={(files) => setUploadedFiles(files)}
+                    onFilesLoading={(files) => setLoadingFiles(files)}
+                />
+                {(uploadedFiles.length !== 0 || loadingFiles.length !== 0) && (
+                    <Flex className={classes.filesContainer} wrap="wrap">
+                        {uploadedFiles.map((file) => {
+                            return (
+                                <Pill
+                                    key={file.id}
+                                    withRemoveButton
+                                    className={classes.filePill}
+                                    onRemove={() => fileUploaderRef.current?.delete(file.id)}
+                                >
+                                    <Text className={classes.filePillText} truncate="end">
+                                        {file.name}
+                                    </Text>
+                                </Pill>
+                            )
+                        })}
+                        {loadingFiles.map((file, index) => {
+                            return (
+                                <Pill key={index} className={classes.filePill}>
+                                    <Flex justify="center" align="center" columnGap={6}>
+                                        <Text className={classes.filePillText} truncate="end" c="dimmed">
+                                            {file}
+                                        </Text>
+                                        <Loader size={10} stroke="4" />
+                                    </Flex>
+                                </Pill>
+                            )
+                        })}
+                    </Flex>
+                )}
                 <Flex>
                     <Button
                         onClick={onSend}
                         className={classes.sendButton}
                         leftSection={sending ? <Loader size={16} /> : <IconMailForward size={16} />}
-                        disabled={sending}
+                        disabled={sending || loadingFiles.length !== 0}
                     >
                         <FormattedMessage id={locales.send} />
                     </Button>
