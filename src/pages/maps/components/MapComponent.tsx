@@ -1,11 +1,13 @@
+import { Button, Checkbox, Flex, Text } from "@mantine/core"
 import { VolunteerMapDto } from "@russian-rs/portal-api-axios"
 import { useQuery } from "@tanstack/react-query"
 import L from "leaflet"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { MapsApiService } from "src/shared/api/MapsApiService"
+import classes from "../Maps.module.scss"
 
 const defaultIcon = new L.Icon({
     iconUrl: "/resources/human.svg",
@@ -22,17 +24,17 @@ const playgroundIcon = new L.Icon({
 const MapComponent: React.FC = () => {
     const intl = useIntl()
 
-    const [filteredLocations, setFilteredLocations] = useState<VolunteerMapDto[]>([])
+    const [filteredVolunteers, setFilteredVolunteers] = useState<VolunteerMapDto[]>([])
     const [groups, setGroups] = useState<string[]>([])
     const [selectedGroups, setSelectedGroups] = useState<string[]>([])
     const [showPlaygrounds, setShowPlaygrounds] = useState<boolean>(false)
 
-    const { data: playgroundLocations = [] } = useQuery({
+    const { data: playgrounds = [] } = useQuery({
         queryKey: ["getVolunteersMap"],
         queryFn: () => MapsApiService.getPlaygroundsMap().then((response) => response.data),
     })
 
-    const { data: locations = [] } = useQuery({
+    const { data: volunteers = [] } = useQuery({
         queryKey: ["getPlaygroundsMap"],
         queryFn: () =>
             MapsApiService.getVolunteersMap().then((response) => {
@@ -44,121 +46,78 @@ const MapComponent: React.FC = () => {
             }),
     })
 
-    const applyFilters = () => {
-        setFilteredLocations(locations.filter((loc) => loc.groups?.some((group) => selectedGroups.includes(group))))
-    }
+    useEffect(() => {
+        setFilteredVolunteers(volunteers.filter((v) => v.groups?.some((group) => selectedGroups.includes(group))))
+    }, [selectedGroups])
 
     return (
-        <div
-            style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                display: "flex",
-                flexDirection: "column",
-            }}
-        >
-            <MapContainer center={[44.816667, 20.466667]} zoom={10} style={{ flexGrow: 1 }}>
+        <Flex className={classes.mapRoot}>
+            <MapContainer center={[44.816667, 20.466667]} zoom={10} className={classes.mapContainer}>
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
                 {/* Волонтеры */}
-                {filteredLocations.map((loc, index) => (
+                {filteredVolunteers.map((volunteer, index) => (
                     <Marker
-                        key={`${loc.email}-${index}`}
-                        position={[loc.latitude!!, loc.longitude!!]}
+                        key={`${volunteer.email}-${index}`}
+                        position={[volunteer.latitude!!, volunteer.longitude!!]}
                         icon={defaultIcon}
                     >
                         <Popup>
-                            <b>{loc.full_name || "Нет данных"}</b>
-                            <br />
-                            <b>Программа:</b>{" "}
-                            {loc.groups?.map((g) => intl.formatMessage({ id: `common.roles.${g}` })).join(", ") ||
-                                "Нет данных"}
-                            <br />
-                            <b>Email:</b> {loc.email}
-                            <br />
-                            <b>Telegram:</b> {loc.telegram || "Нет данных"}
-                            <br />
-                            <b>Адрес:</b> {loc.city}, {loc.address}
+                            <Flex direction="column">
+                                <b>{volunteer.full_name || "Нет данных"}</b>
+                                <b>Программа:</b>
+                                {volunteer.groups
+                                    ?.map((g) => intl.formatMessage({ id: `common.roles.${g}` }))
+                                    .join(", ") || "Нет данных"}
+                                <b>Email:</b> {volunteer.email}
+                                <b>Telegram:</b> {volunteer.telegram || "Нет данных"}
+                                <b>Адрес:</b> {volunteer.city}, {volunteer.address}
+                            </Flex>
                         </Popup>
                     </Marker>
                 ))}
 
                 {/* Площадки */}
                 {showPlaygrounds &&
-                    playgroundLocations.map((pg, index) => (
+                    playgrounds.map((pg, index) => (
                         <Marker key={`pg-${pg.id}-${index}`} position={[pg.lat!!, pg.lng!!]} icon={playgroundIcon}>
                             <Popup>
-                                <div className="popup-content">
+                                <Flex className="popup-content" direction="column">
                                     <b>📍Площадка📍</b>
-                                    <br />
                                     <b>Покрытие:</b> {pg.covering || "Нет данных"}
-                                    <br />
                                     <b>Дренаж:</b> {pg.drainage || "Нет данных"}
-                                    <br />
                                     <b>Ограждение:</b> {pg.fencing || "Нет данных"}
-                                    <br />
                                     <b>Безопасность:</b> {pg.security || "Нет данных"}
-                                    <br />
                                     <b>Освещение:</b> {pg.light || "Нет данных"}
-                                    <br />
                                     <b>
                                         <a href={pg.url} target="_blank">
                                             Google Maps
                                         </a>
                                     </b>
-                                </div>
+                                </Flex>
                             </Popup>
                         </Marker>
                     ))}
             </MapContainer>
 
             {/* Фильтр площадок (вверху) */}
-            <div
-                style={{
-                    position: "absolute",
-                    top: "20px",
-                    right: "20px",
-                    background: "rgba(255, 255, 255, 0.9)",
-                    padding: "12px",
-                    borderRadius: "8px",
-                    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
-                    zIndex: 1000,
-                }}
-            >
-                <strong style={{ fontSize: "14px", display: "block", marginBottom: "8px" }}>Фильтр площадок</strong>
-                <label style={{ display: "block", fontSize: "14px" }}>
-                    <input
-                        type="checkbox"
-                        checked={showPlaygrounds}
-                        onChange={() => setShowPlaygrounds((prev) => !prev)}
-                    />{" "}
-                    Показывать площадки
-                </label>
-            </div>
+            <Flex direction="column" className={classes.filterPlaygrounds} gap="sm">
+                <Text fw="bold">Фильтр площадок</Text>
+                <Checkbox
+                    checked={showPlaygrounds}
+                    label={"Показывать площадки"}
+                    onChange={() => setShowPlaygrounds((prev) => !prev)}
+                />
+            </Flex>
 
             {/* Фильтр волонтеров (внизу) */}
-            <div
-                style={{
-                    position: "absolute",
-                    bottom: "20px",
-                    right: "20px",
-                    background: "rgba(255, 255, 255, 0.9)",
-                    padding: "15px",
-                    borderRadius: "12px",
-                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-                    zIndex: 1000,
-                    width: "250px",
-                }}
-            >
-                <strong style={{ fontSize: "16px", display: "block", marginBottom: "10px" }}>Фильтры волонтеров</strong>
+            <Flex direction="column" className={classes.filterRoles} gap="sm">
+                <Text fw="bold">Фильтры волонтеров</Text>
 
-                {groups.map((group) => (
-                    <label key={group} style={{ display: "block", marginBottom: "5px", fontSize: "14px" }}>
-                        <input
-                            type="checkbox"
+                <Flex direction="column" gap="xs">
+                    {groups.map((group) => (
+                        <Checkbox
+                            label={<FormattedMessage id={`common.roles.${group}`} />}
                             value={group}
                             checked={selectedGroups.includes(group)}
                             onChange={(e) => {
@@ -167,47 +126,21 @@ const MapComponent: React.FC = () => {
                                     prev.includes(value) ? prev.filter((g) => g !== value) : [...prev, value]
                                 )
                             }}
-                        />{" "}
-                        <FormattedMessage id={`common.roles.${group}`} />
-                    </label>
-                ))}
+                        />
+                    ))}
+                </Flex>
 
                 {/* Кнопки управления фильтрами */}
-                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
-                    <button
-                        onClick={() => {
-                            setSelectedGroups(groups)
-                            setShowPlaygrounds(true)
-                        }}
-                        style={{
-                            backgroundColor: "#007bff",
-                            color: "#fff",
-                            border: "none",
-                            padding: "8px",
-                            borderRadius: "5px",
-                            cursor: "pointer",
-                            fontSize: "14px",
-                        }}
-                    >
-                        Выбрать все
-                    </button>
-                    <button
-                        onClick={applyFilters}
-                        style={{
-                            backgroundColor: "#28a745",
-                            color: "#fff",
-                            border: "none",
-                            padding: "8px",
-                            borderRadius: "5px",
-                            cursor: "pointer",
-                            fontSize: "14px",
-                        }}
-                    >
-                        Применить
-                    </button>
-                </div>
-            </div>
-        </div>
+                <Button
+                    onClick={() => {
+                        setSelectedGroups(groups)
+                        setShowPlaygrounds(true)
+                    }}
+                >
+                    Выбрать все
+                </Button>
+            </Flex>
+        </Flex>
     )
 }
 

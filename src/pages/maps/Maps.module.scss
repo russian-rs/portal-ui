@@ -5,33 +5,39 @@
         width: 100%;
     }
 }
-.filter-box {
+
+.mapRoot {
     position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    max-width: 200px;
-    z-index: 99999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    flex-direction: column;
 }
 
-.filter-box button {
-    display: block;
-    width: 100%;
-    margin-top: 10px;
-    padding: 8px;
-    background: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
+.mapContainer {
+    flex-grow: 1;
 }
 
-.filter-box button:hover {
-    background: #0056b3;
+.filterPlaygrounds {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    z-index: 1000;
+}
+
+.filterRoles {
+    position: absolute;
+    width: 16rem;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    z-index: 1000;
 }

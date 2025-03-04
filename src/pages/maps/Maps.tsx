@@ -1,14 +1,19 @@
-import { Flex } from "@mantine/core"
-import React from "react"
+import React, { useContext } from "react"
+import { useNavigate } from "react-router"
+import { UserContext } from "src/app/providers/UserContext"
+import { hasPermission } from "src/shared/user/roles"
 import MapComponent from "./components/MapComponent"
-import classes from "./Maps.module.scss"
+import { allowedRoles } from "./lib/roles"
 
 export const Maps = () => {
-    return (
-        <Flex className={classes.root}>
-            <MapComponent />
-        </Flex>
-    )
+    const { user } = useContext(UserContext)
+    const navigate = useNavigate()
+
+    if (!hasPermission(user, allowedRoles)) {
+        navigate("/unauthorized")
+    }
+
+    return <MapComponent />
 }
 
 export default Maps
