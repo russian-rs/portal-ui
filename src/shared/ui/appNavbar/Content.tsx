@@ -42,6 +42,11 @@ export const Content: ItemGroupProps[] = [
                 link: "/applications",
                 roles: ["ADMIN_VOLUNTEER", "INTERVIEWER"],
             },
+            {
+                label: "navbar.volunteers.maps",
+                link: "/maps",
+                roles: ["ADMIN_VOLUNTEER", "ADMIN"],
+            },
         ],
         roles: ["ADMIN_VOLUNTEER", "ADMIN_SSO", "INTERVIEWER"],
     },

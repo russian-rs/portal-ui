@@ -1,0 +1,20 @@
+.root {
+    padding: 2rem;
+    flex-direction: column;
+    row-gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.title {
+    font-size: xx-large;
+    font-weight: bolder;
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        font-size: large;
+    }
+}
+
+.button {
+    margin-top: 1rem;
+    width: fit-content;
+}

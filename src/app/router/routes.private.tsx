@@ -14,6 +14,7 @@ const ApplicationForm = lazy(() => import("src/pages/application/form/Form"))
 const ApplicationStatusView = lazy(() => import("src/pages/application/view/ViewStatus"))
 const ApplicationList = lazy(() => import("src/pages/applications/Applications"))
 const ApplicationView = lazy(() => import("src/pages/applications/view/ApplicationView"))
+const Maps = lazy(() => import("src/pages/maps/Maps"))
 
 export const routes: RouteProps[] = [
     {
@@ -76,4 +77,9 @@ export const routes: RouteProps[] = [
         path: "/",
         element: <MyReports />,
     },
+    {
+        path: "/maps",
+        element: <Maps />,
+    },
+
 ]

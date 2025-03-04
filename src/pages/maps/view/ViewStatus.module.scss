@@ -1,0 +1,20 @@
+.root {
+    padding: 1rem;
+    row-gap: 1rem;
+    flex-direction: column;
+    height: calc(100dvh - var(--mantine-spacing-md) * 6);
+}
+
+.content {
+
+}
+
+.title {
+    font-size: xx-large;
+    font-weight: bolder;
+    text-align: center;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        font-size: large;
+    }
+}
