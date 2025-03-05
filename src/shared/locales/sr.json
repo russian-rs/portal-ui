@@ -417,7 +417,7 @@
     }
   },
   "errors": {
-    "request": "Došlo je do greške u zahtevu",
+    "request": "Došlo je do greške",
     "file-download": "Greška pri preuzimanju datoteke"
   },
   "navbar": {

@@ -417,7 +417,7 @@
     }
   },
   "errors": {
-    "request": "Request error occurred",
+    "request": "Error occurred",
     "file-download": "Error downloading file"
   },
   "navbar": {
