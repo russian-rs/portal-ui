@@ -261,7 +261,7 @@ export const ApplicationView = () => {
                             generateContractPdf(application)
                         }}
                     >
-                        Скачать договор
+                        <FormattedMessage id={locales.contractDownload} />
                     </Button>
                 </Flex>
             </Flex>
