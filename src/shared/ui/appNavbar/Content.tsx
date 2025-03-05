@@ -16,6 +16,11 @@ export const Content: ItemGroupProps[] = [
                 link: "/report/create",
             },
             {
+                label: "navbar.reports.cleaning",
+                link: "/cleaning-how-to",
+                roles: ["ADMIN_VOLUNTEER", "ADMIN", "MAIN_VOLUNTEER"],
+            },
+            {
                 label: "navbar.reports.all",
                 link: "/reports",
                 roles: ["ADMIN_VOLUNTEER"],

@@ -13,6 +13,7 @@ const ApplicationForm = lazy(() => import("src/pages/application/form/Form"))
 const ApplicationStatusView = lazy(() => import("src/pages/application/view/ViewStatus"))
 const ApplicationList = lazy(() => import("src/pages/applications/Applications"))
 const ApplicationView = lazy(() => import("src/pages/applications/view/ApplicationView"))
+const CleaningHowTo = lazy(() => import("src/pages/cleaning/CleaningHowTo"))
 
 export const routes: RouteProps[] = [
     {
@@ -66,6 +67,10 @@ export const routes: RouteProps[] = [
     {
         path: "/application-status/:id",
         element: <ApplicationStatusView />,
+    },
+    {
+        path: "/cleaning-how-to",
+        element: <CleaningHowTo />,
     },
     {
         path: "/",

@@ -415,6 +415,9 @@
         "save": "Sačuvaj",
         "add": "Dodaj"
       }
+    },
+    "cleaning": {
+      "title": "Čisti grad (glavni program)"
     }
   },
   "errors": {
@@ -429,7 +432,8 @@
       "new-report-playground": "Izveštaj o igralištu",
       "report": "Izveštaj",
       "all": "Svi izveštaji",
-      "summary": "Rezime"
+      "summary": "Rezime",
+      "cleaning": "Izveštaj \"Čisti grad\""
     },
     "volunteers": {
       "volunteers": "Volonteri",
