@@ -403,7 +403,8 @@
         "languages": "Language Proficiency",
         "skills": "Skills",
         "goal": "Purpose of Participation in the Organization",
-        "bio": "Brief Biography"
+        "bio": "Brief Biography",
+        "contractDownload": "Download contract"
       },
       "report": {
         "contract-from": "Start Date",

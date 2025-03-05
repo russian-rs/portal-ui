@@ -403,7 +403,8 @@
         "languages": "Poznavanje jezika",
         "skills": "Veštine",
         "goal": "Cilj učestvovanja u organizaciji",
-        "bio": "Kratka biografija"
+        "bio": "Kratka biografija",
+        "contractDownload": "Preuzimanje ugovora"
       },
       "report": {
         "contract-from": "Datum početka",

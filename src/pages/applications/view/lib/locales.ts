@@ -28,4 +28,6 @@ export const locales = {
     skills: "pages.applications.view.skills",
     goal: "pages.applications.view.goal",
     bio: "pages.applications.view.bio",
+
+    contractDownload: "pages.applications.view.contractDownload",
 }
