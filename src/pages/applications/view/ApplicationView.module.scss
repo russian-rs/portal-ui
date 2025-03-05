@@ -1,12 +1,36 @@
 $width: 36rem;
 
 .root {
+    width: 100%;
     padding: 2rem;
     flex-direction: column;
     row-gap: 1rem;
 
     @media (max-width: $mantine-breakpoint-sm) {
         padding: 1rem;
+    }
+}
+
+.wrapContainer {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+}
+
+.info {
+    width: $width;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        width: 100%;
+    }
+}
+
+.controls {
+    width: 16rem;
+
+    @media (max-width: $mantine-breakpoint-sm) {
+        width: 100%;
     }
 }
 
@@ -19,36 +43,43 @@ $width: 36rem;
     }
 }
 
+.statusSelect {
+    width: 16rem;
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    border-radius: 0.5rem;
+    border-style: solid;
+    border-width: 1px;
+    border-color: light-dark(var(--mantine-color-blue-9), var(--mantine-color-white));
+}
+
+.contractDate {
+    width: 100%;
+    justify-content: start;
+    border-style: solid;
+    border-width: 1px;
+    border-color: light-dark(var(--mantine-color-blue-9), var(--mantine-color-white));
+}
+
+.contractGenerate {
+    width: 100%;
+}
+
 .name {
     font-size: x-large;
     font-weight: bold;
 }
 
-.statusSelect {
-    width: 16rem;
-    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
-    border-radius: 5px;
-}
-
 .fields {
-    width: $width;
+    width: 100%;
     flex-wrap: wrap;
     column-gap: 2rem;
     row-gap: 1rem;
-
-    @media (max-width: $mantine-breakpoint-sm) {
-        width: 100%
-    }
 }
 
 .divider {
-    width: $width;
+    width: 100%
 }
 
 .textCard {
-    width: $width;
-
-    @media (max-width: $mantine-breakpoint-sm) {
-        width: 100%
-    }
+    width: 100%;
 }
