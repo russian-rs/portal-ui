@@ -415,6 +415,9 @@
         "save": "Save",
         "add": "Add"
       }
+    },
+    "cleaning": {
+      "title": "Clean City (main program)"
     }
   },
   "errors": {
@@ -429,7 +432,8 @@
       "new-report-playground": "Playground report",
       "report": "Report",
       "all": "All reports",
-      "summary": "Summary"
+      "summary": "Summary",
+      "cleaning": "Report for \"Clean City\""
     },
     "volunteers": {
       "volunteers": "Volunteers",
