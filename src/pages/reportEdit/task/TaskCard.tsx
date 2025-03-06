@@ -180,6 +180,8 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                 initialSearch={editMode && props.task.customer ? props.task.customer : undefined}
             />
             <FileUploader
+                maxFiles={15}
+                maxSize={5}
                 ref={fileUploaderRef}
                 onFilesUploaded={(files) => setUploadedFiles(files)}
                 onFilesLoading={(files) => setLoadingFiles(files)}
