@@ -8,12 +8,12 @@ const EditReport = lazy(() => import("src/pages/reportEdit/EditReport"))
 const MyReports = lazy(() => import("src/pages/reportsPersonal/MyReports"))
 const ReportList = lazy(() => import("src/pages/reports/ReportList"))
 const UserList = lazy(() => import("src/pages/users/UserList"))
-const PlaygroundsHowto = lazy(() => import("src/pages/playgrounds/PlaygroundsHowto"))
 const Application = lazy(() => import("src/pages/application/Application"))
 const ApplicationForm = lazy(() => import("src/pages/application/form/Form"))
 const ApplicationStatusView = lazy(() => import("src/pages/application/view/ViewStatus"))
 const ApplicationList = lazy(() => import("src/pages/applications/Applications"))
 const ApplicationView = lazy(() => import("src/pages/applications/view/ApplicationView"))
+const CleaningHowTo = lazy(() => import("src/pages/cleaning/CleaningHowTo"))
 const Maps = lazy(() => import("src/pages/maps/Maps"))
 
 export const routes: RouteProps[] = [
@@ -50,10 +50,6 @@ export const routes: RouteProps[] = [
         element: <UserList />,
     },
     {
-        path: "/playgrounds",
-        element: <PlaygroundsHowto />,
-    },
-    {
         path: "/application/:id",
         element: <ApplicationView />,
     },
@@ -74,12 +70,15 @@ export const routes: RouteProps[] = [
         element: <ApplicationStatusView />,
     },
     {
-        path: "/",
-        element: <MyReports />,
+        path: "/cleaning-how-to",
+        element: <CleaningHowTo />,
     },
     {
         path: "/maps",
         element: <Maps />,
     },
-
+    {
+        path: "/",
+        element: <MyReports />,
+    },
 ]

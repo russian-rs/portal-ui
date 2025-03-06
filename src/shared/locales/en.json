@@ -403,7 +403,8 @@
         "languages": "Language Proficiency",
         "skills": "Skills",
         "goal": "Purpose of Participation in the Organization",
-        "bio": "Brief Biography"
+        "bio": "Brief Biography",
+        "contractDownload": "Download contract"
       },
       "report": {
         "contract-from": "Start Date",
@@ -414,10 +415,13 @@
         "save": "Save",
         "add": "Add"
       }
+    },
+    "cleaning": {
+      "title": "Clean City (main program)"
     }
   },
   "errors": {
-    "request": "Request error occurred",
+    "request": "Error occurred",
     "file-download": "Error downloading file"
   },
   "navbar": {
@@ -428,7 +432,8 @@
       "new-report-playground": "Playground report",
       "report": "Report",
       "all": "All reports",
-      "summary": "Summary"
+      "summary": "Summary",
+      "cleaning": "Report for \"Clean City\""
     },
     "volunteers": {
       "volunteers": "Volunteers",

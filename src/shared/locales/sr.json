@@ -403,7 +403,8 @@
         "languages": "Poznavanje jezika",
         "skills": "Veštine",
         "goal": "Cilj učestvovanja u organizaciji",
-        "bio": "Kratka biografija"
+        "bio": "Kratka biografija",
+        "contractDownload": "Preuzimanje ugovora"
       },
       "report": {
         "contract-from": "Datum početka",
@@ -414,10 +415,13 @@
         "save": "Sačuvaj",
         "add": "Dodaj"
       }
+    },
+    "cleaning": {
+      "title": "Čisti grad (glavni program)"
     }
   },
   "errors": {
-    "request": "Došlo je do greške u zahtevu",
+    "request": "Došlo je do greške",
     "file-download": "Greška pri preuzimanju datoteke"
   },
   "navbar": {
@@ -428,7 +432,8 @@
       "new-report-playground": "Izveštaj o igralištu",
       "report": "Izveštaj",
       "all": "Svi izveštaji",
-      "summary": "Rezime"
+      "summary": "Rezime",
+      "cleaning": "Izveštaj \"Čisti grad\""
     },
     "volunteers": {
       "volunteers": "Volonteri",

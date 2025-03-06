@@ -1,4 +1,4 @@
-$width: 36rem;
+$width: 40rem;
 
 .root {
     padding: var(--mantine-spacing-xl);
@@ -21,6 +21,7 @@ $width: 36rem;
 }
 
 .newReportButton {
+    margin-top: auto;
     margin-left: auto;
 
     @media (max-width: $mantine-breakpoint-md) {
@@ -67,6 +68,10 @@ $width: 36rem;
         box-shadow: 0 0 0.5rem 0.3rem light-dark(var(--mantine-color-blue-2), var(--mantine-color-blue-9));
         transform: scale(1.02);
     }
+
+    @media (max-width: $mantine-breakpoint-md) {
+        column-gap: 0.5rem;
+    }
 }
 
 .report:hover {
@@ -74,17 +79,23 @@ $width: 36rem;
 }
 
 .reportLeft {
-    min-width: 40%;
-    column-gap: 0.5rem;
-    row-gap: 0.5rem;
+    width: 16rem;
+    gap: 0.5rem;
     flex-wrap: wrap;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 8rem;
+    }
 }
 
 .reportRight {
-    column-gap: 1rem;
-    row-gap: 0.5rem;
+    width: 18rem;
+    gap: 0.5rem;
     flex-wrap: wrap;
-    flex-grow: 1;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 10rem;
+    }
 }
 
 .date {
@@ -107,8 +118,13 @@ $width: 36rem;
 }
 
 .filterArea {
-    width: 100%;
-    column-gap: 0.5rem;
+    width: $width;
+    gap: 0.5rem;
+    flex-wrap: wrap-reverse;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 100%;
+    }
 }
 
 .filterWeek {

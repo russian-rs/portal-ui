@@ -26,7 +26,7 @@ RequestHttp.interceptors.response.use(
     },
     (error: AxiosError) => {
         const status = error.response?.status
-        if (status === 404 || status === 400) {
+        if (status === 404) {
             history.replace({ pathname: "/not-found" })
             location.reload()
             return

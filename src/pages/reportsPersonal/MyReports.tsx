@@ -14,6 +14,7 @@ import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { getReportStatusColor } from "src/shared/report/status"
 import { getSpentTimeFromReport } from "src/shared/report/timeSpent"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
+import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
 import { WeekPicker } from "src/shared/ui/weekPicker/WeekPicker"
@@ -57,7 +58,7 @@ export const MyReports = () => {
                     value={dayjs(report.createTime).format("DD MMM YYYY")}
                     className={classes.date}
                 />
-                <TextPropertyBox
+                <PropertyBox
                     name={locales.reportStatus}
                     value={
                         <Badge color={getReportStatusColor(report.status)} radius="md" variant="light">
@@ -67,6 +68,7 @@ export const MyReports = () => {
                 />
             </Flex>
             <Flex className={classes.reportRight}>
+                <TextPropertyBox name={locales.reportWeek} value={report.week} />
                 <TextPropertyBox
                     name={locales.reportTaskCount}
                     value={report.tasks.length}
@@ -77,7 +79,6 @@ export const MyReports = () => {
                     value={getSpentTimeFromReport(report, intl)}
                     icon={<IconClockCheck size={16} />}
                 />
-                <TextPropertyBox name={locales.reportWeek} value={report.week} />
             </Flex>
             <IconChevronRight className={classes.arrow} />
         </Flex>
@@ -92,22 +93,22 @@ export const MyReports = () => {
                         <Text className={classes.title}>
                             <FormattedMessage id={locales.documentTitle} />
                         </Text>
-                        <Button
-                            className={classes.newReportButton}
-                            variant="light"
-                            size="sm"
-                            leftSection={<IconPlus size={16} />}
-                            onClick={() => navigate("/report/create")}
-                        >
-                            <Text size="sm">
-                                <FormattedMessage id={locales.newReport} />
-                            </Text>
-                        </Button>
                     </Flex>
                     <Flex className={classes.content}>
                         <Flex className={classes.filterArea}>
                             <WeekPicker onChange={onWeekChange} className={classes.filterWeek} />
                             <ReportStatusSelect onChange={onStatusChange} className={classes.filterStatus} />
+                            <Button
+                                className={classes.newReportButton}
+                                variant="light"
+                                size="sm"
+                                leftSection={<IconPlus size={16} />}
+                                onClick={() => navigate("/report/create")}
+                            >
+                                <Text size="sm">
+                                    <FormattedMessage id={locales.newReport} />
+                                </Text>
+                            </Button>
                         </Flex>
                         <Flex className={classes.reportContainer}>
                             {rows.length == 0 && (

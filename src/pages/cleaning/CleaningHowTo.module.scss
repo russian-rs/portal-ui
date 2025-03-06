@@ -1,0 +1,15 @@
+.root {
+    padding: 1rem 2rem;
+    flex-direction: column;
+    row-gap: 1rem;
+    width: 64rem;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 100%;
+    }
+}
+
+.title {
+    font-size: xx-large;
+    font-weight: bolder;
+}
