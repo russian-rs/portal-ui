@@ -68,6 +68,10 @@ $width: 40rem;
         box-shadow: 0 0 0.5rem 0.3rem light-dark(var(--mantine-color-blue-2), var(--mantine-color-blue-9));
         transform: scale(1.02);
     }
+
+    @media (max-width: $mantine-breakpoint-md) {
+        column-gap: 0.5rem;
+    }
 }
 
 .report:hover {
@@ -80,7 +84,7 @@ $width: 40rem;
     flex-wrap: wrap;
 
     @media (max-width: $mantine-breakpoint-md) {
-        width: 10rem;
+        width: 8rem;
     }
 }
 
