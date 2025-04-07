@@ -5,7 +5,7 @@
   "homepage": ".",
   "license": "MIT",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --debug",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
