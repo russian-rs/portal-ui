@@ -1,6 +1,6 @@
 import react from "@vitejs/plugin-react"
 import { resolve } from "node:path"
-import { defineConfig } from "vite"
+import { defineConfig, HttpProxy } from "vite"
 import { Mode, plugin as markDownPlugin } from "vite-plugin-markdown"
 
 // const apiTarget = "http://localhost:8081"
@@ -75,7 +75,7 @@ const getBabelPlugins = (mode: string) => {
     return plugins
 }
 
-const proxyLogging = (proxy) => {
+const proxyLogging = (proxy: HttpProxy.Server) => {
     proxy.on("proxyReq", (proxyReq, req) => {
         console.log(`[vite-proxy] ${req.method} ${req.url} -> ${apiTarget}${req.url}`)
     })
