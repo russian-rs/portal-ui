@@ -141,7 +141,8 @@
       },
       "buttons": {
         "edit": "Uredi",
-        "editTooltip": "Ova funkcionalnost je u razvoju, za uređivanje pogledajte podršku"
+        "editTooltip": "Ova funkcionalnost je u razvoju, za uređivanje pogledajte podršku",
+        "save": "Sačuvaj"
       },
       "avatarUpdated": "Slika profila je uspešno ažurirana",
       "contract": {
