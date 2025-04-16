@@ -1,8 +1,9 @@
-import { Button, Container, Drawer, Flex, Loader, Text, TextInput } from "@mantine/core"
+import { Button, Container, Drawer, Flex, Input, Text, TextInput } from "@mantine/core"
+import { DateInput } from "@mantine/dates"
 import { UserInfoDto, UserInfoUpdateRequest } from "@russian-rs/portal-api-axios"
-import { IconBrandTelegram, IconPhone } from "@tabler/icons-react"
+import { IconBrandTelegram, IconPhone, IconHome, IconBuildings, IconGift, IconMail } from "@tabler/icons-react"
 import dayjs from "dayjs"
-import { useContext, useState } from "react"
+import { useContext } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { UserContext } from "src/app/providers/UserContext"
 import commonClasses from "src/app/styles/private.module.scss"
@@ -17,7 +18,7 @@ import { SuccessNotification } from "src/shared/notifications/SuccessNotificatio
 import { z } from "zod"
 import classes from "./ProfileInfo.module.scss"
 import { locales } from "src/pages/users/lib/locales";
-import {ErrorNotification} from "src/shared/notifications/ErrorNotification";
+import { ErrorNotification } from "src/shared/notifications/ErrorNotification";
 
 interface ProfileInfoProps {
     userInfo: UserInfoDto | undefined
@@ -78,6 +79,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
 
     const { mutate: updateProfile, isPending } = useMutation({
         mutationFn: (data: UserInfoUpdateRequest) => {
+            console.log('Form values before update:', form.values);
             return UserApiService.updateInfo(userInfo.username, data);
         },
         onSuccess: (response) => {
@@ -135,27 +137,41 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         updateProfile(updateData);
     }
 
+    const iconTelegram = <IconBrandTelegram size={16} />
+    const iconPhone = <IconPhone size={16} />
+    const iconHome = <IconHome size={16} />
+    const iconCity = <IconBuildings size={16} />
+    const iconBirthday = <IconGift size={16} />
+
     return (
         <Flex direction="column" className={classes.infoContainer}>
             <ProfileAvatar link={userInfo?.avatar?.link} editable={currentUser?.username === userInfo?.username} />
             <Text className={classes.userName}>{userInfo?.fullName}</Text>
             <Text c="dimmed">{userInfo?.program}</Text>
             <Container className={commonClasses.divider} />
-            <TextPropertyBox name={"pages.profile.props.city"} value={userInfo?.city} className={classes.propertyBox} />
+            <TextPropertyBox
+                name={"pages.profile.props.city"}
+                value={userInfo?.city}
+                icon={<IconBuildings size={18} />}
+                className={classes.propertyBox} />
             <TextPropertyBox
                 name={"pages.profile.props.address"}
                 value={userInfo?.address}
+                icon={<IconHome size={18} />}
                 className={classes.propertyBox}
             />
             <TextPropertyBox
                 name={"pages.profile.props.birthDate"}
                 value={dayjs(userInfo?.birthDate).format("DD MMMM YYYY")}
+                icon={<IconGift size={18} />}
                 className={classes.propertyBox}
             />
             <Container className={commonClasses.divider} />
             <TextPropertyBox
                 name={"pages.profile.props.email"}
                 value={userInfo?.email}
+                icon={<IconMail size={18}/>}
+                href={`mailto:${userInfo?.email}`}
                 className={classes.propertyBox}
             />
             <TextPropertyBox
@@ -184,22 +200,32 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                 }}>
                     <Flex direction="column" gap="md">
                         <TextInput
+                            leftSection={iconCity}
                             label={<FormattedMessage id="pages.profile.props.city" />}
                             {...form.getInputProps('city')}
                         />
                         <TextInput
+                            leftSection={iconHome}
                             label={<FormattedMessage id="pages.profile.props.address" />}
                             {...form.getInputProps('address')}
                         />
-                        <TextInput
+                        <DateInput
+                            leftSection={iconBirthday}
                             label={<FormattedMessage id="pages.profile.props.birthDate" />}
-                            {...form.getInputProps('birthDate')}
+                            value={form.values.birthDate ? dayjs(form.values.birthDate).toDate() : null}
+                            onChange={(date) => {
+                                form.setFieldValue('birthDate', date ? dayjs(date).format("YYYY-MM-DD") : "");
+                            }}
+                            error={form.errors.birthDate}
+                            clearable
                         />
                         <TextInput
+                            leftSection={iconTelegram}
                             label={<FormattedMessage id="pages.profile.props.telegram" />}
                             {...form.getInputProps('telegram')}
                         />
                         <TextInput
+                            leftSection={iconPhone}
                             label={<FormattedMessage id="pages.profile.props.phone" />}
                             {...form.getInputProps('phone')}
                         />
