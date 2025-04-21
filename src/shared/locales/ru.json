@@ -142,7 +142,8 @@
       "validation": {
         "invalidPhone": "Неверный формат номера",
         "invalidTelegram": "Неверный формат",
-        "invalidBirthDate": "Неверный формат даты"
+        "invalidBirthDate": "Неверный формат даты",
+        "tooYoung": "Вы должны быть старше 18 лет."
       },
       "buttons": {
         "edit": "Редактировать",
