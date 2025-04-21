@@ -142,7 +142,8 @@
       "validation": {
         "invalidPhone": "Invalid number",
         "invalidTelegram": "Invalid format",
-        "invalidBirthDate": "Invalid date"
+        "invalidBirthDate": "Invalid date",
+        "tooYoung": "You must be at least 18 years old"
       },
       "buttons": {
         "edit": "Edit",
