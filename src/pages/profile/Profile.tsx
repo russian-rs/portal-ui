@@ -20,7 +20,7 @@ export const Profile = () => {
         navigate("/not-found")
     }
 
-    const { data: userInfo, isFetching } = useQuery({
+    const { data: userInfo, isFetching, refetch } = useQuery({
         queryKey: ["getInfo", login],
         queryFn: () =>
             UserApiService.getInfo(login!!).then((response) => {
@@ -28,6 +28,10 @@ export const Profile = () => {
                 return response.data
             }),
     })
+
+    const handleUserInfoUpdate = () => {
+        refetch()
+    }
 
     if (loading) {
         return <CustomLoader visible={true} className={classes.loader} />
@@ -45,7 +49,7 @@ export const Profile = () => {
                     className={classes.root}
                 >
                     <Skeleton visible={isFetching} radius="lg">
-                        <ProfileInfo userInfo={userInfo} />
+                        <ProfileInfo userInfo={userInfo} onUserInfoUpdate={handleUserInfoUpdate} />
                     </Skeleton>
                     <Skeleton visible={isFetching} radius="lg">
                         <Flex direction="column">

@@ -139,10 +139,19 @@
         "email": "Email",
         "telegram": "Telegram"
       },
+      "validation": {
+        "invalidPhone": "Invalid number",
+        "invalidTelegram": "Invalid format",
+        "invalidBirthDate": "Invalid date",
+        "tooYoung": "You must be at least 18 years old"
+      },
       "buttons": {
         "edit": "Edit",
-        "editTooltip": "This functionality is under development, please contact support for editing"
+        "editTooltip": "This functionality is under development, please contact support for editing",
+        "save": "Save"
       },
+      "updateError": "Error",
+      "profileUpdated": "Profile is updated successfully",
       "avatarUpdated": "Profile image updated successfully",
       "contract": {
         "title": "Current contract information",
