@@ -139,10 +139,19 @@
         "email": "Email",
         "telegram": "Telegram"
       },
+      "validation": {
+        "invalidPhone": "Neispravan format broja telefona",
+        "invalidTelegram": "Neispravan format",
+        "invalidBirthDate": "Neispravan format datuma",
+        "tooYoung": "Morate imati najmanje 18 godina"
+      },
       "buttons": {
         "edit": "Uredi",
-        "editTooltip": "Ova funkcionalnost je u razvoju, za uređivanje pogledajte podršku"
+        "editTooltip": "Ova funkcionalnost je u razvoju, za uređivanje pogledajte podršku",
+        "save": "Sačuvaj"
       },
+      "updateError": "Došlo je do greške",
+      "profileUpdated": "Profil je uspešno izmenjen",
       "avatarUpdated": "Slika profila je uspešno ažurirana",
       "contract": {
         "title": "Informacije o trenutnom ugovoru",
