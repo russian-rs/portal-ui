@@ -142,25 +142,37 @@
       "validation": {
         "invalidPhone": "Invalid number",
         "invalidTelegram": "Invalid format",
-        "invalidBirthDate": "Invalid date",
-        "tooYoung": "You must be at least 18 years old"
+        "invalidBirthDate": "Invalid date format",
+        "tooYoung": "You must be at least 18 years old",
+        "invalidDate": "Invalid date format",
+        "contractTypeRequired": "Select contract type",
+        "endDateAfterStart": "The end date must be later than the start date"
       },
       "buttons": {
         "edit": "Edit",
         "editTooltip": "This functionality is under development, please contact support for editing",
         "save": "Save"
       },
-      "updateError": "Error",
-      "profileUpdated": "Profile is updated successfully",
+      "updateError": "Error when updating profile",
+      "profileUpdated": "Profile updated successfully",
       "avatarUpdated": "Profile image updated successfully",
       "contract": {
+        "no-contract": "No contracts",
         "title": "Current contract information",
         "date-until": "End date",
         "type": "Contract type",
         "days-left": "Days left: {count}",
         "prolongation": "Extend",
         "prolongation-info": "The contract can be extended no earlier than 3 months before the expiration of the current one",
-        "prolongation-disable": "This functionality is still under development"
+        "prolongation-disable": "This functionality is still under development",
+        "button": "Add contract",
+        "add": "Adding a contract",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "save": "Save",
+        "created": "Contract created successfully",
+        "createError": "Error when creating a contract",
+        "number": "Contract {number}"
       }
     },
     "report": {

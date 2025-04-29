@@ -1,7 +1,7 @@
-import { Avatar, CloseButton, Flex, Input, Pagination, Table, Text } from "@mantine/core"
+import { Avatar, CloseButton, Flex, Input, Pagination, Table, Text, Button } from "@mantine/core"
 import { ContractDto, PageRequest } from "@russian-rs/portal-api-axios"
-import { IconLock, IconUfo } from "@tabler/icons-react"
-import { useQuery } from "@tanstack/react-query"
+import { IconLock, IconUfo, IconPencil, IconPlus } from "@tabler/icons-react"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
@@ -17,6 +17,7 @@ import { openTab } from "src/shared/ui/tabs/WindowFunctions"
 import { hasPermission } from "src/shared/user/roles"
 import { locales } from "./lib/locales"
 import classes from "./UserList.module.scss"
+import { ContractDrawer } from "src/pages/profile/contract/ContractDrawer"
 
 export const UserList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -26,9 +27,21 @@ export const UserList = () => {
 
     const [search, setSearch] = useState("")
     const [debouncedSearch, setDebouncedSearch] = useState(search)
+    const [drawerOpened, setDrawerOpened] = useState(false)
+    const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
 
     const [filter] = useState(defaultFilter)
     const [pageRequest, setPageRequest] = useState<PageRequest>(defaultPage)
+
+    const queryClient = useQueryClient()
+    const { mutate: updateContracts } = useMutation({
+        mutationFn: async ({ userId, contracts }: { userId: number, contracts: ContractDto[] }) => {
+            return UserApiService.updateContracts(userId, contracts)
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["searchUsers"] })
+        },
+    })
 
     // Debounce search input by 500ms
     useEffect(() => {
@@ -53,39 +66,62 @@ export const UserList = () => {
             UserApiService.searchUsers(debouncedSearch, pageRequest, filter).then((response) => response.data),
     })
 
-    const rows = content.map((user) => (
-        <Table.Tr key={user.id}>
-            <Table.Td>
-                <Flex columnGap={16} align="center" className={classes.columnName}>
-                    <Avatar
-                        size={36}
-                        src={user.avatar?.link}
-                        name={user.fullName}
-                        className={classes.avatar}
-                        onClick={() => openTab(`/profile/${user.username}`)}
-                    />
-                    <Text truncate="end">{user.fullName}</Text>
-                </Flex>
-            </Table.Td>
-            <Table.Td>{user.email}</Table.Td>
-            <Table.Td>
-                <Flex align="start" direction="column">
-                    {user.groups.map((group) => (
-                        <Text key={group} className={classes.role} truncate="end">
-                            <FormattedMessage id={`common.roles.${group}`} />
-                        </Text>
-                    ))}
-                </Flex>
-            </Table.Td>
-            <Table.Td>{getLastContractDate(user.contracts)}</Table.Td>
-            <Table.Td>
-                <Flex align="center" justify="end">
-                    {!user.active && <IconLock size={16} color="red" />}
-                    <UserMenu user={user} />
-                </Flex>
-            </Table.Td>
-        </Table.Tr>
-    ))
+    const rows = content.map((user) => {
+        const lastContract = Array.isArray(user.contracts) && user.contracts.length > 0
+            ? user.contracts.reduce((max, c) => new Date(c.endDate) > new Date(max.endDate) ? c : max, user.contracts[0])
+            : undefined
+        return (
+            <Table.Tr key={user.id}>
+                <Table.Td>
+                    <Flex columnGap={16} align="center" className={classes.columnName}>
+                        <Avatar
+                            size={36}
+                            src={user.avatar?.link}
+                            name={user.fullName}
+                            className={classes.avatar}
+                            onClick={() => openTab(`/profile/${user.username}`)}
+                        />
+                        <Text truncate="end">{user.fullName}</Text>
+                    </Flex>
+                </Table.Td>
+                <Table.Td>{user.email}</Table.Td>
+                <Table.Td>
+                    <Flex align="start" direction="column">
+                        {user.groups.map((group) => (
+                            <Text key={group} className={classes.role} truncate="end">
+                                <FormattedMessage id={`common.roles.${group}`} />
+                            </Text>
+                        ))}
+                    </Flex>
+                </Table.Td>
+                <Table.Td>
+                    <Button
+                        variant="transparent"
+                        color={lastContract ? "blue" : "gray"}
+                        rightSection={lastContract ? <IconPencil size={14} /> : <IconPlus size={14} />}
+                        onClick={() => {
+                            setSelectedUserId(user.id)
+                            setDrawerOpened(true)
+                        }}
+                        size="compact-sm"
+                    >
+                        {lastContract
+                            ? dayjs(lastContract.endDate).format("DD MMM YYYY")
+                            : <FormattedMessage id="pages.profile.contract.button" />
+                        }
+                    </Button>
+                </Table.Td>
+                <Table.Td>
+                    <Flex align="center" justify="end">
+                        {!user.active && <IconLock size={16} color="red" />}
+                        <UserMenu user={user} />
+                    </Flex>
+                </Table.Td>
+            </Table.Tr>
+        )
+    })
+
+    const selectedUser = selectedUserId ? content.find(u => u.id === selectedUserId) : null
 
     return (
         <Flex direction="column">
@@ -147,18 +183,24 @@ export const UserList = () => {
                     </Flex>
                 )}
             </Flex>
+            {selectedUser && (
+                <ContractDrawer
+                    opened={drawerOpened}
+                    onClose={() => {
+                        setDrawerOpened(false)
+                        setSelectedUserId(null)
+                    }}
+                    onSuccess={() => {
+                        setDrawerOpened(false)
+                        setSelectedUserId(null)
+                        queryClient.invalidateQueries({ queryKey: ["searchUsers"] })
+                    }}
+                    userId={selectedUser.id}
+                    contracts={selectedUser.contracts || []}
+                />
+            )}
         </Flex>
     )
-}
-
-const getLastContractDate = (contracts: ContractDto[] | undefined): string => {
-    if (!contracts || contracts.length < 1) {
-        return ""
-    }
-    const lastContract = contracts.reduce((max, current) => {
-        return new Date(current.endDate) > new Date(max.endDate) ? current : max
-    }, contracts[0])
-    return dayjs(lastContract.endDate).format("DD MMM YYYY")
 }
 
 export default UserList

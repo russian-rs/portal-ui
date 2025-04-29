@@ -18,9 +18,10 @@ interface ContractEditModalProps {
     application: ApplicationDto
     onChange?: (contractDto: ContractDto) => void
     className?: string
+    display?: "start" | "end"
 }
 
-export const ContractDate = ({ application, onChange, className }: ContractEditModalProps) => {
+export const ContractDate = ({ application, onChange, className, display = "start" }: ContractEditModalProps) => {
     const intl = useIntl()
     const [opened, { close, toggle }] = useDisclosure(false)
 
@@ -89,16 +90,10 @@ export const ContractDate = ({ application, onChange, className }: ContractEditM
                     onClick={toggle}
                     className={className}
                 >
-                    <Text size="sm">
-                        {application.contract && (
-                            <Text size="sm">{dayjs(contract.startDate).format("DD MMM YYYY")}</Text>
-                        )}
-                        {!application.contract && (
-                            <Text size="sm">
-                                <FormattedMessage id={locales.add} />
-                            </Text>
-                        )}
-                    </Text>
+                    {application.contract
+                        ? dayjs(display === "end" ? contract.endDate : contract.startDate).format("DD MMM YYYY")
+                        : <FormattedMessage id={locales.add} />
+                    }
                 </Button>
             </Popover.Target>
             <Popover.Dropdown>
