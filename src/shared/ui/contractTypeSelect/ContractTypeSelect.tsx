@@ -7,11 +7,11 @@ import { FormattedMessage } from "react-intl"
 
 interface ContractTypeSelectProps {
     className?: string
-    onChange?: (type: string | null) => void
+    onChange?: (type: ContractTypeEnum | null) => void
     form?: UseFormReturnType<any>
     path?: string
     error?: ReactNode
-    initial?: ContractTypeEnum
+    initial?: ContractTypeEnum | null
 }
 
 export const ContractTypeSelect = (props: ContractTypeSelectProps) => {
@@ -19,9 +19,11 @@ export const ContractTypeSelect = (props: ContractTypeSelectProps) => {
         onDropdownClose: () => combobox.resetSelectedOption(),
     })
 
-    const initialValue = props.initial ? props.initial.toString() : null
+    const [value, setValue] = useState<ContractTypeEnum | null>(props.initial ?? null)
 
-    const [value, setValue] = useState<string | null>(initialValue)
+    useEffect(() => {
+        setValue(props.initial ?? null)
+    }, [props.initial])
 
     useEffect(() => {
         if (props.onChange) {
@@ -43,7 +45,7 @@ export const ContractTypeSelect = (props: ContractTypeSelectProps) => {
             <Combobox
                 store={combobox}
                 onOptionSubmit={(val) => {
-                    setValue(val)
+                    setValue(val as ContractTypeEnum)
                     combobox.closeDropdown()
                 }}
             >
@@ -58,7 +60,6 @@ export const ContractTypeSelect = (props: ContractTypeSelectProps) => {
                         className={props.className}
                         onClick={() => combobox.toggleDropdown()}
                         leftSection={<IconContract size={16} />}
-                        defaultValue={props.initial}
                         rightSectionPointerEvents={value === null ? "none" : "all"}
                         rightSection={
                             value !== null ? (
