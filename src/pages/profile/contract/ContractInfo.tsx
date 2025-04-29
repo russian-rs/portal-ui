@@ -88,7 +88,7 @@ export const ContractInfo = ({ contracts, userInfo }: ContractInfoProps) => {
                 opened={drawerOpened}
                 onClose={() => setDrawerOpened(false)}
                 onSuccess={() => {
-                    // TODO: optionally refetch data
+                    // нужен в UserList
                 }}
                 userId={userInfo.id}
                 contracts={contracts}
