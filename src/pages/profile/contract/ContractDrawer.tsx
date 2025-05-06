@@ -3,7 +3,7 @@ import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
 import { ContractDto, ContractTypeEnum } from "@russian-rs/portal-api-axios"
-import { IconCalendar, IconTrash } from "@tabler/icons-react"
+import { IconCalendar, IconDeviceFloppy, IconPlus, IconTrash } from "@tabler/icons-react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -140,6 +140,14 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
     }
 
     const handleDeleteContract = (index: number) => {
+        if (form.values.contracts.length <= 1) {
+            notifications.show(
+                ErrorNotification(
+                    <FormattedMessage id="pages.profile.contract.cannotDeleteLast" />
+                )
+            )
+            return
+        }
         form.removeListItem('contracts', index)
     }
 
@@ -161,6 +169,7 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
                                         color="red"
                                         variant="subtle"
                                         onClick={() => handleDeleteContract(index)}
+                                        disabled={form.values.contracts.length <= 1}
                                     >
                                         <IconTrash size={16} />
                                     </ActionIcon>
@@ -173,7 +182,14 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
                                     withAsterisk
                                     value={contract.startDate ? dayjs(contract.startDate).toDate() : null}
                                     onChange={(date) => {
-                                        form.setFieldValue(`contracts.${index}.startDate`, date ? dayjs(date).startOf('day').format("YYYY-MM-DD") : "")
+                                        const startDate = date ? dayjs(date).startOf('day') : null;
+                                        form.setFieldValue(`contracts.${index}.startDate`, startDate ? startDate.format("YYYY-MM-DD") : "");
+                                        
+                                        // Автоматически устанавливаем дату окончания через год
+                                        if (startDate) {
+                                            const endDate = startDate.add(1, 'year');
+                                            form.setFieldValue(`contracts.${index}.endDate`, endDate.format("YYYY-MM-DD"));
+                                        }
                                     }}
                                     error={form.errors?.[`contracts.${index}.startDate`]}
                                 />
@@ -202,10 +218,18 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
                             <FormattedMessage id="pages.profile.contract.no-contract" />
                         </Flex>
                     )}
-                    <Button onClick={() => form.insertListItem("contracts", { startDate: "", endDate: "", type: null })}>
+                    <Button 
+                        variant="outline" 
+                        onClick={() => form.insertListItem("contracts", { startDate: "", endDate: "", type: null })}
+                        rightSection={<IconPlus size={14} />}
+                    >
                         <FormattedMessage id="pages.profile.contract.button" />
                     </Button>
-                    <Button type="submit" mt="md" loading={isPending}>
+                    <Button 
+                        type="submit" 
+                        loading={isPending}
+                        rightSection={<IconDeviceFloppy size={14} />}
+                    >
                         <FormattedMessage id="pages.profile.contract.save" />
                     </Button>
                 </Flex>

@@ -1,6 +1,6 @@
 import { Button, Flex, Text } from "@mantine/core"
 import { ContractDto, UserInfoDto } from "@russian-rs/portal-api-axios"
-import { IconCalendar, IconContract } from "@tabler/icons-react"
+import { IconCalendar, IconContract, IconPencil } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import { useContext, useState } from "react"
 import { FormattedMessage } from "react-intl"
@@ -11,7 +11,7 @@ import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { TooltipLocalized } from "src/shared/ui/tooltip/TooltipLocalized"
 import { ContractDrawer } from "./ContractDrawer"
 import classes from "./ContractInfo.module.scss"
-import {hasPermission, UserGroup} from "src/shared/user/roles";
+import { hasPermission, UserGroup } from "src/shared/user/roles";
 
 interface ContractInfoProps {
     userInfo: UserInfoDto
@@ -75,8 +75,8 @@ export const ContractInfo = ({ contracts, userInfo }: ContractInfoProps) => {
                     {(hasPermission(currentUser, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])) && (
                         <Button
                             variant="outline"
-                            mt="sm"
                             onClick={() => setDrawerOpened(true)}
+                            rightSection={<IconPencil size={14} />}
                         >
                             <FormattedMessage id="pages.profile.buttons.edit"/>
                         </Button>

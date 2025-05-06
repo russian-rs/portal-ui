@@ -170,9 +170,10 @@
         "startDate": "Start date",
         "endDate": "End date",
         "save": "Save",
-        "created": "Contract created successfully",
-        "createError": "Error when creating a contract",
-        "number": "Contract {number}"
+        "created": "Contract successfully created",
+        "createError": "Error creating contract",
+        "number": "Contract {number}",
+        "cannotDeleteLast": "Cannot delete the last contract. A volunteer must have at least one contract."
       }
     },
     "report": {
