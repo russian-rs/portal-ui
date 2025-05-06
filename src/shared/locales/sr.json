@@ -171,8 +171,9 @@
         "endDate": "Datum završetka",
         "save": "Sačuvaj",
         "created": "Ugovor je uspešno izmenjen",
-        "createError": "Došlo je do greške",
-        "number": "Ugovor {number}"
+        "createError": "Greška pri kreiranju ugovora",
+        "number": "Ugovor {number}",
+        "cannotDeleteLast": "Ne možete obrisati poslednji ugovor. Volonter mora imati bar jedan ugovor."
       }
     },
     "report": {

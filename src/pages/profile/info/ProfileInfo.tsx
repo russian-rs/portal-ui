@@ -1,7 +1,7 @@
 import { Button, Container, Drawer, Flex, Text, TextInput } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { UserInfoDto, UserInfoUpdateRequest } from "@russian-rs/portal-api-axios"
-import { IconBrandTelegram, IconPhone, IconHome, IconBuildings, IconGift, IconMail } from "@tabler/icons-react"
+import { IconBrandTelegram, IconPhone, IconHome, IconBuildings, IconGift, IconMail, IconDeviceFloppy, IconPencil } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import { useContext } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -187,7 +187,12 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                 className={classes.propertyBox}
             />
             {(userInfo?.id === currentUser?.id || hasPermission(currentUser, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])) && (
-                <Button onClick={open} className={classes.button} variant="outline">
+                <Button 
+                    onClick={open} 
+                    className={classes.button} 
+                    variant="outline"
+                    rightSection={<IconPencil size={14} />}
+                >
                     <FormattedMessage id={"pages.profile.buttons.edit"} />
                 </Button>
             )}
@@ -229,7 +234,11 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                             label={<FormattedMessage id="pages.profile.props.phone" />}
                             {...form.getInputProps('phone')}
                         />
-                        <Button type="submit" loading={isPending}>
+                        <Button 
+                            type="submit" 
+                            loading={isPending}
+                            rightSection={<IconDeviceFloppy size={14} />}
+                        >
                             <FormattedMessage id="pages.profile.buttons.save" />
                         </Button>
                     </Flex>
