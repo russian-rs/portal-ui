@@ -143,7 +143,10 @@
         "invalidPhone": "Neispravan format broja telefona",
         "invalidTelegram": "Neispravan format",
         "invalidBirthDate": "Neispravan format datuma",
-        "tooYoung": "Morate imati najmanje 18 godina"
+        "tooYoung": "Morate imati najmanje 18 godina",
+        "invalidDate": "Neispravan format datuma",
+        "contractTypeRequired": "Izaberite tip ugovora",
+        "endDateAfterStart": "Datum završetka mora biti kasniji od datuma početka"
       },
       "buttons": {
         "edit": "Uredi",
@@ -154,13 +157,23 @@
       "profileUpdated": "Profil je uspešno izmenjen",
       "avatarUpdated": "Slika profila je uspešno ažurirana",
       "contract": {
+        "no-contract": "Nema ugovoru",
         "title": "Informacije o trenutnom ugovoru",
         "date-until": "Datum završetka",
         "type": "Vrsta ugovora",
         "days-left": "Još dana: {count}",
         "prolongation": "Produži",
         "prolongation-info": "Ugovor se može produžiti najranije 3 meseca pre isteka tekućeg",
-        "prolongation-disable": "Ova funkcionalnost je još uvek u razvoju"
+        "prolongation-disable": "Ova funkcionalnost je još uvek u razvoju",
+        "button": "Dodati ugovor",
+        "add": "Dodajući ugovor",
+        "startDate": "Datum početka",
+        "endDate": "Datum završetka",
+        "save": "Sačuvaj",
+        "created": "Ugovor je uspešno izmenjen",
+        "createError": "Greška pri kreiranju ugovora",
+        "number": "Ugovor {number}",
+        "cannotDeleteLast": "Ne možete obrisati poslednji ugovor. Volonter mora imati bar jedan ugovor."
       }
     },
     "report": {
