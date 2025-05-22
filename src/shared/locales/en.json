@@ -161,7 +161,8 @@
         "prolongation": "Extend",
         "prolongation-info": "The contract can be extended no earlier than 3 months before the expiration of the current one",
         "prolongation-disable": "This functionality is still under development"
-      }
+      },
+      "selectProgram": "Select a program"
     },
     "report": {
       "document-title": "Report",
@@ -255,6 +256,9 @@
       "email": "e-mail",
       "username": "Username",
       "roles": "Roles",
+      "program": "Program",
+      "filter-by-program": "Filter by programs",
+      "no-program": "No program",
       "contractDue": "Contract until",
       "create-button": "Create",
       "menu-common": "Common",

@@ -161,7 +161,8 @@
         "prolongation": "Продлить",
         "prolongation-info": "Продлить договор можно не ранее чем за 3 месяца до окончания действия текущего",
         "prolongation-disable": "Данный функционал пока в разработке"
-      }
+      },
+      "selectProgram": "Выбор программы"
     },
     "report": {
       "document-title": "Отчет",
@@ -255,6 +256,9 @@
       "email": "E-mail",
       "username": "Логин",
       "roles": "Роли",
+      "program": "Программа",
+      "filter-by-program": "Фильтр по программам",
+      "no-program": "Без программы",
       "contractDue": "Контракт до",
       "create-button": "Создать",
       "menu-common": "Общее",
