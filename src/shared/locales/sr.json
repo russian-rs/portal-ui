@@ -161,7 +161,8 @@
         "prolongation": "Produži",
         "prolongation-info": "Ugovor se može produžiti najranije 3 meseca pre isteka tekućeg",
         "prolongation-disable": "Ova funkcionalnost je još uvek u razvoju"
-      }
+      },
+      "selectProgram": "Izaberite program"
     },
     "report": {
       "document-title": "Izveštaj",
@@ -255,6 +256,9 @@
       "email": "e-mail",
       "username": "Korisničko ime",
       "roles": "Uloge",
+      "program": "Program",
+      "filter-by-program": "Filter po programima",
+      "no-program": "Bez programa",
       "contractDue": "Ugovor do",
       "create-button": "Stvoriti",
       "menu-common": "Opšte",
