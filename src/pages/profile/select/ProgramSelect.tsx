@@ -1,5 +1,5 @@
 import { Select, ActionIcon, Text, Group } from "@mantine/core"
-import { IconEdit, IconPlus } from "@tabler/icons-react"
+import { IconPlus, IconPencil } from "@tabler/icons-react"
 import { useState } from "react"
 import { useIntl } from "react-intl"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
@@ -51,7 +51,7 @@ export function ProgramSelectInline({
         />
       ) : (
         <>
-          <Text style={{ whiteSpace: "nowrap" }}>
+          <Text style={{ whiteSpace: "nowrap" }} size="sm">
             {programObj ? getLocalizedName(programObj, locale) : (
               <FormattedMessage id="pages.profile.selectProgram" />
             )}
@@ -65,7 +65,7 @@ export function ProgramSelectInline({
                 setDropdownOpened(true)
               }}
             >
-              {value ? <IconEdit size={16} /> : <IconPlus size={16} />}
+              {value ? <IconPencil size={14} /> : <IconPlus size={16} />}
             </ActionIcon>
           )}
         </>
