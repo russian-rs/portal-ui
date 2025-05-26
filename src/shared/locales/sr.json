@@ -59,6 +59,7 @@
       "CREATED": "Kreirano",
       "IN_PROGRESS": "U obradi",
       "CLARIFICATION": "Pojašnjenje",
+      "PAUSED": "Na pauzi",
       "READY_TO_SEND": "Spremno za slanje",
       "DOCS_SENT": "Dokumenti poslati",
       "DOCS_RECEIVED": "Dokumenti primljeni",
