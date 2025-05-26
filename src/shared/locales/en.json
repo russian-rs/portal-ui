@@ -59,6 +59,7 @@
       "CREATED": "Created",
       "IN_PROGRESS": "In Progress",
       "CLARIFICATION": "Clarification",
+      "PAUSED": "Paused",
       "READY_TO_SEND": "Ready to Send",
       "DOCS_SENT": "Documents Sent",
       "DOCS_RECEIVED": "Documents Received",
