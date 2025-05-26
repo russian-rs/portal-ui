@@ -20,6 +20,9 @@ import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
+import { Locale } from "src/shared/constants/Locales"
+import { usePrograms } from "src/app/providers/ProgramsProvider"
+import { ProgramSelectInline } from "../select/ProgramSelect"
 
 interface ProfileInfoProps {
     userInfo: UserInfoDto | undefined
@@ -30,6 +33,9 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const { user: currentUser, setUser } = useContext(UserContext)
     const [opened, { open, close }] = useDisclosure(false)
     const intl = useIntl()
+    const locale = intl.locale as Locale
+    const programs = usePrograms()
+    const isProgramsLoading = programs.length === 0
 
     const validationSchema = z.object({
         city: z
@@ -136,17 +142,66 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         }
     });
 
+    const { mutate: updateProgram } = useMutation({
+        mutationFn: async (program: string) => {
+            const response = await UserApiService.setProgram(userInfo.id, program);
+            return response.data;
+        },
+        onSuccess: async (data) => {
+            if (userInfo?.username === currentUser?.username) {
+                setUser(data);
+            }
+
+            if (onUserInfoUpdate) {
+                onUserInfoUpdate(data);
+            }
+
+            notifications.show(
+                SuccessNotification(
+                    <Text size="sm">
+                        <FormattedMessage id="pages.profile.profileUpdated" />
+                    </Text>,
+                    null
+                )
+            );
+        },
+        onError: () => {
+            notifications.show(
+                ErrorNotification(
+                    <Text size="sm">
+                        <FormattedMessage id="pages.profile.updateError" />
+                    </Text>
+                )
+            );
+        }
+    });
+
     const iconTelegram = <IconBrandTelegram size={16} />
     const iconPhone = <IconPhone size={16} />
     const iconHome = <IconHome size={16} />
     const iconCity = <IconBuildings size={16} />
     const iconBirthday = <IconGift size={16} />
 
+    const canEditProgram = userInfo?.id === currentUser?.id || hasPermission(currentUser, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])
+
+    const programValue = userInfo?.program?.code || null
+
+    const handleProgramChange = (value: string | null) => {
+        if (value) {
+            updateProgram(value)
+        }
+    }
+
     return (
         <Flex direction="column" className={classes.infoContainer}>
             <ProfileAvatar link={userInfo?.avatar?.link} editable={currentUser?.username === userInfo?.username} />
             <Text className={classes.userName}>{userInfo?.fullName}</Text>
-            <Text c="dimmed">{userInfo?.program}</Text>
+            <ProgramSelectInline
+                value={programValue}
+                canEdit={canEditProgram}
+                locale={locale}
+                onChange={handleProgramChange}
+            />
             <Container className={commonClasses.divider} />
             <TextPropertyBox
                 name={"pages.profile.props.city"}
@@ -187,9 +242,9 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                 className={classes.propertyBox}
             />
             {(userInfo?.id === currentUser?.id || hasPermission(currentUser, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])) && (
-                <Button 
-                    onClick={open} 
-                    className={classes.button} 
+                <Button
+                    onClick={open}
+                    className={classes.button}
                     variant="outline"
                     rightSection={<IconPencil size={14} />}
                 >
@@ -234,8 +289,8 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                             label={<FormattedMessage id="pages.profile.props.phone" />}
                             {...form.getInputProps('phone')}
                         />
-                        <Button 
-                            type="submit" 
+                        <Button
+                            type="submit"
                             loading={isPending}
                             rightSection={<IconDeviceFloppy size={14} />}
                         >
