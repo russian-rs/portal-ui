@@ -1,4 +1,4 @@
-import { IconAdjustments, IconFileAnalytics, IconHelp, IconUsers } from "@tabler/icons-react"
+import { IconAdjustments, IconFileAnalytics, IconLifebuoy, IconUsers } from "@tabler/icons-react"
 import { ItemGroupProps } from "src/shared/ui/appNavbar/AppNavbar"
 
 export const Content: ItemGroupProps[] = [
@@ -52,7 +52,7 @@ export const Content: ItemGroupProps[] = [
     },
     {
         label: "navbar.support",
-        icon: IconHelp,
-        link: "https://t.me/c/1842141044/5106",
+        icon: IconLifebuoy,
+        link: "https://docs.google.com/forms/d/e/1FAIpQLSf3Zqvd4ZTqZeAd_JI5OtRHy8bUqn_2jiDEEXdnqQZdZISpSA/viewform",
     },
 ]
