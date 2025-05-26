@@ -1,4 +1,4 @@
-import { Button, Container, Drawer, Flex, Select, Text, TextInput, ActionIcon, Group } from "@mantine/core"
+import { Button, Container, Drawer, Flex, Text, TextInput } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { UserInfoDto, UserInfoUpdateRequest } from "@russian-rs/portal-api-axios"
 import { IconBrandTelegram, IconPhone, IconHome, IconBuildings, IconGift, IconMail, IconDeviceFloppy, IconPencil } from "@tabler/icons-react"
@@ -20,12 +20,10 @@ import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
-import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { Locale } from "src/shared/constants/Locales"
-import { Program } from "src/shared/constants/Programs"
-import axios from "axios"
 import { usePrograms } from "src/app/providers/ProgramsProvider"
 import { ProgramSelectInline } from "../select/ProgramSelect"
+
 interface ProfileInfoProps {
     userInfo: UserInfoDto | undefined
     onUserInfoUpdate?: (userInfo: UserInfoDto) => void
@@ -145,8 +143,8 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     });
 
     const { mutate: updateProgram } = useMutation({
-        mutationFn: async (program: Program) => {
-            const response = await axios.patch(`/api/user/account/${userInfo.id}/program/${program}`);
+        mutationFn: async (program: string) => {
+            const response = await UserApiService.setProgram(userInfo.id, program);
             return response.data;
         },
         onSuccess: async (data) => {
@@ -190,7 +188,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
 
     const handleProgramChange = (value: string | null) => {
         if (value) {
-            updateProgram(value as Program)
+            updateProgram(value)
         }
     }
 

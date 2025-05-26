@@ -22,7 +22,6 @@ import { useIntl } from "react-intl"
 import { notifications } from "@mantine/notifications"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
-import axios from "axios"
 import { ProgramFilter } from "./filter/ProgramFilter"
 import { ContractDrawer } from "src/pages/profile/contract/ContractDrawer"
 
@@ -49,7 +48,7 @@ export const UserList = () => {
 
     const { mutate: updateUserProgram } = useMutation({
         mutationFn: async ({ userId, program }: { userId: string, program: string }) => {
-            const response = await axios.patch(`/api/user/account/${userId}/program/${program}`)
+            const response = await UserApiService.setProgram(parseInt(userId), program)
             return response.data
         },
         onSuccess: () => {
