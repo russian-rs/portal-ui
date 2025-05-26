@@ -17,6 +17,7 @@ import { queryClient } from "src/shared/constants/Query"
 import { AppShell } from "src/shared/ui/appShell/AppShell"
 import { theme } from "src/shared/ui/theme/CustomMantineTheme"
 import classes from "./styles/root.module.scss"
+import { ProgramsProvider } from "src/app/providers/ProgramsProvider"
 
 /**
  * Root component
@@ -33,10 +34,12 @@ export const Root = () => {
             <QueryClientProvider client={queryClient}>
                 <LanguageContextProvider>
                     <UserContextProvider>
-                        <AppShell>
-                            <Notifications className={classes.notifications} />
-                            <RootRouter />
-                        </AppShell>
+                        <ProgramsProvider>
+                            <AppShell>
+                                <Notifications className={classes.notifications} />
+                                <RootRouter />
+                            </AppShell>
+                        </ProgramsProvider>
                     </UserContextProvider>
                 </LanguageContextProvider>
             </QueryClientProvider>

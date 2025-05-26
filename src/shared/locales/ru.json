@@ -175,7 +175,8 @@
         "createError": "Ошибка при создании договора",
         "number": "Договор {number}",
         "cannotDeleteLast": "Нельзя удалить последний контракт. У волонтера должен быть как минимум один контракт."
-      }
+      },
+      "selectProgram": "Выбор программы"
     },
     "report": {
       "document-title": "Отчет",
@@ -269,6 +270,9 @@
       "email": "E-mail",
       "username": "Логин",
       "roles": "Роли",
+      "program": "Программа",
+      "filter-by-program": "Фильтр по программам",
+      "no-program": "Без программы",
       "contractDue": "Контракт до",
       "create-button": "Создать",
       "menu-common": "Общее",

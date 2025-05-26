@@ -22,6 +22,7 @@ import { defaultFilter, defaultPage, defaultPageResponse, defaultUser } from "./
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
 import classes from "./ReportList.module.scss"
+import { ProgramFilter } from "src/pages/users/filter/ProgramFilter"
 
 export const ReportList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -32,9 +33,11 @@ export const ReportList = () => {
     const navigate = useNavigate()
     const intl = useIntl()
 
+    const [resetKey, setResetKey] = useState(0)
     const [pageRequest, setPageRequest] = useState<PageRequest>(defaultPage)
     const [filter, setFilter] = useState<ReportFilter>(defaultFilter(loginParam))
     const [logins, setLogins] = useState<string[]>([])
+    const [selectedPrograms, setSelectedPrograms] = useState<string[]>([])
 
     if (!hasPermission(user, allowedRoles)) {
         navigate("/unauthorized")
@@ -45,12 +48,29 @@ export const ReportList = () => {
         isFetching: isFetchingReports,
     } = useQuery({
         initialData: { content: [], page: defaultPageResponse },
-        queryKey: ["searchReports", filter, pageRequest],
+        queryKey: ["searchReports", filter, pageRequest, selectedPrograms],
         queryFn: () =>
             ReportApiService.getReports(pageRequest, filter).then((response) => {
-                const reports = response.data.content
-                setLogins(reports.map((it) => it.user).filter((it) => it != undefined))
-                return response.data
+                let filteredContent = response.data.content
+                if (selectedPrograms.length > 0) {
+                    filteredContent = filteredContent.filter(report => {
+                        const user = users[report.user!!]
+                        if (selectedPrograms.includes("no_program")) {
+                            if (!user?.program?.code) {
+                                return true
+                            }
+                        }
+                        return user?.program?.code && selectedPrograms.includes(user.program.code)
+                    })
+                }
+                setLogins(filteredContent.map((it) => it.user).filter((it) => it != undefined))
+                return {
+                    content: filteredContent,
+                    page: {
+                        ...response.data.page,
+                        totalElements: filteredContent.length
+                    }
+                }
             }),
     })
 
@@ -71,7 +91,7 @@ export const ReportList = () => {
     }
 
     const isFiltered = () => {
-        return filter.login || filter.status || filter.program || filter.dateFrom || filter.dateTo
+        return filter.login || filter.status || filter.program || filter.dateFrom || filter.dateTo || selectedPrograms.length > 0
     }
 
     const rows = reports.map((report) => {
@@ -132,15 +152,32 @@ export const ReportList = () => {
                 </Text>
                 <Flex className={classes.filters}>
                     <UserSearch
+                        key={`user-search-${resetKey}`}
                         className={classes.userSearch}
                         description={<FormattedMessage id={locales.volunteer} />}
                         onUserChange={onUserSelected}
-                        initialSearch={loginParam ? loginParam : ""}
+                        initialSearch={""}
                     />
-                    <WeekPicker onChange={onWeekChange} />
-                    <ReportStatusSelect onChange={onStatusChange} />
+                    <WeekPicker 
+                        key={`week-picker-${resetKey}`}
+                        onChange={onWeekChange} 
+                    />
+                    <ReportStatusSelect 
+                        key={`status-select-${resetKey}`}
+                        onChange={onStatusChange} 
+                    />
+                    <ProgramFilter
+                        value={selectedPrograms}
+                        onChange={setSelectedPrograms}
+                        maxValues={1}
+                    />
                     {isFiltered() && (
-                        <Button variant="transparent" onClick={() => setFilter(defaultFilter())}>
+                        <Button variant="transparent" onClick={() => {
+                            setFilter(defaultFilter(null))
+                            setSelectedPrograms([])
+                            setPageRequest(defaultPage)
+                            setResetKey(prev => prev + 1)
+                        }}>
                             <FormattedMessage id={locales.reset} />
                         </Button>
                     )}

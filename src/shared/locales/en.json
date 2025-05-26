@@ -175,7 +175,8 @@
         "createError": "Error creating contract",
         "number": "Contract {number}",
         "cannotDeleteLast": "Cannot delete the last contract. A volunteer must have at least one contract."
-      }
+      },
+      "selectProgram": "Select a program"
     },
     "report": {
       "document-title": "Report",
@@ -269,6 +270,9 @@
       "email": "e-mail",
       "username": "Username",
       "roles": "Roles",
+      "program": "Program",
+      "filter-by-program": "Filter by programs",
+      "no-program": "No program",
       "contractDue": "Contract until",
       "create-button": "Create",
       "menu-common": "Common",

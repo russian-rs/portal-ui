@@ -175,7 +175,8 @@
         "createError": "Greška pri kreiranju ugovora",
         "number": "Ugovor {number}",
         "cannotDeleteLast": "Ne možete obrisati poslednji ugovor. Volonter mora imati bar jedan ugovor."
-      }
+      },
+      "selectProgram": "Izaberite program"
     },
     "report": {
       "document-title": "Izveštaj",
@@ -269,6 +270,9 @@
       "email": "e-mail",
       "username": "Korisničko ime",
       "roles": "Uloge",
+      "program": "Program",
+      "filter-by-program": "Filter po programima",
+      "no-program": "Bez programa",
       "contractDue": "Ugovor do",
       "create-button": "Stvoriti",
       "menu-common": "Opšte",
