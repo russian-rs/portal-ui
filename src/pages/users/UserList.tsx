@@ -101,27 +101,15 @@ export const UserList = () => {
     } = useQuery({
         initialData: { content: [], page: defaultPageResponse },
         queryKey: ["searchUsers", debouncedSearch, pageRequest, filter, selectedPrograms],
-        queryFn: () =>
-            UserApiService.searchUsers(debouncedSearch, pageRequest, filter).then((response) => {
-                let filteredContent = response.data.content
-                if (selectedPrograms.length > 0) {
-                    filteredContent = filteredContent.filter(user => {
-                        if (selectedPrograms.includes("no_program")) {
-                            if (!user.program?.code) {
-                                return true
-                            }
-                        }
-                        return user.program?.code && selectedPrograms.includes(user.program.code)
-                    })
-                }
-                return {
-                    content: filteredContent,
-                    page: {
-                        ...response.data.page,
-                        totalElements: filteredContent.length
-                    }
-                }
-            }),
+        queryFn: () => {
+            const filterWithPrograms = {
+                ...filter,
+                programCodes: selectedPrograms.length > 0 ? selectedPrograms : undefined
+            }
+            return UserApiService.searchUsers(debouncedSearch, pageRequest, filterWithPrograms).then((response) => {
+                return response.data
+            })
+        },
     })
 
     const rows = content.map((user) => {
