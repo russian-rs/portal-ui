@@ -441,6 +441,9 @@
     },
     "cleaning": {
       "title": "Clean City (main program)"
+    },
+    "reporting": {
+      "title": "Reporting Guidelines"
     }
   },
   "errors": {
@@ -456,7 +459,8 @@
       "report": "Report",
       "all": "All reports",
       "summary": "Summary",
-      "cleaning": "Report for \"Clean City\""
+      "cleaning": "Report for \"Clean City\"",
+      "reporting-guide": "Reporting Guidelines"
     },
     "volunteers": {
       "volunteers": "Volunteers",
