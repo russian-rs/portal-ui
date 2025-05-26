@@ -6,6 +6,7 @@ import {
     IconMailbox,
     IconMailCheck,
     IconMailFast,
+    IconPlayerPause,
     IconProgress,
     IconUserPlus,
     IconUserQuestion,
@@ -15,6 +16,7 @@ export enum ApplicationStatus {
     CREATED = "CREATED",
     IN_PROGRESS = "IN_PROGRESS",
     CLARIFICATION = "CLARIFICATION",
+    PAUSED = "PAUSED",
     READY_TO_SEND = "READY_TO_SEND",
     DOCS_SENT = "DOCS_SENT",
     DOCS_RECEIVED = "DOCS_RECEIVED",
@@ -30,6 +32,8 @@ export const getApplicationStatusIcon = (status: string, size: number = 16, colo
             return <IconProgress size={size} color={color} />
         case ApplicationStatus.CLARIFICATION:
             return <IconUserQuestion size={size} color={color} />
+        case ApplicationStatus.PAUSED:
+            return <IconPlayerPause size={size} color={color} />
         case ApplicationStatus.READY_TO_SEND:
             return <IconMailbox size={size} color={color} />
         case ApplicationStatus.DOCS_SENT:

@@ -59,6 +59,7 @@
       "CREATED": "Создано",
       "IN_PROGRESS": "В обработке",
       "CLARIFICATION": "Уточнение",
+      "PAUSED": "На паузе",
       "READY_TO_SEND": "Готово к отправке",
       "DOCS_SENT": "Документы отправлены",
       "DOCS_RECEIVED": "Документы получены",
