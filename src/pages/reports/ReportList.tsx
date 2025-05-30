@@ -49,29 +49,16 @@ export const ReportList = () => {
     } = useQuery({
         initialData: { content: [], page: defaultPageResponse },
         queryKey: ["searchReports", filter, pageRequest, selectedPrograms],
-        queryFn: () =>
-            ReportApiService.getReports(pageRequest, filter).then((response) => {
-                let filteredContent = response.data.content
-                if (selectedPrograms.length > 0) {
-                    filteredContent = filteredContent.filter(report => {
-                        const user = users[report.user!!]
-                        if (selectedPrograms.includes("no_program")) {
-                            if (!user?.program?.code) {
-                                return true
-                            }
-                        }
-                        return user?.program?.code && selectedPrograms.includes(user.program.code)
-                    })
-                }
-                setLogins(filteredContent.map((it) => it.user).filter((it) => it != undefined))
-                return {
-                    content: filteredContent,
-                    page: {
-                        ...response.data.page,
-                        totalElements: filteredContent.length
-                    }
-                }
-            }),
+        queryFn: () => {
+            const filterWithProgram = {
+                ...filter,
+                program: selectedPrograms.length === 1 ? selectedPrograms[0] : null
+            }
+            return ReportApiService.getReports(pageRequest, filterWithProgram).then((response) => {
+                setLogins(response.data.content.map((it) => it.user).filter((it) => it != undefined))
+                return response.data
+            })
+        },
     })
 
     const { data: users } = resolveUsers(logins)
