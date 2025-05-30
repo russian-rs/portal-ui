@@ -1,0 +1,28 @@
+.root {
+    padding: 1rem 2rem;
+    flex-direction: column;
+    row-gap: 1rem;
+    width: 64rem;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 100%;
+    }
+
+    img {
+        max-width: 600px;
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin: 1rem 0;
+
+        @media (max-width: $mantine-breakpoint-md) {
+            max-width: 100%;
+        }
+    }
+}
+
+.title {
+    font-size: xx-large;
+    font-weight: bolder;
+} 

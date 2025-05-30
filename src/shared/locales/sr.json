@@ -445,6 +445,9 @@
     },
     "cleaning": {
       "title": "Čisti grad (glavni program)"
+    },
+    "reporting": {
+      "title": "Vodič za predaju izveštaja"
     }
   },
   "errors": {
@@ -460,7 +463,8 @@
       "report": "Izveštaj",
       "all": "Svi izveštaji",
       "summary": "Rezime",
-      "cleaning": "Izveštaj \"Čisti grad\""
+      "cleaning": "Izveštaj \"Čisti grad\"",
+      "reporting-guide": "Vodič za predaju izveštaja"
     },
     "volunteers": {
       "volunteers": "Volonteri",
