@@ -23,8 +23,6 @@ export const ContractInfo = ({ contracts, userInfo }: ContractInfoProps) => {
     const { user: currentUser } = useContext(UserContext)
     const [drawerOpened, setDrawerOpened] = useState(false)
 
-    console.log(contracts)
-
     return (
         <Flex className={classes.root}>
             {contracts.length === 0 ? (

@@ -21,7 +21,6 @@ import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { Locale } from "src/shared/constants/Locales"
-import { usePrograms } from "src/app/providers/ProgramsProvider"
 import { ProgramSelectInline } from "../select/ProgramSelect"
 
 interface ProfileInfoProps {
@@ -34,8 +33,6 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const [opened, { open, close }] = useDisclosure(false)
     const intl = useIntl()
     const locale = intl.locale as Locale
-    const programs = usePrograms()
-    const isProgramsLoading = programs.length === 0
 
     const validationSchema = z.object({
         city: z
@@ -182,9 +179,15 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const iconCity = <IconBuildings size={16} />
     const iconBirthday = <IconGift size={16} />
 
-    const canEditProgram = userInfo?.id === currentUser?.id || hasPermission(currentUser, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])
-
     const programValue = userInfo?.program?.code || null
+    
+    // Админы могут редактировать программы всем (включая себя)
+    // Обычные пользователи могут установить программу только если у них ее еще нет
+    const isAdmin = hasPermission(currentUser, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])
+    const isOwnProfile = userInfo?.id === currentUser?.id
+    const hasProgram = !!programValue
+    
+    const canEditProgram = isAdmin || (isOwnProfile && !hasProgram)
 
     const handleProgramChange = (value: string | null) => {
         if (value) {
