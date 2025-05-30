@@ -14,6 +14,7 @@ const ApplicationStatusView = lazy(() => import("src/pages/application/view/View
 const ApplicationList = lazy(() => import("src/pages/applications/Applications"))
 const ApplicationView = lazy(() => import("src/pages/applications/view/ApplicationView"))
 const CleaningHowTo = lazy(() => import("src/pages/cleaning/CleaningHowTo"))
+const ReportingGuide = lazy(() => import("src/pages/reporting/ReportingGuide"))
 
 export const routes: RouteProps[] = [
     {
@@ -71,6 +72,10 @@ export const routes: RouteProps[] = [
     {
         path: "/cleaning-how-to",
         element: <CleaningHowTo />,
+    },
+    {
+        path: "/reporting-guide",
+        element: <ReportingGuide />,
     },
     {
         path: "/",
