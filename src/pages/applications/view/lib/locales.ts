@@ -30,4 +30,5 @@ export const locales = {
     bio: "pages.applications.view.bio",
 
     contractDownload: "pages.applications.view.contractDownload",
+    questionnaireDownload: "pages.applications.view.questionnaireDownload",
 }
