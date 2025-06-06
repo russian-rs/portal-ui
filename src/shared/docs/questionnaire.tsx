@@ -1,74 +1,69 @@
-import { ApplicationDto } from "@russian-rs/portal-api-axios"
-import dayjs from "dayjs"
-import { jsPDF as JsPdf } from "jspdf"
-import { MONTSERRAT_BOLD_BOLD } from "src/shared/docs/fonts/Montserrat-Bold-bold"
-import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
+import { ApplicationDto } from "@russian-rs/portal-api-axios";
+import { PDFDocument, rgb } from "pdf-lib";
+import fontkit from "@pdf-lib/fontkit";
+import dayjs from "dayjs";
+import { saveAs } from 'file-saver';
+import { MONTSERRAT_BOLD_BOLD } from "src/shared/docs/fonts/Montserrat-Bold-bold";
+import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal";
 
-/**
- * Договор о волонтерстве
- */
-export default function generateQuestionnairePdf(application: ApplicationDto) {
-    const fullName = errorIfEmpty("Name", application.name)
-    const birthDate = dayjs(errorIfEmpty("Birth date", application.birthDate)).format("DD.MM.YYYY")
-    const passport = errorIfEmpty("Passport", application.passport)
-    const phone = errorIfEmpty("Phone", application.phone)
-    const email = errorIfEmpty("Email", application.email)
-    const address = errorIfEmpty("Address", application.address)
-    const contractFrom = dayjs(errorIfEmpty("Contract start date", application.contract?.startDate))
-    const contractUntil = dayjs(errorIfEmpty("Contract end date", application.contract?.endDate!!))
+export default async function generateQuestionnairePdf(application: ApplicationDto) {
 
+    const fullName     = must(application.name,  "Name");
+    const birthDate    = fmt(application.birthDate,   "Birth date");
+    const passport     = must(application.passport,   "Passport");
+    const phone        = must(application.phone,      "Phone");
+    const email        = must(application.email,      "Email");
+    const address      = must(application.address,    "Address");
+    const contractFrom = fmt(application.contract?.startDate, "Contract start date");
+    const contractTill = fmt(application.contract?.endDate,   "Contract end date");
 
-    const pdf = new JsPdf({
-        orientation: "p",
-        unit: "mm",
-        format: "a5",
-        putOnlyUsedFonts: true,
-    })
+    const templateBytes = await fetch("/resources/template.pdf").then(r => r.arrayBuffer());
+    const pdf           = await PDFDocument.load(templateBytes);
+    pdf.registerFontkit(fontkit);
 
-    pdf.addFileToVFS("Montserrat-Medium-normal.ttf", MONTSERRAT_MEDIUM_NORMAL)
-    pdf.addFont("Montserrat-Medium-normal.ttf", "Montserrat-Medium", "normal")
-    pdf.addFileToVFS("Montserrat-Bold-bold.ttf", MONTSERRAT_BOLD_BOLD)
-    pdf.addFont("Montserrat-Bold-bold.ttf", "Montserrat-Bold", "bold")
+    const mediumFont = await pdf.embedFont(
+        Uint8Array.from(atob(MONTSERRAT_MEDIUM_NORMAL), c => c.charCodeAt(0)),
+        { subset: true }
+    );
+    const boldFont   = await pdf.embedFont(
+        Uint8Array.from(atob(MONTSERRAT_BOLD_BOLD), c => c.charCodeAt(0)),
+        { subset: true }
+    );
 
-    pdf.save(`Upitnik_${fullName.replace(" ", "_")}.pdf`)
+    const page = pdf.getPages()[0];
+    const { height } = page.getSize();
+
+    const px = (v: number) => v;
+    const fromTop = (yPx: number, fontSize = 10) =>
+        height - px(yPx) - fontSize;
+
+    const drawPx = (
+        text: string,
+        xPx: number,
+        yPx: number,
+        font = mediumFont,
+        size = 10,
+    ) =>
+        page.drawText(text, {
+            x: px(xPx),
+            y: fromTop(yPx, size),
+            font,
+            size,
+            color: rgb(0, 0, 0),
+        });
+
+    drawPx(fullName,327,  277);
+
+    const pdfBytes = await pdf.save();
+    saveAs(new Blob([pdfBytes], { type: "application/pdf" }), `Upitnik_${fullName.replace(/\s+/g, "_")}.pdf`);
 }
 
-function wrapText(
-    pdf: JsPdf,
-    text: string,
-    maxWidth: number,
-    startX: number,
-    startY: number,
-    lineHeight: number
-): number {
-    const words = text.split(" ")
-    let line = ""
-    let y = startY
-
-    words.forEach((word) => {
-        let testLine = line + (line ? " " : "") + word
-        let testWidth = pdf.getTextWidth(testLine)
-
-        if (testWidth > maxWidth && line) {
-            pdf.text(line, startX, y)
-            line = word
-            y += lineHeight
-        } else {
-            line = testLine
-        }
-    })
-
-    if (line) {
-        pdf.text(line, startX, y)
-    }
-
-    return y
+function must(value: string | null | undefined, name: string): string {
+    if (!value) throw new Error(`${name} is empty`);
+    return value;
+}
+function fmt(value: string | null | undefined, name: string) {
+    return dayjs(must(value, name)).format("DD.MM.YYYY");
 }
 
-function errorIfEmpty(name: string, str: string | null | undefined): string {
-    if (str == null || str === "") {
-        alert(name + " is empty")
-        throw name + " is empty"
-    }
-    return str
-}
+
