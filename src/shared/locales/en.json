@@ -431,7 +431,8 @@
         "skills": "Skills",
         "goal": "Purpose of Participation in the Organization",
         "bio": "Brief Biography",
-        "contractDownload": "Download contract"
+        "contractDownload": "Download contract",
+        "questionnaireDownload": "Download questionnaire"
       },
       "report": {
         "contract-from": "Start Date",
