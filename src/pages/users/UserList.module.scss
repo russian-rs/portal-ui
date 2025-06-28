@@ -1,12 +1,11 @@
 $table-width: 62rem;
 
 .root {
-    padding: 1rem 1rem 2rem 2rem;
     flex-direction: column;
     row-gap: 1rem;
     background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
 
-    @media (max-width: $mantine-breakpoint-md) {
+    @media (max-width: 85rem) {
         padding: 0.5rem;
     }
 }
@@ -16,35 +15,10 @@ $table-width: 62rem;
     background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
 }
 
-.table {
-    width: $table-width
-}
-
 .avatar {
     &:hover {
         cursor: pointer;
     }
-}
-
-.columnName {
-    width: 16rem;
-    padding: 0.3rem;
-}
-
-.columnEmail {
-    width: 16rem;
-}
-
-.columnRoles {
-    width: 16rem;
-}
-
-.columnProgram {
-    width: 16rem;
-}
-
-.columnContractDue {
-    width: 10rem;
 }
 
 .role {
@@ -53,18 +27,14 @@ $table-width: 62rem;
 }
 
 .pagination {
-    width: $table-width;
+    width: 100%;
     margin-top: 1rem;
     align-items: center;
     column-gap: 1rem;
-
-    @media (max-width: $mantine-breakpoint-md) {
-        width: 100%;
-    }
 }
 
 .emptyState {
-    width: $table-width;
+    width: 100%;
     flex-direction: column;
     row-gap: 1rem;
     align-items: center;
@@ -76,4 +46,23 @@ $table-width: 62rem;
     display: flex;
     align-items: center;
     gap: 8px;
+    padding: 0.5rem;
+
+    @media (max-width: 85rem) {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+}
+
+.mobileList {
+    width: 100%;
+    row-gap: 0.5rem;
+}
+
+.mobileCard {
+    width: 100%;
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.3rem 0.1rem light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
 }

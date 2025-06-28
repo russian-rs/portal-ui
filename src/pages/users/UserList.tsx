@@ -1,11 +1,12 @@
-import { Avatar, CloseButton, Flex, Input, Pagination, Table, Text, Button } from "@mantine/core"
+import { Avatar, CloseButton, Flex, Input, Pagination, Table, Text, Button, Paper, Badge } from "@mantine/core"
+import { useMediaQuery } from "@mantine/hooks"
 import { ContractDto, PageRequest } from "@russian-rs/portal-api-axios"
 import { IconLock, IconUfo, IconPencil, IconPlus } from "@tabler/icons-react"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
-import { useNavigate } from "react-router"
+import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { defaultFilter, defaultPage, defaultPageResponse } from "src/pages/users/lib/defaults"
 import { allowedRoles } from "src/pages/users/lib/roles"
@@ -31,20 +32,69 @@ export const UserList = () => {
     const { user, setUser } = useContext(UserContext)
     const navigate = useNavigate()
     const queryClient = useQueryClient()
+    const [searchParams, setSearchParams] = useSearchParams()
 
-    const [search, setSearch] = useState("")
+    const [search, setSearch] = useState(searchParams.get("search") || "")
     const [debouncedSearch, setDebouncedSearch] = useState(search)
     const [drawerOpened, setDrawerOpened] = useState(false)
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
-    const [selectedPrograms, setSelectedPrograms] = useState<string[]>([])
+    const [selectedPrograms, setSelectedPrograms] = useState<string[]>(
+        searchParams.get("programs") ? searchParams.get("programs")!.split(",") : []
+    )
 
     const [filter] = useState(defaultFilter)
-    const [pageRequest, setPageRequest] = useState<PageRequest>(defaultPage)
+    const [pageRequest, setPageRequest] = useState<PageRequest>({
+        ...defaultPage,
+        pageNumber: parseInt(searchParams.get("page") || "0")
+    })
 
     const intl = useIntl()
 
+    const isMobile = useMediaQuery('(max-width: 1360px)')
+
+    // Функция для синхронизации состояния с URL параметрами
+    const syncStateFromUrl = () => {
+        const urlSearch = searchParams.get("search") || ""
+        const urlPrograms = searchParams.get("programs") ? searchParams.get("programs")!.split(",") : []
+        const urlPage = parseInt(searchParams.get("page") || "0")
+
+        setSearch(urlSearch)
+        setDebouncedSearch(urlSearch)
+        setSelectedPrograms(urlPrograms)
+        setPageRequest({ ...pageRequest, pageNumber: urlPage })
+    }
+
+    // Эффект для обработки навигации назад/вперед браузера
+    useEffect(() => {
+        const handlePopState = () => {
+            syncStateFromUrl()
+        }
+
+        window.addEventListener('popstate', handlePopState)
+        return () => window.removeEventListener('popstate', handlePopState)
+    }, [searchParams])
+
+    // Функция для обновления URL параметров
+    const updateUrlParams = (newSearch: string, newPrograms: string[], newPage: number = 0) => {
+        const params = new URLSearchParams()
+        
+        if (newSearch.trim()) {
+            params.set("search", newSearch.trim())
+        }
+        
+        if (newPrograms.length > 0) {
+            params.set("programs", newPrograms.join(","))
+        }
+        
+        if (newPage > 0) {
+            params.set("page", newPage.toString())
+        }
+        
+        setSearchParams(params)
+    }
+
     const canEditProgram = () =>
-        hasPermission(user, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])      
+        hasPermission(user, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])
 
     const { mutate: updateUserProgram } = useMutation({
         mutationFn: async ({ userId, program }: { userId: string, program: string }) => {
@@ -82,7 +132,6 @@ export const UserList = () => {
         },
     })
 
-    // Debounce search input by 500ms
     useEffect(() => {
         const handler = setTimeout(() => {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
@@ -90,6 +139,25 @@ export const UserList = () => {
         }, 500)
         return () => clearTimeout(handler)
     }, [search])
+
+    // Эффект для обновления URL при изменении debouncedSearch
+    useEffect(() => {
+        updateUrlParams(debouncedSearch, selectedPrograms, pageRequest.pageNumber || 0)
+    }, [debouncedSearch])
+
+    // Эффект для обновления URL при изменении программ
+    useEffect(() => {
+        updateUrlParams(debouncedSearch, selectedPrograms, 0)
+        setPageRequest({ ...pageRequest, pageNumber: 0 })
+    }, [selectedPrograms])
+
+    // Эффект для обновления URL при изменении страницы
+    useEffect(() => {
+        const pageNumber = pageRequest.pageNumber || 0
+        if (pageNumber > 0) {
+            updateUrlParams(debouncedSearch, selectedPrograms, pageNumber)
+        }
+    }, [pageRequest.pageNumber])
 
     if (!hasPermission(user, allowedRoles)) {
         navigate("/unauthorized")
@@ -177,6 +245,65 @@ export const UserList = () => {
         )
     })
 
+    // Карточки для мобильной версии
+    const cards = content.map((user) => {
+        const lastContract = Array.isArray(user.contracts) && user.contracts.length > 0
+            ? user.contracts.reduce((max, c) => new Date(c.endDate) > new Date(max.endDate) ? c : max, user.contracts[0])
+            : undefined
+        return (
+            <Paper key={user.id} shadow="xs" p="sm" className={classes.mobileCard}>
+                <Flex align="center" columnGap={12}>
+                    <Avatar
+                        size={44}
+                        src={user.avatar?.link}
+                        name={user.fullName}
+                        onClick={() => openTab(`/profile/${user.username}`)}
+                        className={classes.avatar}
+                    />
+                    <Flex direction="column" style={{ flex: 1 }}>
+                        <Text fw={500} truncate="end">{user.fullName}</Text>
+                        <Text size="sm" c="dimmed" truncate="end">{user.email}</Text>
+                    </Flex>
+                    {!user.active && <IconLock size={16} color="red" />}
+                    <UserMenu user={user} />
+                </Flex>
+                <Flex mt="xs" gap={4} wrap="wrap">
+                    {user.groups.map((group) => (
+                        <Badge key={group} size="xs" color="blue" variant="light">
+                            <FormattedMessage id={`common.roles.${group}`} />
+                        </Badge>
+                    ))}
+                </Flex>
+                <Flex mt="xs" direction="column" rowGap={6}>
+                    <ProgramSelectInline
+                        value={user.program?.code}
+                        canEdit={canEditProgram()}
+                        locale={intl.locale}
+                        onChange={(program) => {
+                            updateUserProgram({ userId: String(user.id), program })
+                        }}
+                    />
+                    <Button
+                        variant="light"
+                        fullWidth
+                        color={lastContract ? "blue" : "gray"}
+                        rightSection={lastContract ? <IconPencil size={14} /> : <IconPlus size={14} />}
+                        onClick={() => {
+                            setSelectedUserId(user.id)
+                            setDrawerOpened(true)
+                        }}
+                        size="compact-sm"
+                    >
+                        {lastContract
+                            ? dayjs(lastContract.endDate).format("DD MMM YYYY")
+                            : <FormattedMessage id="pages.profile.contract.button" />
+                        }
+                    </Button>
+                </Flex>
+            </Paper>
+        )
+    })
+
     const selectedUser = selectedUserId ? content.find(u => u.id === selectedUserId) : null
 
     return (
@@ -202,28 +329,34 @@ export const UserList = () => {
                         onChange={setSelectedPrograms}
                     />
                 </Flex>
-                <Table stickyHeader highlightOnHover className={classes.table}>
-                    <Table.Thead>
-                        <Table.Tr>
-                            <Table.Th className={classes.columnName}>
-                                <FormattedMessage id={locales.fullName} />
-                            </Table.Th>
-                            <Table.Th className={classes.columnEmail}>
-                                <FormattedMessage id={locales.email} />
-                            </Table.Th>
-                            <Table.Th className={classes.columnRoles}>
-                                <FormattedMessage id={locales.roles} />
-                            </Table.Th>
-                            <Table.Th className={classes.columnProgram}>
-                                <FormattedMessage id={locales.program} />
-                            </Table.Th>
-                            <Table.Th className={classes.columnContractDue}>
-                                <FormattedMessage id={locales.contractDue} />
-                            </Table.Th>
-                        </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>{rows}</Table.Tbody>
-                </Table>
+                {isMobile ? (
+                    <Flex direction="column" rowGap={8} className={classes.mobileList}>
+                        {cards}
+                    </Flex>
+                ) : (
+                    <Table stickyHeader highlightOnHover className={classes.table}>
+                        <Table.Thead>
+                            <Table.Tr>
+                                <Table.Th className={classes.columnName}>
+                                    <FormattedMessage id={locales.fullName} />
+                                </Table.Th>
+                                <Table.Th className={classes.columnEmail}>
+                                    <FormattedMessage id={locales.email} />
+                                </Table.Th>
+                                <Table.Th className={classes.columnRoles}>
+                                    <FormattedMessage id={locales.roles} />
+                                </Table.Th>
+                                <Table.Th className={classes.columnProgram}>
+                                    <FormattedMessage id={locales.program} />
+                                </Table.Th>
+                                <Table.Th className={classes.columnContractDue}>
+                                    <FormattedMessage id={locales.contractDue} />
+                                </Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>{rows}</Table.Tbody>
+                    </Table>
+                )}
                 {page.totalElements == 0 && (
                     <Flex className={classes.emptyState}>
                         <IconUfo size={48} />
@@ -238,7 +371,10 @@ export const UserList = () => {
                             total={page.totalPages}
                             value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
                             disabled={isFetching}
-                            onChange={(page) => setPageRequest({ ...pageRequest, pageNumber: page - 1 })}
+                            onChange={(newPage) => {
+                                const pageNumber = newPage - 1
+                                setPageRequest({ ...pageRequest, pageNumber })
+                            }}
                         />
                         <Text c="dimmed">
                             <FormattedMessage id={locales.total} values={{ total: page.totalElements }} />

@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
-import { useNavigate } from "react-router"
+import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { defaultFilter, defaultPage, defaultPageResponse, locales } from "src/pages/reportsPersonal/lib/constants"
 import { ReportApiService } from "src/shared/api/ReportApiService"
@@ -25,13 +25,85 @@ export const MyReports = () => {
     const { user } = useContext(UserContext)
     const intl = useIntl()
     const navigate = useNavigate()
+    const [searchParams, setSearchParams] = useSearchParams()
 
-    const [pageRequest, setPageRequest] = useState<PageRequest>(defaultPage)
-    const [filter, setFilter] = useState<ReportFilter>(defaultFilter)
+    // Инициализация состояния из URL параметров
+    const [pageRequest, setPageRequest] = useState<PageRequest>({
+        ...defaultPage,
+        pageNumber: parseInt(searchParams.get("page") || "0")
+    })
+    const [filter, setFilter] = useState<ReportFilter>({
+        ...defaultFilter,
+        status: searchParams.get("status") || null,
+        dateFrom: searchParams.get("dateFrom") || null,
+        dateTo: searchParams.get("dateTo") || null
+    })
+
+    // Функция для синхронизации состояния с URL параметрами
+    const syncStateFromUrl = () => {
+        const urlStatus = searchParams.get("status") || null
+        const urlDateFrom = searchParams.get("dateFrom") || null
+        const urlDateTo = searchParams.get("dateTo") || null
+        const urlPage = parseInt(searchParams.get("page") || "0")
+
+        setFilter({
+            ...filter,
+            status: urlStatus,
+            dateFrom: urlDateFrom,
+            dateTo: urlDateTo
+        })
+        setPageRequest({ ...pageRequest, pageNumber: urlPage })
+    }
+
+    // Эффект для обработки навигации назад/вперед браузера
+    useEffect(() => {
+        const handlePopState = () => {
+            syncStateFromUrl()
+        }
+
+        window.addEventListener('popstate', handlePopState)
+        return () => window.removeEventListener('popstate', handlePopState)
+    }, [searchParams])
+
+    // Функция для обновления URL параметров
+    const updateUrlParams = (newFilter: ReportFilter, newPage: number = 0) => {
+        const params = new URLSearchParams()
+        
+        if (newFilter.status) {
+            params.set("status", newFilter.status)
+        }
+        
+        if (newFilter.dateFrom) {
+            params.set("dateFrom", newFilter.dateFrom)
+        }
+        
+        if (newFilter.dateTo) {
+            params.set("dateTo", newFilter.dateTo)
+        }
+        
+        if (newPage > 0) {
+            params.set("page", newPage.toString())
+        }
+        
+        setSearchParams(params)
+    }
 
     useEffect(() => {
         setFilter({ ...filter, login: user?.username })
     }, [user])
+
+    // Эффект для обновления URL при изменении фильтра
+    useEffect(() => {
+        updateUrlParams(filter, pageRequest.pageNumber || 0)
+    }, [filter.status, filter.dateFrom, filter.dateTo])
+
+    // Эффект для обновления URL при изменении страницы
+    useEffect(() => {
+        const pageNumber = pageRequest.pageNumber || 0
+        if (pageNumber > 0) {
+            updateUrlParams(filter, pageNumber)
+        }
+    }, [pageRequest.pageNumber])
 
     const { data: response, isFetching } = useQuery({
         enabled: filter.login != null,
@@ -44,10 +116,12 @@ export const MyReports = () => {
         const startDate = start ? dayjs(start).format(DEFAULT_DATE_FORMAT) : null
         const endDate = end ? dayjs(end).format(DEFAULT_DATE_FORMAT) : null
         setFilter({ ...filter, dateFrom: startDate, dateTo: endDate })
+        setPageRequest({ ...pageRequest, pageNumber: 0 })
     }
 
     const onStatusChange = (status: string | null) => {
         setFilter({ ...filter, status: status })
+        setPageRequest({ ...pageRequest, pageNumber: 0 })
     }
 
     const rows = response.content.map((report) => (
@@ -88,7 +162,7 @@ export const MyReports = () => {
         <Flex direction="column">
             <CustomLoader visible={isFetching} className={classes.loader} />
             <Flex className={classes.root}>
-                <Flex direction="column" gap="md">
+                <Flex direction="column" gap="md" w="100%">
                     <Flex columnGap="xl" rowGap="md" align="center" wrap="wrap-reverse">
                         <Text className={classes.title}>
                             <FormattedMessage id={locales.documentTitle} />
@@ -96,8 +170,17 @@ export const MyReports = () => {
                     </Flex>
                     <Flex className={classes.content}>
                         <Flex className={classes.filterArea}>
-                            <WeekPicker onChange={onWeekChange} className={classes.filterWeek} />
-                            <ReportStatusSelect onChange={onStatusChange} className={classes.filterStatus} />
+                            <WeekPicker 
+                                onChange={onWeekChange} 
+                                className={classes.filterWeek}
+                                initialStartDate={filter.dateFrom}
+                                initialEndDate={filter.dateTo}
+                            />
+                            <ReportStatusSelect 
+                                onChange={onStatusChange} 
+                                className={classes.filterStatus}
+                                value={filter.status}
+                            />
                             <Button
                                 className={classes.newReportButton}
                                 variant="light"
@@ -128,7 +211,10 @@ export const MyReports = () => {
                             value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
                             disabled={isFetching}
                             hideWithOnePage={true}
-                            onChange={(page) => setPageRequest({ ...pageRequest, pageNumber: page - 1 })}
+                            onChange={(newPage) => {
+                                const pageNumber = newPage - 1
+                                setPageRequest({ ...pageRequest, pageNumber })
+                            }}
                         />
                         <Text c="dimmed">
                             <FormattedMessage id={locales.total} values={{ total: response.page.totalElements }} />

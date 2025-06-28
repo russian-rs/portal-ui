@@ -33,7 +33,12 @@ export const CopyText = (props: CopyTextProps) => {
 
     return (
         <TooltipLocalized text={locales.tooltip} position="bottom">
-            <Text className={`${props.className} ${classes.copyable}`} size={props.size} onClick={handleCopy}>
+            <Text 
+                component="span"
+                className={`${props.className} ${classes.copyable}`} 
+                size={props.size} 
+                onClick={handleCopy}
+            >
                 {props.text}
             </Text>
         </TooltipLocalized>

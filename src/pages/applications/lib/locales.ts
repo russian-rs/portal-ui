@@ -4,11 +4,18 @@ export const locales = {
     total: "pages.applications.total",
 
     created: "pages.applications.created",
+    createdShort: "pages.applications.created-short",
     type: "pages.applications.type",
+    typeShort: "pages.applications.type-short",
     name: "pages.applications.name",
+    nameShort: "pages.applications.name-short",
     email: "pages.applications.email",
+    emailShort: "pages.applications.email-short",
     status: "pages.applications.status",
+    statusShort: "pages.applications.status-short",
     contractStart: "pages.applications.contractStart",
+    contractStartShort: "pages.applications.contract-start-short",
     contractAdd: "pages.applications.contractAdd",
     showCompleted: "pages.applications.showCompleted",
+    reset: "pages.report-list.reset",
 }
