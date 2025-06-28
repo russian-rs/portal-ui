@@ -3,18 +3,21 @@ import { useIntl } from "react-intl"
 import { usePrograms } from "src/app/providers/ProgramsProvider"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { locales } from "../lib/locales"
-import { useState } from "react"
+import { useState, useRef } from "react"
 
 interface ProgramFilterProps {
     value: string[]
     onChange: (programs: string[]) => void
     maxValues?: number
+    className?: string
+    autoClose?: boolean
 }
 
-export function ProgramFilter({ value, onChange, maxValues }: ProgramFilterProps) {
+export function ProgramFilter({ value, onChange, maxValues, className, autoClose }: ProgramFilterProps) {
     const programs = usePrograms()
     const intl = useIntl()
     const [search, setSearch] = useState("")
+    const selectRef = useRef<HTMLInputElement>(null)
 
     const programOptions = [
         { value: "no_program", label: intl.formatMessage({ id: locales.noProgram }) },
@@ -24,18 +27,28 @@ export function ProgramFilter({ value, onChange, maxValues }: ProgramFilterProps
         }))
     ]
 
+    const handleChange = (newValue: string[]) => {
+        onChange(newValue)
+        if (autoClose && maxValues === 1 && newValue.length > 0) {
+            setTimeout(() => {
+                selectRef.current?.blur()
+            }, 100)
+        }
+    }
+
     return (
         <MultiSelect
+            ref={selectRef}
             data={programOptions}
             value={value}
-            onChange={onChange}
+            onChange={handleChange}
             placeholder={value.length === 0 ? intl.formatMessage({ id: locales.filterByProgram }) : ""}
-            style={{ width: "14rem" }}
             clearable
             maxDropdownHeight={400}
             searchValue={search}
             onSearchChange={setSearch}
             maxValues={maxValues}
+            className={className}
         />
     )
 }

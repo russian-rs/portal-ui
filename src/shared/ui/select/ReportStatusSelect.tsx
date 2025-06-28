@@ -7,6 +7,7 @@ import { ReportStatus } from "src/shared/report/status"
 interface ReportStatusSelectProps {
     className?: string
     onChange?: (status: string | null) => void
+    value?: string | null
 }
 
 export const ReportStatusSelect = (props: ReportStatusSelectProps) => {
@@ -14,7 +15,11 @@ export const ReportStatusSelect = (props: ReportStatusSelectProps) => {
         onDropdownClose: () => combobox.resetSelectedOption(),
     })
 
-    const [value, setValue] = useState<string | null>(null)
+    const [value, setValue] = useState<string | null>(props.value || null)
+
+    useEffect(() => {
+        setValue(props.value || null)
+    }, [props.value])
 
     useEffect(() => {
         if (props.onChange) {

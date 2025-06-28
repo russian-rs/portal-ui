@@ -1,6 +1,5 @@
-$width: 40rem;
-
 .root {
+    width: 100%;
     padding: var(--mantine-spacing-xl);
     column-gap: 3rem;
     row-gap: 1rem;
@@ -34,7 +33,6 @@ $width: 40rem;
     flex-wrap: wrap;
     column-gap: 2rem;
     row-gap: 1rem;
-    width: $width;
 
     @media (max-width: $mantine-breakpoint-md) {
         width: 100%;
@@ -42,7 +40,6 @@ $width: 40rem;
 }
 
 .reportContainer {
-    width: $width;
     gap: 1rem;
     flex-direction: column;
     flex-wrap: wrap;
@@ -92,6 +89,7 @@ $width: 40rem;
     width: 18rem;
     gap: 0.5rem;
     flex-wrap: wrap;
+    margin-left: auto;
 
     @media (max-width: $mantine-breakpoint-md) {
         width: 10rem;
@@ -105,12 +103,7 @@ $width: 40rem;
 .arrow {
     width: 2rem;
     margin-left: auto;
-    opacity: 0;
     transition: opacity 0.2s ease;
-
-    @media (max-width: $mantine-breakpoint-md) {
-        opacity: 1;
-    }
 }
 
 .report:hover .arrow {
@@ -118,7 +111,6 @@ $width: 40rem;
 }
 
 .filterArea {
-    width: $width;
     gap: 0.5rem;
     flex-wrap: wrap-reverse;
 

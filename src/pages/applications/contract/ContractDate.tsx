@@ -88,17 +88,16 @@ export const ContractDate = ({ application, onChange, className }: ContractEditM
                     color={application.contract ? "blue" : "gray"}
                     onClick={toggle}
                     className={className}
+                    style={{ padding: 0 }}
                 >
-                    <Text size="sm">
-                        {application.contract && (
-                            <Text size="sm">{dayjs(contract.startDate).format("DD MMM YYYY")}</Text>
-                        )}
-                        {!application.contract && (
-                            <Text size="sm">
-                                <FormattedMessage id={locales.add} />
-                            </Text>
-                        )}
-                    </Text>
+                    {application.contract && (
+                        <Text size="sm">{dayjs(contract.startDate).format("DD MMM YYYY")}</Text>
+                    )}
+                    {!application.contract && (
+                        <Text size="sm">
+                            <FormattedMessage id={locales.add} />
+                        </Text>
+                    )}
                 </Button>
             </Popover.Target>
             <Popover.Dropdown>

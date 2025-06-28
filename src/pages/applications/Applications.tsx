@@ -1,33 +1,109 @@
-import { Checkbox, CloseButton, Flex, Input, Pagination, Table, Text } from "@mantine/core"
+import { Checkbox, CloseButton, Flex, Input, Pagination, Table, Text, Skeleton, Card, Box } from "@mantine/core"
 import { ApplicationsFilter, PageRequest } from "@russian-rs/portal-api-axios"
 import { IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
-import { useNavigate } from "react-router"
+import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { allowedRoles } from "src/pages/applications/lib/roles"
 import { ApplicationRow } from "src/pages/applications/row/ApplicationRow"
 import { CreateUser } from "src/pages/users/createUser/CreateUser"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
+import { useDesktop, useScreenSize } from "src/shared/hooks/useDesktop"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { hasPermission } from "src/shared/user/roles"
 import classes from "./Applications.module.scss"
 import { defaultFilter, defaultPage, defaultPageResponse } from "./lib/defaults"
 import { locales } from "./lib/locales"
 
+const SkeletonCard = () => (
+    <Card shadow="sm" padding="lg" radius="md" withBorder className={classes.mobileCard}>
+        <Flex direction="column" gap="md">
+            <Flex justify="space-between" align="center">
+                <Flex columnGap="sm" align="center">
+                    <Skeleton height={40} circle />
+                    <Box>
+                        <Skeleton height={14} width={120} mb={4} />
+                        <Skeleton height={10} width={80} />
+                    </Box>
+                </Flex>
+                <Skeleton height={24} width={24} />
+            </Flex>
+            
+            <Box style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--mantine-color-gray-2)' }}>
+                {[1, 2, 3, 4].map((i) => (
+                    <Flex key={i} justify="space-between" align="center" mb="sm">
+                        <Skeleton height={10} width={60} />
+                        <Skeleton height={10} width={100} />
+                    </Flex>
+                ))}
+            </Box>
+        </Flex>
+    </Card>
+)
+
 export const Applications = () => {
     setDocumentTitleByLocale(locales.title)
 
     const { user } = useContext(UserContext)
     const navigate = useNavigate()
+    const [searchParams, setSearchParams] = useSearchParams()
 
-    const [searchQuery, setSearchQuery] = useState("")
+    // Инициализация состояния из URL параметров
+    const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "")
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery)
 
-    const [pageRequest, setPageRequest] = useState<PageRequest>(defaultPage)
-    const [filter, setFilter] = useState<ApplicationsFilter>(defaultFilter)
+    const [pageRequest, setPageRequest] = useState<PageRequest>({
+        ...defaultPage,
+        pageNumber: parseInt(searchParams.get("page") || "0")
+    })
+    const [filter, setFilter] = useState<ApplicationsFilter>({
+        ...defaultFilter,
+        showCompleted: searchParams.get("showCompleted") === "true"
+    })
+
+    // Функция для синхронизации состояния с URL параметрами
+    const syncStateFromUrl = () => {
+        const urlSearch = searchParams.get("search") || ""
+        const urlShowCompleted = searchParams.get("showCompleted") === "true"
+        const urlPage = parseInt(searchParams.get("page") || "0")
+
+        setSearchQuery(urlSearch)
+        setDebouncedSearch(urlSearch)
+        setFilter({ ...filter, showCompleted: urlShowCompleted })
+        setPageRequest({ ...pageRequest, pageNumber: urlPage })
+    }
+
+    // Эффект для обработки навигации назад/вперед браузера
+    useEffect(() => {
+        const handlePopState = () => {
+            syncStateFromUrl()
+        }
+
+        window.addEventListener('popstate', handlePopState)
+        return () => window.removeEventListener('popstate', handlePopState)
+    }, [searchParams])
+
+    // Функция для обновления URL параметров
+    const updateUrlParams = (newSearch: string, newShowCompleted: boolean, newPage: number = 0) => {
+        const params = new URLSearchParams()
+        
+        if (newSearch.trim()) {
+            params.set("search", newSearch.trim())
+        }
+        
+        if (newShowCompleted) {
+            params.set("showCompleted", "true")
+        }
+        
+        if (newPage > 0) {
+            params.set("page", newPage.toString())
+        }
+        
+        setSearchParams(params)
+    }
 
     // Debounce search input by 500ms
     useEffect(() => {
@@ -37,6 +113,25 @@ export const Applications = () => {
         }, 500)
         return () => clearTimeout(handler)
     }, [searchQuery])
+
+    // Эффект для обновления URL при изменении debouncedSearch
+    useEffect(() => {
+        updateUrlParams(debouncedSearch, filter.showCompleted, pageRequest.pageNumber || 0)
+    }, [debouncedSearch])
+
+    // Эффект для обновления URL при изменении фильтра
+    useEffect(() => {
+        updateUrlParams(debouncedSearch, filter.showCompleted, 0)
+        setPageRequest({ ...pageRequest, pageNumber: 0 })
+    }, [filter.showCompleted])
+
+    // Эффект для обновления URL при изменении страницы
+    useEffect(() => {
+        const pageNumber = pageRequest.pageNumber || 0
+        if (pageNumber > 0) {
+            updateUrlParams(debouncedSearch, filter.showCompleted, pageNumber)
+        }
+    }, [pageRequest.pageNumber])
 
     if (!hasPermission(user, allowedRoles)) {
         navigate("/unauthorized")
@@ -54,6 +149,9 @@ export const Applications = () => {
             ),
     })
 
+    const isDesktop = useDesktop()
+    const { shouldShowTable, isLargeDesktop } = useScreenSize()
+    
     const rows = content.map((application) => <ApplicationRow key={application.id} applicationDto={application} />)
 
     return (
@@ -63,12 +161,13 @@ export const Applications = () => {
                 <Text className={classes.title} variant="gradient">
                     <FormattedMessage id={locales.title} />
                 </Text>
-                <Flex align="center" columnGap="8">
+                <Flex align="center" columnGap="8" className={classes.controls}>
                     <Input
-                        placeholder={"Поиск"}
+                        placeholder={"Поиск по имени или email"}
                         value={searchQuery}
                         onChange={(event) => setSearchQuery(event.currentTarget.value)}
                         rightSectionPointerEvents="all"
+                        size={!isDesktop ? "md" : "sm"}
                         rightSection={
                             <CloseButton
                                 aria-label="Clear input"
@@ -76,6 +175,7 @@ export const Applications = () => {
                                 style={{ display: searchQuery ? undefined : "none" }}
                             />
                         }
+                        className={classes.searchInput}
                     />
                     <CreateUser />
                     <Checkbox
@@ -84,34 +184,49 @@ export const Applications = () => {
                         label={<FormattedMessage id={locales.showCompleted} />}
                         checked={filter.showCompleted}
                         onChange={() => setFilter({ ...filter, showCompleted: !filter.showCompleted })}
+                        size={!isDesktop ? "md" : "sm"}
                     />
                 </Flex>
-                <Table stickyHeader highlightOnHover className={classes.table}>
-                    <Table.Thead>
-                        <Table.Tr>
-                            <Table.Th>
-                                <FormattedMessage id={locales.created} />
-                            </Table.Th>
-                            <Table.Th>
-                                <FormattedMessage id={locales.type} />
-                            </Table.Th>
-                            <Table.Th>
-                                <FormattedMessage id={locales.name} />
-                            </Table.Th>
-                            <Table.Th>
-                                <FormattedMessage id={locales.email} />
-                            </Table.Th>
-                            <Table.Th>
-                                <FormattedMessage id={locales.contractStart} />
-                            </Table.Th>
-                            <Table.Th>
-                                <FormattedMessage id={locales.status} />
-                            </Table.Th>
-                            <Table.Th></Table.Th>
-                        </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>{rows}</Table.Tbody>
-                </Table>
+                {shouldShowTable ? (
+                    <Table stickyHeader highlightOnHover className={classes.table}>
+                        <Table.Thead>
+                            <Table.Tr>
+                                <Table.Th>
+                                    <FormattedMessage id={isLargeDesktop ? locales.created : locales.createdShort} />
+                                </Table.Th>
+                                <Table.Th>
+                                    <FormattedMessage id={isLargeDesktop ? locales.type : locales.typeShort} />
+                                </Table.Th>
+                                <Table.Th>
+                                    <FormattedMessage id={isLargeDesktop ? locales.name : locales.nameShort} />
+                                </Table.Th>
+                                <Table.Th>
+                                    <FormattedMessage id={isLargeDesktop ? locales.email : locales.emailShort} />
+                                </Table.Th>
+                                <Table.Th>
+                                    <FormattedMessage id={isLargeDesktop ? locales.contractStart : locales.contractStartShort} />
+                                </Table.Th>
+                                <Table.Th>
+                                    <FormattedMessage id={isLargeDesktop ? locales.status : locales.statusShort} />
+                                </Table.Th>
+                                <Table.Th></Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>{rows}</Table.Tbody>
+                    </Table>
+                ) : (
+                    <Flex direction="column" className={classes.mobileList}>
+                        {isFetching && content.length === 0 ? (
+                            <>
+                                {[1, 2, 3].map((i) => <SkeletonCard key={i} />)}
+                            </>
+                        ) : (
+                            content.map((application) => (
+                                <ApplicationRow key={application.id} applicationDto={application} isMobile={true} />
+                            ))
+                        )}
+                    </Flex>
+                )}
                 {page.totalElements == 0 && (
                     <Flex className={classes.emptyState}>
                         <IconUfo size={48} />
@@ -127,7 +242,10 @@ export const Applications = () => {
                             total={page.totalPages}
                             value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
                             disabled={isFetching}
-                            onChange={(page) => setPageRequest({ ...pageRequest, pageNumber: page - 1 })}
+                            onChange={(newPage) => {
+                                const pageNumber = newPage - 1
+                                setPageRequest({ ...pageRequest, pageNumber })
+                            }}
                         />
                         <Text c="dimmed">
                             <FormattedMessage id={locales.total} values={{ count: page.totalElements }} />
