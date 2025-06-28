@@ -27,6 +27,11 @@
             "./node_modules"
         ]
     },
-    "files": [".eslintrc.cjs", "vite.config.mts"],
+    "files": [
+        ".eslintrc.cjs",
+        "vite.config.mts",
+        "node_modules/file-saver/src/FileSaver.js",
+        "node_modules/file-saver/src/FileSaver.js"
+    ],
     "include": ["src", "tests", "src/vite-env.d.ts"]
 }
