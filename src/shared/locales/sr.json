@@ -438,7 +438,8 @@
         "skills": "Veštine",
         "goal": "Cilj učestvovanja u organizaciji",
         "bio": "Kratka biografija",
-        "contractDownload": "Preuzimanje ugovora"
+        "contractDownload": "Preuzimanje ugovora",
+        "questionnaireDownload": "Preuzimanje upitnika"
       },
       "report": {
         "contract-from": "Datum početka",

@@ -13,6 +13,7 @@ import {
     IconLocation,
     IconPhone,
     IconWorld,
+    IconListCheck
 } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -34,6 +35,7 @@ import { hasPermission } from "src/shared/user/roles"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
+import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 
 export const ApplicationView = () => {
     const { id } = useParams()
@@ -262,6 +264,18 @@ export const ApplicationView = () => {
                         }}
                     >
                         <FormattedMessage id={locales.contractDownload} />
+                    </Button>
+                    <Button
+                        variant="gradient"
+                        gradient={{from: '#00FF95', to: '#5AB08C'}}
+                        rightSection={<IconListCheck size={15} />}
+                        disabled={application.contract == null}
+                        className={classes.questionnaireGenerate}
+                        onClick={() => {
+                            generateQuestionnairePdf(application)
+                        }}
+                    >
+                        <FormattedMessage id={locales.questionnaireDownload} />
                     </Button>
                 </Flex>
             </Flex>
