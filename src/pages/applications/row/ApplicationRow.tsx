@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { ReactNode, useState } from "react"
 import { FormattedMessage } from "react-intl"
+import { useNavigate } from "react-router"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
 import { ApplicationMenu } from "src/pages/applications/menu/ApplicationMenu"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
@@ -22,6 +23,7 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
     const [application, setApplication] = useState(applicationDto)
     const [updated, setUpdated] = useState(false)
     const { isLargeDesktop } = useScreenSize()
+    const navigate = useNavigate()
 
     const { isFetching: isUpdating } = useQuery({
         enabled: updated,
@@ -50,7 +52,7 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                                 size={40}
                                 color={getMantineColor(application.name)}
                                 className={classes.avatar}
-                                onClick={() => window.open(`/application/${application.id}`)}
+                                onClick={() => navigate(`/application/${application.id}`)}
                             />
                             <Box>
                                 <Text fw={600} size="sm">{application.name}</Text>
@@ -124,7 +126,7 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                         size={isLargeDesktop ? 24 : 20}
                         color={getMantineColor(application.name)}
                         className={classes.avatar}
-                        onClick={() => window.open(`/application/${application.id}`)}
+                        onClick={() => navigate(`/application/${application.id}`)}
                     />
                     <Text size={isLargeDesktop ? "sm" : "xs"} truncate="end" className={classes.compactText}>{application.name}</Text>
                 </Flex>

@@ -14,7 +14,7 @@ import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { getSpentTimeFromReport } from "src/shared/report/timeSpent"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
-import { openTab } from "src/shared/ui/tabs/WindowFunctions"
+
 import { UserSearch } from "src/shared/ui/userSearch/UserSearch"
 import { WeekPicker } from "src/shared/ui/weekPicker/WeekPicker"
 import { hasPermission } from "src/shared/user/roles"
@@ -38,10 +38,14 @@ export const ReportList = () => {
     const navigate = useNavigate()
     const intl = useIntl()
 
+    const isMobile = useMediaQuery('(max-width: 1360px)')
+    const isTablet = useMediaQuery('(min-width: 1024px) and (max-width: 1439px)')
+
     const [resetKey, setResetKey] = useState(0)
     const [pageRequest, setPageRequest] = useState<PageRequest>({
         ...defaultPage,
-        pageNumber: parseInt(searchParams.get("page") || "0")
+        pageNumber: Math.max(0, parseInt(searchParams.get("page") || "1") - 1),
+        pageSize: isMobile ? 10 : 25
     })
     const [filter, setFilter] = useState<ReportFilter>({
         ...defaultFilter(loginParam),
@@ -53,8 +57,9 @@ export const ReportList = () => {
     const [selectedPrograms, setSelectedPrograms] = useState<string[]>(
         searchParams.get("programs") ? searchParams.get("programs")!.split(",") : []
     )
-
-    const isMobile = useMediaQuery('(max-width: 1360px)')
+    
+    // Ref для скролла к началу списка
+    const listStartRef = React.useRef<HTMLDivElement>(null)
 
     const syncStateFromUrl = () => {
         const urlLogin = searchParams.get("login") || null
@@ -62,7 +67,8 @@ export const ReportList = () => {
         const urlDateFrom = searchParams.get("dateFrom") || null
         const urlDateTo = searchParams.get("dateTo") || null
         const urlPrograms = searchParams.get("programs") ? searchParams.get("programs")!.split(",") : []
-        const urlPage = parseInt(searchParams.get("page") || "0")
+        const urlPageFromUser = parseInt(searchParams.get("page") || "1")
+        const urlPage = urlPageFromUser > 0 ? urlPageFromUser - 1 : 0
 
         setFilter({
             ...filter,
@@ -109,7 +115,8 @@ export const ReportList = () => {
         }
         
         if (newPage > 0) {
-            params.set("page", newPage.toString())
+            const userPageNumber = newPage + 1
+            params.set("page", userPageNumber.toString())
         }
         
         setSearchParams(params)
@@ -126,10 +133,30 @@ export const ReportList = () => {
 
     useEffect(() => {
         const pageNumber = pageRequest.pageNumber || 0
-        if (pageNumber > 0) {
-            updateUrlParams(filter, selectedPrograms, pageNumber)
-        }
+        updateUrlParams(filter, selectedPrograms, pageNumber)
     }, [pageRequest.pageNumber])
+
+    // Эффект для обновления размера страницы при изменении типа устройства
+    useEffect(() => {
+        const newPageSize = isMobile ? 10 : 25
+        if (pageRequest.pageSize !== newPageSize) {
+            setPageRequest({ ...pageRequest, pageSize: newPageSize, pageNumber: 0 })
+        }
+    }, [isMobile])
+
+    // Эффект для скролла при смене страницы в мобильной версии
+    useEffect(() => {
+        if (isMobile && pageRequest.pageNumber !== undefined) {
+            if (listStartRef.current) {
+                listStartRef.current.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                })
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+            }
+        }
+    }, [pageRequest.pageNumber, isMobile])
 
     if (!hasPermission(user, allowedRoles)) {
         navigate("/unauthorized")
@@ -157,16 +184,19 @@ export const ReportList = () => {
 
     const onUserSelected = (selectedUser: UserInfoDto | null) => {
         setFilter({ ...filter, login: selectedUser?.username || null })
+        setPageRequest({ ...pageRequest, pageNumber: 0 })
     }
 
     const onStatusChange = (status: string | null) => {
         setFilter({ ...filter, status: status })
+        setPageRequest({ ...pageRequest, pageNumber: 0 })
     }
 
     const onWeekChange = (_: any, start: Date | null, end: Date | null) => {
         const startDate = start ? dayjs(start).format(DEFAULT_DATE_FORMAT) : null
         const endDate = end ? dayjs(end).format(DEFAULT_DATE_FORMAT) : null
         setFilter({ ...filter, dateFrom: startDate, dateTo: endDate })
+        setPageRequest({ ...pageRequest, pageNumber: 0 })
     }
 
     const rows = reports.map((report) => {
@@ -175,7 +205,7 @@ export const ReportList = () => {
         const timeSpent = getSpentTimeFromReport(report, intl)
         const filesCount = getReportFilesCount(report)
         return (
-            <Table.Tr key={report.id} className={classes.row} onClick={() => openTab(`/report/${report.id}`)}>
+            <Table.Tr key={report.id} className={classes.row} onClick={() => navigate(`/report/${report.id}`)}>
                 <Table.Td>
                     <Text>{createTime}</Text>
                 </Table.Td>
@@ -224,53 +254,100 @@ export const ReportList = () => {
         const timeSpent = getSpentTimeFromReport(report, intl)
         const filesCount = getReportFilesCount(report)
         return (
-            <Flex key={report.id} className={classes.mobileCard} onClick={() => openTab(`/report/${report.id}`)}>
-                <Flex className={classes.reportHeader}>
-                    <TextPropertyBox
-                        name={locales.volunteer}
-                        value={creator.fullName}
-                        icon={<Avatar size={20} src={creator.avatar?.link} name={creator.fullName} />}
-                    />
-                </Flex>
-                <Flex className={classes.reportBody}>
-                    <Flex className={classes.reportLeft}>
-                        <TextPropertyBox
-                            name={locales.creationDate}
-                            value={createTime}
-                        />
-                        <PropertyBox
-                            name={locales.status}
-                            value={
-                                <Badge color={getReportStatusColor(report.status)} radius="md" variant="light">
-                                    <FormattedMessage id={`common.report-status.${report.status}`} />
-                                </Badge>
-                            }
-                        />
-                        <TextPropertyBox 
-                            name={locales.weeks} 
-                            value={report.week} 
-                        />
-                    </Flex>
-                    <Flex className={classes.reportRight}>
-                        <TextPropertyBox
-                            name={locales.tasks}
-                            value={report.tasks.length}
-                            icon={<IconListCheck size={16} />}
-                        />
-                        <TextPropertyBox
-                            name={locales.timeSpent}
-                            value={timeSpent}
-                            icon={<IconClock size={16} />}
-                        />
+            <Flex key={report.id} className={classes.mobileCard} onClick={() => navigate(`/report/${report.id}`)}>
+                {isTablet ? (
+                    // Планшетная версия с подписями
+                    <>
+                        <Flex className={classes.reportBody}>
+                            <Flex className={classes.reportLeft}>
+                                <TextPropertyBox
+                                    name={locales.volunteer}
+                                    value={creator.fullName}
+                                    icon={<Avatar size={20} src={creator.avatar?.link} name={creator.fullName} />}
+                                />
+                            </Flex>
+                            <Flex className={classes.reportRight}>
+                                <TextPropertyBox
+                                    name={locales.creationDate}
+                                    value={createTime}
+                                />
+                            </Flex>
+                        </Flex>
+                        <Flex className={classes.reportBody}>
+                            <Flex className={classes.reportLeft}>
+                                <PropertyBox
+                                    name={locales.status}
+                                    value={
+                                        <Badge color={getReportStatusColor(report.status)} radius="md" variant="light">
+                                            <FormattedMessage id={`common.report-status.${report.status}`} />
+                                        </Badge>
+                                    }
+                                />
+                            </Flex>
+                            <Flex className={classes.reportRight}>
+                                <TextPropertyBox
+                                    name={locales.tasks}
+                                    value={report.tasks.length}
+                                    icon={<IconListCheck size={16} />}
+                                />
+                            </Flex>
+                        </Flex>
+                        <Flex className={classes.reportBody}>
+                            <Flex className={classes.reportLeft}>
+                                <TextPropertyBox
+                                    name={locales.timeSpent}
+                                    value={timeSpent}
+                                    icon={<IconClock size={16} />}
+                                />
+                            </Flex>
+                            <Flex className={classes.reportRight}>
+                                <TextPropertyBox 
+                                    name={locales.weeks} 
+                                    value={report.week} 
+                                />
+                            </Flex>
+                        </Flex>
                         {filesCount !== 0 && (
-                            <TextPropertyBox
-                                name={locales.files}
-                                value={filesCount}
-                                icon={<IconFile size={16} />}
-                            />
+                            <Flex className={classes.reportBody}>
+                                <Flex className={classes.reportLeft}>
+                                    <TextPropertyBox
+                                        name={locales.files}
+                                        value={filesCount}
+                                        icon={<IconFile size={16} />}
+                                    />
+                                </Flex>
+                                <Flex className={classes.reportRight}>
+                                    {/* Пустое место для симметрии */}
+                                </Flex>
+                            </Flex>
                         )}
-                    </Flex>
-                </Flex>
+                    </>
+                ) : (
+                    // Мобильная версия без подписей
+                    <>
+                        <Flex className={classes.reportHeader}>
+                            <Text size="xs" c="dimmed" className={classes.dateCorner}>
+                                {createTime}
+                            </Text>
+                            <Flex align="center" gap={8} style={{ flex: 1 }}>
+                                <Avatar size={24} src={creator.avatar?.link} name={creator.fullName} />
+                                <Text fw={500} style={{ flex: 1 }}>{creator.fullName}</Text>
+                                <Text size="sm" c="dimmed">{report.week}</Text>
+                            </Flex>
+                        </Flex>
+                        <Flex className={classes.reportBody}>
+                            <Badge color={getReportStatusColor(report.status)} radius="md" variant="light">
+                                <FormattedMessage id={`common.report-status.${report.status}`} />
+                            </Badge>
+                            {filesCount !== 0 && (
+                                <Flex align="center" gap={4}>
+                                    <IconFile size={14} />
+                                    <Text size="sm" c="dimmed">{filesCount}</Text>
+                                </Flex>
+                            )}
+                        </Flex>
+                    </>
+                )}
             </Flex>
         )
     })
@@ -282,6 +359,7 @@ export const ReportList = () => {
                 <Text className={classes.title}>
                     <FormattedMessage id={locales.title} />
                 </Text>
+                <div ref={listStartRef} />
                 <Flex className={classes.filters}>
                     <UserSearch
                         key={`user-search-${resetKey}`}
@@ -301,13 +379,19 @@ export const ReportList = () => {
                         onChange={onStatusChange}
                         value={filter.status}
                     />
-                    <ProgramFilter
-                        className={classes.programFilter}
-                        value={selectedPrograms}
-                        onChange={setSelectedPrograms}
-                        maxValues={1}
-                        autoClose={true}
-                    />
+                    <Flex direction="column">
+                        <Text size="xs" c="dimmed" mb={4}>
+                            <FormattedMessage id={locales.programFilter} />
+                        </Text>
+                        <ProgramFilter
+                            className={classes.programFilter}
+                            value={selectedPrograms}
+                            onChange={setSelectedPrograms}
+                            maxValues={1}
+                            autoClose={true}
+                            placeholder={intl.formatMessage({ id: locales.programFilterNotSelected })}
+                        />
+                    </Flex>
                 </Flex>
                 {isMobile ? (
                     <Flex direction="column" rowGap={8} className={classes.mobileList}>

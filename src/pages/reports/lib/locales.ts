@@ -12,4 +12,6 @@ export const locales = {
     total: "pages.report-list.total",
     empty: "pages.report-list.empty",
     reset: "pages.report-list.reset",
+    programFilter: "pages.report-list.program-filter",
+    programFilterNotSelected: "pages.report-list.program-filter-not-selected",
 }

@@ -255,7 +255,9 @@
       "files": "Files",
       "total": "Total: {count}",
       "empty": "Reports not found",
-      "reset": "Reset filters"
+      "reset": "Reset filters",
+      "program-filter": "Program filter",
+      "program-filter-not-selected": "Not selected"
     },
     "user-list": {
       "title": "All volunteers",

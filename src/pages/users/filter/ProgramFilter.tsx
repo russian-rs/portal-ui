@@ -11,9 +11,10 @@ interface ProgramFilterProps {
     maxValues?: number
     className?: string
     autoClose?: boolean
+    placeholder?: string
 }
 
-export function ProgramFilter({ value, onChange, maxValues, className, autoClose }: ProgramFilterProps) {
+export function ProgramFilter({ value, onChange, maxValues, className, autoClose, placeholder }: ProgramFilterProps) {
     const programs = usePrograms()
     const intl = useIntl()
     const [search, setSearch] = useState("")
@@ -42,7 +43,7 @@ export function ProgramFilter({ value, onChange, maxValues, className, autoClose
             data={programOptions}
             value={value}
             onChange={handleChange}
-            placeholder={value.length === 0 ? intl.formatMessage({ id: locales.filterByProgram }) : ""}
+            placeholder={value.length === 0 ? (placeholder || intl.formatMessage({ id: locales.filterByProgram })) : ""}
             clearable
             maxDropdownHeight={400}
             searchValue={search}

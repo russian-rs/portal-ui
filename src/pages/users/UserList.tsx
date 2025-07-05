@@ -14,7 +14,7 @@ import { UserMenu } from "src/pages/users/userMenu/UserMenu"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
-import { openTab } from "src/shared/ui/tabs/WindowFunctions"
+
 import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { locales } from "./lib/locales"
 import classes from "./UserList.module.scss"
@@ -42,21 +42,26 @@ export const UserList = () => {
         searchParams.get("programs") ? searchParams.get("programs")!.split(",") : []
     )
 
+    const isMobile = useMediaQuery('(max-width: 1360px)')
+
     const [filter] = useState(defaultFilter)
     const [pageRequest, setPageRequest] = useState<PageRequest>({
         ...defaultPage,
-        pageNumber: parseInt(searchParams.get("page") || "0")
+        pageNumber: Math.max(0, parseInt(searchParams.get("page") || "1") - 1),
+        pageSize: isMobile ? 10 : 25
     })
 
-    const intl = useIntl()
+    // Ref для скролла к началу списка
+    const listStartRef = React.useRef<HTMLDivElement>(null)
 
-    const isMobile = useMediaQuery('(max-width: 1360px)')
+    const intl = useIntl()
 
     // Функция для синхронизации состояния с URL параметрами
     const syncStateFromUrl = () => {
         const urlSearch = searchParams.get("search") || ""
         const urlPrograms = searchParams.get("programs") ? searchParams.get("programs")!.split(",") : []
-        const urlPage = parseInt(searchParams.get("page") || "0")
+        const urlPageFromUser = parseInt(searchParams.get("page") || "1")
+        const urlPage = urlPageFromUser > 0 ? urlPageFromUser - 1 : 0
 
         setSearch(urlSearch)
         setDebouncedSearch(urlSearch)
@@ -87,7 +92,8 @@ export const UserList = () => {
         }
         
         if (newPage > 0) {
-            params.set("page", newPage.toString())
+            const userPageNumber = newPage + 1
+            params.set("page", userPageNumber.toString())
         }
         
         setSearchParams(params)
@@ -154,10 +160,30 @@ export const UserList = () => {
     // Эффект для обновления URL при изменении страницы
     useEffect(() => {
         const pageNumber = pageRequest.pageNumber || 0
-        if (pageNumber > 0) {
-            updateUrlParams(debouncedSearch, selectedPrograms, pageNumber)
-        }
+        updateUrlParams(debouncedSearch, selectedPrograms, pageNumber)
     }, [pageRequest.pageNumber])
+
+    // Эффект для обновления размера страницы при изменении типа устройства
+    useEffect(() => {
+        const newPageSize = isMobile ? 10 : 25
+        if (pageRequest.pageSize !== newPageSize) {
+            setPageRequest({ ...pageRequest, pageSize: newPageSize, pageNumber: 0 })
+        }
+    }, [isMobile])
+
+    // Эффект для скролла при смене страницы в мобильной версии
+    useEffect(() => {
+        if (isMobile && pageRequest.pageNumber !== undefined) {
+            if (listStartRef.current) {
+                listStartRef.current.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                })
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+            }
+        }
+    }, [pageRequest.pageNumber, isMobile])
 
     if (!hasPermission(user, allowedRoles)) {
         navigate("/unauthorized")
@@ -193,7 +219,7 @@ export const UserList = () => {
                             src={user.avatar?.link}
                             name={user.fullName}
                             className={classes.avatar}
-                            onClick={() => openTab(`/profile/${user.username}`)}
+                            onClick={() => navigate(`/profile/${user.username}`)}
                         />
                         <Text truncate="end">{user.fullName}</Text>
                     </Flex>
@@ -257,7 +283,7 @@ export const UserList = () => {
                         size={44}
                         src={user.avatar?.link}
                         name={user.fullName}
-                        onClick={() => openTab(`/profile/${user.username}`)}
+                        onClick={() => navigate(`/profile/${user.username}`)}
                         className={classes.avatar}
                     />
                     <Flex direction="column" style={{ flex: 1 }}>

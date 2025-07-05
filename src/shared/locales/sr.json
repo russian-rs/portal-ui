@@ -255,7 +255,9 @@
       "files": "Prilozi",
       "total": "Ukupno: {count}",
       "empty": "Nije pronađen nijedan izveštaj",
-      "reset": "Resetujte filtere"
+      "reset": "Resetujte filtere",
+      "program-filter": "Filter programa",
+      "program-filter-not-selected": "Nije odabrano"
     },
     "user-list": {
       "title": "Svi volonteri",
