@@ -19,6 +19,7 @@ import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
 import { WeekPicker } from "src/shared/ui/weekPicker/WeekPicker"
 import classes from "./MyReports.module.scss"
+import { useMediaQuery } from "@mantine/hooks"
 
 export const MyReports = () => {
     setDocumentTitleByLocale(locales.documentTitle)
@@ -27,10 +28,13 @@ export const MyReports = () => {
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
 
+    const isMobile = useMediaQuery('(max-width: 1360px)')
+
     // Инициализация состояния из URL параметров
     const [pageRequest, setPageRequest] = useState<PageRequest>({
         ...defaultPage,
-        pageNumber: parseInt(searchParams.get("page") || "0")
+        pageNumber: Math.max(0, parseInt(searchParams.get("page") || "1") - 1),
+        pageSize: isMobile ? 10 : 25
     })
     const [filter, setFilter] = useState<ReportFilter>({
         ...defaultFilter,
@@ -38,13 +42,17 @@ export const MyReports = () => {
         dateFrom: searchParams.get("dateFrom") || null,
         dateTo: searchParams.get("dateTo") || null
     })
+    
+    // Ref для скролла к началу списка
+    const listStartRef = React.useRef<HTMLDivElement>(null)
 
     // Функция для синхронизации состояния с URL параметрами
     const syncStateFromUrl = () => {
         const urlStatus = searchParams.get("status") || null
         const urlDateFrom = searchParams.get("dateFrom") || null
         const urlDateTo = searchParams.get("dateTo") || null
-        const urlPage = parseInt(searchParams.get("page") || "0")
+        const urlPageFromUser = parseInt(searchParams.get("page") || "1")
+        const urlPage = urlPageFromUser > 0 ? urlPageFromUser - 1 : 0
 
         setFilter({
             ...filter,
@@ -82,7 +90,8 @@ export const MyReports = () => {
         }
         
         if (newPage > 0) {
-            params.set("page", newPage.toString())
+            const userPageNumber = newPage + 1
+            params.set("page", userPageNumber.toString())
         }
         
         setSearchParams(params)
@@ -100,8 +109,28 @@ export const MyReports = () => {
     // Эффект для обновления URL при изменении страницы
     useEffect(() => {
         const pageNumber = pageRequest.pageNumber || 0
-        if (pageNumber > 0) {
-            updateUrlParams(filter, pageNumber)
+        updateUrlParams(filter, pageNumber)
+    }, [pageRequest.pageNumber])
+
+    // Эффект для обновления размера страницы при изменении типа устройства
+    useEffect(() => {
+        const newPageSize = isMobile ? 10 : 25
+        if (pageRequest.pageSize !== newPageSize) {
+            setPageRequest({ ...pageRequest, pageSize: newPageSize, pageNumber: 0 })
+        }
+    }, [isMobile])
+
+    // Эффект для скролла при смене страницы в мобильной версии
+    useEffect(() => {
+        if (pageRequest.pageNumber !== undefined) {
+            if (listStartRef.current) {
+                listStartRef.current.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                })
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+            }
         }
     }, [pageRequest.pageNumber])
 
@@ -168,6 +197,7 @@ export const MyReports = () => {
                             <FormattedMessage id={locales.documentTitle} />
                         </Text>
                     </Flex>
+                    <div ref={listStartRef} />
                     <Flex className={classes.content}>
                         <Flex className={classes.filterArea}>
                             <WeekPicker 

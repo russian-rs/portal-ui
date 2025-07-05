@@ -255,7 +255,9 @@
       "files": "Вложения",
       "total": "Всего: {count}",
       "empty": "Отчетов не найдено",
-      "reset": "Сбросить фильтры"
+      "reset": "Сбросить фильтры",
+      "program-filter": "Фильтр программ",
+      "program-filter-not-selected": "Не выбрано"
     },
     "user-list": {
       "title": "Все волонтеры",

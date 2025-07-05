@@ -1,11 +1,14 @@
+$width: 40rem;
+
 .root {
-    width: 100%;
+    width: $width;
     padding: var(--mantine-spacing-xl);
     column-gap: 3rem;
     row-gap: 1rem;
 
     @media (max-width: $mantine-breakpoint-md) {
         padding: var(--mantine-spacing-md);
+        width: 100%;
     }
 }
 

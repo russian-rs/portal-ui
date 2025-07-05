@@ -55,20 +55,28 @@ export const Applications = () => {
     const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "")
     const [debouncedSearch, setDebouncedSearch] = useState(searchQuery)
 
+    const isDesktop = useDesktop()
+    const { shouldShowTable, isLargeDesktop, isMobile } = useScreenSize()
+
     const [pageRequest, setPageRequest] = useState<PageRequest>({
         ...defaultPage,
-        pageNumber: parseInt(searchParams.get("page") || "0")
+        pageNumber: Math.max(0, parseInt(searchParams.get("page") || "1") - 1),
+        pageSize: isMobile ? 10 : 25
     })
     const [filter, setFilter] = useState<ApplicationsFilter>({
         ...defaultFilter,
         showCompleted: searchParams.get("showCompleted") === "true"
     })
+    
+    // Ref для скролла к началу списка
+    const listStartRef = React.useRef<HTMLDivElement>(null)
 
     // Функция для синхронизации состояния с URL параметрами
     const syncStateFromUrl = () => {
         const urlSearch = searchParams.get("search") || ""
         const urlShowCompleted = searchParams.get("showCompleted") === "true"
-        const urlPage = parseInt(searchParams.get("page") || "0")
+        const urlPageFromUser = parseInt(searchParams.get("page") || "1")
+        const urlPage = urlPageFromUser > 0 ? urlPageFromUser - 1 : 0
 
         setSearchQuery(urlSearch)
         setDebouncedSearch(urlSearch)
@@ -99,7 +107,8 @@ export const Applications = () => {
         }
         
         if (newPage > 0) {
-            params.set("page", newPage.toString())
+            const userPageNumber = newPage + 1
+            params.set("page", userPageNumber.toString())
         }
         
         setSearchParams(params)
@@ -128,10 +137,30 @@ export const Applications = () => {
     // Эффект для обновления URL при изменении страницы
     useEffect(() => {
         const pageNumber = pageRequest.pageNumber || 0
-        if (pageNumber > 0) {
-            updateUrlParams(debouncedSearch, filter.showCompleted, pageNumber)
-        }
+        updateUrlParams(debouncedSearch, filter.showCompleted, pageNumber)
     }, [pageRequest.pageNumber])
+
+    // Эффект для обновления размера страницы при изменении типа устройства
+    useEffect(() => {
+        const newPageSize = isMobile ? 10 : 25
+        if (pageRequest.pageSize !== newPageSize) {
+            setPageRequest({ ...pageRequest, pageSize: newPageSize, pageNumber: 0 })
+        }
+    }, [isMobile])
+
+    // Эффект для скролла при смене страницы в мобильной версии
+    useEffect(() => {
+        if (isMobile && pageRequest.pageNumber !== undefined) {
+            if (listStartRef.current) {
+                listStartRef.current.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                })
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+            }
+        }
+    }, [pageRequest.pageNumber, isMobile])
 
     if (!hasPermission(user, allowedRoles)) {
         navigate("/unauthorized")
@@ -149,9 +178,6 @@ export const Applications = () => {
             ),
     })
 
-    const isDesktop = useDesktop()
-    const { shouldShowTable, isLargeDesktop } = useScreenSize()
-    
     const rows = content.map((application) => <ApplicationRow key={application.id} applicationDto={application} />)
 
     return (
@@ -161,30 +187,33 @@ export const Applications = () => {
                 <Text className={classes.title} variant="gradient">
                     <FormattedMessage id={locales.title} />
                 </Text>
-                <Flex align="center" columnGap="8" className={classes.controls}>
-                    <Input
-                        placeholder={"Поиск по имени или email"}
-                        value={searchQuery}
-                        onChange={(event) => setSearchQuery(event.currentTarget.value)}
-                        rightSectionPointerEvents="all"
-                        size={!isDesktop ? "md" : "sm"}
-                        rightSection={
-                            <CloseButton
-                                aria-label="Clear input"
-                                onClick={() => setSearchQuery("")}
-                                style={{ display: searchQuery ? undefined : "none" }}
-                            />
-                        }
-                        className={classes.searchInput}
-                    />
-                    <CreateUser />
+                <div ref={listStartRef} />
+                <Flex columnGap="8" className={classes.controls}>
+                    <Flex align="center" columnGap="8" className={classes.searchGroup}>
+                        <Input
+                            placeholder={"Поиск по имени или email"}
+                            value={searchQuery}
+                            onChange={(event) => setSearchQuery(event.currentTarget.value)}
+                            rightSectionPointerEvents="all"
+                            size={!isDesktop ? "md" : "sm"}
+                            rightSection={
+                                <CloseButton
+                                    aria-label="Clear input"
+                                    onClick={() => setSearchQuery("")}
+                                    style={{ display: searchQuery ? undefined : "none" }}
+                                />
+                            }
+                            className={classes.searchInput}
+                        />
+                        <CreateUser />
+                    </Flex>
                     <Checkbox
                         variant="outline"
-                        labelPosition="left"
+                        labelPosition={isMobile ? "right" : "left"}
                         label={<FormattedMessage id={locales.showCompleted} />}
                         checked={filter.showCompleted}
                         onChange={() => setFilter({ ...filter, showCompleted: !filter.showCompleted })}
-                        size={!isDesktop ? "md" : "sm"}
+                        size={isMobile ? "md" : "sm"}
                     />
                 </Flex>
                 {shouldShowTable ? (
