@@ -56,6 +56,21 @@ export const UserList = () => {
 
     const intl = useIntl()
 
+    useEffect(() => {
+        const savedState = localStorage.getItem('userListState')
+        const currentSearch = window.location.search
+        
+        const isFromProfile = currentSearch === '' || currentSearch === '?'
+        
+        if (savedState && isFromProfile && savedState !== currentSearch) {
+            localStorage.removeItem('userListState')
+            window.history.replaceState(null, '', '/users' + savedState)
+            window.location.reload()
+        } else if (!isFromProfile) {
+            localStorage.removeItem('userListState')
+        }
+    }, [])
+
     // Функция для синхронизации состояния с URL параметрами
     const syncStateFromUrl = () => {
         const urlSearch = searchParams.get("search") || ""
@@ -66,7 +81,7 @@ export const UserList = () => {
         setSearch(urlSearch)
         setDebouncedSearch(urlSearch)
         setSelectedPrograms(urlPrograms)
-        setPageRequest({ ...pageRequest, pageNumber: urlPage })
+        setPageRequest(prev => ({ ...prev, pageNumber: urlPage }))
     }
 
     // Эффект для обработки навигации назад/вперед браузера
@@ -140,8 +155,13 @@ export const UserList = () => {
 
     useEffect(() => {
         const handler = setTimeout(() => {
-            setPageRequest({ ...pageRequest, pageNumber: 0 })
-            setDebouncedSearch(search.trim())
+            const trimmedSearch = search.trim()
+            const searchChanged = trimmedSearch !== debouncedSearch
+            
+            setDebouncedSearch(trimmedSearch)
+            if (searchChanged) {
+                setPageRequest(prev => ({ ...prev, pageNumber: 0 }))
+            }
         }, 500)
         return () => clearTimeout(handler)
     }, [search])
@@ -153,8 +173,20 @@ export const UserList = () => {
 
     // Эффект для обновления URL при изменении программ
     useEffect(() => {
-        updateUrlParams(debouncedSearch, selectedPrograms, 0)
-        setPageRequest({ ...pageRequest, pageNumber: 0 })
+        updateUrlParams(debouncedSearch, selectedPrograms, pageRequest.pageNumber || 0)
+    }, [selectedPrograms])
+
+    // Сбрасываем страницу только если программы действительно изменились пользователем
+    const prevProgramsRef = React.useRef<string[]>(selectedPrograms)
+    useEffect(() => {
+        const currentPrograms = selectedPrograms.join(',')
+        const previousPrograms = prevProgramsRef.current.join(',')
+        
+        if (currentPrograms !== previousPrograms) {
+            setPageRequest(prev => ({ ...prev, pageNumber: 0 }))
+        }
+        
+        prevProgramsRef.current = selectedPrograms
     }, [selectedPrograms])
 
     // Эффект для обновления URL при изменении страницы
@@ -167,7 +199,7 @@ export const UserList = () => {
     useEffect(() => {
         const newPageSize = isMobile ? 10 : 25
         if (pageRequest.pageSize !== newPageSize) {
-            setPageRequest({ ...pageRequest, pageSize: newPageSize, pageNumber: 0 })
+            setPageRequest(prev => ({ ...prev, pageSize: newPageSize }))
         }
     }, [isMobile])
 
@@ -219,7 +251,10 @@ export const UserList = () => {
                             src={user.avatar?.link}
                             name={user.fullName}
                             className={classes.avatar}
-                            onClick={() => navigate(`/profile/${user.username}`)}
+                            onClick={() => {
+                                localStorage.setItem('userListState', window.location.search)
+                                navigate(`/profile/${user.username}`)
+                            }}
                         />
                         <Text truncate="end">{user.fullName}</Text>
                     </Flex>
@@ -283,7 +318,10 @@ export const UserList = () => {
                         size={44}
                         src={user.avatar?.link}
                         name={user.fullName}
-                        onClick={() => navigate(`/profile/${user.username}`)}
+                        onClick={() => {
+                            localStorage.setItem('userListState', window.location.search)
+                            navigate(`/profile/${user.username}`)
+                        }}
                         className={classes.avatar}
                     />
                     <Flex direction="column" style={{ flex: 1 }}>
