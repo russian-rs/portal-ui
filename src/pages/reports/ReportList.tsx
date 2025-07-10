@@ -70,26 +70,33 @@ export const ReportList = () => {
         const urlPageFromUser = parseInt(searchParams.get("page") || "1")
         const urlPage = urlPageFromUser > 0 ? urlPageFromUser - 1 : 0
 
-        setFilter({
-            ...filter,
+        setFilter(prevFilter => ({
+            ...prevFilter,
             login: urlLogin,
             status: urlStatus,
             dateFrom: urlDateFrom,
             dateTo: urlDateTo
-        })
+        }))
         setSelectedPrograms(urlPrograms)
-        setPageRequest({ ...pageRequest, pageNumber: urlPage })
+        setPageRequest(prevPageRequest => ({ ...prevPageRequest, pageNumber: urlPage }))
         setResetKey(prev => prev + 1)
     }
 
     useEffect(() => {
-        const handlePopState = () => {
-            syncStateFromUrl()
+        const savedState = localStorage.getItem('reportListState')
+        const currentSearch = window.location.search
+        
+        const isFromReport = currentSearch === '' || currentSearch === '?'
+        
+        if (savedState && isFromReport && savedState !== currentSearch) {
+            localStorage.removeItem('reportListState')
+            window.history.replaceState(null, '', '/reports' + savedState)
+            window.location.reload()
+        } else if (!isFromReport) {
+            localStorage.removeItem('reportListState')
         }
+    }, [])
 
-        window.addEventListener('popstate', handlePopState)
-        return () => window.removeEventListener('popstate', handlePopState)
-    }, [searchParams])
 
     const updateUrlParams = (newFilter: ReportFilter, newPrograms: string[], newPage: number = 0) => {
         const params = new URLSearchParams()
@@ -114,6 +121,7 @@ export const ReportList = () => {
             params.set("programs", newPrograms.join(","))
         }
         
+        // Добавляем параметр page только если это не первая страница
         if (newPage > 0) {
             const userPageNumber = newPage + 1
             params.set("page", userPageNumber.toString())
@@ -122,25 +130,13 @@ export const ReportList = () => {
         setSearchParams(params)
     }
 
-    useEffect(() => {
-        updateUrlParams(filter, selectedPrograms, pageRequest.pageNumber || 0)
-    }, [filter])
-
-    useEffect(() => {
-        updateUrlParams(filter, selectedPrograms, 0)
-        setPageRequest({ ...pageRequest, pageNumber: 0 })
-    }, [selectedPrograms])
-
-    useEffect(() => {
-        const pageNumber = pageRequest.pageNumber || 0
-        updateUrlParams(filter, selectedPrograms, pageNumber)
-    }, [pageRequest.pageNumber])
 
     // Эффект для обновления размера страницы при изменении типа устройства
     useEffect(() => {
         const newPageSize = isMobile ? 10 : 25
         if (pageRequest.pageSize !== newPageSize) {
-            setPageRequest({ ...pageRequest, pageSize: newPageSize, pageNumber: 0 })
+            // Сохраняем текущую страницу при изменении размера
+            setPageRequest(prev => ({ ...prev, pageSize: newPageSize }))
         }
     }, [isMobile])
 
@@ -183,20 +179,44 @@ export const ReportList = () => {
     const { data: users } = resolveUsers(logins)
 
     const onUserSelected = (selectedUser: UserInfoDto | null) => {
-        setFilter({ ...filter, login: selectedUser?.username || null })
-        setPageRequest({ ...pageRequest, pageNumber: 0 })
+        const newFilter = { ...filter, login: selectedUser?.username || null }
+        const filterChanged = newFilter.login !== filter.login
+        
+        setFilter(newFilter)
+        if (filterChanged) {
+            setPageRequest({ ...pageRequest, pageNumber: 0 })
+            updateUrlParams(newFilter, selectedPrograms, 0)
+        } else {
+            updateUrlParams(newFilter, selectedPrograms, pageRequest.pageNumber || 0)
+        }
     }
 
     const onStatusChange = (status: string | null) => {
-        setFilter({ ...filter, status: status })
-        setPageRequest({ ...pageRequest, pageNumber: 0 })
+        const newFilter = { ...filter, status: status }
+        const filterChanged = newFilter.status !== filter.status
+        
+        setFilter(newFilter)
+        if (filterChanged) {
+            setPageRequest({ ...pageRequest, pageNumber: 0 })
+            updateUrlParams(newFilter, selectedPrograms, 0)
+        } else {
+            updateUrlParams(newFilter, selectedPrograms, pageRequest.pageNumber || 0)
+        }
     }
 
     const onWeekChange = (_: any, start: Date | null, end: Date | null) => {
         const startDate = start ? dayjs(start).format(DEFAULT_DATE_FORMAT) : null
         const endDate = end ? dayjs(end).format(DEFAULT_DATE_FORMAT) : null
-        setFilter({ ...filter, dateFrom: startDate, dateTo: endDate })
-        setPageRequest({ ...pageRequest, pageNumber: 0 })
+        const newFilter = { ...filter, dateFrom: startDate, dateTo: endDate }
+        const filterChanged = newFilter.dateFrom !== filter.dateFrom || newFilter.dateTo !== filter.dateTo
+        
+        setFilter(newFilter)
+        if (filterChanged) {
+            setPageRequest({ ...pageRequest, pageNumber: 0 })
+            updateUrlParams(newFilter, selectedPrograms, 0)
+        } else {
+            updateUrlParams(newFilter, selectedPrograms, pageRequest.pageNumber || 0)
+        }
     }
 
     const rows = reports.map((report) => {
@@ -205,7 +225,10 @@ export const ReportList = () => {
         const timeSpent = getSpentTimeFromReport(report, intl)
         const filesCount = getReportFilesCount(report)
         return (
-            <Table.Tr key={report.id} className={classes.row} onClick={() => navigate(`/report/${report.id}`)}>
+            <Table.Tr key={report.id} className={classes.row} onClick={() => {
+                localStorage.setItem('reportListState', window.location.search)
+                navigate(`/report/${report.id}`)
+            }}>
                 <Table.Td>
                     <Text>{createTime}</Text>
                 </Table.Td>
@@ -254,7 +277,10 @@ export const ReportList = () => {
         const timeSpent = getSpentTimeFromReport(report, intl)
         const filesCount = getReportFilesCount(report)
         return (
-            <Flex key={report.id} className={classes.mobileCard} onClick={() => navigate(`/report/${report.id}`)}>
+            <Flex key={report.id} className={classes.mobileCard} onClick={() => {
+                localStorage.setItem('reportListState', window.location.search)
+                navigate(`/report/${report.id}`)
+            }}>
                 {isTablet ? (
                     // Планшетная версия с подписями
                     <>
@@ -386,7 +412,17 @@ export const ReportList = () => {
                         <ProgramFilter
                             className={classes.programFilter}
                             value={selectedPrograms}
-                            onChange={setSelectedPrograms}
+                            onChange={(newPrograms) => {
+                                const programsChanged = JSON.stringify(newPrograms) !== JSON.stringify(selectedPrograms)
+                                
+                                setSelectedPrograms(newPrograms)
+                                if (programsChanged) {
+                                    setPageRequest({ ...pageRequest, pageNumber: 0 })
+                                    updateUrlParams(filter, newPrograms, 0)
+                                } else {
+                                    updateUrlParams(filter, newPrograms, pageRequest.pageNumber || 0)
+                                }
+                            }}
                             maxValues={1}
                             autoClose={true}
                             placeholder={intl.formatMessage({ id: locales.programFilterNotSelected })}
@@ -439,6 +475,7 @@ export const ReportList = () => {
                             onChange={(newPage) => {
                                 const pageNumber = newPage - 1
                                 setPageRequest({ ...pageRequest, pageNumber })
+                                updateUrlParams(filter, selectedPrograms, pageNumber)
                             }}
                         />
                         <Text c="dimmed">

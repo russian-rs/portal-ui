@@ -42,6 +42,21 @@ export const MyReports = () => {
         dateFrom: searchParams.get("dateFrom") || null,
         dateTo: searchParams.get("dateTo") || null
     })
+
+    useEffect(() => {
+        const savedState = localStorage.getItem('myReportsListState')
+        const currentSearch = window.location.search
+        
+        const isFromReport = currentSearch === '' || currentSearch === '?'
+        
+        if (savedState && isFromReport && savedState !== currentSearch) {
+            localStorage.removeItem('myReportsListState')
+            window.history.replaceState(null, '', '/my-reports' + savedState)
+            window.location.reload()
+        } else if (!isFromReport) {
+            localStorage.removeItem('myReportsListState')
+        }
+    }, [])
     
     // Ref для скролла к началу списка
     const listStartRef = React.useRef<HTMLDivElement>(null)
@@ -116,7 +131,7 @@ export const MyReports = () => {
     useEffect(() => {
         const newPageSize = isMobile ? 10 : 25
         if (pageRequest.pageSize !== newPageSize) {
-            setPageRequest({ ...pageRequest, pageSize: newPageSize, pageNumber: 0 })
+            setPageRequest(prev => ({ ...prev, pageSize: newPageSize }))
         }
     }, [isMobile])
 
@@ -144,17 +159,30 @@ export const MyReports = () => {
     const onWeekChange = (week: number | null, start: Date | null, end: Date | null) => {
         const startDate = start ? dayjs(start).format(DEFAULT_DATE_FORMAT) : null
         const endDate = end ? dayjs(end).format(DEFAULT_DATE_FORMAT) : null
-        setFilter({ ...filter, dateFrom: startDate, dateTo: endDate })
-        setPageRequest({ ...pageRequest, pageNumber: 0 })
+        const newFilter = { ...filter, dateFrom: startDate, dateTo: endDate }
+        const filterChanged = newFilter.dateFrom !== filter.dateFrom || newFilter.dateTo !== filter.dateTo
+        
+        setFilter(newFilter)
+        if (filterChanged) {
+            setPageRequest({ ...pageRequest, pageNumber: 0 })
+        }
     }
 
     const onStatusChange = (status: string | null) => {
-        setFilter({ ...filter, status: status })
-        setPageRequest({ ...pageRequest, pageNumber: 0 })
+        const newFilter = { ...filter, status: status }
+        const filterChanged = newFilter.status !== filter.status
+        
+        setFilter(newFilter)
+        if (filterChanged) {
+            setPageRequest({ ...pageRequest, pageNumber: 0 })
+        }
     }
 
     const rows = response.content.map((report) => (
-        <Flex key={report.id} className={classes.report} onClick={() => navigate(`/report/${report.id}`)}>
+        <Flex key={report.id} className={classes.report} onClick={() => {
+            localStorage.setItem('myReportsListState', window.location.search)
+            navigate(`/report/${report.id}`)
+        }}>
             <Flex className={classes.reportLeft}>
                 <TextPropertyBox
                     name={locales.reportCreated}
