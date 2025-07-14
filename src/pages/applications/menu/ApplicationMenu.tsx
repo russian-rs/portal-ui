@@ -3,6 +3,7 @@ import { ApplicationDto } from "@russian-rs/portal-api-axios"
 import { IconDotsVertical, IconEye, IconMail } from "@tabler/icons-react"
 import { useState } from "react"
 import { FormattedMessage } from "react-intl"
+import { useNavigate } from "react-router"
 import applicationTemplates from "src/shared/email/templates"
 import { EmailDrawer } from "src/shared/ui/emailModal/EmailDrawer"
 import classes from "./ApplicationMenu.module.scss"
@@ -14,6 +15,7 @@ interface ApplicationMenuProps {
 
 export const ApplicationMenu = (props: ApplicationMenuProps) => {
     const [emailDrawerOpen, setEmailDrawerOpen] = useState<boolean>(false)
+    const navigate = useNavigate()
 
     return (
         <Menu shadow="md" width={200} closeOnItemClick={false}>
@@ -32,7 +34,7 @@ export const ApplicationMenu = (props: ApplicationMenuProps) => {
             <Menu.Dropdown>
                 <Menu.Item
                     leftSection={<IconEye size={14} />}
-                    onClick={() => window.open(`/application/${props.applicationDto.id}`)}
+                    onClick={() => navigate(`/application/${props.applicationDto.id}`)}
                 >
                     <FormattedMessage id={locales.view} />
                 </Menu.Item>

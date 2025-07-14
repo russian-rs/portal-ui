@@ -6,8 +6,12 @@ export const locales = {
     timeSpent: "pages.report-list.time-spent",
     status: "pages.report-list.status",
     taskCount: "pages.report-list.task-count",
+    tasks: "pages.my-reports.report.task-count",
     filesCount: "pages.report-list.files-count",
+    files: "pages.report-list.files",
     total: "pages.report-list.total",
     empty: "pages.report-list.empty",
     reset: "pages.report-list.reset",
+    programFilter: "pages.report-list.program-filter",
+    programFilterNotSelected: "pages.report-list.program-filter-not-selected",
 }

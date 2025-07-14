@@ -5,9 +5,14 @@ $table-width: 100%;
     flex-direction: column;
     row-gap: 1rem;
     background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    overflow-x: auto;
 
     @media (max-width: $mantine-breakpoint-md) {
         padding: 0.5rem;
+    }
+    
+    @media (max-width: 1439px) and (min-width: 1024px) {
+        padding: 1rem 0.5rem 2rem 1rem;
     }
 }
 
@@ -19,10 +24,184 @@ $table-width: 100%;
 .title {
     font-size: xx-large;
     font-weight: bolder;
+    
+    @media (max-width: $mantine-breakpoint-md) {
+        font-size: x-large;
+        text-align: center;
+    }
 }
 
 .table {
+    table-layout: fixed;
+    width: 100%;
+    
+    // Базовые ширины колонок для больших экранов (1440px+)
+    th:nth-child(1), td:nth-child(1) { // Дата создания
+        width: 120px;
+        min-width: 120px;
+    }
+    
+    th:nth-child(2), td:nth-child(2) { // Тип
+        width: 80px;
+        min-width: 80px;
+    }
+    
+    th:nth-child(3), td:nth-child(3) { // Имя
+        width: 200px;
+        min-width: 150px;
+    }
+    
+    th:nth-child(4), td:nth-child(4) { // Email
+        width: 250px;
+        min-width: 200px;
+    }
+    
+    th:nth-child(5), td:nth-child(5) { // Дата договора
+        width: 150px;
+        min-width: 130px;
+    }
+    
+    th:nth-child(6), td:nth-child(6) { // Статус
+        width: 180px;
+        min-width: 150px;
+    }
+    
+    th:nth-child(7), td:nth-child(7) { // Меню
+        width: 50px;
+        min-width: 50px;
+    }
+    
+    // Адаптация для экранов 1024-1439px
+    @media (max-width: 1439px) and (min-width: 1024px) {
+        font-size: 0.8rem;
+        
+        th, td {
+            padding: 0.3rem 0.2rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        th:nth-child(1), td:nth-child(1) { // Дата создания
+            width: 90px;
+            min-width: 90px;
+        }
+        
+        th:nth-child(2), td:nth-child(2) { // Тип
+            width: 60px;
+            min-width: 60px;
+        }
+        
+        th:nth-child(3), td:nth-child(3) { // Имя
+            width: 140px;
+            min-width: 120px;
+        }
+        
+        th:nth-child(4), td:nth-child(4) { // Email
+            width: 180px;
+            min-width: 150px;
+        }
+        
+        th:nth-child(5), td:nth-child(5) { // Дата договора
+            width: 110px;
+            min-width: 100px;
+        }
+        
+        th:nth-child(6), td:nth-child(6) { // Статус
+            width: 130px;
+            min-width: 120px;
+        }
+        
+        th:nth-child(7), td:nth-child(7) { // Меню
+            width: 40px;
+            min-width: 40px;
+        }
+    }
+    
+    // Для совсем маленьких экранов (1024-1200px)
+    @media (max-width: 1200px) and (min-width: 1024px) {
+        font-size: 0.75rem;
+        
+        th, td {
+            padding: 0.25rem 0.15rem;
+        }
+        
+        th:nth-child(1), td:nth-child(1) { // Дата создания
+            width: 80px;
+            min-width: 80px;
+        }
+        
+        th:nth-child(2), td:nth-child(2) { // Тип
+            width: 50px;
+            min-width: 50px;
+        }
+        
+        th:nth-child(3), td:nth-child(3) { // Имя
+            width: 120px;
+            min-width: 100px;
+        }
+        
+        th:nth-child(4), td:nth-child(4) { // Email
+            width: 160px;
+            min-width: 140px;
+        }
+        
+        th:nth-child(5), td:nth-child(5) { // Дата договора
+            width: 90px;
+            min-width: 85px;
+        }
+        
+        th:nth-child(6), td:nth-child(6) { // Статус
+            width: 110px;
+            min-width: 100px;
+        }
+        
+        th:nth-child(7), td:nth-child(7) { // Меню
+            width: 35px;
+            min-width: 35px;
+        }
+    }
+}
 
+.controls {
+    align-items: center;
+    column-gap: 8px;
+    
+    @media (max-width: $mantine-breakpoint-md) {
+        flex-direction: column;
+        align-items: flex-start;
+        row-gap: 0.75rem;
+        column-gap: 0;
+    }
+    
+    @media (max-width: $mantine-breakpoint-sm) {
+        row-gap: 1rem;
+    }
+}
+
+.searchGroup {
+    @media (max-width: $mantine-breakpoint-md) {
+        flex: 1;
+        width: 100%;
+    }
+}
+
+.searchInput {
+    flex: 1;
+    min-width: 280px;
+    max-width: 500px;
+    
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 100%;
+        min-width: auto;
+        max-width: none;
+    }
+}
+
+.mobileList {
+    gap: 0.75rem;
+    width: 100%;
+    min-height: 200px;
 }
 
 .paginationArea {
@@ -35,10 +214,32 @@ $table-width: 100%;
 
     @media (max-width: $mantine-breakpoint-md) {
         width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        row-gap: 0.5rem;
     }
 }
 
 .pagination {
     padding-top: 1rem;
     padding-bottom: 1rem;
+    
+    @media (max-width: $mantine-breakpoint-md) {
+        justify-content: center;
+        padding: 0.5rem 0;
+    }
+}
+
+.emptyState {
+    height: 100%;
+    flex-direction: column;
+    row-gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    
+    @media (max-width: $mantine-breakpoint-md) {
+        padding: 1rem;
+        min-height: 200px;
+    }
 }

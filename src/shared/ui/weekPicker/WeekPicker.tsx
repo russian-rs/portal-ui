@@ -9,11 +9,23 @@ import classes from "./WeekPicker.module.scss"
 interface WeekPickerProps {
     className?: string
     onChange?: (week: number | null, start: Date | null, end: Date | null) => void
+    initialStartDate?: string | null
+    initialEndDate?: string | null
 }
 
 export const WeekPicker = (props: WeekPickerProps) => {
     const [value, setValue] = useState<[Date | null, Date | null]>([null, null])
     const [selectedWeek, setSelectedWeek] = useState<number | null>(null)
+
+    useEffect(() => {
+        if (props.initialStartDate && props.initialEndDate) {
+            const startDate = dayjs(props.initialStartDate).toDate()
+            const endDate = dayjs(props.initialEndDate).toDate()
+            const week = dayjs(startDate).isoWeek()
+            setValue([startDate, endDate])
+            setSelectedWeek(week)
+        }
+    }, [props.initialStartDate, props.initialEndDate])
 
     useEffect(() => {
         if (props.onChange) {
