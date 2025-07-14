@@ -252,9 +252,12 @@
       "time-spent": "Potrošeni sati",
       "task-count": "Zadataka: {count}",
       "files-count": "Priloga: {count}",
+      "files": "Prilozi",
       "total": "Ukupno: {count}",
       "empty": "Nije pronađen nijedan izveštaj",
-      "reset": "Resetujte filtere"
+      "reset": "Resetujte filtere",
+      "program-filter": "Filter programa",
+      "program-filter-not-selected": "Nije odabrano"
     },
     "user-list": {
       "title": "Svi volonteri",
@@ -395,11 +398,17 @@
       "empty": "Nijedna prijava nije pronađena",
       "total": "Ukupno: {count}",
       "created": "Kreirano",
+      "created-short": "Datum",
       "type": "Tip",
+      "type-short": "Tip",
       "name": "Ime i Prezime",
+      "name-short": "Ime",
       "email": "E-mail",
+      "email-short": "Email",
       "status": "Status",
+      "status-short": "Status",
       "contractStart": "Ugovor (početak)",
+      "contract-start-short": "Ugovor",
       "contract-required": "Da biste završili, morate navesti datume ugovora",
       "showCompleted": "Prikaži završene",
       "menu": {
