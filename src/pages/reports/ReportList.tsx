@@ -54,8 +54,8 @@ export const ReportList = () => {
         dateTo: searchParams.get("dateTo") || null
     })
     const [logins, setLogins] = useState<string[]>([])
-    const [selectedPrograms, setSelectedPrograms] = useState<string[]>(
-        searchParams.get("programs") ? searchParams.get("programs")!.split(",") : []
+    const [selectedProgram, setSelectedProgram] = useState<string | null>(
+        searchParams.get("program") || null
     )
     
     // Ref для скролла к началу списка
@@ -66,7 +66,7 @@ export const ReportList = () => {
         const urlStatus = searchParams.get("status") || null
         const urlDateFrom = searchParams.get("dateFrom") || null
         const urlDateTo = searchParams.get("dateTo") || null
-        const urlPrograms = searchParams.get("programs") ? searchParams.get("programs")!.split(",") : []
+        const urlProgram = searchParams.get("program") || null
         const urlPageFromUser = parseInt(searchParams.get("page") || "1")
         const urlPage = urlPageFromUser > 0 ? urlPageFromUser - 1 : 0
 
@@ -77,7 +77,7 @@ export const ReportList = () => {
             dateFrom: urlDateFrom,
             dateTo: urlDateTo
         }))
-        setSelectedPrograms(urlPrograms)
+        setSelectedProgram(urlProgram)
         setPageRequest(prevPageRequest => ({ ...prevPageRequest, pageNumber: urlPage }))
         setResetKey(prev => prev + 1)
     }
@@ -98,7 +98,7 @@ export const ReportList = () => {
     }, [])
 
 
-    const updateUrlParams = (newFilter: ReportFilter, newPrograms: string[], newPage: number = 0) => {
+    const updateUrlParams = (newFilter: ReportFilter, newProgram: string | null, newPage: number = 0) => {
         const params = new URLSearchParams()
         
         if (newFilter.login) {
@@ -117,8 +117,8 @@ export const ReportList = () => {
             params.set("dateTo", newFilter.dateTo)
         }
         
-        if (newPrograms.length > 0) {
-            params.set("programs", newPrograms.join(","))
+        if (newProgram !== null) {
+            params.set("program", newProgram)
         }
         
         // Добавляем параметр page только если это не первая страница
@@ -163,11 +163,11 @@ export const ReportList = () => {
         isFetching: isFetchingReports,
     } = useQuery({
         initialData: { content: [], page: defaultPageResponse },
-        queryKey: ["searchReports", filter, pageRequest, selectedPrograms],
+        queryKey: ["searchReports", filter, pageRequest, selectedProgram],
         queryFn: () => {
             const filterWithProgram = {
                 ...filter,
-                program: selectedPrograms.length === 1 ? selectedPrograms[0] : null
+                program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram
             }
             return ReportApiService.getReports(pageRequest, filterWithProgram).then((response) => {
                 setLogins(response.data.content.map((it) => it.user).filter((it) => it != undefined))
@@ -185,9 +185,9 @@ export const ReportList = () => {
         setFilter(newFilter)
         if (filterChanged) {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
-            updateUrlParams(newFilter, selectedPrograms, 0)
+            updateUrlParams(newFilter, selectedProgram, 0)
         } else {
-            updateUrlParams(newFilter, selectedPrograms, pageRequest.pageNumber || 0)
+            updateUrlParams(newFilter, selectedProgram, pageRequest.pageNumber || 0)
         }
     }
 
@@ -198,9 +198,9 @@ export const ReportList = () => {
         setFilter(newFilter)
         if (filterChanged) {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
-            updateUrlParams(newFilter, selectedPrograms, 0)
+            updateUrlParams(newFilter, selectedProgram, 0)
         } else {
-            updateUrlParams(newFilter, selectedPrograms, pageRequest.pageNumber || 0)
+            updateUrlParams(newFilter, selectedProgram, pageRequest.pageNumber || 0)
         }
     }
 
@@ -213,9 +213,9 @@ export const ReportList = () => {
         setFilter(newFilter)
         if (filterChanged) {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
-            updateUrlParams(newFilter, selectedPrograms, 0)
+            updateUrlParams(newFilter, selectedProgram, 0)
         } else {
-            updateUrlParams(newFilter, selectedPrograms, pageRequest.pageNumber || 0)
+            updateUrlParams(newFilter, selectedProgram, pageRequest.pageNumber || 0)
         }
     }
 
@@ -411,20 +411,18 @@ export const ReportList = () => {
                         </Text>
                         <ProgramFilter
                             className={classes.programFilter}
-                            value={selectedPrograms}
-                            onChange={(newPrograms) => {
-                                const programsChanged = JSON.stringify(newPrograms) !== JSON.stringify(selectedPrograms)
+                            value={selectedProgram}
+                            onChange={(newProgram) => {
+                                const programChanged = newProgram !== selectedProgram
                                 
-                                setSelectedPrograms(newPrograms)
-                                if (programsChanged) {
+                                setSelectedProgram(newProgram)
+                                if (programChanged) {
                                     setPageRequest({ ...pageRequest, pageNumber: 0 })
-                                    updateUrlParams(filter, newPrograms, 0)
+                                    updateUrlParams(filter, newProgram, 0)
                                 } else {
-                                    updateUrlParams(filter, newPrograms, pageRequest.pageNumber || 0)
+                                    updateUrlParams(filter, newProgram, pageRequest.pageNumber || 0)
                                 }
                             }}
-                            maxValues={1}
-                            autoClose={true}
                             placeholder={intl.formatMessage({ id: locales.programFilterNotSelected })}
                         />
                     </Flex>
@@ -475,7 +473,7 @@ export const ReportList = () => {
                             onChange={(newPage) => {
                                 const pageNumber = newPage - 1
                                 setPageRequest({ ...pageRequest, pageNumber })
-                                updateUrlParams(filter, selectedPrograms, pageNumber)
+                                updateUrlParams(filter, selectedProgram, pageNumber)
                             }}
                         />
                         <Text c="dimmed">
