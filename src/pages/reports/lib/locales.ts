@@ -14,4 +14,6 @@ export const locales = {
     reset: "pages.report-list.reset",
     programFilter: "pages.report-list.program-filter",
     programFilterNotSelected: "pages.report-list.program-filter-not-selected",
+    projectFilter: "pages.report-list.project-filter",
+    projectFilterNotSelected: "pages.report-list.project-filter-not-selected",
 }

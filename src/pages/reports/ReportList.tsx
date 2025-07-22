@@ -23,6 +23,7 @@ import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
 import classes from "./ReportList.module.scss"
 import { ProgramFilter } from "src/pages/users/filter/ProgramFilter"
+import { ProjectFilter } from "src/pages/users/filter/ProjectFilter"
 import { useMediaQuery } from "@mantine/hooks"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
@@ -57,6 +58,9 @@ export const ReportList = () => {
     const [selectedPrograms, setSelectedPrograms] = useState<string[]>(
         searchParams.get("programs") ? searchParams.get("programs")!.split(",") : []
     )
+    const [selectedProject, setSelectedProject] = useState<string | null>(
+        searchParams.get("projects") ? searchParams.get("projects")!.split(",")[0] : null
+    )
     
     // Ref для скролла к началу списка
     const listStartRef = React.useRef<HTMLDivElement>(null)
@@ -67,6 +71,7 @@ export const ReportList = () => {
         const urlDateFrom = searchParams.get("dateFrom") || null
         const urlDateTo = searchParams.get("dateTo") || null
         const urlPrograms = searchParams.get("programs") ? searchParams.get("programs")!.split(",") : []
+        const urlProjects = searchParams.get("projects") ? searchParams.get("projects")!.split(",") : []
         const urlPageFromUser = parseInt(searchParams.get("page") || "1")
         const urlPage = urlPageFromUser > 0 ? urlPageFromUser - 1 : 0
 
@@ -78,6 +83,7 @@ export const ReportList = () => {
             dateTo: urlDateTo
         }))
         setSelectedPrograms(urlPrograms)
+        setSelectedProject(urlProjects.length > 0 ? urlProjects[0] : null)
         setPageRequest(prevPageRequest => ({ ...prevPageRequest, pageNumber: urlPage }))
         setResetKey(prev => prev + 1)
     }
@@ -98,7 +104,7 @@ export const ReportList = () => {
     }, [])
 
 
-    const updateUrlParams = (newFilter: ReportFilter, newPrograms: string[], newPage: number = 0) => {
+    const updateUrlParams = (newFilter: ReportFilter, newPrograms: string[], newProject: string | null, newPage: number = 0) => {
         const params = new URLSearchParams()
         
         if (newFilter.login) {
@@ -119,6 +125,10 @@ export const ReportList = () => {
         
         if (newPrograms.length > 0) {
             params.set("programs", newPrograms.join(","))
+        }
+        
+        if (newProject) {
+            params.set("projects", newProject)
         }
         
         // Добавляем параметр page только если это не первая страница
@@ -163,11 +173,22 @@ export const ReportList = () => {
         isFetching: isFetchingReports,
     } = useQuery({
         initialData: { content: [], page: defaultPageResponse },
-        queryKey: ["searchReports", filter, pageRequest, selectedPrograms],
+        queryKey: ["searchReports", filter, pageRequest, selectedPrograms, selectedProject],
         queryFn: () => {
+            // Обрабатываем проекты: если выбран "NO_PROJECT", отправляем пустую строку
+            let project: string | null = null
+            if (selectedProject) {
+                if (selectedProject === "NO_PROJECT") {
+                    project = "" // Пустая строка для фильтра "без проекта"
+                } else {
+                    project = selectedProject // Код проекта
+                }
+            }
+
             const filterWithProgram = {
                 ...filter,
-                program: selectedPrograms.length === 1 ? selectedPrograms[0] : null
+                program: selectedPrograms.length === 1 ? selectedPrograms[0] : null,
+                project
             }
             return ReportApiService.getReports(pageRequest, filterWithProgram).then((response) => {
                 setLogins(response.data.content.map((it) => it.user).filter((it) => it != undefined))
@@ -185,9 +206,9 @@ export const ReportList = () => {
         setFilter(newFilter)
         if (filterChanged) {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
-            updateUrlParams(newFilter, selectedPrograms, 0)
+            updateUrlParams(newFilter, selectedPrograms, selectedProject, 0)
         } else {
-            updateUrlParams(newFilter, selectedPrograms, pageRequest.pageNumber || 0)
+            updateUrlParams(newFilter, selectedPrograms, selectedProject, pageRequest.pageNumber || 0)
         }
     }
 
@@ -198,9 +219,9 @@ export const ReportList = () => {
         setFilter(newFilter)
         if (filterChanged) {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
-            updateUrlParams(newFilter, selectedPrograms, 0)
+            updateUrlParams(newFilter, selectedPrograms, selectedProject, 0)
         } else {
-            updateUrlParams(newFilter, selectedPrograms, pageRequest.pageNumber || 0)
+            updateUrlParams(newFilter, selectedPrograms, selectedProject, pageRequest.pageNumber || 0)
         }
     }
 
@@ -213,9 +234,9 @@ export const ReportList = () => {
         setFilter(newFilter)
         if (filterChanged) {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
-            updateUrlParams(newFilter, selectedPrograms, 0)
+            updateUrlParams(newFilter, selectedPrograms, selectedProject, 0)
         } else {
-            updateUrlParams(newFilter, selectedPrograms, pageRequest.pageNumber || 0)
+            updateUrlParams(newFilter, selectedPrograms, selectedProject, pageRequest.pageNumber || 0)
         }
     }
 
@@ -418,14 +439,35 @@ export const ReportList = () => {
                                 setSelectedPrograms(newPrograms)
                                 if (programsChanged) {
                                     setPageRequest({ ...pageRequest, pageNumber: 0 })
-                                    updateUrlParams(filter, newPrograms, 0)
+                                    updateUrlParams(filter, newPrograms, selectedProject, 0)
                                 } else {
-                                    updateUrlParams(filter, newPrograms, pageRequest.pageNumber || 0)
+                                    updateUrlParams(filter, newPrograms, selectedProject, pageRequest.pageNumber || 0)
                                 }
                             }}
                             maxValues={1}
                             autoClose={true}
                             placeholder={intl.formatMessage({ id: locales.programFilterNotSelected })}
+                        />
+                    </Flex>
+                    <Flex direction="column">
+                        <Text size="xs" c="dimmed" mb={4}>
+                            <FormattedMessage id={locales.projectFilter} />
+                        </Text>
+                        <ProjectFilter
+                            className={classes.programFilter}
+                            value={selectedProject}
+                            onChange={(newProject) => {
+                                const projectChanged = newProject !== selectedProject
+                                
+                                setSelectedProject(newProject)
+                                if (projectChanged) {
+                                    setPageRequest({ ...pageRequest, pageNumber: 0 })
+                                    updateUrlParams(filter, selectedPrograms, newProject, 0)
+                                } else {
+                                    updateUrlParams(filter, selectedPrograms, newProject, pageRequest.pageNumber || 0)
+                                }
+                            }}
+                            placeholder={intl.formatMessage({ id: locales.projectFilterNotSelected })}
                         />
                     </Flex>
                 </Flex>
@@ -475,7 +517,7 @@ export const ReportList = () => {
                             onChange={(newPage) => {
                                 const pageNumber = newPage - 1
                                 setPageRequest({ ...pageRequest, pageNumber })
-                                updateUrlParams(filter, selectedPrograms, pageNumber)
+                                updateUrlParams(filter, selectedPrograms, selectedProject, pageNumber)
                             }}
                         />
                         <Text c="dimmed">
