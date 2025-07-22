@@ -40,11 +40,11 @@ export const UserList = () => {
     const [debouncedSearch, setDebouncedSearch] = useState(search)
     const [drawerOpened, setDrawerOpened] = useState(false)
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
-    const [selectedPrograms, setSelectedPrograms] = useState<string[]>(
-        searchParams.get("programs") ? searchParams.get("programs")!.split(",") : []
+    const [selectedProgram, setSelectedProgram] = useState<string | null>(
+        searchParams.get("program") || null
     )
     const [selectedProject, setSelectedProject] = useState<string | null>(
-        searchParams.get("projects") ? searchParams.get("projects")!.split(",")[0] : null
+        searchParams.get("project") || null
     )
 
     const isMobile = useMediaQuery('(max-width: 1360px)')
@@ -79,15 +79,15 @@ export const UserList = () => {
     // Функция для синхронизации состояния с URL параметрами
     const syncStateFromUrl = () => {
         const urlSearch = searchParams.get("search") || ""
-        const urlPrograms = searchParams.get("programs") ? searchParams.get("programs")!.split(",") : []
-        const urlProjects = searchParams.get("projects") ? searchParams.get("projects")!.split(",") : []
+        const urlProgram = searchParams.get("program") || null
+        const urlProject = searchParams.get("project") || null
         const urlPageFromUser = parseInt(searchParams.get("page") || "1")
         const urlPage = urlPageFromUser > 0 ? urlPageFromUser - 1 : 0
 
         setSearch(urlSearch)
         setDebouncedSearch(urlSearch)
-        setSelectedPrograms(urlPrograms)
-        setSelectedProject(urlProjects.length > 0 ? urlProjects[0] : null)
+        setSelectedProgram(urlProgram)
+        setSelectedProject(urlProject)
         setPageRequest(prev => ({ ...prev, pageNumber: urlPage }))
     }
 
@@ -101,20 +101,22 @@ export const UserList = () => {
         return () => window.removeEventListener('popstate', handlePopState)
     }, [searchParams])
 
+
+
     // Функция для обновления URL параметров
-    const updateUrlParams = (newSearch: string, newPrograms: string[], newProject: string | null, newPage: number = 0) => {
+    const updateUrlParams = (newSearch: string, newProgram: string | null, newProject: string | null, newPage: number = 0) => {
         const params = new URLSearchParams()
         
         if (newSearch.trim()) {
             params.set("search", newSearch.trim())
         }
         
-        if (newPrograms.length > 0) {
-            params.set("programs", newPrograms.join(","))
+        if (newProgram !== null) {
+            params.set("program", newProgram)
         }
         
         if (newProject) {
-            params.set("projects", newProject)
+            params.set("project", newProject)
         }
         
         if (newPage > 0) {
@@ -215,31 +217,28 @@ export const UserList = () => {
 
     // Эффект для обновления URL при изменении debouncedSearch
     useEffect(() => {
-        updateUrlParams(debouncedSearch, selectedPrograms, selectedProject, pageRequest.pageNumber || 0)
+        updateUrlParams(debouncedSearch, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
     }, [debouncedSearch])
 
-    // Эффект для обновления URL при изменении программ
+    // Эффект для обновления URL при изменении программы
     useEffect(() => {
-        updateUrlParams(debouncedSearch, selectedPrograms, selectedProject, pageRequest.pageNumber || 0)
-    }, [selectedPrograms])
+        updateUrlParams(debouncedSearch, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
+    }, [selectedProgram])
 
     // Эффект для обновления URL при изменении проектов
     useEffect(() => {
-        updateUrlParams(debouncedSearch, selectedPrograms, selectedProject, pageRequest.pageNumber || 0)
+        updateUrlParams(debouncedSearch, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
     }, [selectedProject])
 
-    // Сбрасываем страницу только если программы действительно изменились пользователем
-    const prevProgramsRef = React.useRef<string[]>(selectedPrograms)
+    // Сбрасываем страницу только если программа действительно изменилась пользователем
+    const prevProgramRef = React.useRef<string | null>(selectedProgram)
     useEffect(() => {
-        const currentPrograms = selectedPrograms.join(',')
-        const previousPrograms = prevProgramsRef.current.join(',')
-        
-        if (currentPrograms !== previousPrograms) {
+        if (selectedProgram !== prevProgramRef.current) {
             setPageRequest(prev => ({ ...prev, pageNumber: 0 }))
         }
         
-        prevProgramsRef.current = selectedPrograms
-    }, [selectedPrograms])
+        prevProgramRef.current = selectedProgram
+    }, [selectedProgram])
 
     // Сбрасываем страницу только если проекты действительно изменились пользователем
     const prevProjectRef = React.useRef<string | null>(selectedProject)
@@ -254,7 +253,7 @@ export const UserList = () => {
     // Эффект для обновления URL при изменении страницы
     useEffect(() => {
         const pageNumber = pageRequest.pageNumber || 0
-        updateUrlParams(debouncedSearch, selectedPrograms, selectedProject, pageNumber)
+        updateUrlParams(debouncedSearch, selectedProgram, selectedProject, pageNumber)
     }, [pageRequest.pageNumber])
 
     // Эффект для обновления размера страницы при изменении типа устройства
@@ -288,9 +287,8 @@ export const UserList = () => {
         isFetching,
     } = useQuery({
         initialData: { content: [], page: defaultPageResponse },
-        queryKey: ["searchUsers", debouncedSearch, pageRequest, filter, selectedPrograms, selectedProject],
+        queryKey: ["searchUsers", debouncedSearch, pageRequest, filter, selectedProgram, selectedProject],
         queryFn: () => {
-            // Обрабатываем проекты: используем новое поле project
             let project: string | undefined = undefined
             if (selectedProject) {
                 if (selectedProject === "NO_PROJECT") {
@@ -299,13 +297,12 @@ export const UserList = () => {
                     project = selectedProject // Код проекта
                 }
             }
-
-            const filterWithPrograms = {
+            const filterWithProgram = {
                 ...filter,
-                programCodes: selectedPrograms.length > 0 ? selectedPrograms : undefined,
+                program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram,
                 project
             }
-            return UserApiService.searchUsers(debouncedSearch, pageRequest, filterWithPrograms).then((response) => {
+            return UserApiService.searchUsers(debouncedSearch, pageRequest, filterWithProgram).then((response) => {
                 return response.data
             })
         },
@@ -480,8 +477,8 @@ export const UserList = () => {
                         }
                     />
                     <ProgramFilter
-                        value={selectedPrograms}
-                        onChange={setSelectedPrograms}
+                        value={selectedProgram}
+                        onChange={setSelectedProgram}
                     />
                     <ProjectFilter
                         value={selectedProject}
