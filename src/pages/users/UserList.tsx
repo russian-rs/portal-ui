@@ -38,8 +38,8 @@ export const UserList = () => {
     const [debouncedSearch, setDebouncedSearch] = useState(search)
     const [drawerOpened, setDrawerOpened] = useState(false)
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
-    const [selectedPrograms, setSelectedPrograms] = useState<string[]>(
-        searchParams.get("programs") ? searchParams.get("programs")!.split(",") : []
+    const [selectedProgram, setSelectedProgram] = useState<string | null>(
+        searchParams.get("program") || null
     )
 
     const isMobile = useMediaQuery('(max-width: 1360px)')
@@ -74,13 +74,13 @@ export const UserList = () => {
     // Функция для синхронизации состояния с URL параметрами
     const syncStateFromUrl = () => {
         const urlSearch = searchParams.get("search") || ""
-        const urlPrograms = searchParams.get("programs") ? searchParams.get("programs")!.split(",") : []
+        const urlProgram = searchParams.get("program") || null
         const urlPageFromUser = parseInt(searchParams.get("page") || "1")
         const urlPage = urlPageFromUser > 0 ? urlPageFromUser - 1 : 0
 
         setSearch(urlSearch)
         setDebouncedSearch(urlSearch)
-        setSelectedPrograms(urlPrograms)
+        setSelectedProgram(urlProgram)
         setPageRequest(prev => ({ ...prev, pageNumber: urlPage }))
     }
 
@@ -94,16 +94,18 @@ export const UserList = () => {
         return () => window.removeEventListener('popstate', handlePopState)
     }, [searchParams])
 
+
+
     // Функция для обновления URL параметров
-    const updateUrlParams = (newSearch: string, newPrograms: string[], newPage: number = 0) => {
+    const updateUrlParams = (newSearch: string, newProgram: string | null, newPage: number = 0) => {
         const params = new URLSearchParams()
         
         if (newSearch.trim()) {
             params.set("search", newSearch.trim())
         }
         
-        if (newPrograms.length > 0) {
-            params.set("programs", newPrograms.join(","))
+        if (newProgram !== null) {
+            params.set("program", newProgram)
         }
         
         if (newPage > 0) {
@@ -168,31 +170,28 @@ export const UserList = () => {
 
     // Эффект для обновления URL при изменении debouncedSearch
     useEffect(() => {
-        updateUrlParams(debouncedSearch, selectedPrograms, pageRequest.pageNumber || 0)
+        updateUrlParams(debouncedSearch, selectedProgram, pageRequest.pageNumber || 0)
     }, [debouncedSearch])
 
-    // Эффект для обновления URL при изменении программ
+    // Эффект для обновления URL при изменении программы
     useEffect(() => {
-        updateUrlParams(debouncedSearch, selectedPrograms, pageRequest.pageNumber || 0)
-    }, [selectedPrograms])
+        updateUrlParams(debouncedSearch, selectedProgram, pageRequest.pageNumber || 0)
+    }, [selectedProgram])
 
-    // Сбрасываем страницу только если программы действительно изменились пользователем
-    const prevProgramsRef = React.useRef<string[]>(selectedPrograms)
+    // Сбрасываем страницу только если программа действительно изменилась пользователем
+    const prevProgramRef = React.useRef<string | null>(selectedProgram)
     useEffect(() => {
-        const currentPrograms = selectedPrograms.join(',')
-        const previousPrograms = prevProgramsRef.current.join(',')
-        
-        if (currentPrograms !== previousPrograms) {
+        if (selectedProgram !== prevProgramRef.current) {
             setPageRequest(prev => ({ ...prev, pageNumber: 0 }))
         }
         
-        prevProgramsRef.current = selectedPrograms
-    }, [selectedPrograms])
+        prevProgramRef.current = selectedProgram
+    }, [selectedProgram])
 
     // Эффект для обновления URL при изменении страницы
     useEffect(() => {
         const pageNumber = pageRequest.pageNumber || 0
-        updateUrlParams(debouncedSearch, selectedPrograms, pageNumber)
+        updateUrlParams(debouncedSearch, selectedProgram, pageNumber)
     }, [pageRequest.pageNumber])
 
     // Эффект для обновления размера страницы при изменении типа устройства
@@ -226,13 +225,13 @@ export const UserList = () => {
         isFetching,
     } = useQuery({
         initialData: { content: [], page: defaultPageResponse },
-        queryKey: ["searchUsers", debouncedSearch, pageRequest, filter, selectedPrograms],
+        queryKey: ["searchUsers", debouncedSearch, pageRequest, filter, selectedProgram],
         queryFn: () => {
-            const filterWithPrograms = {
+            const filterWithProgram = {
                 ...filter,
-                programCodes: selectedPrograms.length > 0 ? selectedPrograms : undefined
+                program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram
             }
-            return UserApiService.searchUsers(debouncedSearch, pageRequest, filterWithPrograms).then((response) => {
+            return UserApiService.searchUsers(debouncedSearch, pageRequest, filterWithProgram).then((response) => {
                 return response.data
             })
         },
@@ -389,8 +388,8 @@ export const UserList = () => {
                         }
                     />
                     <ProgramFilter
-                        value={selectedPrograms}
-                        onChange={setSelectedPrograms}
+                        value={selectedProgram}
+                        onChange={setSelectedProgram}
                     />
                 </Flex>
                 {isMobile ? (
