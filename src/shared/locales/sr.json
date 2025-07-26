@@ -251,6 +251,8 @@
       "weeks": "Izveštajne nedelje",
       "status": "Status",
       "time-spent": "Potrošeni sati",
+      "program": "Program",
+      "project": "Projekat",
       "task-count": "Zadataka: {count}",
       "files-count": "Priloga: {count}",
       "files": "Prilozi",

@@ -251,6 +251,8 @@
       "weeks": "Отчетные недели",
       "status": "Статус",
       "time-spent": "Затрачено часов",
+      "program": "Программа",
+      "project": "Проект",
       "task-count": "Задач: {count}",
       "files-count": "Вложений: {count}",
       "files": "Вложения",

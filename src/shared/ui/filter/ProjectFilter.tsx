@@ -2,7 +2,7 @@ import { Select } from "@mantine/core"
 import { useIntl } from "react-intl"
 import { useProjects } from "src/app/providers/ProjectsProvider"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
-import { locales } from "../lib/locales"
+import { locales } from "./lib/locales"
 
 interface ProjectFilterProps {
     value: string | null
@@ -30,6 +30,7 @@ export function ProjectFilter({ value, onChange, className, placeholder }: Proje
             onChange={onChange}
             placeholder={placeholder || intl.formatMessage({ id: locales.filterByProject })}
             clearable
+            searchable
             className={className}
         />
     )
