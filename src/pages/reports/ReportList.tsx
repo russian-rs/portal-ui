@@ -22,13 +22,15 @@ import { defaultFilter, defaultPage, defaultPageResponse, defaultUser } from "./
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
 import classes from "./ReportList.module.scss"
-import { ProgramFilter } from "src/pages/users/filter/ProgramFilter"
-import { ProjectFilter } from "src/pages/users/filter/ProjectFilter"
+import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
 import { useMediaQuery } from "@mantine/hooks"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { Badge } from "@mantine/core"
 import { getReportStatusColor } from "src/shared/report/status"
+import { usePrograms } from "src/app/providers/ProgramsProvider"
+import { useProjects } from "src/app/providers/ProjectsProvider"
+import { getLocalizedName } from "src/shared/utils/getLocalName"
 
 export const ReportList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -41,6 +43,9 @@ export const ReportList = () => {
 
     const isMobile = useMediaQuery('(max-width: 1360px)')
     const isTablet = useMediaQuery('(min-width: 1024px) and (max-width: 1439px)')
+    
+    const programs = usePrograms()
+    const projects = useProjects()
 
     const [resetKey, setResetKey] = useState(0)
     const [pageRequest, setPageRequest] = useState<PageRequest>({
@@ -283,6 +288,16 @@ export const ReportList = () => {
                     </Text>
                 </Table.Td>
                 <Table.Td>
+                    <Text>
+                        {creator.program ? getLocalizedName(creator.program, intl.locale) : <FormattedMessage id={locales.noProgram} />}
+                    </Text>
+                </Table.Td>
+                <Table.Td>
+                    <Text>
+                        {creator.project ? getLocalizedName(creator.project, intl.locale) : <FormattedMessage id={locales.noProject} />}
+                    </Text>
+                </Table.Td>
+                <Table.Td>
                     <Flex direction="column" justify="center">
                         <Flex columnGap={8} align="center">
                             <IconListCheck size={14} />
@@ -366,6 +381,20 @@ export const ReportList = () => {
                                 />
                             </Flex>
                         </Flex>
+                        <Flex className={classes.reportBody}>
+                            <Flex className={classes.reportLeft}>
+                                <TextPropertyBox
+                                    name={locales.program}
+                                    value={creator.program ? getLocalizedName(creator.program, intl.locale) : <FormattedMessage id={locales.noProgram} />}
+                                />
+                            </Flex>
+                            <Flex className={classes.reportRight}>
+                                <TextPropertyBox
+                                    name={locales.project}
+                                    value={creator.project ? getLocalizedName(creator.project, intl.locale) : <FormattedMessage id={locales.noProject} />}
+                                />
+                            </Flex>
+                        </Flex>
                         {filesCount !== 0 && (
                             <Flex className={classes.reportBody}>
                                 <Flex className={classes.reportLeft}>
@@ -404,6 +433,14 @@ export const ReportList = () => {
                                     <Text size="sm" c="dimmed">{filesCount}</Text>
                                 </Flex>
                             )}
+                        </Flex>
+                        <Flex className={classes.reportBody}>
+                            <Text size="sm" c="dimmed">
+                                {creator.program ? getLocalizedName(creator.program, intl.locale) : <FormattedMessage id={locales.noProgram} />}
+                            </Text>
+                            <Text size="sm" c="dimmed">
+                                {creator.project ? getLocalizedName(creator.project, intl.locale) : <FormattedMessage id={locales.noProject} />}
+                            </Text>
                         </Flex>
                     </>
                 )}
@@ -504,6 +541,12 @@ export const ReportList = () => {
                                 </Table.Th>
                                 <Table.Th className={classes.columnStatus}>
                                     <FormattedMessage id={locales.status} />
+                                </Table.Th>
+                                <Table.Th className={classes.columnProgram}>
+                                    <FormattedMessage id={locales.program} />
+                                </Table.Th>
+                                <Table.Th className={classes.columnProject}>
+                                    <FormattedMessage id={locales.project} />
                                 </Table.Th>
                                 <Table.Th className={classes.columnStats}></Table.Th>
                             </Table.Tr>

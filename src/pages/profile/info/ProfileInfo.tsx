@@ -224,8 +224,8 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     
     const canEditProgram = isAdmin || (isOwnProfile && !hasProgram)
     
-    // Пользователи могут редактировать только свой проект
-    const canEditProject = isOwnProfile
+    // Пользователи могут редактировать только свой проект или админы
+    const canEditProject = isOwnProfile || isAdmin
 
     const handleProgramChange = (value: string | null) => {
         if (value) {

@@ -24,8 +24,7 @@ import { useIntl } from "react-intl"
 import { notifications } from "@mantine/notifications"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
-import { ProgramFilter } from "./filter/ProgramFilter"
-import { ProjectFilter } from "./filter/ProjectFilter"
+import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
 import { ContractDrawer } from "src/pages/profile/contract/ContractDrawer"
 
 export const UserList = () => {

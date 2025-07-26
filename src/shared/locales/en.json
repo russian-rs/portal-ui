@@ -251,6 +251,8 @@
       "weeks": "Reporting weeks",
       "status": "Status",
       "time-spent": "Time spent",
+      "program": "Program",
+      "project": "Project",
       "task-count": "Tasks: {count}",
       "files-count": "Attachments: {count}",
       "files": "Files",

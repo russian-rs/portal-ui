@@ -48,6 +48,7 @@ export function ProjectSelectInline({
           dropdownOpened={isDropdownOpened}
           onDropdownOpen={() => setDropdownOpened(true)}
           onDropdownClose={() => setDropdownOpened(false)}
+          searchable
         />
       ) : (
         <>
