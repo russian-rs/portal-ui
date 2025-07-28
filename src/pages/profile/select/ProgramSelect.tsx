@@ -5,6 +5,7 @@ import { useIntl } from "react-intl"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { usePrograms } from "src/app/providers/ProgramsProvider"
 import { FormattedMessage } from "react-intl"
+import { useComputedColorScheme } from "@mantine/core"
 
 export function ProgramSelectInline({
   value,
@@ -21,6 +22,7 @@ export function ProgramSelectInline({
   const intl = useIntl()
   const [isEditing, setIsEditing] = useState(false)
   const [isDropdownOpened, setDropdownOpened] = useState(false)
+  const colorScheme = useComputedColorScheme("light")
 
   const programOptions = programs.map(program => ({
     value: program.code,
@@ -51,7 +53,7 @@ export function ProgramSelectInline({
         />
       ) : (
         <>
-          <Text style={{ whiteSpace: "nowrap" }} size="sm">
+          <Text style={{ whiteSpace: "nowrap" }} size="sm" c={programObj ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")} fw={programObj ? undefined : 500}>
             {programObj ? getLocalizedName(programObj, locale) : (
               <FormattedMessage id="pages.profile.selectProgram" />
             )}
