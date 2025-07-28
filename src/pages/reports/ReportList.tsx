@@ -31,6 +31,7 @@ import { getReportStatusColor } from "src/shared/report/status"
 import { usePrograms } from "src/app/providers/ProgramsProvider"
 import { useProjects } from "src/app/providers/ProjectsProvider"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
+import { useComputedColorScheme } from "@mantine/core"
 
 export const ReportList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -46,6 +47,7 @@ export const ReportList = () => {
     
     const programs = usePrograms()
     const projects = useProjects()
+    const colorScheme = useComputedColorScheme("light")
 
     const [resetKey, setResetKey] = useState(0)
     const [pageRequest, setPageRequest] = useState<PageRequest>({
@@ -288,12 +290,12 @@ export const ReportList = () => {
                     </Text>
                 </Table.Td>
                 <Table.Td>
-                    <Text>
+                    <Text c={creator.program ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}>
                         {creator.program ? getLocalizedName(creator.program, intl.locale) : <FormattedMessage id={locales.noProgram} />}
                     </Text>
                 </Table.Td>
                 <Table.Td>
-                    <Text>
+                    <Text c={creator.project ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}>
                         {creator.project ? getLocalizedName(creator.project, intl.locale) : <FormattedMessage id={locales.noProject} />}
                     </Text>
                 </Table.Td>
@@ -386,12 +388,14 @@ export const ReportList = () => {
                                 <TextPropertyBox
                                     name={locales.program}
                                     value={creator.program ? getLocalizedName(creator.program, intl.locale) : <FormattedMessage id={locales.noProgram} />}
+                                    valueColor={creator.program ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}
                                 />
                             </Flex>
                             <Flex className={classes.reportRight}>
                                 <TextPropertyBox
                                     name={locales.project}
                                     value={creator.project ? getLocalizedName(creator.project, intl.locale) : <FormattedMessage id={locales.noProject} />}
+                                    valueColor={creator.project ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}
                                 />
                             </Flex>
                         </Flex>
@@ -435,10 +439,10 @@ export const ReportList = () => {
                             )}
                         </Flex>
                         <Flex className={classes.reportBody}>
-                            <Text size="sm" c="dimmed">
+                            <Text size="sm" c={creator.program ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}>
                                 {creator.program ? getLocalizedName(creator.program, intl.locale) : <FormattedMessage id={locales.noProgram} />}
                             </Text>
-                            <Text size="sm" c="dimmed">
+                            <Text size="sm" c={creator.project ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}>
                                 {creator.project ? getLocalizedName(creator.project, intl.locale) : <FormattedMessage id={locales.noProject} />}
                             </Text>
                         </Flex>

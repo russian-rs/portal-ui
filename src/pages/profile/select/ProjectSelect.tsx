@@ -5,6 +5,7 @@ import { useIntl } from "react-intl"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { useProjects } from "src/app/providers/ProjectsProvider"
 import { FormattedMessage } from "react-intl"
+import { useComputedColorScheme } from "@mantine/core"
 
 export function ProjectSelectInline({
   value,
@@ -21,6 +22,7 @@ export function ProjectSelectInline({
   const intl = useIntl()
   const [isEditing, setIsEditing] = useState(false)
   const [isDropdownOpened, setDropdownOpened] = useState(false)
+  const colorScheme = useComputedColorScheme("light")
 
   const projectOptions = projects.map(project => ({
     value: project.code,
@@ -52,7 +54,7 @@ export function ProjectSelectInline({
         />
       ) : (
         <>
-          <Text style={{ whiteSpace: "nowrap" }} size="sm">
+          <Text style={{ whiteSpace: "nowrap" }} size="sm" c={projectObj ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")} fw={projectObj ? undefined : 500}>
             {projectObj ? getLocalizedName(projectObj, locale) : (
               <FormattedMessage id="pages.profile.selectProject" />
             )}

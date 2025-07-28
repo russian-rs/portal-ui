@@ -368,6 +368,7 @@ export const UserList = () => {
                             setDrawerOpened(true)
                         }}
                         size="compact-sm"
+                        fw={lastContract ? undefined : 500}
                     >
                         {lastContract
                             ? dayjs(lastContract.endDate).format("DD MMM YYYY")
@@ -444,6 +445,7 @@ export const UserList = () => {
                             setDrawerOpened(true)
                         }}
                         size="compact-sm"
+                        fw={lastContract ? undefined : 500}
                     >
                         {lastContract
                             ? dayjs(lastContract.endDate).format("DD MMM YYYY")
