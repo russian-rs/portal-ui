@@ -22,6 +22,7 @@ import { UserApiService } from "src/shared/api/user/UserApiService"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { Locale } from "src/shared/constants/Locales"
 import { ProgramSelectInline } from "../select/ProgramSelect"
+import { ProjectSelectInline } from "../select/ProjectSelect"
 
 interface ProfileInfoProps {
     userInfo: UserInfoDto | undefined
@@ -173,6 +174,40 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         }
     });
 
+    const { mutate: updateProject } = useMutation({
+        mutationFn: async (project: string) => {
+            const response = await UserApiService.setProject(userInfo.id, project);
+            return response.data;
+        },
+        onSuccess: async (data) => {
+            if (userInfo?.username === currentUser?.username) {
+                setUser(data);
+            }
+
+            if (onUserInfoUpdate) {
+                onUserInfoUpdate(data);
+            }
+
+            notifications.show(
+                SuccessNotification(
+                    <Text size="sm">
+                        <FormattedMessage id="pages.profile.profileUpdated" />
+                    </Text>,
+                    null
+                )
+            );
+        },
+        onError: () => {
+            notifications.show(
+                ErrorNotification(
+                    <Text size="sm">
+                        <FormattedMessage id="pages.profile.updateError" />
+                    </Text>
+                )
+            );
+        }
+    });
+
     const iconTelegram = <IconBrandTelegram size={16} />
     const iconPhone = <IconPhone size={16} />
     const iconHome = <IconHome size={16} />
@@ -188,6 +223,9 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const hasProgram = !!programValue
     
     const canEditProgram = isAdmin || (isOwnProfile && !hasProgram)
+    
+    // Пользователи могут редактировать только свой проект или админы
+    const canEditProject = isOwnProfile || isAdmin
 
     const handleProgramChange = (value: string | null) => {
         if (value) {
@@ -204,6 +242,14 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                 canEdit={canEditProgram}
                 locale={locale}
                 onChange={handleProgramChange}
+            />
+            <ProjectSelectInline
+                value={userInfo?.project?.code}
+                canEdit={canEditProject}
+                locale={locale}
+                onChange={(project) => {
+                    updateProject(project)
+                }}
             />
             <Container className={commonClasses.divider} />
             <TextPropertyBox

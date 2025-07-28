@@ -22,12 +22,16 @@ import { defaultFilter, defaultPage, defaultPageResponse, defaultUser } from "./
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
 import classes from "./ReportList.module.scss"
-import { ProgramFilter } from "src/pages/users/filter/ProgramFilter"
+import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
 import { useMediaQuery } from "@mantine/hooks"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { Badge } from "@mantine/core"
 import { getReportStatusColor } from "src/shared/report/status"
+import { usePrograms } from "src/app/providers/ProgramsProvider"
+import { useProjects } from "src/app/providers/ProjectsProvider"
+import { getLocalizedName } from "src/shared/utils/getLocalName"
+import { useComputedColorScheme } from "@mantine/core"
 
 export const ReportList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -40,6 +44,10 @@ export const ReportList = () => {
 
     const isMobile = useMediaQuery('(max-width: 1360px)')
     const isTablet = useMediaQuery('(min-width: 1024px) and (max-width: 1439px)')
+    
+    const programs = usePrograms()
+    const projects = useProjects()
+    const colorScheme = useComputedColorScheme("light")
 
     const [resetKey, setResetKey] = useState(0)
     const [pageRequest, setPageRequest] = useState<PageRequest>({
@@ -57,6 +65,9 @@ export const ReportList = () => {
     const [selectedProgram, setSelectedProgram] = useState<string | null>(
         searchParams.get("program") || null
     )
+    const [selectedProject, setSelectedProject] = useState<string | null>(
+        searchParams.get("project") || null
+    )
     
     // Ref для скролла к началу списка
     const listStartRef = React.useRef<HTMLDivElement>(null)
@@ -66,7 +77,10 @@ export const ReportList = () => {
         const urlStatus = searchParams.get("status") || null
         const urlDateFrom = searchParams.get("dateFrom") || null
         const urlDateTo = searchParams.get("dateTo") || null
+
         const urlProgram = searchParams.get("program") || null
+        const urlProject = searchParams.get("project") || null
+
         const urlPageFromUser = parseInt(searchParams.get("page") || "1")
         const urlPage = urlPageFromUser > 0 ? urlPageFromUser - 1 : 0
 
@@ -77,7 +91,10 @@ export const ReportList = () => {
             dateFrom: urlDateFrom,
             dateTo: urlDateTo
         }))
+
         setSelectedProgram(urlProgram)
+        setSelectedProject(urlProject)
+
         setPageRequest(prevPageRequest => ({ ...prevPageRequest, pageNumber: urlPage }))
         setResetKey(prev => prev + 1)
     }
@@ -98,7 +115,9 @@ export const ReportList = () => {
     }, [])
 
 
-    const updateUrlParams = (newFilter: ReportFilter, newProgram: string | null, newPage: number = 0) => {
+
+    const updateUrlParams = (newFilter: ReportFilter, newProgram: string | null, newProject: string | null, newPage: number = 0) => {
+
         const params = new URLSearchParams()
         
         if (newFilter.login) {
@@ -119,6 +138,10 @@ export const ReportList = () => {
         
         if (newProgram !== null) {
             params.set("program", newProgram)
+        }
+        
+        if (newProject) {
+            params.set("project", newProject)
         }
         
         // Добавляем параметр page только если это не первая страница
@@ -163,11 +186,25 @@ export const ReportList = () => {
         isFetching: isFetchingReports,
     } = useQuery({
         initialData: { content: [], page: defaultPageResponse },
-        queryKey: ["searchReports", filter, pageRequest, selectedProgram],
+
+        queryKey: ["searchReports", filter, pageRequest, selectedProgram, selectedProject],
+
         queryFn: () => {
+            // Обрабатываем проекты: если выбран "NO_PROJECT", отправляем пустую строку
+            let project: string | null = null
+            if (selectedProject) {
+                if (selectedProject === "NO_PROJECT") {
+                    project = "" // Пустая строка для фильтра "без проекта"
+                } else {
+                    project = selectedProject // Код проекта
+                }
+            }
+
             const filterWithProgram = {
                 ...filter,
-                program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram
+
+                program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram,
+                project
             }
             return ReportApiService.getReports(pageRequest, filterWithProgram).then((response) => {
                 setLogins(response.data.content.map((it) => it.user).filter((it) => it != undefined))
@@ -185,9 +222,10 @@ export const ReportList = () => {
         setFilter(newFilter)
         if (filterChanged) {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
-            updateUrlParams(newFilter, selectedProgram, 0)
+
+            updateUrlParams(newFilter, selectedProgram, selectedProject, 0)
         } else {
-            updateUrlParams(newFilter, selectedProgram, pageRequest.pageNumber || 0)
+            updateUrlParams(newFilter, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
         }
     }
 
@@ -198,9 +236,10 @@ export const ReportList = () => {
         setFilter(newFilter)
         if (filterChanged) {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
-            updateUrlParams(newFilter, selectedProgram, 0)
+
+            updateUrlParams(newFilter, selectedProgram, selectedProject, 0)
         } else {
-            updateUrlParams(newFilter, selectedProgram, pageRequest.pageNumber || 0)
+            updateUrlParams(newFilter, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
         }
     }
 
@@ -213,9 +252,10 @@ export const ReportList = () => {
         setFilter(newFilter)
         if (filterChanged) {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
-            updateUrlParams(newFilter, selectedProgram, 0)
+
+            updateUrlParams(newFilter, selectedProgram, selectedProject, 0)
         } else {
-            updateUrlParams(newFilter, selectedProgram, pageRequest.pageNumber || 0)
+            updateUrlParams(newFilter, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
         }
     }
 
@@ -247,6 +287,16 @@ export const ReportList = () => {
                 <Table.Td>
                     <Text>
                         <FormattedMessage id={`common.report-status.${report.status}`} />
+                    </Text>
+                </Table.Td>
+                <Table.Td>
+                    <Text c={creator.program ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}>
+                        {creator.program ? getLocalizedName(creator.program, intl.locale) : <FormattedMessage id={locales.noProgram} />}
+                    </Text>
+                </Table.Td>
+                <Table.Td>
+                    <Text c={creator.project ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}>
+                        {creator.project ? getLocalizedName(creator.project, intl.locale) : <FormattedMessage id={locales.noProject} />}
                     </Text>
                 </Table.Td>
                 <Table.Td>
@@ -333,6 +383,22 @@ export const ReportList = () => {
                                 />
                             </Flex>
                         </Flex>
+                        <Flex className={classes.reportBody}>
+                            <Flex className={classes.reportLeft}>
+                                <TextPropertyBox
+                                    name={locales.program}
+                                    value={creator.program ? getLocalizedName(creator.program, intl.locale) : <FormattedMessage id={locales.noProgram} />}
+                                    valueColor={creator.program ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}
+                                />
+                            </Flex>
+                            <Flex className={classes.reportRight}>
+                                <TextPropertyBox
+                                    name={locales.project}
+                                    value={creator.project ? getLocalizedName(creator.project, intl.locale) : <FormattedMessage id={locales.noProject} />}
+                                    valueColor={creator.project ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}
+                                />
+                            </Flex>
+                        </Flex>
                         {filesCount !== 0 && (
                             <Flex className={classes.reportBody}>
                                 <Flex className={classes.reportLeft}>
@@ -371,6 +437,14 @@ export const ReportList = () => {
                                     <Text size="sm" c="dimmed">{filesCount}</Text>
                                 </Flex>
                             )}
+                        </Flex>
+                        <Flex className={classes.reportBody}>
+                            <Text size="sm" c={creator.program ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}>
+                                {creator.program ? getLocalizedName(creator.program, intl.locale) : <FormattedMessage id={locales.noProgram} />}
+                            </Text>
+                            <Text size="sm" c={creator.project ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}>
+                                {creator.project ? getLocalizedName(creator.project, intl.locale) : <FormattedMessage id={locales.noProject} />}
+                            </Text>
                         </Flex>
                     </>
                 )}
@@ -418,12 +492,34 @@ export const ReportList = () => {
                                 setSelectedProgram(newProgram)
                                 if (programChanged) {
                                     setPageRequest({ ...pageRequest, pageNumber: 0 })
-                                    updateUrlParams(filter, newProgram, 0)
+
+                                    updateUrlParams(filter, newProgram, selectedProject, 0)
                                 } else {
-                                    updateUrlParams(filter, newProgram, pageRequest.pageNumber || 0)
+                                    updateUrlParams(filter, newProgram, selectedProject, pageRequest.pageNumber || 0)
                                 }
                             }}
                             placeholder={intl.formatMessage({ id: locales.programFilterNotSelected })}
+                        />
+                    </Flex>
+                    <Flex direction="column">
+                        <Text size="xs" c="dimmed" mb={4}>
+                            <FormattedMessage id={locales.projectFilter} />
+                        </Text>
+                        <ProjectFilter
+                            className={classes.programFilter}
+                            value={selectedProject}
+                            onChange={(newProject) => {
+                                const projectChanged = newProject !== selectedProject
+                                
+                                setSelectedProject(newProject)
+                                if (projectChanged) {
+                                    setPageRequest({ ...pageRequest, pageNumber: 0 })
+                                    updateUrlParams(filter, selectedProgram, newProject, 0)
+                                } else {
+                                    updateUrlParams(filter, selectedProgram, newProject, pageRequest.pageNumber || 0)
+                                }
+                            }}
+                            placeholder={intl.formatMessage({ id: locales.projectFilterNotSelected })}
                         />
                     </Flex>
                 </Flex>
@@ -450,6 +546,12 @@ export const ReportList = () => {
                                 <Table.Th className={classes.columnStatus}>
                                     <FormattedMessage id={locales.status} />
                                 </Table.Th>
+                                <Table.Th className={classes.columnProgram}>
+                                    <FormattedMessage id={locales.program} />
+                                </Table.Th>
+                                <Table.Th className={classes.columnProject}>
+                                    <FormattedMessage id={locales.project} />
+                                </Table.Th>
                                 <Table.Th className={classes.columnStats}></Table.Th>
                             </Table.Tr>
                         </Table.Thead>
@@ -473,7 +575,8 @@ export const ReportList = () => {
                             onChange={(newPage) => {
                                 const pageNumber = newPage - 1
                                 setPageRequest({ ...pageRequest, pageNumber })
-                                updateUrlParams(filter, selectedProgram, pageNumber)
+
+                                updateUrlParams(filter, selectedProgram, selectedProject, pageNumber)
                             }}
                         />
                         <Text c="dimmed">
