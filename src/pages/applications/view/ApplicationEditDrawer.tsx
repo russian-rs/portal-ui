@@ -12,6 +12,7 @@ import {
     IconEPassport,
     IconLocation,
     IconPhone,
+    IconSignature,
 } from "@tabler/icons-react"
 import { useMutation } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -37,6 +38,20 @@ export const ApplicationEditDrawer = ({
     const intl = useIntl()
 
     const validationSchema = z.object({
+        name: z
+            .string()
+            .regex(/^[a-zA-Z\s\-ĦħÀ-ÿ]+$/, intl.formatMessage({ id: "pages.profile.validation.invalidSymbols" }))
+            .min(5, intl.formatMessage({ id: "pages.profile.validation.minLetters" }, { count: 5 }))
+            .max(69, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 69 }))
+            .optional()
+            .or(z.literal("")),
+        patronymic: z
+            .string()
+            .regex(/^[a-zA-Z\s\-ĦħÀ-ÿ]+$/, intl.formatMessage({ id: "pages.profile.validation.invalidSymbols" }))
+            .min(2, intl.formatMessage({ id: "pages.profile.validation.minLetters" }, { count: 2 }))
+            .max(30, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 30 }))
+            .optional()
+            .or(z.literal("")),
         email: z
             .string()
             .email(intl.formatMessage({ id: "pages.profile.validation.invalidEmail" }))
@@ -79,6 +94,8 @@ export const ApplicationEditDrawer = ({
 
     const form = useForm({
         initialValues: {
+            name: application.name || "",
+            patronymic: application.patronymic || "",
             email: application.email || "",
             phone: application.phone || "",
             telegram: application.telegram || "",
@@ -123,6 +140,8 @@ export const ApplicationEditDrawer = ({
 
         const updateData: Partial<ApplicationDto> = {}
         
+        if (form.values.name?.trim()) updateData.name = form.values.name.trim()
+        if (form.values.patronymic?.trim()) updateData.patronymic = form.values.patronymic.trim()
         if (form.values.email?.trim()) updateData.email = form.values.email.trim()
         if (form.values.phone?.trim()) updateData.phone = form.values.phone.trim()
         if (form.values.telegram?.trim()) updateData.telegram = form.values.telegram.trim()
@@ -137,6 +156,8 @@ export const ApplicationEditDrawer = ({
     React.useEffect(() => {
         if (opened) {
             form.setValues({
+                name: application.name || "",
+                patronymic: application.patronymic || "",
                 email: application.email || "",
                 phone: application.phone || "",
                 telegram: application.telegram || "",
@@ -160,6 +181,16 @@ export const ApplicationEditDrawer = ({
                 handleSubmit()
             }}>
                 <Flex direction="column" gap="md">
+                    <TextInput
+                        leftSection={<IconSignature size={16} />}
+                        label={<FormattedMessage id="pages.applications.view.name" />}
+                        {...form.getInputProps('name')}
+                    />
+                    <TextInput
+                        leftSection={<IconSignature size={16} />}
+                        label={<FormattedMessage id="pages.applications.view.patronymic" />}
+                        {...form.getInputProps('patronymic')}
+                    />
                     <TextInput
                         leftSection={<IconAt size={16} />}
                         label={<FormattedMessage id="pages.applications.view.email" />}

@@ -149,6 +149,8 @@
         "contractTypeRequired": "Выберите тип контракта",
         "endDateAfterStart": "Дата окончания должна быть позже даты начала",
         "invalidEmail": "Неверный формат email",
+        "invalidSymbols": "Неверные символы",
+        "minLetters": "Минимум {count} символов",
         "maxLetters": "Максимум {count} символов"
       },
       "buttons": {
@@ -431,6 +433,8 @@
         "status": "Статус заявки",
         "contract-start": "Договор (начало)",
         "type": "Тип",
+        "name": "Имя Фамилия",
+        "patronymic": "Отчество (имя отца)",
         "email": "E-mail",
         "phone": "Телефон",
         "telegram": "Telegram",
