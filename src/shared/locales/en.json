@@ -149,6 +149,8 @@
         "contractTypeRequired": "Select contract type",
         "endDateAfterStart": "The end date must be later than the start date",
         "invalidEmail": "Invalid email format",
+        "invalidSymbols": "Invalid symbols",
+        "minLetters": "Minimum {count} letters",
         "maxLetters": "Maximum {count} characters"
       },
       "buttons": {
@@ -431,6 +433,8 @@
         "status": "Application Status",
         "contract-start": "Contract (start)",
         "type": "Type",
+        "name": "First and Last Name",
+        "patronymic": "Patronymic (Father's Name)",
         "email": "E-mail",
         "phone": "Phone",
         "telegram": "Telegram",

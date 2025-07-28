@@ -149,6 +149,8 @@
         "contractTypeRequired": "Izaberite tip ugovora",
         "endDateAfterStart": "Datum završetka mora biti kasniji od datuma početka",
         "invalidEmail": "Neispravan format email-a",
+        "invalidSymbols": "Neispravni simboli",
+        "minLetters": "Najmanje {count} slova",
         "maxLetters": "Maksimalno {count} karaktera"
       },
       "buttons": {
@@ -431,6 +433,8 @@
         "status": "Status prijave",
         "contract-start": "Ugovor (početak)",
         "type": "Tip",
+        "name": "Ime i Prezime",
+        "patronymic": "Ime oca (Patronim)",
         "email": "E-mail",
         "phone": "Telefon",
         "telegram": "Telegram",
