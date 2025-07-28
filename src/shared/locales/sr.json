@@ -147,7 +147,9 @@
         "tooYoung": "Morate imati najmanje 18 godina",
         "invalidDate": "Neispravan format datuma",
         "contractTypeRequired": "Izaberite tip ugovora",
-        "endDateAfterStart": "Datum završetka mora biti kasniji od datuma početka"
+        "endDateAfterStart": "Datum završetka mora biti kasniji od datuma početka",
+        "invalidEmail": "Neispravan format email-a",
+        "maxLetters": "Maksimalno {count} karaktera"
       },
       "buttons": {
         "edit": "Uredi",
@@ -441,7 +443,10 @@
         "goal": "Cilj učestvovanja u organizaciji",
         "bio": "Kratka biografija",
         "contractDownload": "Preuzimanje ugovora",
-        "questionnaireDownload": "Preuzimanje upitnika"
+        "questionnaireDownload": "Preuzimanje upitnika",
+        "editTitle": "Uredi prijavu",
+        "editSuccess": "Prijava je uspešno ažurirana",
+        "editError": "Greška pri ažuriranju prijave"
       },
       "report": {
         "contract-from": "Datum početka",
