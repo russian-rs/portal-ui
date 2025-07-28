@@ -3,11 +3,11 @@ import { IconPlus, IconPencil } from "@tabler/icons-react"
 import { useState } from "react"
 import { useIntl } from "react-intl"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
-import { usePrograms } from "src/app/providers/ProgramsProvider"
+import { useProjects } from "src/app/providers/ProjectsProvider"
 import { FormattedMessage } from "react-intl"
 import { useComputedColorScheme } from "@mantine/core"
 
-export function ProgramSelectInline({
+export function ProjectSelectInline({
   value,
   canEdit,
   onChange,
@@ -15,27 +15,27 @@ export function ProgramSelectInline({
 }: {
   value: string | null | undefined
   canEdit: boolean
-  onChange: (program: string) => void
+  onChange: (project: string) => void
   locale: string
 }) {
-  const programs = usePrograms()
+  const projects = useProjects()
   const intl = useIntl()
   const [isEditing, setIsEditing] = useState(false)
   const [isDropdownOpened, setDropdownOpened] = useState(false)
   const colorScheme = useComputedColorScheme("light")
 
-  const programOptions = programs.map(program => ({
-    value: program.code,
-    label: getLocalizedName(program, locale),
+  const projectOptions = projects.map(project => ({
+    value: project.code,
+    label: getLocalizedName(project, locale),
   }))
 
-  const programObj = programs.find(p => p.code === value)
+  const projectObj = projects.find(p => p.code === value)
 
   return (
     <Group gap={4} align="center" wrap="nowrap">
       {isEditing ? (
         <Select
-          data={programOptions}
+          data={projectOptions}
           value={value || null}
           onChange={val => {
             if (val) {
@@ -46,16 +46,17 @@ export function ProgramSelectInline({
           onBlur={() => setIsEditing(false)}
           autoFocus
           style={{ width: 180 }}
-          placeholder={intl.formatMessage({ id: "pages.profile.selectProgram" })}
+          placeholder={intl.formatMessage({ id: "pages.profile.selectProject" })}
           dropdownOpened={isDropdownOpened}
           onDropdownOpen={() => setDropdownOpened(true)}
           onDropdownClose={() => setDropdownOpened(false)}
+          searchable
         />
       ) : (
         <>
-          <Text style={{ whiteSpace: "nowrap" }} size="sm" c={programObj ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")} fw={programObj ? undefined : 500}>
-            {programObj ? getLocalizedName(programObj, locale) : (
-              <FormattedMessage id="pages.profile.selectProgram" />
+          <Text style={{ whiteSpace: "nowrap" }} size="sm" c={projectObj ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")} fw={projectObj ? undefined : 500}>
+            {projectObj ? getLocalizedName(projectObj, locale) : (
+              <FormattedMessage id="pages.profile.selectProject" />
             )}
           </Text>
           {canEdit && (
@@ -74,4 +75,4 @@ export function ProgramSelectInline({
       )}
     </Group>
   )
-}
+} 

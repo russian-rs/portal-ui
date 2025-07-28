@@ -5,6 +5,8 @@ export const locales = {
     weeks: "pages.report-list.weeks",
     timeSpent: "pages.report-list.time-spent",
     status: "pages.report-list.status",
+    program: "pages.report-list.program",
+    project: "pages.report-list.project",
     taskCount: "pages.report-list.task-count",
     tasks: "pages.my-reports.report.task-count",
     filesCount: "pages.report-list.files-count",
@@ -14,4 +16,8 @@ export const locales = {
     reset: "pages.report-list.reset",
     programFilter: "pages.report-list.program-filter",
     programFilterNotSelected: "pages.report-list.program-filter-not-selected",
+    projectFilter: "pages.report-list.project-filter",
+    projectFilterNotSelected: "pages.report-list.project-filter-not-selected",
+    noProgram: "pages.user-list.no-program",
+    noProject: "pages.user-list.no-project",
 }
