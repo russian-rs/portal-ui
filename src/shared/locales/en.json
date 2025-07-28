@@ -176,7 +176,8 @@
         "number": "Contract {number}",
         "cannotDeleteLast": "Cannot delete the last contract. A volunteer must have at least one contract."
       },
-      "selectProgram": "Select a program"
+      "selectProgram": "Select a program",
+      "selectProject": "Select a project"
     },
     "report": {
       "document-title": "Report",
@@ -250,6 +251,8 @@
       "weeks": "Reporting weeks",
       "status": "Status",
       "time-spent": "Time spent",
+      "program": "Program",
+      "project": "Project",
       "task-count": "Tasks: {count}",
       "files-count": "Attachments: {count}",
       "files": "Files",
@@ -257,7 +260,9 @@
       "empty": "Reports not found",
       "reset": "Reset filters",
       "program-filter": "Program filter",
-      "program-filter-not-selected": "Not selected"
+      "program-filter-not-selected": "Not selected",
+      "project-filter": "Project filter",
+      "project-filter-not-selected": "Not selected"
     },
     "user-list": {
       "title": "All volunteers",
@@ -276,6 +281,9 @@
       "program": "Program",
       "filter-by-program": "Filter by programs",
       "no-program": "No program",
+      "project": "Project",
+      "filter-by-project": "Filter by projects",
+      "no-project": "No project",
       "contractDue": "Contract until",
       "create-button": "Create",
       "menu-common": "Common",

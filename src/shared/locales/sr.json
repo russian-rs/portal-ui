@@ -176,7 +176,8 @@
         "number": "Ugovor {number}",
         "cannotDeleteLast": "Ne možete obrisati poslednji ugovor. Volonter mora imati bar jedan ugovor."
       },
-      "selectProgram": "Izaberite program"
+      "selectProgram": "Izaberite program",
+      "selectProject": "Izaberite projekat"
     },
     "report": {
       "document-title": "Izveštaj",
@@ -250,6 +251,8 @@
       "weeks": "Izveštajne nedelje",
       "status": "Status",
       "time-spent": "Potrošeni sati",
+      "program": "Program",
+      "project": "Projekat",
       "task-count": "Zadataka: {count}",
       "files-count": "Priloga: {count}",
       "files": "Prilozi",
@@ -257,7 +260,9 @@
       "empty": "Nije pronađen nijedan izveštaj",
       "reset": "Resetujte filtere",
       "program-filter": "Filter programa",
-      "program-filter-not-selected": "Nije odabrano"
+      "program-filter-not-selected": "Nije odabrano",
+      "project-filter": "Filter projekata",
+      "project-filter-not-selected": "Nije odabrano"
     },
     "user-list": {
       "title": "Svi volonteri",
@@ -276,6 +281,9 @@
       "program": "Program",
       "filter-by-program": "Filter po programima",
       "no-program": "Bez programa",
+      "project": "Projekat",
+      "filter-by-project": "Filter po projektima",
+      "no-project": "Bez projekta",
       "contractDue": "Ugovor do",
       "create-button": "Stvoriti",
       "menu-common": "Opšte",
