@@ -2,7 +2,7 @@ import { Select } from "@mantine/core"
 import { useIntl } from "react-intl"
 import { usePrograms } from "src/app/providers/ProgramsProvider"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
-import { locales } from "../lib/locales"
+import { locales } from "./lib/locales"
 import { useState, useRef } from "react"
 
 interface ProgramFilterProps {
@@ -44,4 +44,4 @@ export function ProgramFilter({ value, onChange, className, placeholder }: Progr
             className={className}
         />
     )
-}
+} 

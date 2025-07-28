@@ -19,11 +19,12 @@ import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { locales } from "./lib/locales"
 import classes from "./UserList.module.scss"
 import { ProgramSelectInline } from "src/pages/profile/select/ProgramSelect"
+import { ProjectSelectInline } from "src/pages/profile/select/ProjectSelect"
 import { useIntl } from "react-intl"
 import { notifications } from "@mantine/notifications"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
-import { ProgramFilter } from "./filter/ProgramFilter"
+import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
 import { ContractDrawer } from "src/pages/profile/contract/ContractDrawer"
 
 export const UserList = () => {
@@ -40,6 +41,9 @@ export const UserList = () => {
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
     const [selectedProgram, setSelectedProgram] = useState<string | null>(
         searchParams.get("program") || null
+    )
+    const [selectedProject, setSelectedProject] = useState<string | null>(
+        searchParams.get("project") || null
     )
 
     const isMobile = useMediaQuery('(max-width: 1360px)')
@@ -75,12 +79,14 @@ export const UserList = () => {
     const syncStateFromUrl = () => {
         const urlSearch = searchParams.get("search") || ""
         const urlProgram = searchParams.get("program") || null
+        const urlProject = searchParams.get("project") || null
         const urlPageFromUser = parseInt(searchParams.get("page") || "1")
         const urlPage = urlPageFromUser > 0 ? urlPageFromUser - 1 : 0
 
         setSearch(urlSearch)
         setDebouncedSearch(urlSearch)
         setSelectedProgram(urlProgram)
+        setSelectedProject(urlProject)
         setPageRequest(prev => ({ ...prev, pageNumber: urlPage }))
     }
 
@@ -97,7 +103,7 @@ export const UserList = () => {
 
 
     // Функция для обновления URL параметров
-    const updateUrlParams = (newSearch: string, newProgram: string | null, newPage: number = 0) => {
+    const updateUrlParams = (newSearch: string, newProgram: string | null, newProject: string | null, newPage: number = 0) => {
         const params = new URLSearchParams()
         
         if (newSearch.trim()) {
@@ -106,6 +112,10 @@ export const UserList = () => {
         
         if (newProgram !== null) {
             params.set("program", newProgram)
+        }
+        
+        if (newProject) {
+            params.set("project", newProject)
         }
         
         if (newPage > 0) {
@@ -119,9 +129,45 @@ export const UserList = () => {
     const canEditProgram = () =>
         hasPermission(user, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])
 
+    const canEditProject = (targetUserId: number) => {
+        // Админы могут редактировать проекты всех пользователей
+        // Обычные пользователи могут редактировать только свой проект
+        if (hasPermission(user, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])) {
+            return true
+        }
+        return targetUserId === user?.id
+    }
+
     const { mutate: updateUserProgram } = useMutation({
         mutationFn: async ({ userId, program }: { userId: string, program: string }) => {
             const response = await UserApiService.setProgram(parseInt(userId), program)
+            return response.data
+        },
+        onSuccess: () => {
+            notifications.show(
+                SuccessNotification(
+                    <Text size="sm">
+                        <FormattedMessage id="pages.profile.profileUpdated" />
+                    </Text>,
+                    null
+                )
+            )
+            queryClient.invalidateQueries({ queryKey: ["searchUsers"] })
+        },
+        onError: () => {
+            notifications.show(
+                ErrorNotification(
+                    <Text size="sm">
+                        <FormattedMessage id="pages.profile.updateError" />
+                    </Text>
+                )
+            )
+        }
+    })
+
+    const { mutate: updateUserProject } = useMutation({
+        mutationFn: async ({ userId, project }: { userId: string, project: string }) => {
+            const response = await UserApiService.setProject(parseInt(userId), project)
             return response.data
         },
         onSuccess: () => {
@@ -170,13 +216,18 @@ export const UserList = () => {
 
     // Эффект для обновления URL при изменении debouncedSearch
     useEffect(() => {
-        updateUrlParams(debouncedSearch, selectedProgram, pageRequest.pageNumber || 0)
+        updateUrlParams(debouncedSearch, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
     }, [debouncedSearch])
 
     // Эффект для обновления URL при изменении программы
     useEffect(() => {
-        updateUrlParams(debouncedSearch, selectedProgram, pageRequest.pageNumber || 0)
+        updateUrlParams(debouncedSearch, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
     }, [selectedProgram])
+
+    // Эффект для обновления URL при изменении проектов
+    useEffect(() => {
+        updateUrlParams(debouncedSearch, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
+    }, [selectedProject])
 
     // Сбрасываем страницу только если программа действительно изменилась пользователем
     const prevProgramRef = React.useRef<string | null>(selectedProgram)
@@ -188,10 +239,20 @@ export const UserList = () => {
         prevProgramRef.current = selectedProgram
     }, [selectedProgram])
 
+    // Сбрасываем страницу только если проекты действительно изменились пользователем
+    const prevProjectRef = React.useRef<string | null>(selectedProject)
+    useEffect(() => {
+        if (selectedProject !== prevProjectRef.current) {
+            setPageRequest(prev => ({ ...prev, pageNumber: 0 }))
+        }
+        
+        prevProjectRef.current = selectedProject
+    }, [selectedProject])
+
     // Эффект для обновления URL при изменении страницы
     useEffect(() => {
         const pageNumber = pageRequest.pageNumber || 0
-        updateUrlParams(debouncedSearch, selectedProgram, pageNumber)
+        updateUrlParams(debouncedSearch, selectedProgram, selectedProject, pageNumber)
     }, [pageRequest.pageNumber])
 
     // Эффект для обновления размера страницы при изменении типа устройства
@@ -225,11 +286,20 @@ export const UserList = () => {
         isFetching,
     } = useQuery({
         initialData: { content: [], page: defaultPageResponse },
-        queryKey: ["searchUsers", debouncedSearch, pageRequest, filter, selectedProgram],
+        queryKey: ["searchUsers", debouncedSearch, pageRequest, filter, selectedProgram, selectedProject],
         queryFn: () => {
+            let project: string | undefined = undefined
+            if (selectedProject) {
+                if (selectedProject === "NO_PROJECT") {
+                    project = "" // Пустая строка для фильтра "без проекта"
+                } else {
+                    project = selectedProject // Код проекта
+                }
+            }
             const filterWithProgram = {
                 ...filter,
-                program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram
+                program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram,
+                project
             }
             return UserApiService.searchUsers(debouncedSearch, pageRequest, filterWithProgram).then((response) => {
                 return response.data
@@ -279,6 +349,16 @@ export const UserList = () => {
                 />
             </Table.Td>
                 <Table.Td>
+                <ProjectSelectInline
+                    value={user.project?.code}
+                    canEdit={canEditProject(user.id)}
+                    locale={intl.locale}
+                    onChange={(project) => {
+                        updateUserProject({ userId: String(user.id), project })
+                    }}
+                />
+            </Table.Td>
+                <Table.Td>
                     <Button
                         variant="transparent"
                         color={lastContract ? "blue" : "gray"}
@@ -288,6 +368,7 @@ export const UserList = () => {
                             setDrawerOpened(true)
                         }}
                         size="compact-sm"
+                        fw={lastContract ? undefined : 500}
                     >
                         {lastContract
                             ? dayjs(lastContract.endDate).format("DD MMM YYYY")
@@ -346,6 +427,14 @@ export const UserList = () => {
                             updateUserProgram({ userId: String(user.id), program })
                         }}
                     />
+                    <ProjectSelectInline
+                        value={user.project?.code}
+                        canEdit={canEditProject(user.id)}
+                        locale={intl.locale}
+                        onChange={(project) => {
+                            updateUserProject({ userId: String(user.id), project })
+                        }}
+                    />
                     <Button
                         variant="light"
                         fullWidth
@@ -356,6 +445,7 @@ export const UserList = () => {
                             setDrawerOpened(true)
                         }}
                         size="compact-sm"
+                        fw={lastContract ? undefined : 500}
                     >
                         {lastContract
                             ? dayjs(lastContract.endDate).format("DD MMM YYYY")
@@ -391,6 +481,10 @@ export const UserList = () => {
                         value={selectedProgram}
                         onChange={setSelectedProgram}
                     />
+                    <ProjectFilter
+                        value={selectedProject}
+                        onChange={setSelectedProject}
+                    />
                 </Flex>
                 {isMobile ? (
                     <Flex direction="column" rowGap={8} className={classes.mobileList}>
@@ -411,6 +505,9 @@ export const UserList = () => {
                                 </Table.Th>
                                 <Table.Th className={classes.columnProgram}>
                                     <FormattedMessage id={locales.program} />
+                                </Table.Th>
+                                <Table.Th className={classes.columnProject}>
+                                    <FormattedMessage id={locales.project} />
                                 </Table.Th>
                                 <Table.Th className={classes.columnContractDue}>
                                     <FormattedMessage id={locales.contractDue} />

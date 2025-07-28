@@ -178,7 +178,8 @@
         "number": "Договор {number}",
         "cannotDeleteLast": "Нельзя удалить последний контракт. У волонтера должен быть как минимум один контракт."
       },
-      "selectProgram": "Выбор программы"
+      "selectProgram": "Выбор программы",
+      "selectProject": "Выбор проекта"
     },
     "report": {
       "document-title": "Отчет",
@@ -252,6 +253,8 @@
       "weeks": "Отчетные недели",
       "status": "Статус",
       "time-spent": "Затрачено часов",
+      "program": "Программа",
+      "project": "Проект",
       "task-count": "Задач: {count}",
       "files-count": "Вложений: {count}",
       "files": "Вложения",
@@ -259,7 +262,9 @@
       "empty": "Отчетов не найдено",
       "reset": "Сбросить фильтры",
       "program-filter": "Фильтр программ",
-      "program-filter-not-selected": "Не выбрано"
+      "program-filter-not-selected": "Не выбрано",
+      "project-filter": "Фильтр проектов",
+      "project-filter-not-selected": "Не выбрано"
     },
     "user-list": {
       "title": "Все волонтеры",
@@ -278,6 +283,9 @@
       "program": "Программа",
       "filter-by-program": "Фильтр программ",
       "no-program": "Без программы",
+      "project": "Проект",
+      "filter-by-project": "Фильтр проектов",
+      "no-project": "Без проекта",
       "contractDue": "Контракт до",
       "create-button": "Создать",
       "menu-common": "Общее",

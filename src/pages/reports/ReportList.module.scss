@@ -33,6 +33,10 @@ $table-min-width: 58rem;
     }
 }
 
+.programFilter {
+    min-width: 12rem;
+}
+
 .table {
     width: 100%;
     min-width: $table-min-width;
@@ -73,6 +77,14 @@ $table-min-width: 58rem;
 
 .columnStatus {
     width: 8rem;
+}
+
+.columnProgram {
+    width: 10rem;
+}
+
+.columnProject {
+    width: 10rem;
 }
 
 .columnStats {

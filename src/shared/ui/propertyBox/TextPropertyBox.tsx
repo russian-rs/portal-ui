@@ -9,6 +9,7 @@ export const TextPropertyBox = ({
     href,
     justify,
     className,
+    valueColor,
 }: {
     name: string
     value?: ReactNode
@@ -16,6 +17,7 @@ export const TextPropertyBox = ({
     href?: string
     justify?: string
     className?: string
+    valueColor?: string
 }) => {
     if (!value) {
         return <Flex />
@@ -30,16 +32,16 @@ export const TextPropertyBox = ({
                     {icon}
                     {href ? (
                         <Anchor href={href} target="_blank" style={{ maxWidth: "90%" }}>
-                            <Text truncate="end" style={{ maxWidth: "100%" }} size="sm">
+                            <Text truncate="end" style={{ maxWidth: "100%" }} size="sm" c={valueColor}>
                                 {value}
                             </Text>
                         </Anchor>
                     ) : (
-                        <Text size="sm">{value}</Text>
+                        <Text size="sm" c={valueColor}>{value}</Text>
                     )}
                 </Flex>
             ) : (
-                <Text mt={4} ms={justify === "flex-end" ? "auto" : ""} size="sm">
+                <Text mt={4} ms={justify === "flex-end" ? "auto" : ""} size="sm" c={valueColor}>
                     {value}
                 </Text>
             )}
