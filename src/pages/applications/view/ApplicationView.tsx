@@ -13,15 +13,18 @@ import {
     IconLocation,
     IconPhone,
     IconWorld,
-    IconListCheck
+    IconListCheck,
+    IconPencil
 } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
+import { useDisclosure } from "@mantine/hooks"
 import { UserContext } from "src/app/providers/UserContext"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
+import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import generateContractPdf from "src/shared/docs/contract"
@@ -42,6 +45,7 @@ export const ApplicationView = () => {
     const navigate = useNavigate()
     const { user } = useContext(UserContext)
     const intl = useIntl()
+    const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
 
     if (!id) {
         navigate("/not-found", { replace: true })
@@ -86,6 +90,10 @@ export const ApplicationView = () => {
 
     const onContractChanged = (contract: ContractDto) => {
         setApplication({ ...application, contract: contract })
+    }
+
+    const onApplicationUpdate = (updatedApplication: ApplicationDto) => {
+        setApplication(updatedApplication)
     }
 
     return (
@@ -277,8 +285,22 @@ export const ApplicationView = () => {
                     >
                         <FormattedMessage id={locales.questionnaireDownload} />
                     </Button>
+                    <Button
+                        variant="outline"
+                        rightSection={<IconPencil size={14} />}
+                        onClick={openDrawer}
+                    >
+                        <FormattedMessage id="pages.profile.buttons.edit" />
+                    </Button>
                 </Flex>
             </Flex>
+            
+            <ApplicationEditDrawer
+                opened={drawerOpened}
+                onClose={closeDrawer}
+                application={application}
+                onApplicationUpdate={onApplicationUpdate}
+            />
         </Flex>
     )
 }
