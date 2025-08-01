@@ -147,7 +147,11 @@
         "tooYoung": "You must be at least 18 years old",
         "invalidDate": "Invalid date format",
         "contractTypeRequired": "Select contract type",
-        "endDateAfterStart": "The end date must be later than the start date"
+        "endDateAfterStart": "The end date must be later than the start date",
+        "invalidEmail": "Invalid email format",
+        "invalidSymbols": "Invalid symbols",
+        "minLetters": "Minimum {count} letters",
+        "maxLetters": "Maximum {count} characters"
       },
       "buttons": {
         "edit": "Edit",
@@ -429,6 +433,8 @@
         "status": "Application Status",
         "contract-start": "Contract (start)",
         "type": "Type",
+        "name": "First and Last Name",
+        "patronymic": "Patronymic (Father's Name)",
         "email": "E-mail",
         "phone": "Phone",
         "telegram": "Telegram",
@@ -449,7 +455,10 @@
         "goal": "Purpose of Participation in the Organization",
         "bio": "Brief Biography",
         "contractDownload": "Download contract",
-        "questionnaireDownload": "Download questionnaire"
+        "questionnaireDownload": "Download questionnaire",
+        "editTitle": "Edit application",
+        "editSuccess": "Application updated successfully",
+        "editError": "Error updating application"
       },
       "report": {
         "contract-from": "Start Date",

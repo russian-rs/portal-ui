@@ -1,0 +1,243 @@
+import { Button, Drawer, Flex, TextInput } from "@mantine/core"
+import { DateInput } from "@mantine/dates"
+import { useForm, zodResolver } from "@mantine/form"
+import { notifications } from "@mantine/notifications"
+import { ApplicationDto } from "@russian-rs/portal-api-axios"
+import React from "react"
+import {
+    IconAt,
+    IconBrandTelegram,
+    IconCake,
+    IconDeviceFloppy,
+    IconEPassport,
+    IconLocation,
+    IconPhone,
+    IconSignature,
+} from "@tabler/icons-react"
+import { useMutation } from "@tanstack/react-query"
+import dayjs from "dayjs"
+import { FormattedMessage, useIntl } from "react-intl"
+import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
+import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
+import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
+import { z } from "zod"
+
+interface ApplicationEditDrawerProps {
+    opened: boolean
+    onClose: () => void
+    application: ApplicationDto
+    onApplicationUpdate: (application: ApplicationDto) => void
+}
+
+export const ApplicationEditDrawer = ({
+    opened,
+    onClose,
+    application,
+    onApplicationUpdate,
+}: ApplicationEditDrawerProps) => {
+    const intl = useIntl()
+
+    const validationSchema = z.object({
+        name: z
+            .string()
+            .regex(/^[a-zA-Z\s\-ĦħÀ-ÿ]+$/, intl.formatMessage({ id: "pages.profile.validation.invalidSymbols" }))
+            .min(5, intl.formatMessage({ id: "pages.profile.validation.minLetters" }, { count: 5 }))
+            .max(69, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 69 }))
+            .optional()
+            .or(z.literal("")),
+        patronymic: z
+            .string()
+            .regex(/^[a-zA-Z\s\-ĦħÀ-ÿ]+$/, intl.formatMessage({ id: "pages.profile.validation.invalidSymbols" }))
+            .min(2, intl.formatMessage({ id: "pages.profile.validation.minLetters" }, { count: 2 }))
+            .max(30, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 30 }))
+            .optional()
+            .or(z.literal("")),
+        email: z
+            .string()
+            .email(intl.formatMessage({ id: "pages.profile.validation.invalidEmail" }))
+            .max(100, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 100 })),
+        phone: z
+            .string()
+            .regex(/^\+?\d{10,15}$/, intl.formatMessage({ id: "pages.profile.validation.invalidPhone" }))
+            .max(20, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 20 })),
+        telegram: z
+            .string()
+            .regex(/^[a-zA-Z][a-zA-Z0-9_]*$/, intl.formatMessage({ id: "pages.profile.validation.invalidTelegram" }))
+            .max(32, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 32 }))
+            .optional()
+            .or(z.literal("")),
+        birthDate: z
+            .string()
+            .refine((val) => {
+                const date = dayjs(val, "YYYY-MM-DD", true)
+                return date.isValid() &&
+                       date.isBefore(dayjs()) &&
+                       date.isAfter(dayjs().subtract(120, "years"))
+            }, intl.formatMessage({ id: "pages.profile.validation.invalidBirthDate" }))
+            .refine((val) => {
+                const date = dayjs(val, "YYYY-MM-DD", true)
+                return date.isBefore(dayjs().subtract(18, "years"))
+            }, intl.formatMessage({ id: "pages.profile.validation.tooYoung" }))
+            .optional()
+            .or(z.literal("")),
+        passport: z
+            .string()
+            .max(50, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 50 }))
+            .optional()
+            .or(z.literal("")),
+        address: z
+            .string()
+            .max(200, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 200 }))
+            .optional()
+            .or(z.literal("")),
+    })
+
+    const form = useForm({
+        initialValues: {
+            name: application.name || "",
+            patronymic: application.patronymic || "",
+            email: application.email || "",
+            phone: application.phone || "",
+            telegram: application.telegram || "",
+            birthDate: application.birthDate || "",
+            passport: application.passport || "",
+            address: application.address || "",
+        },
+        validate: zodResolver(validationSchema),
+    })
+
+    const { mutate: updateApplication, isPending } = useMutation({
+        mutationFn: async (data: Partial<ApplicationDto>) => {
+            const response = await PrivateApplicationApiService.updateApplication({
+                ...application,
+                ...data,
+            })
+            return response.data
+        },
+        onSuccess: (updatedApplication) => {
+            onApplicationUpdate(updatedApplication)
+            notifications.show(
+                SuccessNotification(
+                    <FormattedMessage id="pages.applications.view.editSuccess" />,
+                    null
+                )
+            )
+            onClose()
+        },
+        onError: () => {
+            notifications.show(
+                ErrorNotification(
+                    <FormattedMessage id="pages.applications.view.editError" />
+                )
+            )
+        },
+    })
+
+    const handleSubmit = () => {
+        if (form.validate().hasErrors) {
+            return
+        }
+
+        const updateData: Partial<ApplicationDto> = {}
+        
+        if (form.values.name?.trim()) updateData.name = form.values.name.trim()
+        if (form.values.patronymic?.trim()) updateData.patronymic = form.values.patronymic.trim()
+        if (form.values.email?.trim()) updateData.email = form.values.email.trim()
+        if (form.values.phone?.trim()) updateData.phone = form.values.phone.trim()
+        if (form.values.telegram?.trim()) updateData.telegram = form.values.telegram.trim()
+        if (form.values.birthDate?.trim()) updateData.birthDate = form.values.birthDate.trim()
+        if (form.values.passport?.trim()) updateData.passport = form.values.passport.trim()
+        if (form.values.address?.trim()) updateData.address = form.values.address.trim()
+
+        updateApplication(updateData)
+    }
+
+    // Обновляем форму при изменении application
+    React.useEffect(() => {
+        if (opened) {
+            form.setValues({
+                name: application.name || "",
+                patronymic: application.patronymic || "",
+                email: application.email || "",
+                phone: application.phone || "",
+                telegram: application.telegram || "",
+                birthDate: application.birthDate || "",
+                passport: application.passport || "",
+                address: application.address || "",
+            })
+        }
+    }, [opened, application])
+
+    return (
+        <Drawer
+            opened={opened}
+            onClose={onClose}
+            title={<FormattedMessage id="pages.applications.view.editTitle" />}
+            position="right"
+            size="md"
+        >
+            <form onSubmit={(e) => {
+                e.preventDefault()
+                handleSubmit()
+            }}>
+                <Flex direction="column" gap="md">
+                    <TextInput
+                        leftSection={<IconSignature size={16} />}
+                        label={<FormattedMessage id="pages.applications.view.name" />}
+                        {...form.getInputProps('name')}
+                    />
+                    <TextInput
+                        leftSection={<IconSignature size={16} />}
+                        label={<FormattedMessage id="pages.applications.view.patronymic" />}
+                        {...form.getInputProps('patronymic')}
+                    />
+                    <TextInput
+                        leftSection={<IconAt size={16} />}
+                        label={<FormattedMessage id="pages.applications.view.email" />}
+                        withAsterisk
+                        {...form.getInputProps('email')}
+                    />
+                    <TextInput
+                        leftSection={<IconPhone size={16} />}
+                        label={<FormattedMessage id="pages.applications.view.phone" />}
+                        withAsterisk
+                        {...form.getInputProps('phone')}
+                    />
+                    <TextInput
+                        leftSection={<IconBrandTelegram size={16} />}
+                        label={<FormattedMessage id="pages.applications.view.telegram" />}
+                        {...form.getInputProps('telegram')}
+                    />
+                    <DateInput
+                        leftSection={<IconCake size={16} />}
+                        valueFormat="DD MMMM YYYY"
+                        label={<FormattedMessage id="pages.applications.view.birth" />}
+                        value={form.values.birthDate ? dayjs(form.values.birthDate).toDate() : null}
+                        onChange={(date) => {
+                            form.setFieldValue('birthDate', date ? dayjs(date).format("YYYY-MM-DD") : "")
+                        }}
+                        error={form.errors.birthDate}
+                        clearable
+                    />
+                    <TextInput
+                        leftSection={<IconEPassport size={16} />}
+                        label={<FormattedMessage id="pages.applications.view.passport" />}
+                        {...form.getInputProps('passport')}
+                    />
+                    <TextInput
+                        leftSection={<IconLocation size={16} />}
+                        label={<FormattedMessage id="pages.applications.view.address" />}
+                        {...form.getInputProps('address')}
+                    />
+                    <Button
+                        type="submit"
+                        loading={isPending}
+                        rightSection={<IconDeviceFloppy size={14} />}
+                    >
+                        <FormattedMessage id="pages.profile.buttons.save" />
+                    </Button>
+                </Flex>
+            </form>
+        </Drawer>
+    )
+} 

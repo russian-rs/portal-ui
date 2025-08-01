@@ -147,7 +147,11 @@
         "tooYoung": "Вы должны быть старше 18 лет.",
         "invalidDate": "Неверный формат даты",
         "contractTypeRequired": "Выберите тип контракта",
-        "endDateAfterStart": "Дата окончания должна быть позже даты начала"
+        "endDateAfterStart": "Дата окончания должна быть позже даты начала",
+        "invalidEmail": "Неверный формат email",
+        "invalidSymbols": "Неверные символы",
+        "minLetters": "Минимум {count} символов",
+        "maxLetters": "Максимум {count} символов"
       },
       "buttons": {
         "edit": "Редактировать",
@@ -429,6 +433,8 @@
         "status": "Статус заявки",
         "contract-start": "Договор (начало)",
         "type": "Тип",
+        "name": "Имя Фамилия",
+        "patronymic": "Отчество (имя отца)",
         "email": "E-mail",
         "phone": "Телефон",
         "telegram": "Telegram",
@@ -449,7 +455,10 @@
         "goal": "Цель участия в организации",
         "bio": "Краткая биография",
         "contractDownload": "Скачать договор",
-        "questionnaireDownload": "Скачать анкету"
+        "questionnaireDownload": "Скачать анкету",
+        "editTitle": "Редактировать анкету",
+        "editSuccess": "Анкета успешно обновлена",
+        "editError": "Ошибка при обновлении анкеты"
       },
       "report": {
         "contract-from": "Дата начала",
