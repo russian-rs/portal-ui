@@ -1,4 +1,5 @@
 import { Badge, Button, Flex, Pagination, Text } from "@mantine/core"
+import { useMediaQuery } from "@mantine/hooks"
 import { PageRequest, ReportFilter } from "@russian-rs/portal-api-axios"
 import { IconChevronRight, IconClockCheck, IconListCheck, IconPlus, IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
@@ -19,7 +20,6 @@ import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
 import { WeekPicker } from "src/shared/ui/weekPicker/WeekPicker"
 import classes from "./MyReports.module.scss"
-import { useMediaQuery } from "@mantine/hooks"
 
 export const MyReports = () => {
     setDocumentTitleByLocale(locales.documentTitle)
@@ -28,36 +28,36 @@ export const MyReports = () => {
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
 
-    const isMobile = useMediaQuery('(max-width: 1360px)')
+    const isMobile = useMediaQuery("(max-width: 1360px)")
 
     // Инициализация состояния из URL параметров
     const [pageRequest, setPageRequest] = useState<PageRequest>({
         ...defaultPage,
         pageNumber: Math.max(0, parseInt(searchParams.get("page") || "1") - 1),
-        pageSize: isMobile ? 10 : 25
+        pageSize: isMobile ? 10 : 25,
     })
     const [filter, setFilter] = useState<ReportFilter>({
         ...defaultFilter,
         status: searchParams.get("status") || null,
         dateFrom: searchParams.get("dateFrom") || null,
-        dateTo: searchParams.get("dateTo") || null
+        dateTo: searchParams.get("dateTo") || null,
     })
 
     useEffect(() => {
-        const savedState = localStorage.getItem('myReportsListState')
+        const savedState = localStorage.getItem("myReportsListState")
         const currentSearch = window.location.search
-        
-        const isFromReport = currentSearch === '' || currentSearch === '?'
-        
+
+        const isFromReport = currentSearch === "" || currentSearch === "?"
+
         if (savedState && isFromReport && savedState !== currentSearch) {
-            localStorage.removeItem('myReportsListState')
-            window.history.replaceState(null, '', '/my-reports' + savedState)
+            localStorage.removeItem("myReportsListState")
+            window.history.replaceState(null, "", "/my-reports" + savedState)
             window.location.reload()
         } else if (!isFromReport) {
-            localStorage.removeItem('myReportsListState')
+            localStorage.removeItem("myReportsListState")
         }
     }, [])
-    
+
     // Ref для скролла к началу списка
     const listStartRef = React.useRef<HTMLDivElement>(null)
 
@@ -73,7 +73,7 @@ export const MyReports = () => {
             ...filter,
             status: urlStatus,
             dateFrom: urlDateFrom,
-            dateTo: urlDateTo
+            dateTo: urlDateTo,
         })
         setPageRequest({ ...pageRequest, pageNumber: urlPage })
     }
@@ -84,31 +84,31 @@ export const MyReports = () => {
             syncStateFromUrl()
         }
 
-        window.addEventListener('popstate', handlePopState)
-        return () => window.removeEventListener('popstate', handlePopState)
+        window.addEventListener("popstate", handlePopState)
+        return () => window.removeEventListener("popstate", handlePopState)
     }, [searchParams])
 
     // Функция для обновления URL параметров
     const updateUrlParams = (newFilter: ReportFilter, newPage: number = 0) => {
         const params = new URLSearchParams()
-        
+
         if (newFilter.status) {
             params.set("status", newFilter.status)
         }
-        
+
         if (newFilter.dateFrom) {
             params.set("dateFrom", newFilter.dateFrom)
         }
-        
+
         if (newFilter.dateTo) {
             params.set("dateTo", newFilter.dateTo)
         }
-        
+
         if (newPage > 0) {
             const userPageNumber = newPage + 1
             params.set("page", userPageNumber.toString())
         }
-        
+
         setSearchParams(params)
     }
 
@@ -131,7 +131,7 @@ export const MyReports = () => {
     useEffect(() => {
         const newPageSize = isMobile ? 10 : 25
         if (pageRequest.pageSize !== newPageSize) {
-            setPageRequest(prev => ({ ...prev, pageSize: newPageSize }))
+            setPageRequest((prev) => ({ ...prev, pageSize: newPageSize }))
         }
     }, [isMobile])
 
@@ -139,12 +139,12 @@ export const MyReports = () => {
     useEffect(() => {
         if (pageRequest.pageNumber !== undefined) {
             if (listStartRef.current) {
-                listStartRef.current.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
+                listStartRef.current.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
                 })
             } else {
-                window.scrollTo({ top: 0, behavior: 'smooth' })
+                window.scrollTo({ top: 0, behavior: "smooth" })
             }
         }
     }, [pageRequest.pageNumber])
@@ -161,7 +161,7 @@ export const MyReports = () => {
         const endDate = end ? dayjs(end).format(DEFAULT_DATE_FORMAT) : null
         const newFilter = { ...filter, dateFrom: startDate, dateTo: endDate }
         const filterChanged = newFilter.dateFrom !== filter.dateFrom || newFilter.dateTo !== filter.dateTo
-        
+
         setFilter(newFilter)
         if (filterChanged) {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
@@ -171,7 +171,7 @@ export const MyReports = () => {
     const onStatusChange = (status: string | null) => {
         const newFilter = { ...filter, status: status }
         const filterChanged = newFilter.status !== filter.status
-        
+
         setFilter(newFilter)
         if (filterChanged) {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
@@ -179,10 +179,14 @@ export const MyReports = () => {
     }
 
     const rows = response.content.map((report) => (
-        <Flex key={report.id} className={classes.report} onClick={() => {
-            localStorage.setItem('myReportsListState', window.location.search)
-            navigate(`/report/${report.id}`)
-        }}>
+        <Flex
+            key={report.id}
+            className={classes.report}
+            onClick={() => {
+                localStorage.setItem("myReportsListState", window.location.search)
+                navigate(`/report/${report.id}`)
+            }}
+        >
             <Flex className={classes.reportLeft}>
                 <TextPropertyBox
                     name={locales.reportCreated}
@@ -219,7 +223,7 @@ export const MyReports = () => {
         <Flex direction="column">
             <CustomLoader visible={isFetching} className={classes.loader} />
             <Flex className={classes.root}>
-                <Flex direction="column" gap="md" w="100%">
+                <Flex direction="column" gap="md" w="100%" className={classes.content}>
                     <Flex columnGap="xl" rowGap="md" align="center" wrap="wrap-reverse">
                         <Text className={classes.title}>
                             <FormattedMessage id={locales.documentTitle} />
@@ -228,14 +232,14 @@ export const MyReports = () => {
                     <div ref={listStartRef} />
                     <Flex className={classes.content}>
                         <Flex className={classes.filterArea}>
-                            <WeekPicker 
-                                onChange={onWeekChange} 
+                            <WeekPicker
+                                onChange={onWeekChange}
                                 className={classes.filterWeek}
                                 initialStartDate={filter.dateFrom}
                                 initialEndDate={filter.dateTo}
                             />
-                            <ReportStatusSelect 
-                                onChange={onStatusChange} 
+                            <ReportStatusSelect
+                                onChange={onStatusChange}
                                 className={classes.filterStatus}
                                 value={filter.status}
                             />
@@ -263,21 +267,22 @@ export const MyReports = () => {
                             {rows}
                         </Flex>
                     </Flex>
-                    <Flex className={classes.pagination}>
-                        <Pagination
-                            total={response.page.totalPages}
-                            value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
-                            disabled={isFetching}
-                            hideWithOnePage={true}
-                            onChange={(newPage) => {
-                                const pageNumber = newPage - 1
-                                setPageRequest({ ...pageRequest, pageNumber })
-                            }}
-                        />
-                        <Text c="dimmed">
-                            <FormattedMessage id={locales.total} values={{ total: response.page.totalElements }} />
-                        </Text>
-                    </Flex>
+                </Flex>
+
+                <Flex className={classes.pagination}>
+                    <Pagination
+                        total={response.page.totalPages}
+                        value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
+                        disabled={isFetching}
+                        hideWithOnePage={true}
+                        onChange={(newPage) => {
+                            const pageNumber = newPage - 1
+                            setPageRequest({ ...pageRequest, pageNumber })
+                        }}
+                    />
+                    <Text c="dimmed">
+                        <FormattedMessage id={locales.total} values={{ total: response.page.totalElements }} />
+                    </Text>
                 </Flex>
             </Flex>
         </Flex>

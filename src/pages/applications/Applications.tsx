@@ -1,4 +1,4 @@
-import { Checkbox, CloseButton, Flex, Input, Pagination, Table, Text, Skeleton, Card, Box } from "@mantine/core"
+import { Box, Card, Checkbox, CloseButton, Flex, Input, Pagination, Skeleton, Table, Text } from "@mantine/core"
 import { ApplicationsFilter, PageRequest } from "@russian-rs/portal-api-axios"
 import { IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
@@ -10,8 +10,8 @@ import { allowedRoles } from "src/pages/applications/lib/roles"
 import { ApplicationRow } from "src/pages/applications/row/ApplicationRow"
 import { CreateUser } from "src/pages/users/createUser/CreateUser"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
-import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { useDesktop, useScreenSize } from "src/shared/hooks/useDesktop"
+import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { hasPermission } from "src/shared/user/roles"
 import classes from "./Applications.module.scss"
@@ -31,8 +31,8 @@ const SkeletonCard = () => (
                 </Flex>
                 <Skeleton height={24} width={24} />
             </Flex>
-            
-            <Box style={{ paddingTop: '0.75rem', borderTop: '1px solid var(--mantine-color-gray-2)' }}>
+
+            <Box style={{ paddingTop: "0.75rem", borderTop: "1px solid var(--mantine-color-gray-2)" }}>
                 {[1, 2, 3, 4].map((i) => (
                     <Flex key={i} justify="space-between" align="center" mb="sm">
                         <Skeleton height={10} width={60} />
@@ -61,13 +61,13 @@ export const Applications = () => {
     const [pageRequest, setPageRequest] = useState<PageRequest>({
         ...defaultPage,
         pageNumber: Math.max(0, parseInt(searchParams.get("page") || "1") - 1),
-        pageSize: isMobile ? 10 : 25
+        pageSize: isMobile ? 10 : 25,
     })
     const [filter, setFilter] = useState<ApplicationsFilter>({
         ...defaultFilter,
-        showCompleted: searchParams.get("showCompleted") === "true"
+        showCompleted: searchParams.get("showCompleted") === "true",
     })
-    
+
     // Ref для скролла к началу списка
     const listStartRef = React.useRef<HTMLDivElement>(null)
 
@@ -90,27 +90,27 @@ export const Applications = () => {
             syncStateFromUrl()
         }
 
-        window.addEventListener('popstate', handlePopState)
-        return () => window.removeEventListener('popstate', handlePopState)
+        window.addEventListener("popstate", handlePopState)
+        return () => window.removeEventListener("popstate", handlePopState)
     }, [searchParams])
 
     // Функция для обновления URL параметров
     const updateUrlParams = (newSearch: string, newShowCompleted: boolean, newPage: number = 0) => {
         const params = new URLSearchParams()
-        
+
         if (newSearch.trim()) {
             params.set("search", newSearch.trim())
         }
-        
+
         if (newShowCompleted) {
             params.set("showCompleted", "true")
         }
-        
+
         if (newPage > 0) {
             const userPageNumber = newPage + 1
             params.set("page", userPageNumber.toString())
         }
-        
+
         setSearchParams(params)
     }
 
@@ -152,12 +152,12 @@ export const Applications = () => {
     useEffect(() => {
         if (isMobile && pageRequest.pageNumber !== undefined) {
             if (listStartRef.current) {
-                listStartRef.current.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
+                listStartRef.current.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
                 })
             } else {
-                window.scrollTo({ top: 0, behavior: 'smooth' })
+                window.scrollTo({ top: 0, behavior: "smooth" })
             }
         }
     }, [pageRequest.pageNumber, isMobile])
@@ -233,7 +233,9 @@ export const Applications = () => {
                                     <FormattedMessage id={isLargeDesktop ? locales.email : locales.emailShort} />
                                 </Table.Th>
                                 <Table.Th>
-                                    <FormattedMessage id={isLargeDesktop ? locales.contractStart : locales.contractStartShort} />
+                                    <FormattedMessage
+                                        id={isLargeDesktop ? locales.contractStart : locales.contractStartShort}
+                                    />
                                 </Table.Th>
                                 <Table.Th>
                                     <FormattedMessage id={isLargeDesktop ? locales.status : locales.statusShort} />
@@ -247,7 +249,9 @@ export const Applications = () => {
                     <Flex direction="column" className={classes.mobileList}>
                         {isFetching && content.length === 0 ? (
                             <>
-                                {[1, 2, 3].map((i) => <SkeletonCard key={i} />)}
+                                {[1, 2, 3].map((i) => (
+                                    <SkeletonCard key={i} />
+                                ))}
                             </>
                         ) : (
                             content.map((application) => (
@@ -264,24 +268,23 @@ export const Applications = () => {
                         </Text>
                     </Flex>
                 )}
-                {page.totalPages > 1 && (
-                    <Flex className={classes.paginationArea}>
-                        <Pagination
-                            className={classes.pagination}
-                            total={page.totalPages}
-                            value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
-                            disabled={isFetching}
-                            onChange={(newPage) => {
-                                const pageNumber = newPage - 1
-                                setPageRequest({ ...pageRequest, pageNumber })
-                            }}
-                        />
-                        <Text c="dimmed">
-                            <FormattedMessage id={locales.total} values={{ count: page.totalElements }} />
-                        </Text>
-                    </Flex>
-                )}
             </Flex>
+            {page.totalPages > 1 && (
+                <Flex className={classes.pagination}>
+                    <Pagination
+                        total={page.totalPages}
+                        value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
+                        disabled={isFetching}
+                        onChange={(newPage) => {
+                            const pageNumber = newPage - 1
+                            setPageRequest({ ...pageRequest, pageNumber })
+                        }}
+                    />
+                    <Text c="dimmed">
+                        <FormattedMessage id={locales.total} values={{ count: page.totalElements }} />
+                    </Text>
+                </Flex>
+            )}
         </Flex>
     )
 }

@@ -1,9 +1,9 @@
 import { Avatar, Flex, Pagination, Table, Text } from "@mantine/core"
 import { PageRequest, ReportDto, ReportFilter, UserInfoDto } from "@russian-rs/portal-api-axios"
-import { IconFile, IconClock, IconListCheck, IconUfo } from "@tabler/icons-react"
+import { IconClock, IconFile, IconListCheck, IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
@@ -15,23 +15,22 @@ import { getSpentTimeFromReport } from "src/shared/report/timeSpent"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
 
+import { Badge, useComputedColorScheme } from "@mantine/core"
+import { useMediaQuery } from "@mantine/hooks"
+import { usePrograms } from "src/app/providers/ProgramsProvider"
+import { useProjects } from "src/app/providers/ProjectsProvider"
+import { getReportStatusColor } from "src/shared/report/status"
+import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
+import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
+import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { UserSearch } from "src/shared/ui/userSearch/UserSearch"
 import { WeekPicker } from "src/shared/ui/weekPicker/WeekPicker"
 import { hasPermission } from "src/shared/user/roles"
+import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { defaultFilter, defaultPage, defaultPageResponse, defaultUser } from "./lib/defaults"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
 import classes from "./ReportList.module.scss"
-import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
-import { useMediaQuery } from "@mantine/hooks"
-import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
-import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
-import { Badge } from "@mantine/core"
-import { getReportStatusColor } from "src/shared/report/status"
-import { usePrograms } from "src/app/providers/ProgramsProvider"
-import { useProjects } from "src/app/providers/ProjectsProvider"
-import { getLocalizedName } from "src/shared/utils/getLocalName"
-import { useComputedColorScheme } from "@mantine/core"
 
 export const ReportList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -42,9 +41,9 @@ export const ReportList = () => {
     const navigate = useNavigate()
     const intl = useIntl()
 
-    const isMobile = useMediaQuery('(max-width: 1360px)')
-    const isTablet = useMediaQuery('(min-width: 1024px) and (max-width: 1439px)')
-    
+    const isMobile = useMediaQuery("(max-width: 1360px)")
+    const isTablet = useMediaQuery("(min-width: 1024px) and (max-width: 1439px)")
+
     const programs = usePrograms()
     const projects = useProjects()
     const colorScheme = useComputedColorScheme("light")
@@ -53,22 +52,18 @@ export const ReportList = () => {
     const [pageRequest, setPageRequest] = useState<PageRequest>({
         ...defaultPage,
         pageNumber: Math.max(0, parseInt(searchParams.get("page") || "1") - 1),
-        pageSize: isMobile ? 10 : 25
+        pageSize: isMobile ? 10 : 25,
     })
     const [filter, setFilter] = useState<ReportFilter>({
         ...defaultFilter(loginParam),
         status: searchParams.get("status") || null,
         dateFrom: searchParams.get("dateFrom") || null,
-        dateTo: searchParams.get("dateTo") || null
+        dateTo: searchParams.get("dateTo") || null,
     })
     const [logins, setLogins] = useState<string[]>([])
-    const [selectedProgram, setSelectedProgram] = useState<string | null>(
-        searchParams.get("program") || null
-    )
-    const [selectedProject, setSelectedProject] = useState<string | null>(
-        searchParams.get("project") || null
-    )
-    
+    const [selectedProgram, setSelectedProgram] = useState<string | null>(searchParams.get("program") || null)
+    const [selectedProject, setSelectedProject] = useState<string | null>(searchParams.get("project") || null)
+
     // Ref для скролла к началу списка
     const listStartRef = React.useRef<HTMLDivElement>(null)
 
@@ -84,82 +79,83 @@ export const ReportList = () => {
         const urlPageFromUser = parseInt(searchParams.get("page") || "1")
         const urlPage = urlPageFromUser > 0 ? urlPageFromUser - 1 : 0
 
-        setFilter(prevFilter => ({
+        setFilter((prevFilter) => ({
             ...prevFilter,
             login: urlLogin,
             status: urlStatus,
             dateFrom: urlDateFrom,
-            dateTo: urlDateTo
+            dateTo: urlDateTo,
         }))
 
         setSelectedProgram(urlProgram)
         setSelectedProject(urlProject)
 
-        setPageRequest(prevPageRequest => ({ ...prevPageRequest, pageNumber: urlPage }))
-        setResetKey(prev => prev + 1)
+        setPageRequest((prevPageRequest) => ({ ...prevPageRequest, pageNumber: urlPage }))
+        setResetKey((prev) => prev + 1)
     }
 
     useEffect(() => {
-        const savedState = localStorage.getItem('reportListState')
+        const savedState = localStorage.getItem("reportListState")
         const currentSearch = window.location.search
-        
-        const isFromReport = currentSearch === '' || currentSearch === '?'
-        
+
+        const isFromReport = currentSearch === "" || currentSearch === "?"
+
         if (savedState && isFromReport && savedState !== currentSearch) {
-            localStorage.removeItem('reportListState')
-            window.history.replaceState(null, '', '/reports' + savedState)
+            localStorage.removeItem("reportListState")
+            window.history.replaceState(null, "", "/reports" + savedState)
             window.location.reload()
         } else if (!isFromReport) {
-            localStorage.removeItem('reportListState')
+            localStorage.removeItem("reportListState")
         }
     }, [])
 
-
-
-    const updateUrlParams = (newFilter: ReportFilter, newProgram: string | null, newProject: string | null, newPage: number = 0) => {
-
+    const updateUrlParams = (
+        newFilter: ReportFilter,
+        newProgram: string | null,
+        newProject: string | null,
+        newPage: number = 0
+    ) => {
         const params = new URLSearchParams()
-        
+
         if (newFilter.login) {
             params.set("login", newFilter.login)
         }
-        
+
         if (newFilter.status) {
             params.set("status", newFilter.status)
         }
-        
+
         if (newFilter.dateFrom) {
             params.set("dateFrom", newFilter.dateFrom)
         }
-        
+
         if (newFilter.dateTo) {
             params.set("dateTo", newFilter.dateTo)
         }
-        
+
         if (newProgram !== null) {
             params.set("program", newProgram)
         }
-        
+
         if (newProject) {
             params.set("project", newProject)
         }
-        
+
         // Добавляем параметр page только если это не первая страница
         if (newPage > 0) {
             const userPageNumber = newPage + 1
             params.set("page", userPageNumber.toString())
         }
-        
+
         setSearchParams(params)
     }
-
 
     // Эффект для обновления размера страницы при изменении типа устройства
     useEffect(() => {
         const newPageSize = isMobile ? 10 : 25
         if (pageRequest.pageSize !== newPageSize) {
             // Сохраняем текущую страницу при изменении размера
-            setPageRequest(prev => ({ ...prev, pageSize: newPageSize }))
+            setPageRequest((prev) => ({ ...prev, pageSize: newPageSize }))
         }
     }, [isMobile])
 
@@ -167,12 +163,12 @@ export const ReportList = () => {
     useEffect(() => {
         if (isMobile && pageRequest.pageNumber !== undefined) {
             if (listStartRef.current) {
-                listStartRef.current.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
+                listStartRef.current.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
                 })
             } else {
-                window.scrollTo({ top: 0, behavior: 'smooth' })
+                window.scrollTo({ top: 0, behavior: "smooth" })
             }
         }
     }, [pageRequest.pageNumber, isMobile])
@@ -204,7 +200,7 @@ export const ReportList = () => {
                 ...filter,
 
                 program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram,
-                project
+                project,
             }
             return ReportApiService.getReports(pageRequest, filterWithProgram).then((response) => {
                 setLogins(response.data.content.map((it) => it.user).filter((it) => it != undefined))
@@ -218,7 +214,7 @@ export const ReportList = () => {
     const onUserSelected = (selectedUser: UserInfoDto | null) => {
         const newFilter = { ...filter, login: selectedUser?.username || null }
         const filterChanged = newFilter.login !== filter.login
-        
+
         setFilter(newFilter)
         if (filterChanged) {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
@@ -232,7 +228,7 @@ export const ReportList = () => {
     const onStatusChange = (status: string | null) => {
         const newFilter = { ...filter, status: status }
         const filterChanged = newFilter.status !== filter.status
-        
+
         setFilter(newFilter)
         if (filterChanged) {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
@@ -248,7 +244,7 @@ export const ReportList = () => {
         const endDate = end ? dayjs(end).format(DEFAULT_DATE_FORMAT) : null
         const newFilter = { ...filter, dateFrom: startDate, dateTo: endDate }
         const filterChanged = newFilter.dateFrom !== filter.dateFrom || newFilter.dateTo !== filter.dateTo
-        
+
         setFilter(newFilter)
         if (filterChanged) {
             setPageRequest({ ...pageRequest, pageNumber: 0 })
@@ -265,10 +261,14 @@ export const ReportList = () => {
         const timeSpent = getSpentTimeFromReport(report, intl)
         const filesCount = getReportFilesCount(report)
         return (
-            <Table.Tr key={report.id} className={classes.row} onClick={() => {
-                localStorage.setItem('reportListState', window.location.search)
-                navigate(`/report/${report.id}`)
-            }}>
+            <Table.Tr
+                key={report.id}
+                className={classes.row}
+                onClick={() => {
+                    localStorage.setItem("reportListState", window.location.search)
+                    navigate(`/report/${report.id}`)
+                }}
+            >
                 <Table.Td>
                     <Text>{createTime}</Text>
                 </Table.Td>
@@ -290,13 +290,37 @@ export const ReportList = () => {
                     </Text>
                 </Table.Td>
                 <Table.Td>
-                    <Text c={creator.program ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}>
-                        {creator.program ? getLocalizedName(creator.program, intl.locale) : <FormattedMessage id={locales.noProgram} />}
+                    <Text
+                        c={
+                            creator.program
+                                ? undefined
+                                : colorScheme === "dark"
+                                  ? "var(--mantine-color-gray-light-color)"
+                                  : "dimmed"
+                        }
+                    >
+                        {creator.program ? (
+                            getLocalizedName(creator.program, intl.locale)
+                        ) : (
+                            <FormattedMessage id={locales.noProgram} />
+                        )}
                     </Text>
                 </Table.Td>
                 <Table.Td>
-                    <Text c={creator.project ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}>
-                        {creator.project ? getLocalizedName(creator.project, intl.locale) : <FormattedMessage id={locales.noProject} />}
+                    <Text
+                        c={
+                            creator.project
+                                ? undefined
+                                : colorScheme === "dark"
+                                  ? "var(--mantine-color-gray-light-color)"
+                                  : "dimmed"
+                        }
+                    >
+                        {creator.project ? (
+                            getLocalizedName(creator.project, intl.locale)
+                        ) : (
+                            <FormattedMessage id={locales.noProject} />
+                        )}
                     </Text>
                 </Table.Td>
                 <Table.Td>
@@ -323,14 +347,18 @@ export const ReportList = () => {
 
     const cards = reports.map((report) => {
         const creator = users[report.user!!] || defaultUser(report.user!!)
-        const createTime = dayjs(report.createTime).format('DD MMM YYYY')
+        const createTime = dayjs(report.createTime).format("DD MMM YYYY")
         const timeSpent = getSpentTimeFromReport(report, intl)
         const filesCount = getReportFilesCount(report)
         return (
-            <Flex key={report.id} className={classes.mobileCard} onClick={() => {
-                localStorage.setItem('reportListState', window.location.search)
-                navigate(`/report/${report.id}`)
-            }}>
+            <Flex
+                key={report.id}
+                className={classes.mobileCard}
+                onClick={() => {
+                    localStorage.setItem("reportListState", window.location.search)
+                    navigate(`/report/${report.id}`)
+                }}
+            >
                 {isTablet ? (
                     // Планшетная версия с подписями
                     <>
@@ -343,10 +371,7 @@ export const ReportList = () => {
                                 />
                             </Flex>
                             <Flex className={classes.reportRight}>
-                                <TextPropertyBox
-                                    name={locales.creationDate}
-                                    value={createTime}
-                                />
+                                <TextPropertyBox name={locales.creationDate} value={createTime} />
                             </Flex>
                         </Flex>
                         <Flex className={classes.reportBody}>
@@ -377,25 +402,46 @@ export const ReportList = () => {
                                 />
                             </Flex>
                             <Flex className={classes.reportRight}>
-                                <TextPropertyBox 
-                                    name={locales.weeks} 
-                                    value={report.week} 
-                                />
+                                <TextPropertyBox name={locales.weeks} value={report.week} />
                             </Flex>
                         </Flex>
                         <Flex className={classes.reportBody}>
                             <Flex className={classes.reportLeft}>
                                 <TextPropertyBox
                                     name={locales.program}
-                                    value={creator.program ? getLocalizedName(creator.program, intl.locale) : <FormattedMessage id={locales.noProgram} />}
-                                    valueColor={creator.program ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}
+                                    value={
+                                        creator.program ? (
+                                            getLocalizedName(creator.program, intl.locale)
+                                        ) : (
+                                            <FormattedMessage id={locales.noProgram} />
+                                        )
+                                    }
+                                    valueColor={
+                                        creator.program
+                                            ? undefined
+                                            : colorScheme === "dark"
+                                              ? "var(--mantine-color-gray-light-color)"
+                                              : "dimmed"
+                                    }
                                 />
                             </Flex>
                             <Flex className={classes.reportRight}>
                                 <TextPropertyBox
                                     name={locales.project}
-                                    value={creator.project ? getLocalizedName(creator.project, intl.locale) : <FormattedMessage id={locales.noProject} />}
-                                    valueColor={creator.project ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}
+                                    value={
+                                        creator.project ? (
+                                            getLocalizedName(creator.project, intl.locale)
+                                        ) : (
+                                            <FormattedMessage id={locales.noProject} />
+                                        )
+                                    }
+                                    valueColor={
+                                        creator.project
+                                            ? undefined
+                                            : colorScheme === "dark"
+                                              ? "var(--mantine-color-gray-light-color)"
+                                              : "dimmed"
+                                    }
                                 />
                             </Flex>
                         </Flex>
@@ -408,9 +454,7 @@ export const ReportList = () => {
                                         icon={<IconFile size={16} />}
                                     />
                                 </Flex>
-                                <Flex className={classes.reportRight}>
-                                    {/* Пустое место для симметрии */}
-                                </Flex>
+                                <Flex className={classes.reportRight}>{/* Пустое место для симметрии */}</Flex>
                             </Flex>
                         )}
                     </>
@@ -423,8 +467,12 @@ export const ReportList = () => {
                             </Text>
                             <Flex align="center" gap={8} style={{ flex: 1 }}>
                                 <Avatar size={24} src={creator.avatar?.link} name={creator.fullName} />
-                                <Text fw={500} style={{ flex: 1 }}>{creator.fullName}</Text>
-                                <Text size="sm" c="dimmed">{report.week}</Text>
+                                <Text fw={500} style={{ flex: 1 }}>
+                                    {creator.fullName}
+                                </Text>
+                                <Text size="sm" c="dimmed">
+                                    {report.week}
+                                </Text>
                             </Flex>
                         </Flex>
                         <Flex className={classes.reportBody}>
@@ -434,16 +482,44 @@ export const ReportList = () => {
                             {filesCount !== 0 && (
                                 <Flex align="center" gap={4}>
                                     <IconFile size={14} />
-                                    <Text size="sm" c="dimmed">{filesCount}</Text>
+                                    <Text size="sm" c="dimmed">
+                                        {filesCount}
+                                    </Text>
                                 </Flex>
                             )}
                         </Flex>
                         <Flex className={classes.reportBody}>
-                            <Text size="sm" c={creator.program ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}>
-                                {creator.program ? getLocalizedName(creator.program, intl.locale) : <FormattedMessage id={locales.noProgram} />}
+                            <Text
+                                size="sm"
+                                c={
+                                    creator.program
+                                        ? undefined
+                                        : colorScheme === "dark"
+                                          ? "var(--mantine-color-gray-light-color)"
+                                          : "dimmed"
+                                }
+                            >
+                                {creator.program ? (
+                                    getLocalizedName(creator.program, intl.locale)
+                                ) : (
+                                    <FormattedMessage id={locales.noProgram} />
+                                )}
                             </Text>
-                            <Text size="sm" c={creator.project ? undefined : (colorScheme === "dark" ? "var(--mantine-color-gray-light-color)" : "dimmed")}>
-                                {creator.project ? getLocalizedName(creator.project, intl.locale) : <FormattedMessage id={locales.noProject} />}
+                            <Text
+                                size="sm"
+                                c={
+                                    creator.project
+                                        ? undefined
+                                        : colorScheme === "dark"
+                                          ? "var(--mantine-color-gray-light-color)"
+                                          : "dimmed"
+                                }
+                            >
+                                {creator.project ? (
+                                    getLocalizedName(creator.project, intl.locale)
+                                ) : (
+                                    <FormattedMessage id={locales.noProject} />
+                                )}
                             </Text>
                         </Flex>
                     </>
@@ -468,13 +544,13 @@ export const ReportList = () => {
                         onUserChange={onUserSelected}
                         initialSearch={filter.login || ""}
                     />
-                    <WeekPicker 
+                    <WeekPicker
                         key={`week-picker-${resetKey}`}
                         onChange={onWeekChange}
                         initialStartDate={filter.dateFrom}
                         initialEndDate={filter.dateTo}
                     />
-                    <ReportStatusSelect 
+                    <ReportStatusSelect
                         key={`status-select-${resetKey}`}
                         onChange={onStatusChange}
                         value={filter.status}
@@ -488,7 +564,7 @@ export const ReportList = () => {
                             value={selectedProgram}
                             onChange={(newProgram) => {
                                 const programChanged = newProgram !== selectedProgram
-                                
+
                                 setSelectedProgram(newProgram)
                                 if (programChanged) {
                                     setPageRequest({ ...pageRequest, pageNumber: 0 })
@@ -510,7 +586,7 @@ export const ReportList = () => {
                             value={selectedProject}
                             onChange={(newProject) => {
                                 const projectChanged = newProject !== selectedProject
-                                
+
                                 setSelectedProject(newProject)
                                 if (projectChanged) {
                                     setPageRequest({ ...pageRequest, pageNumber: 0 })
@@ -566,25 +642,25 @@ export const ReportList = () => {
                         </Text>
                     </Flex>
                 )}
-                {page.totalPages > 1 && (
-                    <Flex className={classes.pagination}>
-                        <Pagination
-                            total={page.totalPages}
-                            value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
-                            disabled={isFetchingReports}
-                            onChange={(newPage) => {
-                                const pageNumber = newPage - 1
-                                setPageRequest({ ...pageRequest, pageNumber })
-
-                                updateUrlParams(filter, selectedProgram, selectedProject, pageNumber)
-                            }}
-                        />
-                        <Text c="dimmed">
-                            <FormattedMessage id={locales.total} values={{ count: page.totalElements }} />
-                        </Text>
-                    </Flex>
-                )}
             </Flex>
+            {page.totalPages > 1 && (
+                <Flex className={classes.pagination}>
+                    <Pagination
+                        total={page.totalPages}
+                        value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
+                        disabled={isFetchingReports}
+                        onChange={(newPage) => {
+                            const pageNumber = newPage - 1
+                            setPageRequest({ ...pageRequest, pageNumber })
+
+                            updateUrlParams(filter, selectedProgram, selectedProject, pageNumber)
+                        }}
+                    />
+                    <Text c="dimmed">
+                        <FormattedMessage id={locales.total} values={{ count: page.totalElements }} />
+                    </Text>
+                </Flex>
+            )}
         </Flex>
     )
 }
