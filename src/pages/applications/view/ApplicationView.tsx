@@ -1,4 +1,5 @@
 import { Blockquote, Button, Divider, Flex, Text } from "@mantine/core"
+import { useDisclosure } from "@mantine/hooks"
 import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import {
     IconArrowRight,
@@ -10,35 +11,36 @@ import {
     IconContract,
     IconEPassport,
     IconLanguageHiragana,
+    IconListCheck,
     IconLocation,
+    IconPencil,
     IconPhone,
     IconWorld,
-    IconListCheck,
-    IconPencil
 } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
-import { useDisclosure } from "@mantine/hooks"
 import { UserContext } from "src/app/providers/UserContext"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
-import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import generateContractPdf from "src/shared/docs/contract"
+import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
+import { DenyReasonModal } from "src/shared/ui/denyReasonModal/DenyReasonModal"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
+import { ApplicationStatus } from "src/shared/user/applications"
 import { hasPermission } from "src/shared/user/roles"
+import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
-import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 
 export const ApplicationView = () => {
     const { id } = useParams()
@@ -46,6 +48,7 @@ export const ApplicationView = () => {
     const { user } = useContext(UserContext)
     const intl = useIntl()
     const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
+    const [denyReasonModalOpened, { open: openDenyReasonModal, close: closeDenyReasonModal }] = useDisclosure(false)
 
     if (!id) {
         navigate("/not-found", { replace: true })
@@ -85,7 +88,19 @@ export const ApplicationView = () => {
     }
 
     const onStatusChange = (status: string) => {
-        setApplication({ ...application, status: status })
+        if (status === ApplicationStatus.DENY) {
+            openDenyReasonModal()
+        } else {
+            setApplication({ ...application, status: status })
+        }
+    }
+
+    const onCloseDenyReasonModal = () => {
+        closeDenyReasonModal()
+    }
+
+    const onDenyReasonConfirm = (reason: string) => {
+        setApplication({ ...application, status: ApplicationStatus.DENY, refuseReason: reason })
     }
 
     const onContractChanged = (contract: ContractDto) => {
@@ -252,6 +267,9 @@ export const ApplicationView = () => {
                             />
                         }
                     />
+                    {application.status === ApplicationStatus.DENY && !!application.refuseReason && (
+                        <TextPropertyBox name={locales.refuseReason} value={application.refuseReason} />
+                    )}
                     <PropertyBox
                         name={locales.contractStart}
                         value={
@@ -275,7 +293,7 @@ export const ApplicationView = () => {
                     </Button>
                     <Button
                         variant="gradient"
-                        gradient={{from: '#00FF95', to: '#5AB08C'}}
+                        gradient={{ from: "#00FF95", to: "#5AB08C" }}
                         rightSection={<IconListCheck size={15} />}
                         disabled={application.contract == null}
                         className={classes.questionnaireGenerate}
@@ -285,21 +303,25 @@ export const ApplicationView = () => {
                     >
                         <FormattedMessage id={locales.questionnaireDownload} />
                     </Button>
-                    <Button
-                        variant="outline"
-                        rightSection={<IconPencil size={14} />}
-                        onClick={openDrawer}
-                    >
+                    <Button variant="outline" rightSection={<IconPencil size={14} />} onClick={openDrawer}>
                         <FormattedMessage id="pages.profile.buttons.edit" />
                     </Button>
                 </Flex>
             </Flex>
-            
+
             <ApplicationEditDrawer
                 opened={drawerOpened}
                 onClose={closeDrawer}
                 application={application}
                 onApplicationUpdate={onApplicationUpdate}
+            />
+
+            <DenyReasonModal
+                opened={denyReasonModalOpened}
+                onClose={onCloseDenyReasonModal}
+                onConfirm={onDenyReasonConfirm}
+                title={<FormattedMessage id={locales.denyReasonModal.title} />}
+                description={<FormattedMessage id={locales.denyReasonModal.description} />}
             />
         </Flex>
     )

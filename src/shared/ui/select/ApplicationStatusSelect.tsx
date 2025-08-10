@@ -1,6 +1,6 @@
 import { Combobox, Flex, InputBase, Text, Tooltip, useCombobox } from "@mantine/core"
 import { ApplicationDto } from "@russian-rs/portal-api-axios"
-import React, { ReactNode, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { ApplicationStatus, getApplicationStatusColor, getApplicationStatusIcon } from "src/shared/user/applications"
 import { locales } from "./lib/locales"
@@ -41,6 +41,10 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
         )
     })
 
+    useEffect(() => {
+        setValue(props.application.status || ApplicationStatus.CREATED)
+    }, [props.application.status])
+
     return (
         <Flex direction="column">
             {props.label && (
@@ -51,9 +55,12 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
             <Combobox
                 store={combobox}
                 onOptionSubmit={(val) => {
-                    setValue(val)
-                    combobox.closeDropdown()
                     onChange(val)
+                    combobox.closeDropdown()
+
+                    if (val !== ApplicationStatus.DENY) {
+                        setValue(val)
+                    }
                 }}
             >
                 <Combobox.Target>
