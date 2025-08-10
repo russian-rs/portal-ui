@@ -151,7 +151,21 @@
         "invalidEmail": "Neispravan format email-a",
         "invalidSymbols": "Neispravni simboli",
         "minLetters": "Najmanje {count} slova",
-        "maxLetters": "Maksimalno {count} karaktera"
+        "maxLetters": "Maksimalno {count} karaktera",
+        "title": "Molimo vas da popunite nedostajuće informacije u vašem profilu",
+        "description": "Da bi vaš profil bio potpun i da biste mogli da koristite sve mogućnosti portala, popunite sledeća polja:",
+        "footer": "🛠 Ovo će trajati samo nekoliko minuta. Nakon popunjavanja, sva funkcionalnost će ponovo biti dostupna",
+        "goToProfile": "Uredi profil",
+        "fields": {
+          "avatar": "fotografija profila",
+          "city": "grad",
+          "address": "adresa",
+          "birthDate": "datum rođenja",
+          "telegram": "telegram",
+          "phone": "telefon",
+          "program": "program",
+          "project": "projekat"
+        }
       },
       "buttons": {
         "edit": "Uredi",
