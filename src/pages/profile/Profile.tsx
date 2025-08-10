@@ -1,12 +1,16 @@
 import { Container, Flex, SimpleGrid, Skeleton } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router"
 import { ContractInfo } from "src/pages/profile/contract/ContractInfo"
 import { ProfileInfo } from "src/pages/profile/info/ProfileInfo"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
+import { useProfileValidation } from "src/app/providers/ProfileValidationProvider"
+import { useContext } from "react"
+import { UserContext } from "src/app/providers/UserContext"
+import { useIntl } from "react-intl"
 import classes from "./Profile.module.scss"
 
 export const Profile = () => {
@@ -15,6 +19,9 @@ export const Profile = () => {
     const { login } = useParams()
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
+    const { setShowProfileModal } = useProfileValidation()
+    const { user: currentUser } = useContext(UserContext)
+    const intl = useIntl()
 
     if (!login) {
         navigate("/not-found")
@@ -32,6 +39,28 @@ export const Profile = () => {
     const handleUserInfoUpdate = () => {
         refetch()
     }
+
+    // Показываем модальное окно при загрузке страницы профиля, если это профиль текущего пользователя и он не заполнен
+    useEffect(() => {
+        if (userInfo && currentUser && userInfo.username === currentUser.username) {
+            const missingFields = []
+            
+            if (!userInfo.avatar?.link) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.avatar" }))
+            if (!userInfo.city?.trim()) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.city" }))
+            if (!userInfo.address?.trim()) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.address" }))
+            if (!userInfo.birthDate) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.birthDate" }))
+            if (!userInfo.telegram?.trim()) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.telegram" }))
+            if (!userInfo.phone?.trim()) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.phone" }))
+            if (!userInfo.program?.code) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.program" }))
+            if (!userInfo.project?.code) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.project" }))
+            
+            if (missingFields.length > 0) {
+                setShowProfileModal(true)
+            }
+
+            console.log(currentUser)
+        }
+            }, [userInfo, currentUser, setShowProfileModal, intl])
 
     if (loading) {
         return <CustomLoader visible={true} className={classes.loader} />

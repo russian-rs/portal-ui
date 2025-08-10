@@ -151,7 +151,21 @@
         "invalidEmail": "Invalid email format",
         "invalidSymbols": "Invalid symbols",
         "minLetters": "Minimum {count} letters",
-        "maxLetters": "Maximum {count} characters"
+        "maxLetters": "Maximum {count} characters",
+        "title": "Please fill in the missing information in your profile",
+        "description": "To make your profile complete and you can use all the portal features, fill in the following fields:",
+        "footer": "🛠 This will take just a couple of minutes. After filling, all functionality will be available again",
+        "goToProfile": "Edit profile",
+        "fields": {
+          "avatar": "profile photo",
+          "city": "city",
+          "address": "address",
+          "birthDate": "birth date",
+          "telegram": "telegram",
+          "phone": "phone",
+          "program": "program",
+          "project": "project"
+        }
       },
       "buttons": {
         "edit": "Edit",
