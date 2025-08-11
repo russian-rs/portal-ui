@@ -1,6 +1,7 @@
 import { Blockquote, Button, Divider, Flex, Text } from "@mantine/core"
 import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import {
+    IconMailFilled,
     IconArrowRight,
     IconAt,
     IconBrandTelegram,
@@ -28,6 +29,8 @@ import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import generateContractPdf from "src/shared/docs/contract"
+import generateQuestionnairePdf from "src/shared/docs/questionnaire"
+import generateEnvelopPdf from "src/shared/docs/envelop"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
@@ -38,7 +41,7 @@ import { hasPermission } from "src/shared/user/roles"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
-import generateQuestionnairePdf from "src/shared/docs/questionnaire"
+
 
 export const ApplicationView = () => {
     const { id } = useParams()
@@ -284,6 +287,18 @@ export const ApplicationView = () => {
                         }}
                     >
                         <FormattedMessage id={locales.questionnaireDownload} />
+                    </Button>
+                    <Button
+                        variant="gradient"
+                        gradient={{from: '#ED2208', to: '#E65744'}}
+                        rightSection={<IconMailFilled size={15} />}
+                        disabled={application.contract == null}
+                        className={classes.envelopGenerate}
+                        onClick={() => {
+                            generateEnvelopPdf(application)
+                        }}
+                    >
+                        <FormattedMessage id={locales.envelopDownload} />
                     </Button>
                     <Button
                         variant="outline"
