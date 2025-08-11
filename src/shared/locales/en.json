@@ -456,6 +456,7 @@
         "bio": "Brief Biography",
         "contractDownload": "Download contract",
         "questionnaireDownload": "Download questionnaire",
+        "envelopDownload": "Download envelop",
         "editTitle": "Edit application",
         "editSuccess": "Application updated successfully",
         "editError": "Error updating application"
