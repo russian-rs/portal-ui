@@ -19,9 +19,9 @@ const PrivateApp = () => {
                         <ProfileValidationProvider>
                             <ProfileValidationGuard>
                                 <AppShell className={classes.appShell}>
-                                                                <AppHeader />
-                            <AppNavbar />
-                            <AppShell.Main className={classes.appShellMain}>
+                                    <AppHeader />
+                                    <AppNavbar />
+                                    <AppShell.Main className={classes.appShellMain}>
                                         <ScrollArea className={classes.appShellMainScroll}>
                                             <PrivateRouter />
                                         </ScrollArea>

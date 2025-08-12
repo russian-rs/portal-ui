@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useLocation, useNavigate } from "react-router"
+import { useLocation } from "react-router"
 import { useProfileValidation } from "src/app/providers/ProfileValidationProvider"
 import { useContext } from "react"
 import { UserContext } from "src/app/providers/UserContext"
@@ -11,7 +11,6 @@ interface ProfileValidationGuardProps {
 export const ProfileValidationGuard = ({ children }: ProfileValidationGuardProps) => {
     const { isProfileComplete, setShowProfileModal } = useProfileValidation()
     const { user } = useContext(UserContext)
-    const navigate = useNavigate()
     const location = useLocation()
 
     useEffect(() => {
@@ -20,14 +19,16 @@ export const ProfileValidationGuard = ({ children }: ProfileValidationGuardProps
             return
         }
 
-        // Если профиль не заполнен и мы не на странице профиля текущего пользователя
+        // Показываем модалку только если профиль не заполнен и мы не на странице профиля
         const isOnOwnProfile = location.pathname === `/profile/${user.username}`
+        
         if (!isProfileComplete && !isOnOwnProfile) {
-            // Перенаправляем на страницу профиля
-            navigate(`/profile/${user.username}`)
-            // Модальное окно будет показано на странице профиля
+            setShowProfileModal(true)
+        } else if (isOnOwnProfile) {
+            // Если на странице профиля, скрываем модальное окно
+            setShowProfileModal(false)
         }
-    }, [isProfileComplete, user, location.pathname, navigate])
+    }, [isProfileComplete, user, location.pathname, setShowProfileModal])
 
     return <>{children}</>
 } 

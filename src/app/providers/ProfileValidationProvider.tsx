@@ -1,7 +1,8 @@
 import { UserInfoDto } from "@russian-rs/portal-api-axios"
-import React, { createContext, ReactNode, useContext, useMemo } from "react"
+import React, { createContext, ReactNode, useContext, useMemo, useEffect } from "react"
 import { UserContext } from "./UserContext"
 import { useIntl } from "react-intl"
+import { useNavigate, useLocation } from "react-router"
 import dayjs from "dayjs"
 
 interface ProfileValidationContextType {
@@ -26,6 +27,8 @@ export const ProfileValidationProvider = ({ children }: { children?: ReactNode }
     const { user } = useContext(UserContext)
     const [showProfileModal, setShowProfileModal] = React.useState(false)
     const intl = useIntl()
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const { isProfileComplete, missingFields } = useMemo(() => {
         if (!user) {
@@ -79,11 +82,22 @@ export const ProfileValidationProvider = ({ children }: { children?: ReactNode }
         }
     }, [isProfileComplete, showProfileModal])
 
+    // Проверяем профиль при заходе на сайт и делаем редирект если не заполнен
+    useEffect(() => {
+        if (user && !isProfileComplete) {
+            const isOnOwnProfile = location.pathname === `/profile/${user.username}`
+            const isOnLoginPage = location.pathname === "/login"
+            
+            if (!isOnOwnProfile && !isOnLoginPage) {
+                navigate(`/profile/${user.username}`, { replace: true })
+            }
+        }
+    }, [user, isProfileComplete, location.pathname, navigate])
+
     const openEditProfile = () => {
         setShowProfileModal(false)
-        const editButton = document.querySelector('[data-edit-profile-button]') as HTMLButtonElement
-        if (editButton) {
-            editButton.click()
+        if (user) {
+            navigate(`/profile/${user.username}`)
         }
     }
 
