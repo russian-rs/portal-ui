@@ -536,7 +536,7 @@ export const UserList = () => {
             {page.totalPages > 0 && (
                 <Flex className={classes.pagination}>
                     <Pagination
-                        total={3}
+                        total={page.totalPages}
                         value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
                         disabled={isFetching}
                         onChange={(newPage) => {
