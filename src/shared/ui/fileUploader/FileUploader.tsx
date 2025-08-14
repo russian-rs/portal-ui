@@ -62,21 +62,28 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
             return
         }
 
-        // показать прогресс
+        // показать прогресс: все имена в очереди
         setLoadingFiles(files.map((f) => f.name))
 
+        const uploaded: any[] = []
+
         try {
-            const results = await Promise.allSettled(files.map((file) => FilesApiService.uploadFile(file)))
+            for (const file of files) {
+                try {
+                    // Ждём завершения КАЖДОЙ загрузки прежде чем перейти к следующей
+                    const resp = await FilesApiService.uploadFile(file)
+                    uploaded.push(resp.data)
+                } finally {
+                    // помечаем текущий файл как обработанный
+                    setLoadingFiles((prev) => prev.filter((name) => name !== file.name))
+                }
+            }
 
-            // соберём только успешно загруженные
-            const uploaded = results
-                .filter((r): r is PromiseFulfilledResult<any> => r.status === "fulfilled")
-                .map((r) => r.value.data)
-
-            // добавляем все загруженные файлы разом
-            setUploadedFiles((prev) => [...prev, ...uploaded])
+            if (uploaded.length) {
+                setUploadedFiles((prev) => [...prev, ...uploaded])
+            }
         } finally {
-            // скрыть прогресс (даже если часть упала)
+            // на всякий случай скрываем прогресс
             setLoadingFiles([])
         }
     }
