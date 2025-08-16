@@ -14,7 +14,7 @@ import {
     IconPhone,
     IconWorld,
     IconListCheck,
-    IconPencil
+    IconPencil,
 } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -84,8 +84,12 @@ export const ApplicationView = () => {
         )
     }
 
-    const onStatusChange = (status: string) => {
-        setApplication({ ...application, status: status })
+    const onStatusChange = (status: string, comment?: string) => {
+        const updated = { ...application, status: status } as ApplicationDto
+        if (comment && status === "PAUSED") {
+            ;(updated as any).comment = comment
+        }
+        setApplication(updated)
     }
 
     const onContractChanged = (contract: ContractDto) => {
@@ -245,11 +249,19 @@ export const ApplicationView = () => {
                         align="start"
                         name={locales.status}
                         value={
-                            <ApplicationStatusSelect
-                                application={application}
-                                className={classes.statusSelect}
-                                onChange={onStatusChange}
-                            />
+                            <Flex direction="column" gap={4}>
+                                <ApplicationStatusSelect
+                                    application={application}
+                                    className={classes.statusSelect}
+                                    onChange={onStatusChange}
+                                    showInlineReason={false}
+                                />
+                                {application.status === "PAUSED" && application.comment && (
+                                    <Text size="sm" c="dimmed" className={classes.pauseReasonBlock}>
+                                        <FormattedMessage id={locales.pauseReason} />: {application.comment}
+                                    </Text>
+                                )}
+                            </Flex>
                         }
                     />
                     <PropertyBox
@@ -275,7 +287,7 @@ export const ApplicationView = () => {
                     </Button>
                     <Button
                         variant="gradient"
-                        gradient={{from: '#00FF95', to: '#5AB08C'}}
+                        gradient={{ from: "#00FF95", to: "#5AB08C" }}
                         rightSection={<IconListCheck size={15} />}
                         disabled={application.contract == null}
                         className={classes.questionnaireGenerate}
@@ -285,16 +297,12 @@ export const ApplicationView = () => {
                     >
                         <FormattedMessage id={locales.questionnaireDownload} />
                     </Button>
-                    <Button
-                        variant="outline"
-                        rightSection={<IconPencil size={14} />}
-                        onClick={openDrawer}
-                    >
+                    <Button variant="outline" rightSection={<IconPencil size={14} />} onClick={openDrawer}>
                         <FormattedMessage id="pages.profile.buttons.edit" />
                     </Button>
                 </Flex>
             </Flex>
-            
+
             <ApplicationEditDrawer
                 opened={drawerOpened}
                 onClose={closeDrawer}

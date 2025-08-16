@@ -20,7 +20,11 @@ export const Profile = () => {
         navigate("/not-found")
     }
 
-    const { data: userInfo, isFetching, refetch } = useQuery({
+    const {
+        data: userInfo,
+        isFetching,
+        refetch,
+    } = useQuery({
         queryKey: ["getInfo", login],
         queryFn: () =>
             UserApiService.getInfo(login!!).then((response) => {

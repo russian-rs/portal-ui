@@ -31,8 +31,12 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
         queryFn: () => PrivateApplicationApiService.updateApplication(application).then((response) => response.data),
     })
 
-    const onStatusUpdate = (status: string) => {
-        setApplication({ ...application, status: status })
+    const onStatusUpdate = (status: string, comment?: string) => {
+        const updated = { ...application, status: status } as ApplicationDto
+        if (comment && status === "PAUSED") {
+            ;(updated as any).comment = comment
+        }
+        setApplication(updated)
         setUpdated(true)
     }
 
@@ -55,7 +59,9 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                                 onClick={() => navigate(`/application/${application.id}`)}
                             />
                             <Box>
-                                <Text fw={600} size="sm">{application.name}</Text>
+                                <Text fw={600} size="sm">
+                                    {application.name}
+                                </Text>
                                 <Text c="dimmed" size="xs">
                                     {dayjs(application.created).format("DD MMM YYYY")}
                                 </Text>
@@ -63,17 +69,15 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                         </Flex>
                         <ApplicationMenu applicationDto={application} />
                     </Flex>
-                    
+
                     <Box className={classes.mobileInfo}>
                         <div className={classes.mobileRow}>
                             <Text size="xs" c="dimmed" className={classes.mobileLabel}>
                                 <FormattedMessage id="pages.applications.type" />:
                             </Text>
-                            <div>
-                                {type(application.type, false)}
-                            </div>
+                            <div>{type(application.type, false)}</div>
                         </div>
-                        
+
                         <div className={classes.mobileRow}>
                             <Text size="xs" c="dimmed" className={classes.mobileLabel}>
                                 <FormattedMessage id="pages.applications.email" />:
@@ -82,7 +86,7 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                                 <CopyText text={application.email} size="xs" />
                             </div>
                         </div>
-                        
+
                         <div className={classes.mobileRow}>
                             <Text size="xs" c="dimmed" className={classes.mobileLabel}>
                                 <FormattedMessage id="pages.applications.contractStart" />:
@@ -91,7 +95,7 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                                 <ContractDate application={application} onChange={onContractChanged} />
                             </div>
                         </div>
-                        
+
                         <div className={classes.mobileRow}>
                             <Text size="xs" c="dimmed" className={classes.mobileLabel}>
                                 <FormattedMessage id="pages.applications.status" />:
@@ -103,6 +107,11 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                                     disabled={isUpdating}
                                     onChange={onStatusUpdate}
                                 />
+                                {application.status === "PAUSED" && (application as any).comment && (
+                                    <Text size="xs" c="dimmed" mt={4} style={{ whiteSpace: "pre-wrap" }}>
+                                        {(application as any).comment}
+                                    </Text>
+                                )}
                             </div>
                         </div>
                     </Box>
@@ -128,7 +137,9 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                         className={classes.avatar}
                         onClick={() => navigate(`/application/${application.id}`)}
                     />
-                    <Text size={isLargeDesktop ? "sm" : "xs"} truncate="end" className={classes.compactText}>{application.name}</Text>
+                    <Text size={isLargeDesktop ? "sm" : "xs"} truncate="end" className={classes.compactText}>
+                        {application.name}
+                    </Text>
                 </Flex>
             </Table.Td>
             <Table.Td>
@@ -143,7 +154,20 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                     className={classes.statusSelect}
                     disabled={isUpdating}
                     onChange={onStatusUpdate}
+                    showInlineReason={false}
                 />
+            </Table.Td>
+            <Table.Td className={classes.pauseReasonCell}>
+                {application.status === "PAUSED" && (application as any).comment ? (
+                    <Text
+                        size={isLargeDesktop ? "sm" : "xs"}
+                        c="dimmed"
+                        className={classes.pauseReasonText}
+                        title={(application as any).comment}
+                    >
+                        {(application as any).comment}
+                    </Text>
+                ) : null}
             </Table.Td>
             <Table.Td>
                 <Flex align="center">
