@@ -1,4 +1,4 @@
-import { Button, Drawer, Flex, ActionIcon, Group } from "@mantine/core"
+import { ActionIcon, Button, Drawer, Flex, Group } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
@@ -6,13 +6,13 @@ import { ContractDto, ContractTypeEnum } from "@russian-rs/portal-api-axios"
 import { IconCalendar, IconDeviceFloppy, IconPlus, IconTrash } from "@tabler/icons-react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
+import { useEffect } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { UserApiService } from "src/shared/api/user/UserApiService"
-import { ContractTypeSelect } from "src/shared/ui/contractTypeSelect/ContractTypeSelect"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
+import { ContractTypeSelect } from "src/shared/ui/contractTypeSelect/ContractTypeSelect"
 import { z } from "zod"
-import { useEffect } from "react"
 
 interface ContractDrawerProps {
     opened: boolean
@@ -113,12 +113,7 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
             onSuccess()
             onClose()
         },
-        onError: (error: any) => {
-            console.error("Contract creation error:", {
-                error,
-                response: error.response?.data,
-                status: error.response?.status,
-            })
+        onError: () => {
             notifications.show(ErrorNotification(<FormattedMessage id="pages.profile.contract.createError" />))
         },
     })
