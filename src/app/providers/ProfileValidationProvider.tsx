@@ -87,7 +87,7 @@ export const ProfileValidationProvider = ({ children }: { children?: ReactNode }
         if (user && !isProfileComplete) {
             const isOnOwnProfile = location.pathname === `/profile/${user.username}`
             const isOnLoginPage = location.pathname === "/login"
-            
+
             if (!isOnOwnProfile && !isOnLoginPage) {
                 navigate(`/profile/${user.username}`, { replace: true })
             }
@@ -109,11 +109,7 @@ export const ProfileValidationProvider = ({ children }: { children?: ReactNode }
         openEditProfile,
     }
 
-    return (
-        <ProfileValidationContext.Provider value={contextValue}>
-            {children}
-        </ProfileValidationContext.Provider>
-    )
+    return <ProfileValidationContext.Provider value={contextValue}>{children}</ProfileValidationContext.Provider>
 }
 
 export const useProfileValidation = () => {
@@ -122,4 +118,4 @@ export const useProfileValidation = () => {
         throw new Error("useProfileValidation must be used within ProfileValidationProvider")
     }
     return context
-} 
+}

@@ -14,21 +14,17 @@ export const ProfileValidationGuard = ({ children }: ProfileValidationGuardProps
     const location = useLocation()
 
     useEffect(() => {
-        // Если пользователь не авторизован, не проверяем профиль
         if (!user) {
             return
         }
-
-        // Показываем модалку только если профиль не заполнен и мы не на странице профиля
         const isOnOwnProfile = location.pathname === `/profile/${user.username}`
-        
-        if (!isProfileComplete && !isOnOwnProfile) {
+
+        if (!isProfileComplete && isOnOwnProfile) {
             setShowProfileModal(true)
-        } else if (isOnOwnProfile) {
-            // Если на странице профиля, скрываем модальное окно
+        } else {
             setShowProfileModal(false)
         }
     }, [isProfileComplete, user, location.pathname, setShowProfileModal])
 
     return <>{children}</>
-} 
+}

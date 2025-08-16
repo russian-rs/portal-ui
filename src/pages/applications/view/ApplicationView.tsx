@@ -14,7 +14,7 @@ import {
     IconPhone,
     IconWorld,
     IconListCheck,
-    IconPencil
+    IconPencil,
 } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -275,7 +275,7 @@ export const ApplicationView = () => {
                     </Button>
                     <Button
                         variant="gradient"
-                        gradient={{from: '#00FF95', to: '#5AB08C'}}
+                        gradient={{ from: "#00FF95", to: "#5AB08C" }}
                         rightSection={<IconListCheck size={15} />}
                         disabled={application.contract == null}
                         className={classes.questionnaireGenerate}
@@ -285,16 +285,12 @@ export const ApplicationView = () => {
                     >
                         <FormattedMessage id={locales.questionnaireDownload} />
                     </Button>
-                    <Button
-                        variant="outline"
-                        rightSection={<IconPencil size={14} />}
-                        onClick={openDrawer}
-                    >
+                    <Button variant="outline" rightSection={<IconPencil size={14} />} onClick={openDrawer}>
                         <FormattedMessage id="pages.profile.buttons.edit" />
                     </Button>
                 </Flex>
             </Flex>
-            
+
             <ApplicationEditDrawer
                 opened={drawerOpened}
                 onClose={closeDrawer}
