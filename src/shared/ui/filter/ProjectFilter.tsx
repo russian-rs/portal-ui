@@ -17,10 +17,10 @@ export function ProjectFilter({ value, onChange, className, placeholder }: Proje
 
     const projectOptions = [
         { value: "NO_PROJECT", label: intl.formatMessage({ id: locales.noProject }) },
-        ...projects.map(project => ({
+        ...projects.map((project) => ({
             value: project.code,
             label: getLocalizedName(project, intl.locale),
-        }))
+        })),
     ]
 
     return (
@@ -34,4 +34,4 @@ export function ProjectFilter({ value, onChange, className, placeholder }: Proje
             className={className}
         />
     )
-} 
+}

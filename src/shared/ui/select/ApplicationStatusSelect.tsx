@@ -1,4 +1,4 @@
-import { Combobox, Flex, InputBase, Text, Tooltip, useCombobox } from "@mantine/core"
+import { Button, Combobox, Flex, InputBase, Modal, Text, Textarea, Tooltip, useCombobox } from "@mantine/core"
 import { ApplicationDto } from "@russian-rs/portal-api-axios"
 import React, { ReactNode, useState } from "react"
 import { FormattedMessage } from "react-intl"
@@ -8,10 +8,11 @@ import { locales } from "./lib/locales"
 interface ApplicationStatusSelectProps {
     application: ApplicationDto
     className?: string
-    onChange?: (status: string) => void
+    onChange?: (status: string, comment?: string) => void
     label?: string
     disabled?: boolean
     withoutIcon?: boolean
+    showInlineReason?: boolean
 }
 
 export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => {
@@ -20,10 +21,13 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
     })
 
     const [value, setValue] = useState<string>(props.application.status || ApplicationStatus.CREATED)
+    const [pauseOpened, setPauseOpened] = useState(false)
+    const [pauseReason, setPauseReason] = useState("")
+    const [pendingStatus, setPendingStatus] = useState<string | null>(null)
 
-    const onChange = (newValue: string) => {
+    const onChange = (newValue: string, comment?: string) => {
         if (props.onChange) {
-            props.onChange(newValue)
+            props.onChange(newValue, comment)
         }
     }
 
@@ -51,6 +55,12 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
             <Combobox
                 store={combobox}
                 onOptionSubmit={(val) => {
+                    if (val === ApplicationStatus.PAUSED) {
+                        setPendingStatus(val)
+                        setPauseOpened(true)
+                        combobox.closeDropdown()
+                        return
+                    }
                     setValue(val)
                     combobox.closeDropdown()
                     onChange(val)
@@ -83,6 +93,69 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
                     <Combobox.Options>{options}</Combobox.Options>
                 </Combobox.Dropdown>
             </Combobox>
+            {props.showInlineReason === true &&
+                value === ApplicationStatus.PAUSED &&
+                (props.application.comment || pauseReason) && (
+                    <Text
+                        size="xs"
+                        c="dimmed"
+                        mt={6}
+                        style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", overflowWrap: "anywhere" }}
+                    >
+                        <FormattedMessage id={locales.pauseReason} />: {props.application.comment || pauseReason}
+                    </Text>
+                )}
+
+            <Modal
+                centered
+                opened={pauseOpened}
+                onClose={() => {
+                    setPauseOpened(false)
+                    setPauseReason("")
+                    setPendingStatus(null)
+                }}
+                title={<FormattedMessage id={locales.pauseTitle} />}
+            >
+                <Flex direction="column" gap="md">
+                    <Textarea
+                        label={<FormattedMessage id={locales.pauseReason} />}
+                        placeholder=""
+                        autosize
+                        minRows={3}
+                        value={pauseReason}
+                        onChange={(e) => setPauseReason(e.currentTarget.value)}
+                        withAsterisk
+                    />
+                    <Flex justify="flex-end" gap="sm">
+                        <Button
+                            variant="outline"
+                            onClick={() => {
+                                setPauseOpened(false)
+                                setPauseReason("")
+                                setPendingStatus(null)
+                            }}
+                        >
+                            <FormattedMessage id="common.confirm-modal.cancelDefaultButton" />
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                const reason = pauseReason.trim()
+                                if (!reason || !pendingStatus) {
+                                    return
+                                }
+                                setValue(pendingStatus)
+                                onChange(pendingStatus, reason)
+                                setPauseOpened(false)
+                                setPauseReason("")
+                                setPendingStatus(null)
+                            }}
+                            disabled={pauseReason.trim().length === 0}
+                        >
+                            <FormattedMessage id={locales.pauseSubmit} />
+                        </Button>
+                    </Flex>
+                </Flex>
+            </Modal>
         </Flex>
     )
 }

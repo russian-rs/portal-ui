@@ -1,7 +1,16 @@
 import { Button, Container, Drawer, Flex, Text, TextInput } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { UserInfoDto, UserInfoUpdateRequest } from "@russian-rs/portal-api-axios"
-import { IconBrandTelegram, IconPhone, IconHome, IconBuildings, IconGift, IconMail, IconDeviceFloppy, IconPencil } from "@tabler/icons-react"
+import {
+    IconBrandTelegram,
+    IconPhone,
+    IconHome,
+    IconBuildings,
+    IconGift,
+    IconMail,
+    IconDeviceFloppy,
+    IconPencil,
+} from "@tabler/icons-react"
 import dayjs from "dayjs"
 import { useContext } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -48,16 +57,20 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
             .or(z.literal("")),
         birthDate: z
             .string()
-            .refine((val) => {
-                const date = dayjs(val, "YYYY-MM-DD", true)
-                return date.isValid() &&
-                       date.isBefore(dayjs()) &&
-                       date.isAfter(dayjs().subtract(120, "years"))
-            }, intl.formatMessage({ id: "pages.profile.validation.invalidBirthDate" }))
-            .refine((val) => {
-                const date = dayjs(val, "YYYY-MM-DD", true)
-                return date.isBefore(dayjs().subtract(18, "years"))
-            }, intl.formatMessage({ id: "pages.profile.validation.tooYoung" }))
+            .refine(
+                (val) => {
+                    const date = dayjs(val, "YYYY-MM-DD", true)
+                    return date.isValid() && date.isBefore(dayjs()) && date.isAfter(dayjs().subtract(120, "years"))
+                },
+                intl.formatMessage({ id: "pages.profile.validation.invalidBirthDate" })
+            )
+            .refine(
+                (val) => {
+                    const date = dayjs(val, "YYYY-MM-DD", true)
+                    return date.isBefore(dayjs().subtract(18, "years"))
+                },
+                intl.formatMessage({ id: "pages.profile.validation.tooYoung" })
+            )
             .optional()
             .or(z.literal("")),
         telegram: z
@@ -87,36 +100,36 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     if (!userInfo) return null
 
     const onClickSave = async () => {
-        const formValues = form.values;
+        const formValues = form.values
 
         if (form.validate().hasErrors) {
-            return;
+            return
         }
 
-        const updateData: UserInfoUpdateRequest = {};
-        if (formValues.city?.trim()) updateData.city = formValues.city.trim();
-        if (formValues.address?.trim()) updateData.address = formValues.address.trim();
-        if (formValues.birthDate?.trim()) updateData.birthDate = formValues.birthDate.trim();
-        if (formValues.telegram?.trim()) updateData.telegram = formValues.telegram.trim();
-        if (formValues.phone?.trim()) updateData.phone = formValues.phone.trim();
+        const updateData: UserInfoUpdateRequest = {}
+        if (formValues.city?.trim()) updateData.city = formValues.city.trim()
+        if (formValues.address?.trim()) updateData.address = formValues.address.trim()
+        if (formValues.birthDate?.trim()) updateData.birthDate = formValues.birthDate.trim()
+        if (formValues.telegram?.trim()) updateData.telegram = formValues.telegram.trim()
+        if (formValues.phone?.trim()) updateData.phone = formValues.phone.trim()
 
-        updateProfile(updateData);
+        updateProfile(updateData)
     }
 
     const { mutate: updateProfile, isPending } = useMutation({
         mutationFn: async (data: UserInfoUpdateRequest) => {
-            const targetUsername = userInfo.username;
+            const targetUsername = userInfo.username
 
-            const response = await UserApiService.updateInfo(targetUsername, data);
-            return response.data;
+            const response = await UserApiService.updateInfo(targetUsername, data)
+            return response.data
         },
         onSuccess: async (data) => {
             if (userInfo?.username === currentUser?.username) {
-                setUser(data);
+                setUser(data)
             }
 
             if (onUserInfoUpdate) {
-                onUserInfoUpdate(data);
+                onUserInfoUpdate(data)
             }
 
             notifications.show(
@@ -126,8 +139,8 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                     </Text>,
                     null
                 )
-            );
-            close();
+            )
+            close()
         },
         onError: () => {
             notifications.show(
@@ -136,22 +149,22 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                         <FormattedMessage id="pages.profile.updateError" />
                     </Text>
                 )
-            );
-        }
-    });
+            )
+        },
+    })
 
     const { mutate: updateProgram } = useMutation({
         mutationFn: async (program: string) => {
-            const response = await UserApiService.setProgram(userInfo.id, program);
-            return response.data;
+            const response = await UserApiService.setProgram(userInfo.id, program)
+            return response.data
         },
         onSuccess: async (data) => {
             if (userInfo?.username === currentUser?.username) {
-                setUser(data);
+                setUser(data)
             }
 
             if (onUserInfoUpdate) {
-                onUserInfoUpdate(data);
+                onUserInfoUpdate(data)
             }
 
             notifications.show(
@@ -161,7 +174,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                     </Text>,
                     null
                 )
-            );
+            )
         },
         onError: () => {
             notifications.show(
@@ -170,22 +183,22 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                         <FormattedMessage id="pages.profile.updateError" />
                     </Text>
                 )
-            );
-        }
-    });
+            )
+        },
+    })
 
     const { mutate: updateProject } = useMutation({
         mutationFn: async (project: string) => {
-            const response = await UserApiService.setProject(userInfo.id, project);
-            return response.data;
+            const response = await UserApiService.setProject(userInfo.id, project)
+            return response.data
         },
         onSuccess: async (data) => {
             if (userInfo?.username === currentUser?.username) {
-                setUser(data);
+                setUser(data)
             }
 
             if (onUserInfoUpdate) {
-                onUserInfoUpdate(data);
+                onUserInfoUpdate(data)
             }
 
             notifications.show(
@@ -195,7 +208,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                     </Text>,
                     null
                 )
-            );
+            )
         },
         onError: () => {
             notifications.show(
@@ -204,9 +217,9 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                         <FormattedMessage id="pages.profile.updateError" />
                     </Text>
                 )
-            );
-        }
-    });
+            )
+        },
+    })
 
     const iconTelegram = <IconBrandTelegram size={16} />
     const iconPhone = <IconPhone size={16} />
@@ -215,15 +228,15 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const iconBirthday = <IconGift size={16} />
 
     const programValue = userInfo?.program?.code || null
-    
+
     // Админы могут редактировать программы всем (включая себя)
     // Обычные пользователи могут установить программу только если у них ее еще нет
     const isAdmin = hasPermission(currentUser, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])
     const isOwnProfile = userInfo?.id === currentUser?.id
     const hasProgram = !!programValue
-    
+
     const canEditProgram = isAdmin || (isOwnProfile && !hasProgram)
-    
+
     // Пользователи могут редактировать только свой проект или админы
     const canEditProject = isOwnProfile || isAdmin
 
@@ -256,7 +269,8 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                 name={"pages.profile.props.city"}
                 value={userInfo?.city}
                 icon={<IconBuildings size={18} />}
-                className={classes.propertyBox} />
+                className={classes.propertyBox}
+            />
             <TextPropertyBox
                 name={"pages.profile.props.address"}
                 value={userInfo?.address}
@@ -273,7 +287,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
             <TextPropertyBox
                 name={"pages.profile.props.email"}
                 value={userInfo?.email}
-                icon={<IconMail size={18}/>}
+                icon={<IconMail size={18} />}
                 href={`mailto:${userInfo?.email}`}
                 className={classes.propertyBox}
             />
@@ -290,7 +304,8 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                 icon={<IconPhone size={18} />}
                 className={classes.propertyBox}
             />
-            {(userInfo?.id === currentUser?.id || hasPermission(currentUser, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])) && (
+            {(userInfo?.id === currentUser?.id ||
+                hasPermission(currentUser, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])) && (
                 <Button
                     onClick={open}
                     className={classes.button}
@@ -302,20 +317,22 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
             )}
 
             <Drawer opened={opened} onClose={close} title={<FormattedMessage id="pages.profile.documentTitle" />}>
-                <form onSubmit={(e) => {
-                    e.preventDefault();
-                    onClickSave();
-                }}>
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        onClickSave()
+                    }}
+                >
                     <Flex direction="column" gap="md">
                         <TextInput
                             leftSection={iconCity}
                             label={<FormattedMessage id="pages.profile.props.city" />}
-                            {...form.getInputProps('city')}
+                            {...form.getInputProps("city")}
                         />
                         <TextInput
                             leftSection={iconHome}
                             label={<FormattedMessage id="pages.profile.props.address" />}
-                            {...form.getInputProps('address')}
+                            {...form.getInputProps("address")}
                         />
                         <DateInput
                             leftSection={iconBirthday}
@@ -323,7 +340,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                             label={<FormattedMessage id="pages.profile.props.birthDate" />}
                             value={form.values.birthDate ? dayjs(form.values.birthDate).toDate() : null}
                             onChange={(date) => {
-                                form.setFieldValue('birthDate', date ? dayjs(date).format("YYYY-MM-DD") : "");
+                                form.setFieldValue("birthDate", date ? dayjs(date).format("YYYY-MM-DD") : "")
                             }}
                             error={form.errors.birthDate}
                             clearable
@@ -331,18 +348,14 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                         <TextInput
                             leftSection={iconTelegram}
                             label={<FormattedMessage id="pages.profile.props.telegram" />}
-                            {...form.getInputProps('telegram')}
+                            {...form.getInputProps("telegram")}
                         />
                         <TextInput
                             leftSection={iconPhone}
                             label={<FormattedMessage id="pages.profile.props.phone" />}
-                            {...form.getInputProps('phone')}
+                            {...form.getInputProps("phone")}
                         />
-                        <Button
-                            type="submit"
-                            loading={isPending}
-                            rightSection={<IconDeviceFloppy size={14} />}
-                        >
+                        <Button type="submit" loading={isPending} rightSection={<IconDeviceFloppy size={14} />}>
                             <FormattedMessage id="pages.profile.buttons.save" />
                         </Button>
                     </Flex>

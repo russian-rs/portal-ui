@@ -24,10 +24,10 @@ export const useScreenSize = () => {
 
     return {
         isMobile: isMobile ?? false,
-        isTablet: isTablet ?? false, 
+        isTablet: isTablet ?? false,
         isDesktop: isDesktop ?? true,
         isLargeDesktop: isLargeDesktop ?? true,
         // Для таблицы используем десктопный режим только от 1024px
-        shouldShowTable: isDesktop ?? true
+        shouldShowTable: isDesktop ?? true,
     }
 }
