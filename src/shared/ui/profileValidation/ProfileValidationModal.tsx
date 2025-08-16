@@ -66,14 +66,10 @@ export const ProfileValidationModal = () => {
                     <FormattedMessage id="pages.profile.validation.footer" />
                 </Text>
 
-                <Button
-                    onClick={handleEditProfile}
-                    size="md"
-                    fullWidth
-                >
+                <Button onClick={handleEditProfile} size="md" fullWidth>
                     <FormattedMessage id="pages.profile.validation.goToProfile" />
                 </Button>
             </Stack>
         </Modal>
     )
-} 
+}

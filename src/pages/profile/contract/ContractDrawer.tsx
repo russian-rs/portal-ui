@@ -45,41 +45,38 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
         }
     }, [opened, contracts])
 
-    const validationSchema = z.object({
-        startDate: z
-            .string()
-            .refine(
+    const validationSchema = z
+        .object({
+            startDate: z.string().refine(
                 (val) => {
                     const date = dayjs(val, "YYYY-MM-DD", true)
                     return date.isValid()
                 },
                 intl.formatMessage({ id: "pages.profile.validation.invalidDate" })
             ),
-        endDate: z
-            .string()
-            .refine(
+            endDate: z.string().refine(
                 (val) => {
                     const date = dayjs(val, "YYYY-MM-DD", true)
                     return date.isValid()
                 },
                 intl.formatMessage({ id: "pages.profile.validation.invalidDate" })
             ),
-        type: z.nativeEnum(ContractTypeEnum, {
-            errorMap: () => ({
-                message: intl.formatMessage({ id: "pages.profile.validation.contractTypeRequired" }),
+            type: z.nativeEnum(ContractTypeEnum, {
+                errorMap: () => ({
+                    message: intl.formatMessage({ id: "pages.profile.validation.contractTypeRequired" }),
+                }),
             }),
-        }),
-    })
-    .refine(
-        (data) => {
-            if (!data.startDate || !data.endDate) return true
-            return dayjs(data.endDate).isAfter(dayjs(data.startDate))
-        },
-        {
-            message: intl.formatMessage({ id: "pages.profile.validation.endDateAfterStart" }),
-            path: ["endDate"],
-        }
-    )
+        })
+        .refine(
+            (data) => {
+                if (!data.startDate || !data.endDate) return true
+                return dayjs(data.endDate).isAfter(dayjs(data.startDate))
+            },
+            {
+                message: intl.formatMessage({ id: "pages.profile.validation.endDateAfterStart" }),
+                path: ["endDate"],
+            }
+        )
 
     const form = useForm<{ contracts: FormValues[] }>({
         initialValues: {
@@ -89,31 +86,29 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
                 type: c.type,
             })),
         },
-        validate: zodResolver(z.object({
-            contracts: z.array(validationSchema),
-        })),
+        validate: zodResolver(
+            z.object({
+                contracts: z.array(validationSchema),
+            })
+        ),
     })
 
     const { mutate: updateContracts, isPending } = useMutation({
         mutationFn: async (values: { contracts: FormValues[] }) => {
-            const validContracts = values.contracts.filter(c =>
-                c.startDate && c.endDate && c.type
-            )
+            const validContracts = values.contracts.filter((c) => c.startDate && c.endDate && c.type)
 
-            return UserApiService.updateContracts(userId, validContracts.map((c) => ({
-                id: crypto.randomUUID(),
-                startDate: dayjs(c.startDate).format("YYYY-MM-DD"),
-                endDate: dayjs(c.endDate).format("YYYY-MM-DD"),
-                type: c.type as ContractTypeEnum
-            })))
+            return UserApiService.updateContracts(
+                userId,
+                validContracts.map((c) => ({
+                    id: crypto.randomUUID(),
+                    startDate: dayjs(c.startDate).format("YYYY-MM-DD"),
+                    endDate: dayjs(c.endDate).format("YYYY-MM-DD"),
+                    type: c.type as ContractTypeEnum,
+                }))
+            )
         },
         onSuccess: () => {
-            notifications.show(
-                SuccessNotification(
-                    <FormattedMessage id="pages.profile.contract.created" />,
-                    null
-                )
-            )
+            notifications.show(SuccessNotification(<FormattedMessage id="pages.profile.contract.created" />, null))
             queryClient.invalidateQueries({ queryKey: ["getInfo"] })
             onSuccess()
             onClose()
@@ -122,13 +117,9 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
             console.error("Contract creation error:", {
                 error,
                 response: error.response?.data,
-                status: error.response?.status
+                status: error.response?.status,
             })
-            notifications.show(
-                ErrorNotification(
-                    <FormattedMessage id="pages.profile.contract.createError" />
-                )
-            )
+            notifications.show(ErrorNotification(<FormattedMessage id="pages.profile.contract.createError" />))
         },
     })
 
@@ -141,14 +132,10 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
 
     const handleDeleteContract = (index: number) => {
         if (form.values.contracts.length <= 1) {
-            notifications.show(
-                ErrorNotification(
-                    <FormattedMessage id="pages.profile.contract.cannotDeleteLast" />
-                )
-            )
+            notifications.show(ErrorNotification(<FormattedMessage id="pages.profile.contract.cannotDeleteLast" />))
             return
         }
-        form.removeListItem('contracts', index)
+        form.removeListItem("contracts", index)
     }
 
     return (
@@ -162,9 +149,22 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
                 <Flex direction="column" gap="md">
                     {form.values.contracts.length > 0 ? (
                         form.values.contracts.map((contract, index) => (
-                            <Flex key={index} direction="column" gap="md" style={{ position: 'relative', padding: '16px', border: '1px solid var(--mantine-color-gray-3)', borderRadius: 'var(--mantine-radius-sm)' }}>
+                            <Flex
+                                key={index}
+                                direction="column"
+                                gap="md"
+                                style={{
+                                    position: "relative",
+                                    padding: "16px",
+                                    border: "1px solid var(--mantine-color-gray-3)",
+                                    borderRadius: "var(--mantine-radius-sm)",
+                                }}
+                            >
                                 <Group justify="space-between" mb="xs">
-                                    <FormattedMessage id={`pages.profile.contract.number`} values={{ number: index + 1 }} />
+                                    <FormattedMessage
+                                        id={`pages.profile.contract.number`}
+                                        values={{ number: index + 1 }}
+                                    />
                                     <ActionIcon
                                         color="red"
                                         variant="subtle"
@@ -182,13 +182,19 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
                                     withAsterisk
                                     value={contract.startDate ? dayjs(contract.startDate).toDate() : null}
                                     onChange={(date) => {
-                                        const startDate = date ? dayjs(date).startOf('day') : null;
-                                        form.setFieldValue(`contracts.${index}.startDate`, startDate ? startDate.format("YYYY-MM-DD") : "");
-                                        
+                                        const startDate = date ? dayjs(date).startOf("day") : null
+                                        form.setFieldValue(
+                                            `contracts.${index}.startDate`,
+                                            startDate ? startDate.format("YYYY-MM-DD") : ""
+                                        )
+
                                         // Автоматически устанавливаем дату окончания через год
                                         if (startDate) {
-                                            const endDate = startDate.add(1, 'year');
-                                            form.setFieldValue(`contracts.${index}.endDate`, endDate.format("YYYY-MM-DD"));
+                                            const endDate = startDate.add(1, "year")
+                                            form.setFieldValue(
+                                                `contracts.${index}.endDate`,
+                                                endDate.format("YYYY-MM-DD")
+                                            )
                                         }
                                     }}
                                     error={form.errors?.[`contracts.${index}.startDate`]}
@@ -201,7 +207,10 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
                                     withAsterisk
                                     value={contract.endDate ? dayjs(contract.endDate).toDate() : null}
                                     onChange={(date) => {
-                                        form.setFieldValue(`contracts.${index}.endDate`, date ? dayjs(date).startOf('day').format("YYYY-MM-DD") : "")
+                                        form.setFieldValue(
+                                            `contracts.${index}.endDate`,
+                                            date ? dayjs(date).startOf("day").format("YYYY-MM-DD") : ""
+                                        )
                                     }}
                                     error={form.errors?.[`contracts.${index}.endDate`]}
                                 />
@@ -214,22 +223,26 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
                             </Flex>
                         ))
                     ) : (
-                        <Flex align="center" justify="center" style={{ padding: '32px', border: '1px dashed var(--mantine-color-gray-3)', borderRadius: 'var(--mantine-radius-sm)' }}>
+                        <Flex
+                            align="center"
+                            justify="center"
+                            style={{
+                                padding: "32px",
+                                border: "1px dashed var(--mantine-color-gray-3)",
+                                borderRadius: "var(--mantine-radius-sm)",
+                            }}
+                        >
                             <FormattedMessage id="pages.profile.contract.no-contract" />
                         </Flex>
                     )}
-                    <Button 
-                        variant="outline" 
+                    <Button
+                        variant="outline"
                         onClick={() => form.insertListItem("contracts", { startDate: "", endDate: "", type: null })}
                         rightSection={<IconPlus size={14} />}
                     >
                         <FormattedMessage id="pages.profile.contract.button" />
                     </Button>
-                    <Button 
-                        type="submit" 
-                        loading={isPending}
-                        rightSection={<IconDeviceFloppy size={14} />}
-                    >
+                    <Button type="submit" loading={isPending} rightSection={<IconDeviceFloppy size={14} />}>
                         <FormattedMessage id="pages.profile.contract.save" />
                     </Button>
                 </Flex>

@@ -85,13 +85,15 @@ Da biste podneli nedeljni izveštaj, potrebno je:
 ### Obavezna polja:
 
 1. **Naslov**: Unesite naziv zadatka u formatu:
-    - *„Čišćenje teritorije [navesti konkretno mesto]“*.
-    - **Primer**: *„Čišćenje parka Kalemegdan“*, *„Čišćenje ulice Kneza Mihaila“*.
+
+    - _„Čišćenje teritorije [navesti konkretno mesto]“_.
+    - **Primer**: _„Čišćenje parka Kalemegdan“_, _„Čišćenje ulice Kneza Mihaila“_.
 
 2. **Opis**: Ukratko opišite šta ste uradili. Navedite šta ste očistili (npr. plastika, papir, staklo, lišće itd.) i da
    li je primenjeno razvrstavanje otpada.
-    - **Primer**: *„Čišćenje smeća i suvog lišća pored ruske škole“, „Sakupili smo plastiku, staklo i papir, pomeli
-      staze, uklonili grane. Primenjeno odvojeno sakupljanje otpada.“*
+
+    - **Primer**: _„Čišćenje smeća i suvog lišća pored ruske škole“, „Sakupili smo plastiku, staklo i papir, pomeli
+      staze, uklonili grane. Primenjeno odvojeno sakupljanje otpada.“_
 
 3. **Rezultat**: Ako imate link ka materijalima (npr. izveštaj u Google Docs ili objavu), dodajte ga ovde. Ako nema
    linkova, ovo polje može ostati prazno.
@@ -146,4 +148,3 @@ smernicu kako biste izbegli greške pri izradi izveštaja i uspešno potvrdili v
 - **Ponovno korišćenje starih fotografija**.
 
 Ako ne priložite dovoljan broj fotografija, **izveštaj može biti odbijen**.
-

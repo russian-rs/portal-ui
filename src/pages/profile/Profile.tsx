@@ -27,7 +27,11 @@ export const Profile = () => {
         navigate("/not-found")
     }
 
-    const { data: userInfo, isFetching, refetch } = useQuery({
+    const {
+        data: userInfo,
+        isFetching,
+        refetch,
+    } = useQuery({
         queryKey: ["getInfo", login],
         queryFn: () =>
             UserApiService.getInfo(login!!).then((response) => {
@@ -44,23 +48,29 @@ export const Profile = () => {
     useEffect(() => {
         if (userInfo && currentUser && userInfo.username === currentUser.username) {
             const missingFields = []
-            
-            if (!userInfo.avatar?.link) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.avatar" }))
-            if (!userInfo.city?.trim()) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.city" }))
-            if (!userInfo.address?.trim()) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.address" }))
-            if (!userInfo.birthDate) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.birthDate" }))
-            if (!userInfo.telegram?.trim()) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.telegram" }))
-            if (!userInfo.phone?.trim()) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.phone" }))
-            if (!userInfo.program?.code) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.program" }))
-            if (!userInfo.project?.code) missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.project" }))
-            
+
+            if (!userInfo.avatar?.link)
+                missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.avatar" }))
+            if (!userInfo.city?.trim())
+                missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.city" }))
+            if (!userInfo.address?.trim())
+                missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.address" }))
+            if (!userInfo.birthDate)
+                missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.birthDate" }))
+            if (!userInfo.telegram?.trim())
+                missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.telegram" }))
+            if (!userInfo.phone?.trim())
+                missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.phone" }))
+            if (!userInfo.program?.code)
+                missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.program" }))
+            if (!userInfo.project?.code)
+                missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.project" }))
+
             if (missingFields.length > 0) {
                 setShowProfileModal(true)
             }
-
-            console.log(currentUser)
         }
-            }, [userInfo, currentUser, setShowProfileModal, intl])
+    }, [userInfo, currentUser, setShowProfileModal, intl])
 
     if (loading) {
         return <CustomLoader visible={true} className={classes.loader} />
