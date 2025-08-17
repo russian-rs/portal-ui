@@ -1,4 +1,4 @@
-$table-width: 62rem;
+$table-width: 100%;
 
 .root {
     padding: 1rem 1rem 2rem 2rem;
@@ -6,8 +6,25 @@ $table-width: 62rem;
     row-gap: 1rem;
     background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
 
-    @media (max-width: 85rem) {
+    @media (max-width: $mantine-breakpoint-md) {
         padding: 0.5rem;
+    }
+
+    @media (max-width: 1439px) and (min-width: 1024px) {
+        padding: 1rem 0.5rem 2rem 1rem;
+    }
+}
+
+.table {
+    table-layout: fixed;
+    width: 100%;
+
+    // Базовые стили для всех ячеек
+    th,
+    td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 

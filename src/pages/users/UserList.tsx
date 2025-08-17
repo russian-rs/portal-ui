@@ -327,10 +327,14 @@ export const UserList = () => {
                                 navigate(`/profile/${user.username}`)
                             }}
                         />
-                        <Text truncate="end">{user.fullName}</Text>
+                        <Flex direction="column">
+                            <Text truncate="end">{user.fullName}</Text>
+                            <Text size="sm" c="dimmed" truncate="end">
+                                {user.email}
+                            </Text>
+                        </Flex>
                     </Flex>
                 </Table.Td>
-                <Table.Td>{user.email}</Table.Td>
                 <Table.Td>
                     <Flex align="start" direction="column">
                         {user.groups.map((group) => (
@@ -501,10 +505,7 @@ export const UserList = () => {
                         <Table.Thead>
                             <Table.Tr>
                                 <Table.Th className={classes.columnName}>
-                                    <FormattedMessage id={locales.fullName} />
-                                </Table.Th>
-                                <Table.Th className={classes.columnEmail}>
-                                    <FormattedMessage id={locales.email} />
+                                    <FormattedMessage id={locales.fullNameEmail} />
                                 </Table.Th>
                                 <Table.Th className={classes.columnRoles}>
                                     <FormattedMessage id={locales.roles} />
@@ -518,6 +519,7 @@ export const UserList = () => {
                                 <Table.Th className={classes.columnContractDue}>
                                     <FormattedMessage id={locales.contractDue} />
                                 </Table.Th>
+                                <Table.Th></Table.Th>
                             </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>{rows}</Table.Tbody>
