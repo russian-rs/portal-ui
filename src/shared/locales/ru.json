@@ -89,6 +89,8 @@
             "waitText": "Подождите {timer} сек"
         },
         "deny-reason-modal": {
+            "title": "Причина отказа",
+            "description": "Укажите причину отказа в данной заявке",
             "confirm-default-button": "Подтвердить",
             "cancel-default-button": "Отмена",
             "reason-placeholder": "Причина отказа"

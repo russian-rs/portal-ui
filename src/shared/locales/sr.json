@@ -89,6 +89,8 @@
             "waitText": "Čekaj {timer} s"
         },
         "deny-reason-modal": {
+            "title": "Razlog odbijanja",
+            "description": "Molimo vas da navedete razlog odbijanja ove prijave",
             "cancel-default-button": "Otkaži",
             "confirm-default-button": "Potvrdi",
             "reason-placeholder": "Razlog odbijanja"

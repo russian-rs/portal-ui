@@ -30,7 +30,6 @@ import generateContractPdf from "src/shared/docs/contract"
 import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
-import { DenyReasonModal } from "src/shared/ui/denyReasonModal/DenyReasonModal"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
@@ -48,7 +47,6 @@ export const ApplicationView = () => {
     const { user } = useContext(UserContext)
     const intl = useIntl()
     const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
-    const [denyReasonModalOpened, { open: openDenyReasonModal, close: closeDenyReasonModal }] = useDisclosure(false)
 
     if (!id) {
         navigate("/not-found", { replace: true })
@@ -87,20 +85,12 @@ export const ApplicationView = () => {
         )
     }
 
-    const onStatusChange = (status: string) => {
-        if (status === ApplicationStatus.DENY) {
-            openDenyReasonModal()
+    const onStatusChange = (status: string, denyReason?: string) => {
+        if (status === ApplicationStatus.DENY && denyReason) {
+            setApplication({ ...application, status: status, refuseReason: denyReason })
         } else {
             setApplication({ ...application, status: status })
         }
-    }
-
-    const onCloseDenyReasonModal = () => {
-        closeDenyReasonModal()
-    }
-
-    const onDenyReasonConfirm = (reason: string) => {
-        setApplication({ ...application, status: ApplicationStatus.DENY, refuseReason: reason })
     }
 
     const onContractChanged = (contract: ContractDto) => {
@@ -314,14 +304,6 @@ export const ApplicationView = () => {
                 onClose={closeDrawer}
                 application={application}
                 onApplicationUpdate={onApplicationUpdate}
-            />
-
-            <DenyReasonModal
-                opened={denyReasonModalOpened}
-                onClose={onCloseDenyReasonModal}
-                onConfirm={onDenyReasonConfirm}
-                title={<FormattedMessage id={locales.denyReasonModal.title} />}
-                description={<FormattedMessage id={locales.denyReasonModal.description} />}
             />
         </Flex>
     )
