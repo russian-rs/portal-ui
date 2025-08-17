@@ -39,9 +39,4 @@ export const locales = {
     editTitle: "pages.applications.view.editTitle",
     editSuccess: "pages.applications.view.editSuccess",
     editError: "pages.applications.view.editError",
-
-    denyReasonModal: {
-        title: "pages.applications.view.deny-reason-modal.title",
-        description: "pages.applications.view.deny-reason-modal.description",
-    },
 }

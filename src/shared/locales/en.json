@@ -89,6 +89,8 @@
             "waitText": "Wait {timer} s"
         },
         "deny-reason-modal": {
+            "title": "Reason for refusal",
+            "description": "Please specify the reason for refusing this application",
             "confirm-default-button": "Confirm",
             "cancel-default-button": "Cancel",
             "reason-placeholder": "Reason for refusal"
