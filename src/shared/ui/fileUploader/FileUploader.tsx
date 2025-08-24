@@ -3,7 +3,7 @@ import { Dropzone, FileWithPath } from "@mantine/dropzone"
 import { notifications } from "@mantine/notifications"
 import { FileInfoDto } from "@russian-rs/portal-api-axios"
 import { IconFiles, IconUpload, IconX } from "@tabler/icons-react"
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react"
+import { forwardRef, useImperativeHandle, useState } from "react"
 import { ErrorCode, FileRejection } from "react-dropzone-esm"
 import { FormattedMessage, useIntl } from "react-intl"
 import { FilesApiService } from "src/shared/api/FilesApiService"
@@ -14,6 +14,7 @@ import classes from "./FileUploader.module.scss"
 interface FileUploaderProps {
     maxFiles?: number
     maxSize?: number
+    files?: FileInfoDto[]
     onFilesUploaded?: (files: FileInfoDto[]) => void
     onFilesLoading?: (files: String[]) => void
 }
@@ -25,26 +26,13 @@ export interface FileUploaderInterface {
 export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>((props, ref) => {
     const intl = useIntl()
 
-    const [uploadedFiles, setUploadedFiles] = useState<FileInfoDto[]>([])
     const [loadingFiles, setLoadingFiles] = useState<String[]>([])
 
     useImperativeHandle(ref, () => ({
         delete: (id) => {
-            setUploadedFiles(uploadedFiles.filter((it) => it.id != id))
+            props.onFilesUploaded?.(props.files?.filter((it) => it.id != id) || [])
         },
     }))
-
-    useEffect(() => {
-        if (props.onFilesUploaded) {
-            props.onFilesUploaded(uploadedFiles)
-        }
-    }, [uploadedFiles])
-
-    useEffect(() => {
-        if (props.onFilesLoading) {
-            props.onFilesLoading(loadingFiles)
-        }
-    }, [loadingFiles])
 
     const onDrop = (files: FileWithPath[]) => {
         setLoadingFiles(files.map((it) => it.name))
@@ -53,7 +41,7 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
                 .then((response) => {
                     const fileInfo = response.data
                     setLoadingFiles(loadingFiles.filter((it) => it !== file.name))
-                    setUploadedFiles([...uploadedFiles, fileInfo])
+                    props.onFilesUploaded?.([...(props.files || []), fileInfo])
                 })
                 .catch(() => {
                     setLoadingFiles([])
@@ -86,7 +74,7 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
 
     const maxSize = props.maxSize ? props.maxSize : 5
     const maxFiles = props.maxFiles ? props.maxFiles : 7
-    const disabled = uploadedFiles.length >= maxFiles
+    const disabled = (props.files?.length || 0) >= maxFiles
 
     return (
         <Dropzone
