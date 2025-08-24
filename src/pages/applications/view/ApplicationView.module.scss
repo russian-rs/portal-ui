@@ -15,7 +15,6 @@ $width: 36rem;
     width: 100%;
     flex-wrap: wrap;
     gap: 1rem;
-
 }
 
 .info {
@@ -81,9 +80,15 @@ $width: 36rem;
 }
 
 .divider {
-    width: 100%
+    width: 100%;
 }
 
 .textCard {
     width: 100%;
+}
+
+.notes {
+    width: 100%;
+    flex-direction: column;
+    gap: 1rem;
 }

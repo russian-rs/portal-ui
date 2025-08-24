@@ -1,4 +1,5 @@
 import { Blockquote, Button, Divider, Flex, Text } from "@mantine/core"
+import { useDisclosure } from "@mantine/hooks"
 import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import {
     IconArrowRight,
@@ -10,24 +11,25 @@ import {
     IconContract,
     IconEPassport,
     IconLanguageHiragana,
+    IconListCheck,
     IconLocation,
+    IconPencil,
     IconPhone,
     IconWorld,
-    IconListCheck,
-    IconPencil
 } from "@tabler/icons-react"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
-import { useDisclosure } from "@mantine/hooks"
 import { UserContext } from "src/app/providers/UserContext"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
-import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
+import { AddApplicationNote } from "src/pages/applications/note/AddApplicationNote"
+import { ApplicationNote } from "src/pages/applications/note/ApplicationNote"
 import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import generateContractPdf from "src/shared/docs/contract"
+import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
@@ -35,10 +37,10 @@ import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
 import { hasPermission } from "src/shared/user/roles"
+import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
-import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 
 export const ApplicationView = () => {
     const { id } = useParams()
@@ -46,6 +48,7 @@ export const ApplicationView = () => {
     const { user } = useContext(UserContext)
     const intl = useIntl()
     const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
+    const queryClient = useQueryClient()
 
     if (!id) {
         navigate("/not-found", { replace: true })
@@ -240,6 +243,7 @@ export const ApplicationView = () => {
                         />
                     )}
                 </Flex>
+
                 <Flex gap="md" mt={16} direction="column" className={classes.controls}>
                     <PropertyBox
                         align="start"
@@ -275,7 +279,7 @@ export const ApplicationView = () => {
                     </Button>
                     <Button
                         variant="gradient"
-                        gradient={{from: '#00FF95', to: '#5AB08C'}}
+                        gradient={{ from: "#00FF95", to: "#5AB08C" }}
                         rightSection={<IconListCheck size={15} />}
                         disabled={application.contract == null}
                         className={classes.questionnaireGenerate}
@@ -285,16 +289,32 @@ export const ApplicationView = () => {
                     >
                         <FormattedMessage id={locales.questionnaireDownload} />
                     </Button>
-                    <Button
-                        variant="outline"
-                        rightSection={<IconPencil size={14} />}
-                        onClick={openDrawer}
-                    >
+                    <Button variant="outline" rightSection={<IconPencil size={14} />} onClick={openDrawer}>
                         <FormattedMessage id="pages.profile.buttons.edit" />
                     </Button>
                 </Flex>
+
+                <Divider className={classes.divider} />
+
+                <Flex className={classes.notes} direction="column" gap="md">
+                    <Text fw="bold" size="lg">
+                        <FormattedMessage id={locales.notes} />
+                    </Text>
+
+                    <AddApplicationNote applicationId={application.id} />
+
+                    {application.notes && application.notes.length > 0 && (
+                        <Flex direction="column" gap="sm">
+                            {application.notes
+                                .sort((n1: any, n2: any) => dayjs(n2.createTime).diff(dayjs(n1.createTime)))
+                                .map((note: any) => (
+                                    <ApplicationNote key={note.id} note={note} />
+                                ))}
+                        </Flex>
+                    )}
+                </Flex>
             </Flex>
-            
+
             <ApplicationEditDrawer
                 opened={drawerOpened}
                 onClose={closeDrawer}
