@@ -1,4 +1,4 @@
-import { Blockquote, Button, Divider, Flex, Text } from "@mantine/core"
+import { Blockquote, Button, Divider, Flex, Text, useMantineTheme  } from "@mantine/core"
 import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import {
     IconMailFilled,
@@ -48,6 +48,7 @@ export const ApplicationView = () => {
     const navigate = useNavigate()
     const { user } = useContext(UserContext)
     const intl = useIntl()
+    const theme = useMantineTheme();
     const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
 
     if (!id) {
@@ -290,7 +291,7 @@ export const ApplicationView = () => {
                     </Button>
                     <Button
                         variant="gradient"
-                        gradient={{from: '#ED2208', to: '#E65744'}}
+                        gradient={{from: theme.colors.cyan[6], to: theme.colors.indigo[5]}}
                         rightSection={<IconMailFilled size={15} />}
                         disabled={application.contract == null}
                         className={classes.envelopGenerate}

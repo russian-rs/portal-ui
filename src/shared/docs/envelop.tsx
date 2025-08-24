@@ -6,10 +6,9 @@ import { MONTSERRAT_BOLD_BOLD } from "src/shared/docs/fonts/Montserrat-Bold-bold
 import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
 
 export default async function generateEnvelopPdf(application: ApplicationDto) {
-    const fullName = must(application.name, "Name")
-    const passport = must(application.passport, "Passport")
-    const phone = must(application.phone, "Phone")
-    const address = must(application.address, "Address")
+    const fullName = assertNotNull(application.name, "Name")
+    const phone = assertNotNull(application.phone, "Phone")
+    const address = assertNotNull(application.address, "Address")
 
     const templateBytes = await fetch("/resources/envelop.pdf").then(r => r.arrayBuffer())
     const pdf = await PDFDocument.load(templateBytes)
@@ -100,14 +99,14 @@ export default async function generateEnvelopPdf(application: ApplicationDto) {
 
     drawPx(fullName, 66, 75, boldFont, 10)
     drawWrappedPx(address, 65, 102, 273, { font: mediumFont, size: 8, lineGap: 2 })
-    drawPx(passport, 102, 129)
     drawPx(phone, 112, 140)
 
     const pdfBytes = await pdf.save()
     saveAs(new Blob([pdfBytes], { type: "application/pdf" }), `Koverat ${fullName.replace(/\s+/g, "_")}.pdf`)
 }
 
-function must(value: string | null | undefined, name: string): string {
-    if (!value) throw new Error(`${name} is empty`)
-    return value
+function assertNotNull(value: string | null | undefined, name: string): string {
+    const v = (value ?? "").trim()
+    if (!v) throw new Error(`${name} is empty or blank`)
+    return v
 }
