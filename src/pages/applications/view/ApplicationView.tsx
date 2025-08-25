@@ -1,7 +1,8 @@
-import { Blockquote, Button, Divider, Flex, Text } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
+import { Blockquote, Button, Divider, Flex, Text, useMantineTheme  } from "@mantine/core"
 import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import {
+    IconMailFilled,
     IconArrowRight,
     IconAt,
     IconBrandTelegram,
@@ -28,6 +29,7 @@ import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import generateContractPdf from "src/shared/docs/contract"
 import generateQuestionnairePdf from "src/shared/docs/questionnaire"
+import generateEnvelopPdf from "src/shared/docs/envelop"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
@@ -41,11 +43,13 @@ import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
 
+
 export const ApplicationView = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const { user } = useContext(UserContext)
     const intl = useIntl()
+    const theme = useMantineTheme();
     const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
 
     if (!id) {
@@ -292,6 +296,18 @@ export const ApplicationView = () => {
                         }}
                     >
                         <FormattedMessage id={locales.questionnaireDownload} />
+                    </Button>
+                    <Button
+                        variant="gradient"
+                        gradient={{from: theme.colors.cyan[6], to: theme.colors.indigo[5]}}
+                        rightSection={<IconMailFilled size={15} />}
+                        disabled={application.contract == null}
+                        className={classes.envelopGenerate}
+                        onClick={() => {
+                            generateEnvelopPdf(application)
+                        }}
+                    >
+                        <FormattedMessage id={locales.envelopDownload} />
                     </Button>
                     <Button variant="outline" rightSection={<IconPencil size={14} />} onClick={openDrawer}>
                         <FormattedMessage id="pages.profile.buttons.edit" />

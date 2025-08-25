@@ -477,6 +477,7 @@
         "bio": "Краткая биография",
         "contractDownload": "Скачать договор",
         "questionnaireDownload": "Скачать анкету",
+        "envelopDownload": "Скачать конверт",
         "editTitle": "Редактировать анкету",
         "editSuccess": "Анкета успешно обновлена",
         "editError": "Ошибка при обновлении анкеты",
