@@ -11,11 +11,11 @@ import {
     IconContract,
     IconEPassport,
     IconLanguageHiragana,
-    IconListCheck,
     IconLocation,
-    IconPencil,
     IconPhone,
     IconWorld,
+    IconListCheck,
+    IconPencil,
 } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
