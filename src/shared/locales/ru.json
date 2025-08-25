@@ -87,6 +87,13 @@
       "confirmDefaultButton": "Подтвердить",
       "cancelDefaultButton": "Отмена",
       "waitText": "Подождите {timer} сек"
+    },
+    "deny-reason-modal": {
+      "title": "Причина отказа",
+      "description": "Укажите причину отказа в данной заявке",
+      "confirm-default-button": "Подтвердить",
+      "cancel-default-button": "Отмена",
+      "reason-placeholder": "Причина отказа"
     }
   },
   "footer": {
@@ -151,7 +158,21 @@
         "invalidEmail": "Неверный формат email",
         "invalidSymbols": "Неверные символы",
         "minLetters": "Минимум {count} символов",
-        "maxLetters": "Максимум {count} символов"
+        "maxLetters": "Максимум {count} символов",
+        "title": "Пожалуйста, заполните недостающую информацию в профиле",
+        "description": "Чтобы ваш профиль был полным и вы могли пользоваться всеми возможностями портала, заполните следующие поля:",
+        "footer": "🛠 Это займет всего пару минут. После заполнения весь функционал будет снова доступен",
+        "goToProfile": "Редактировать профиль",
+        "fields": {
+          "avatar": "фото профиля",
+          "city": "город",
+          "address": "адрес",
+          "birthDate": "дата рождения",
+          "telegram": "telegram",
+          "phone": "телефон",
+          "program": "программа",
+          "project": "проект"
+        }
       },
       "buttons": {
         "edit": "Редактировать",
@@ -459,7 +480,12 @@
         "envelopDownload": "Скачать конверт",
         "editTitle": "Редактировать анкету",
         "editSuccess": "Анкета успешно обновлена",
-        "editError": "Ошибка при обновлении анкеты"
+        "editError": "Ошибка при обновлении анкеты",
+        "refuse-reason": "Причина отказа",
+        "deny-reason-modal": {
+          "title": "Причина отказа",
+          "description": "Пожалуйста, укажите причину отказа"
+        }
       },
       "report": {
         "contract-from": "Дата начала",

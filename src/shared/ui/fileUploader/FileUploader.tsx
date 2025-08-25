@@ -28,6 +28,10 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
     const [uploadedFiles, setUploadedFiles] = useState<FileInfoDto[]>([])
     const [loadingFiles, setLoadingFiles] = useState<String[]>([])
 
+    const maxSize = props.maxSize ? props.maxSize : 5
+    const maxFiles = props.maxFiles ? props.maxFiles : 7
+    const disabled = uploadedFiles.length >= maxFiles
+
     useImperativeHandle(ref, () => ({
         delete: (id) => {
             setUploadedFiles(uploadedFiles.filter((it) => it.id != id))
@@ -46,19 +50,42 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
         }
     }, [loadingFiles])
 
-    const onDrop = (files: FileWithPath[]) => {
-        setLoadingFiles(files.map((it) => it.name))
-        files.forEach((file) => {
-            FilesApiService.uploadFile(file)
-                .then((response) => {
-                    const fileInfo = response.data
-                    setLoadingFiles(loadingFiles.filter((it) => it !== file.name))
-                    setUploadedFiles([...uploadedFiles, fileInfo])
-                })
-                .catch(() => {
-                    setLoadingFiles([])
-                })
-        })
+    const onDrop = async (files: FileWithPath[]) => {
+        if (uploadedFiles.length + files.length > maxFiles) {
+            notifications.show(
+                ErrorNotification(
+                    <Text size="sm">
+                        <FormattedMessage id={locales.tooManyFiles} />
+                    </Text>
+                )
+            )
+            return
+        }
+
+        // показать прогресс: все имена в очереди
+        setLoadingFiles(files.map((f) => f.name))
+
+        const uploaded: any[] = []
+
+        try {
+            for (const file of files) {
+                try {
+                    // Ждём завершения КАЖДОЙ загрузки прежде чем перейти к следующей
+                    const resp = await FilesApiService.uploadFile(file)
+                    uploaded.push(resp.data)
+                } finally {
+                    // помечаем текущий файл как обработанный
+                    setLoadingFiles((prev) => prev.filter((name) => name !== file.name))
+                }
+            }
+
+            if (uploaded.length) {
+                setUploadedFiles((prev) => [...prev, ...uploaded])
+            }
+        } finally {
+            // на всякий случай скрываем прогресс
+            setLoadingFiles([])
+        }
     }
 
     const onReject = (fileRejections: FileRejection[]) => {
@@ -84,16 +111,12 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
         )
     }
 
-    const maxSize = props.maxSize ? props.maxSize : 5
-    const maxFiles = props.maxFiles ? props.maxFiles : 7
-    const disabled = uploadedFiles.length >= maxFiles
-
     return (
         <Dropzone
             onDrop={onDrop}
             onReject={onReject}
-            multiple={false}
             disabled={disabled}
+            maxFiles={maxFiles}
             maxSize={maxSize * 1024 ** 2}
             loading={loadingFiles.length !== 0}
         >

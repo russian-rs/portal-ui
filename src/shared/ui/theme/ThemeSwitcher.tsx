@@ -1,9 +1,4 @@
-import {
-    ActionIcon,
-    MantineColor,
-    useComputedColorScheme,
-    useMantineColorScheme,
-} from "@mantine/core"
+import { ActionIcon, MantineColor, useComputedColorScheme, useMantineColorScheme } from "@mantine/core"
 import { IconMoon, IconSun } from "@tabler/icons-react"
 
 export const ThemeSwitcher = () => {
@@ -22,16 +17,9 @@ export const ThemeSwitcher = () => {
 
     const getIcon = (currentTheme: "light" | "dark") => {
         if (currentTheme === "light") {
-            return (
-                <IconMoon
-                    style={{ width: "50%", height: "50%" }}
-                    stroke={1.5}
-                />
-            )
+            return <IconMoon style={{ width: "50%", height: "50%" }} stroke={1.5} />
         } else {
-            return (
-                <IconSun style={{ width: "60%", height: "60%" }} stroke={1.5} />
-            )
+            return <IconSun style={{ width: "60%", height: "60%" }} stroke={1.5} />
         }
     }
 

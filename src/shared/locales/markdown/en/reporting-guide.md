@@ -32,6 +32,7 @@ If you continue a task from the previous week, be sure to show progress — what
 ⚖️ In accordance with the Volunteer Law ("Službeni glasnik RS", No. 36/2010), the concept of "sick leave" is not provided for volunteers as it applies to employees. Volunteer activity is voluntary and unpaid, and does not fall under labor legislation regulating paid leave or temporary disability.
 
 However, the law requires the volunteer to notify the organizer of any circumstances that may:
+
 - affect the performance of volunteer duties;
 - create a threat to their life or health, as well as the life or health of other persons.
 
@@ -48,6 +49,7 @@ However, the law requires the volunteer to notify the organizer of any circumsta
 Specify a brief and clear task title.
 
 **📌 Examples:**
+
 - Translation of article about plastic recycling
 - Garbage collection in Nova Daruga area
 - Creating slides for presentation
@@ -62,6 +64,7 @@ You can add multiple tasks if you worked on different projects during the week.
 Describe what exactly you did within the task.
 
 **📌 Examples:**
+
 - Translated article from Serbian to Russian, edited text, checked style. Posted in Google Docs and sent to curator for review.
 - Collected information about Russian-speaking NGOs in Georgia: names, contacts, addresses, websites.
 - Tested bot in real mode, added test channels and news, checked different calendar versions.
@@ -72,6 +75,7 @@ The more detailed the task description, the better. This helps the coordinator u
 ### 📌 Block — Result
 
 Specify a link to the result if it is posted online:
+
 - text materials — Google Docs / Drive
 - code — GitHub
 - visual materials — Canva, Figma, Google Drive
@@ -100,6 +104,7 @@ If you have screenshots, photos, PDF documents and other supporting materials �
 - If you conduct online classes, it is advisable to attach a photo of the class or lesson plan.
 
 **📌 Examples:**
+
 - Photo from cleanup site
 - Article screenshot
 - Translation file
@@ -108,4 +113,4 @@ If you have screenshots, photos, PDF documents and other supporting materials �
 
 ## ❓ Questions and Support
 
-If you have questions about filling out the report or completing tasks, you can contact the volunteer telegram channel. Coordinators or other volunteers will always help and advise. 
+If you have questions about filling out the report or completing tasks, you can contact the volunteer telegram channel. Coordinators or other volunteers will always help and advise.

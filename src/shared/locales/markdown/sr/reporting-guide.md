@@ -32,6 +32,7 @@ Ako nastavljate zadatak iz prethodne nedelje, obavezno pokažite napredak — š
 ⚖️ U skladu sa Zakonom o volonterstvu ("Službeni glasnik RS", br. 36/2010), pojam "bolovanja" nije predviđen za volontere kao što se primenjuje na zaposlene. Volonterska aktivnost je dobrovoljna i neplaćena, i ne potpada pod radno zakonodavstvo koje reguliše plaćeno odsustvo ili privremenu nesposobnost za rad.
 
 Međutim, zakon obavezuje volontera da obavesti organizatora o bilo kojim okolnostima koje mogu:
+
 - uticati na izvršavanje volonterskih dužnosti;
 - stvoriti pretnju po njegov život ili zdravlje, kao i život ili zdravlje drugih lica.
 
@@ -48,6 +49,7 @@ Međutim, zakon obavezuje volontera da obavesti organizatora o bilo kojim okolno
 Navedite kratak i jasan naziv zadatka.
 
 **📌 Primeri:**
+
 - Prevod članka o recikliranju plastike
 - Sakupljanje smeća u rejonu Nova Daruga
 - Kreiranje slajdova za prezentaciju
@@ -62,6 +64,7 @@ Možete dodati više zadataka ako ste radili na različitim projektima tokom ned
 Opišite šta ste tačno uradili u okviru zadatka.
 
 **📌 Primeri:**
+
 - Preveo članak sa srpskog na ruski, uredio tekst, proverio stilistiku. Postavio u Google Docs i poslao na proveru kuratoru.
 - Sakupio informacije o ruskim NVO u Gruziji: nazivi, kontakti, adrese, sajtovi.
 - Testirao bota u realnom režimu, dodao test kanale i vesti, proverio različite verzije kalendara.
@@ -72,6 +75,7 @@ Opišite šta ste tačno uradili u okviru zadatka.
 ### 📌 Blok — Rezultat
 
 Navedite link do rezultata ako je objavljen online:
+
 - tekstualni materijali — Google Docs / Drive
 - kod — GitHub
 - vizuelni materijali — Canva, Figma, Google Drive
@@ -100,6 +104,7 @@ Ako imate snimke ekrana, fotografije, PDF dokumente i druge materijale koji potv
 - Ako držite online časove, poželjno je priložiti fotografiju časa ili plan lekcije.
 
 **📌 Primeri:**
+
 - Fotografija sa mesta čišćenja
 - Snimak ekrana članka
 - Fajl sa prevodom
@@ -108,4 +113,4 @@ Ako imate snimke ekrana, fotografije, PDF dokumente i druge materijale koji potv
 
 ## ❓ Pitanja i podrška
 
-Ako imate pitanja o popunjavanju izveštaja ili izvršavanju zadataka, možete se obratiti telegram kanalu volonterstva. Koordinatori ili drugi volonteri će uvek pomoći i savetovati. 
+Ako imate pitanja o popunjavanju izveštaja ili izvršavanju zadataka, možete se obratiti telegram kanalu volonterstva. Koordinatori ili drugi volonteri će uvek pomoći i savetovati.
