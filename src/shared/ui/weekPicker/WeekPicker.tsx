@@ -46,7 +46,6 @@ export const WeekPicker = (props: WeekPickerProps) => {
     }
 
     const onChange = (range: [Date | null, Date | null]) => {
-        console.log(range)
         const date = range[0]
         if (!date) {
             setSelectedWeek(null)

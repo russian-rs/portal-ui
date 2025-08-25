@@ -18,10 +18,7 @@ export const AppFooter = () => {
                                 <IconWorld size={16} />
                             </Center>
                         </Anchor>
-                        <Anchor
-                            href="https://t.me/relocateserbia"
-                            target="_blank"
-                        >
+                        <Anchor href="https://t.me/relocateserbia" target="_blank">
                             <Center>
                                 <IconBrandTelegram size={16} />
                             </Center>
