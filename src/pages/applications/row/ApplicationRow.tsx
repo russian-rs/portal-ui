@@ -1,8 +1,8 @@
-import { Avatar, Flex, Table, Text, Card, Box } from "@mantine/core"
+import { Avatar, Box, Card, Flex, Table, Text } from "@mantine/core"
 import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import React, { ReactNode, useState } from "react"
+import { ReactNode, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
@@ -12,6 +12,7 @@ import { useScreenSize } from "src/shared/hooks/useDesktop"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
 import { getMantineColor } from "src/shared/ui/theme/CustomMantineTheme"
+import { ApplicationStatus } from "src/shared/user/applications"
 import classes from "./ApplicationRow.module.scss"
 
 interface ApplicationRowProps {
@@ -31,8 +32,12 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
         queryFn: () => PrivateApplicationApiService.updateApplication(application).then((response) => response.data),
     })
 
-    const onStatusUpdate = (status: string) => {
-        setApplication({ ...application, status: status })
+    const onStatusUpdate = (status: string, denyReason?: string) => {
+        if (status === ApplicationStatus.DENY && denyReason) {
+            setApplication({ ...application, status: status, refuseReason: denyReason })
+        } else {
+            setApplication({ ...application, status: status })
+        }
         setUpdated(true)
     }
 

@@ -1,4 +1,5 @@
 import { Blockquote, Button, Divider, Flex, Text } from "@mantine/core"
+import { useDisclosure } from "@mantine/hooks"
 import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import {
     IconArrowRight,
@@ -21,24 +22,24 @@ import dayjs from "dayjs"
 import { useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
-import { useDisclosure } from "@mantine/hooks"
 import { UserContext } from "src/app/providers/UserContext"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
-import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import generateContractPdf from "src/shared/docs/contract"
+import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
+import { ApplicationStatus } from "src/shared/user/applications"
 import { hasPermission } from "src/shared/user/roles"
+import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
-import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 
 export const ApplicationView = () => {
     const { id } = useParams()
@@ -84,8 +85,12 @@ export const ApplicationView = () => {
         )
     }
 
-    const onStatusChange = (status: string) => {
-        setApplication({ ...application, status: status })
+    const onStatusChange = (status: string, denyReason?: string) => {
+        if (status === ApplicationStatus.DENY && denyReason) {
+            setApplication({ ...application, status: status, refuseReason: denyReason })
+        } else {
+            setApplication({ ...application, status: status })
+        }
     }
 
     const onContractChanged = (contract: ContractDto) => {
@@ -252,6 +257,9 @@ export const ApplicationView = () => {
                             />
                         }
                     />
+                    {application.status === ApplicationStatus.DENY && !!application.refuseReason && (
+                        <TextPropertyBox name={locales.refuseReason} value={application.refuseReason} />
+                    )}
                     <PropertyBox
                         name={locales.contractStart}
                         value={
