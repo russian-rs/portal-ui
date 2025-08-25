@@ -85,13 +85,15 @@ To submit your weekly report, you need to:
 ### Required Fields:
 
 1. **Title**: Enter the task title in the format:
-    - *"Cleanup of [specify location]"*.
-    - **Example**: *"Cleanup of Kalemegdan Park"*, *"Cleanup of Kneza Mihaila Street"*.
+
+    - _"Cleanup of [specify location]"_.
+    - **Example**: _"Cleanup of Kalemegdan Park"_, _"Cleanup of Kneza Mihaila Street"_.
 
 2. **Description**: Briefly describe what you did. Specify what was cleaned (e.g., plastic, paper, glass, leaves, etc.)
    and whether waste sorting was applied.
-    - **Example**: *"Garbage and dry leaves cleaned near the Russian school", "Collected plastic, glass, and paper,
-      swept the paths, removed branches. Used separate waste collection."*
+
+    - **Example**: _"Garbage and dry leaves cleaned near the Russian school", "Collected plastic, glass, and paper,
+      swept the paths, removed branches. Used separate waste collection."_
 
 3. **Result**: If you have a link to materials (e.g., a report in Google Docs or a publication), add it here. If no
    links are available, leave the field blank.

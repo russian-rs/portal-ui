@@ -1,5 +1,4 @@
-export default
-`
+export default `
         <div>
         	<p><b>Добрый день,</b></p>
         	<p/>
