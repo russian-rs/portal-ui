@@ -444,6 +444,11 @@
       "contract-start-short": "Contract",
       "contract-required": "Contract dates must be specified to complete",
       "showCompleted": "Show completed",
+      "pause": {
+        "title": "Pause reason",
+        "reason": "Pause reason",
+        "submit": "Pause"
+      },
       "menu": {
         "view": "View",
         "contact": "Contact"
@@ -475,6 +480,7 @@
         "skills": "Skills",
         "goal": "Purpose of Participation in the Organization",
         "bio": "Brief Biography",
+        "pause-reason": "Pause reason",
         "contractDownload": "Download contract",
         "questionnaireDownload": "Download questionnaire",
         "envelopDownload": "Download envelop",
