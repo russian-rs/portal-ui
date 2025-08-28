@@ -1,0 +1,227 @@
+import { Box, Flex, Text, Tooltip, Group, Badge } from "@mantine/core"
+import { useMediaQuery } from "@mantine/hooks"
+import dayjs from "dayjs"
+import React from "react"
+import { FormattedMessage, useIntl } from "react-intl"
+import { VolunteerReportData } from "../lib/types"
+import { locales } from "../lib/locales"
+import classes from "./VolunteerReportHeatmap.module.scss"
+
+interface VolunteerReportHeatmapProps {
+    volunteers: VolunteerReportData[]
+    startDate: dayjs.Dayjs
+    onVolunteerSelect: (volunteerId: string) => void
+    selectedVolunteers: Set<string>
+}
+
+export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
+    volunteers,
+    startDate,
+    onVolunteerSelect,
+    selectedVolunteers
+}) => {
+    const intl = useIntl()
+    const endDate = dayjs()
+    const totalWeeks = Math.ceil(endDate.diff(startDate, 'week', true))
+    const isSm = useMediaQuery('(max-width: 48em)')
+    const cellSizePx = 20
+    
+    // Генерируем недели для отображения
+    const generateWeeks = () => {
+        const weeks = []
+        let currentDate = startDate.clone()
+        
+        for (let i = 0; i < totalWeeks; i++) {
+            weeks.push({
+                date: currentDate.clone(),
+                weekNumber: i + 1
+            })
+            currentDate = currentDate.add(1, 'week')
+        }
+        
+        return weeks
+    }
+
+    const weeks = generateWeeks()
+
+    // Получаем цвет для квадратика на основе количества часов за неделю и дат контрактов
+    const getSquareColor = (volunteer: VolunteerReportData, weekIndex: number) => {
+        const weekStart = startDate.clone().add(weekIndex, 'week').startOf('isoWeek')
+        const isCurrentWeek = dayjs().isSame(weekStart, 'isoWeek')
+
+        // Недели ДО начала первого контракта — ожидание (серые)
+        const firstContractStart = volunteer.contracts && volunteer.contracts.length > 0
+            ? volunteer.contracts
+                .map(c => dayjs(c.startDate).startOf('isoWeek'))
+                .reduce((earliest, d) => (d.isBefore(earliest) ? d : earliest))
+            : null
+        if (firstContractStart && weekStart.isBefore(firstContractStart, 'week')) {
+            return 'pending'
+        }
+
+        // Если нет контрактов вовсе — всё до текущей недели считаем ожиданием
+        if (!firstContractStart) {
+            return 'pending'
+        }
+
+        // Ищем отчеты за эту неделю
+        const reportsForWeek = volunteer.reports.filter(report => {
+            const reportDate = dayjs(report.week)
+            return reportDate.isSame(weekStart, 'isoWeek')
+        })
+        
+        if (reportsForWeek.length === 0) {
+            // Текущая неделя без отчёта — ожидание (серый)
+            return isCurrentWeek ? 'pending' : 'noReports'
+        }
+
+        const totalHours = reportsForWeek.reduce((sum, report) => sum + report.hoursSpent, 0)
+        if (totalHours >= 10) return 'fullReports'
+        return 'partialReports' // 1–9 часов
+    }
+
+    // Получаем подсказку для квадратика
+    const getSquareTooltip = (volunteer: VolunteerReportData, weekIndex: number) => {
+        const weekStart = startDate.clone().add(weekIndex, 'week').startOf('isoWeek')
+        const weekEnd = weekStart.clone().add(1, 'week')
+        
+        const reportsForWeek = volunteer.reports.filter(report => {
+            const reportDate = dayjs(report.week)
+            return reportDate.isSame(weekStart, 'isoWeek')
+        })
+        
+        if (reportsForWeek.length === 0) {
+            return `${volunteer.fullName}: Нет отчетов за ${weekStart.format('DD.MM.YYYY')} - ${weekEnd.format('DD.MM.YYYY')}`
+        }
+        
+        const totalHours = reportsForWeek.reduce((sum, report) => sum + report.hoursSpent, 0)
+        const reportCount = reportsForWeek.length
+        
+        return `${volunteer.fullName}: ${reportCount} отчет(ов), ${totalHours} часов за ${weekStart.format('DD.MM.YYYY')} - ${weekEnd.format('DD.MM.YYYY')}`
+    }
+
+    // Обработчик клика по квадратику
+    const handleSquareClick = (volunteerId: string) => {
+        onVolunteerSelect(volunteerId)
+    }
+
+    const getVolunteerStats = (volunteer: VolunteerReportData) => {
+        const totalReports = volunteer.reports.length
+        const totalHours = volunteer.reports.reduce((sum, report) => sum + report.hoursSpent, 0)
+        const missedWeeks = totalWeeks - totalReports
+        
+        return { totalReports, totalHours, missedWeeks }
+    }
+
+    if (volunteers.length === 0) {
+        return (
+            <Box p="xl" ta="center">
+                <Text c="dimmed"><FormattedMessage id={locales.noData} /></Text>
+            </Box>
+        )
+    }
+
+    return (
+        <div className={classes.heatmapContainer}>
+            <Flex justify="center" mb="lg">
+                <Group gap="xs">
+                    <Text size="sm" fw={500}><FormattedMessage id={locales.legend} />:</Text>
+                    <Flex align="center" gap="xs">
+                        <Box className={`${classes.legendSquare} ${classes.noReports}`} />
+                        <Text size="xs"><FormattedMessage id={locales.noReports} /></Text>
+                    </Flex>
+                    <Flex align="center" gap="xs">
+                        <Box className={`${classes.legendSquare} ${classes.partialReports}`} />
+                        <Text size="xs"><FormattedMessage id={locales.partialReports} /></Text>
+                    </Flex>
+                    <Flex align="center" gap="xs">
+                        <Box className={`${classes.legendSquare} ${classes.fullReports}`} />
+                        <Text size="xs"><FormattedMessage id={locales.fullReports} /></Text>
+                    </Flex>
+                    <Flex align="center" gap="xs">
+                        <Box className={`${classes.legendSquare} ${classes.pending}`} />
+                        <Text size="xs"><FormattedMessage id={locales.pending} /></Text>
+                    </Flex>
+                </Group>
+            </Flex>
+
+            <div className={classes.heatmapWrapper}>
+                <div className={classes.heatmapGrid}>
+
+                    {volunteers.map((volunteer, volunteerIndex) => {
+                        const stats = getVolunteerStats(volunteer)
+                        const weeksColors = weeks.map((_, idx) => getSquareColor(volunteer, idx))
+                        const missedCount = weeksColors.filter(c => c === 'noReports').length
+                        const partialCount = weeksColors.filter(c => c === 'partialReports').length
+                        const allFull = missedCount === 0 && partialCount === 0
+                        const isSelected = selectedVolunteers.has(volunteer.id)
+                        
+                        return (
+                            <div key={volunteer.id} className={classes.volunteerRow}>
+                                <div className={classes.volunteerInfo}>
+                                    <div className={classes.volunteerHeader}>
+                                        <Text
+                                            size="sm"
+                                            fw={500}
+                                            className={`${classes.volunteerName} ${isSelected ? classes.selectedVolunteer : ''}`}
+                                        >
+                                            {volunteer.fullName}
+                                        </Text>
+                                        <Badge
+                                            size="xs"
+                                            variant={allFull ? "light" : "filled"}
+                                            color={missedCount > 0 ? "red" : partialCount > 0 ? "yellow" : "green"}
+                                        >
+                                            {missedCount > 0 ? (
+                                                <FormattedMessage id={locales.missedWeeksBadge} values={{ count: missedCount }} />
+                                            ) : partialCount > 0 ? (
+                                                <FormattedMessage id={locales.partialWeeksBadge} values={{ count: partialCount }} />
+                                            ) : (
+                                                <FormattedMessage id={locales.allReportsBadge} />
+                                            )}
+                                        </Badge>
+                                    </div>
+                                    <Text size="xs" c="dimmed">
+                                        {stats.totalReports} отчетов, {stats.totalHours} часов
+                                    </Text>
+                                </div>
+                                <div 
+                                    className={classes.weekSquares}
+                                    style={isSm ? undefined : { gridTemplateColumns: `repeat(${totalWeeks}, ${cellSizePx}px)` }}
+                                >
+                                    {weeks.map((week, weekIndex) => (
+                                        <Tooltip
+                                            key={weekIndex}
+                                            label={getSquareTooltip(volunteer, weekIndex)}
+                                            position="top"
+                                        >
+                                            <Box
+                                                className={`${classes.weekSquare} ${classes[getSquareColor(volunteer, weekIndex)]}`}
+                                                onClick={() => handleSquareClick(volunteer.id)}
+                                                style={{ cursor: 'pointer' }}
+                                            />
+                                        </Tooltip>
+                                    ))}
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
+            <Flex justify="center" mt="lg">
+                <Group gap="lg">
+                    <Flex align="center" gap="xs">
+                        <Text size="sm" fw={500}><FormattedMessage id={locales.period} />:</Text>
+                        <Text size="sm" c="dimmed">
+                            {startDate.format('DD.MM.YYYY')} - {endDate.format('DD.MM.YYYY')}
+                        </Text>
+                    </Flex>
+                    <Flex align="center" gap="xs">
+                        <Text size="sm" fw={500}><FormattedMessage id={locales.totalWeeks} />:</Text>
+                        <Text size="sm" c="dimmed">{totalWeeks}</Text>
+                    </Flex>
+                </Group>
+            </Flex>
+        </div>
+    )
+}
