@@ -5,14 +5,14 @@ učestvujete u razvoju ruske dijaspore, pridružite se našem timu.
 Učešće u aktivnostima organizacije je dostupno svim ruskojezičnim ljudima, bez obzira na postojanje boravišne dozvole (
 BD) ili državljanstva Republike Srbije.
 
-Za člana organizacije __bez boravka__, zaključuje se ugovor o učešću u dugoročnim volonterskim aktivnostima (obično u
+Za člana organizacije **bez boravka**, zaključuje se ugovor o učešću u dugoročnim volonterskim aktivnostima (obično u
 trajanju od 12 meseci). Volontiranje je dovoljan osnov za dobijanje BD. Prilikom podnošenja zahteva za BD, dužni ste da
 dostavite potvrdu o prijemu dokumenata najkasnije u roku od 3 dana. Podsećamo, volontiranje zahteva najmanje 10 sati
 nedeljno.
 Razmislite da li možete posvetiti dovoljno vremena. Ako prestanete da šaljete izveštaje i održavate kontakt, bićemo
 primorani da raskinemo ugovor.
 
-Član organizacije sa __privremenim boravkom (PB) ili stalnim boravkom (SB) po drugom osnovu__, koji ne zaključuje
+Član organizacije sa **privremenim boravkom (PB) ili stalnim boravkom (SB) po drugom osnovu**, koji ne zaključuje
 volonterski ugovor (tj. ne dobija BD na osnovu volontiranja), ne obavlja volonterske aktivnosti i u vezi s tim nije
 potrebna nedeljna izveštavanja. Dugoročni volonterski ugovor se ne zaključuje, a potvrda o članstvu je elektronska
 članska karta. Za članove organizacije koji pokažu inicijativu za učešće u aktivnostima organizacije, nudimo uloge

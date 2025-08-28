@@ -11,11 +11,7 @@ export const AppHeader = () => {
         <>
             <Group grow className={classes.rootGroup}>
                 <Group>
-                    <Burger
-                        opened={menuOpened}
-                        onClick={() => setMenuOpened(!menuOpened)}
-                        size="sm"
-                    />
+                    <Burger opened={menuOpened} onClick={() => setMenuOpened(!menuOpened)} size="sm" />
                     <Anchor href="/">
                         <Image src={image} className={classes.logo} />
                     </Anchor>

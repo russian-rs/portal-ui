@@ -1,8 +1,8 @@
-import { Avatar, Flex, Table, Text, Card, Box } from "@mantine/core"
+import { Avatar, Box, Card, Flex, Table, Text } from "@mantine/core"
 import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import React, { ReactNode, useState } from "react"
+import { ReactNode, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
@@ -12,6 +12,7 @@ import { useScreenSize } from "src/shared/hooks/useDesktop"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
 import { getMantineColor } from "src/shared/ui/theme/CustomMantineTheme"
+import { ApplicationStatus } from "src/shared/user/applications"
 import classes from "./ApplicationRow.module.scss"
 
 interface ApplicationRowProps {
@@ -31,8 +32,12 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
         queryFn: () => PrivateApplicationApiService.updateApplication(application).then((response) => response.data),
     })
 
-    const onStatusUpdate = (status: string) => {
-        setApplication({ ...application, status: status })
+    const onStatusUpdate = (status: string, denyReason?: string) => {
+        if (status === ApplicationStatus.DENY && denyReason) {
+            setApplication({ ...application, status: status, refuseReason: denyReason })
+        } else {
+            setApplication({ ...application, status: status })
+        }
         setUpdated(true)
     }
 
@@ -55,7 +60,9 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                                 onClick={() => navigate(`/application/${application.id}`)}
                             />
                             <Box>
-                                <Text fw={600} size="sm">{application.name}</Text>
+                                <Text fw={600} size="sm">
+                                    {application.name}
+                                </Text>
                                 <Text c="dimmed" size="xs">
                                     {dayjs(application.created).format("DD MMM YYYY")}
                                 </Text>
@@ -63,17 +70,15 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                         </Flex>
                         <ApplicationMenu applicationDto={application} />
                     </Flex>
-                    
+
                     <Box className={classes.mobileInfo}>
                         <div className={classes.mobileRow}>
                             <Text size="xs" c="dimmed" className={classes.mobileLabel}>
                                 <FormattedMessage id="pages.applications.type" />:
                             </Text>
-                            <div>
-                                {type(application.type, false)}
-                            </div>
+                            <div>{type(application.type, false)}</div>
                         </div>
-                        
+
                         <div className={classes.mobileRow}>
                             <Text size="xs" c="dimmed" className={classes.mobileLabel}>
                                 <FormattedMessage id="pages.applications.email" />:
@@ -82,7 +87,7 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                                 <CopyText text={application.email} size="xs" />
                             </div>
                         </div>
-                        
+
                         <div className={classes.mobileRow}>
                             <Text size="xs" c="dimmed" className={classes.mobileLabel}>
                                 <FormattedMessage id="pages.applications.contractStart" />:
@@ -91,7 +96,7 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                                 <ContractDate application={application} onChange={onContractChanged} />
                             </div>
                         </div>
-                        
+
                         <div className={classes.mobileRow}>
                             <Text size="xs" c="dimmed" className={classes.mobileLabel}>
                                 <FormattedMessage id="pages.applications.status" />:
@@ -128,7 +133,9 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                         className={classes.avatar}
                         onClick={() => navigate(`/application/${application.id}`)}
                     />
-                    <Text size={isLargeDesktop ? "sm" : "xs"} truncate="end" className={classes.compactText}>{application.name}</Text>
+                    <Text size={isLargeDesktop ? "sm" : "xs"} truncate="end" className={classes.compactText}>
+                        {application.name}
+                    </Text>
                 </Flex>
             </Table.Td>
             <Table.Td>
