@@ -68,16 +68,20 @@ export const ApplicationEditDrawer = ({
             .or(z.literal("")),
         birthDate: z
             .string()
-            .refine((val) => {
-                const date = dayjs(val, "YYYY-MM-DD", true)
-                return date.isValid() &&
-                       date.isBefore(dayjs()) &&
-                       date.isAfter(dayjs().subtract(120, "years"))
-            }, intl.formatMessage({ id: "pages.profile.validation.invalidBirthDate" }))
-            .refine((val) => {
-                const date = dayjs(val, "YYYY-MM-DD", true)
-                return date.isBefore(dayjs().subtract(18, "years"))
-            }, intl.formatMessage({ id: "pages.profile.validation.tooYoung" }))
+            .refine(
+                (val) => {
+                    const date = dayjs(val, "YYYY-MM-DD", true)
+                    return date.isValid() && date.isBefore(dayjs()) && date.isAfter(dayjs().subtract(120, "years"))
+                },
+                intl.formatMessage({ id: "pages.profile.validation.invalidBirthDate" })
+            )
+            .refine(
+                (val) => {
+                    const date = dayjs(val, "YYYY-MM-DD", true)
+                    return date.isBefore(dayjs().subtract(18, "years"))
+                },
+                intl.formatMessage({ id: "pages.profile.validation.tooYoung" })
+            )
             .optional()
             .or(z.literal("")),
         passport: z
@@ -116,20 +120,11 @@ export const ApplicationEditDrawer = ({
         },
         onSuccess: (updatedApplication) => {
             onApplicationUpdate(updatedApplication)
-            notifications.show(
-                SuccessNotification(
-                    <FormattedMessage id="pages.applications.view.editSuccess" />,
-                    null
-                )
-            )
+            notifications.show(SuccessNotification(<FormattedMessage id="pages.applications.view.editSuccess" />, null))
             onClose()
         },
         onError: () => {
-            notifications.show(
-                ErrorNotification(
-                    <FormattedMessage id="pages.applications.view.editError" />
-                )
-            )
+            notifications.show(ErrorNotification(<FormattedMessage id="pages.applications.view.editError" />))
         },
     })
 
@@ -139,7 +134,7 @@ export const ApplicationEditDrawer = ({
         }
 
         const updateData: Partial<ApplicationDto> = {}
-        
+
         if (form.values.name?.trim()) updateData.name = form.values.name.trim()
         if (form.values.patronymic?.trim()) updateData.patronymic = form.values.patronymic.trim()
         if (form.values.email?.trim()) updateData.email = form.values.email.trim()
@@ -176,37 +171,39 @@ export const ApplicationEditDrawer = ({
             position="right"
             size="md"
         >
-            <form onSubmit={(e) => {
-                e.preventDefault()
-                handleSubmit()
-            }}>
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    handleSubmit()
+                }}
+            >
                 <Flex direction="column" gap="md">
                     <TextInput
                         leftSection={<IconSignature size={16} />}
                         label={<FormattedMessage id="pages.applications.view.name" />}
-                        {...form.getInputProps('name')}
+                        {...form.getInputProps("name")}
                     />
                     <TextInput
                         leftSection={<IconSignature size={16} />}
                         label={<FormattedMessage id="pages.applications.view.patronymic" />}
-                        {...form.getInputProps('patronymic')}
+                        {...form.getInputProps("patronymic")}
                     />
                     <TextInput
                         leftSection={<IconAt size={16} />}
                         label={<FormattedMessage id="pages.applications.view.email" />}
                         withAsterisk
-                        {...form.getInputProps('email')}
+                        {...form.getInputProps("email")}
                     />
                     <TextInput
                         leftSection={<IconPhone size={16} />}
                         label={<FormattedMessage id="pages.applications.view.phone" />}
                         withAsterisk
-                        {...form.getInputProps('phone')}
+                        {...form.getInputProps("phone")}
                     />
                     <TextInput
                         leftSection={<IconBrandTelegram size={16} />}
                         label={<FormattedMessage id="pages.applications.view.telegram" />}
-                        {...form.getInputProps('telegram')}
+                        {...form.getInputProps("telegram")}
                     />
                     <DateInput
                         leftSection={<IconCake size={16} />}
@@ -214,7 +211,7 @@ export const ApplicationEditDrawer = ({
                         label={<FormattedMessage id="pages.applications.view.birth" />}
                         value={form.values.birthDate ? dayjs(form.values.birthDate).toDate() : null}
                         onChange={(date) => {
-                            form.setFieldValue('birthDate', date ? dayjs(date).format("YYYY-MM-DD") : "")
+                            form.setFieldValue("birthDate", date ? dayjs(date).format("YYYY-MM-DD") : "")
                         }}
                         error={form.errors.birthDate}
                         clearable
@@ -222,22 +219,18 @@ export const ApplicationEditDrawer = ({
                     <TextInput
                         leftSection={<IconEPassport size={16} />}
                         label={<FormattedMessage id="pages.applications.view.passport" />}
-                        {...form.getInputProps('passport')}
+                        {...form.getInputProps("passport")}
                     />
                     <TextInput
                         leftSection={<IconLocation size={16} />}
                         label={<FormattedMessage id="pages.applications.view.address" />}
-                        {...form.getInputProps('address')}
+                        {...form.getInputProps("address")}
                     />
-                    <Button
-                        type="submit"
-                        loading={isPending}
-                        rightSection={<IconDeviceFloppy size={14} />}
-                    >
+                    <Button type="submit" loading={isPending} rightSection={<IconDeviceFloppy size={14} />}>
                         <FormattedMessage id="pages.profile.buttons.save" />
                     </Button>
                 </Flex>
             </form>
         </Drawer>
     )
-} 
+}

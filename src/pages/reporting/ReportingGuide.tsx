@@ -14,4 +14,4 @@ export const ReportingGuide = () => {
     )
 }
 
-export default ReportingGuide 
+export default ReportingGuide
