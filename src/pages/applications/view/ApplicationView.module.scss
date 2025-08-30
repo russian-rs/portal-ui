@@ -15,7 +15,6 @@ $width: 36rem;
     width: 100%;
     flex-wrap: wrap;
     gap: 1rem;
-
 }
 
 .info {
@@ -68,6 +67,10 @@ $width: 36rem;
     width: 100%;
 }
 
+.envelopGenerate {
+    width: 100%;
+}
+
 .name {
     font-size: x-large;
     font-weight: bold;
@@ -81,7 +84,7 @@ $width: 36rem;
 }
 
 .divider {
-    width: 100%
+    width: 100%;
 }
 
 .textCard {

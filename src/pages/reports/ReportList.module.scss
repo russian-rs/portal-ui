@@ -120,7 +120,7 @@ $table-min-width: 58rem;
 .mobileCard {
     width: 100%;
     flex-direction: column;
-    row-gap: 0.5rem; 
+    row-gap: 0.5rem;
     padding: 0.75rem;
     border-radius: var(--mantine-spacing-xs);
     background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
@@ -141,14 +141,14 @@ $table-min-width: 58rem;
 .reportHeader {
     width: 100%;
     flex-direction: column;
-    row-gap: 0.25rem; 
+    row-gap: 0.25rem;
 }
 
 .reportBody {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    
+
     @media (min-width: 1024px) and (max-width: 1439px) {
         column-gap: 1rem;
     }
@@ -157,11 +157,11 @@ $table-min-width: 58rem;
 .reportLeft {
     flex: 1;
     flex-direction: column;
-    
+
     @media (min-width: 1024px) and (max-width: 1439px) {
         row-gap: 0;
     }
-    
+
     @media (max-width: 1023px) {
         row-gap: 1rem;
     }
@@ -170,13 +170,12 @@ $table-min-width: 58rem;
 .reportRight {
     flex: 1;
     flex-direction: column;
-    
+
     @media (min-width: 1024px) and (max-width: 1439px) {
         row-gap: 0;
     }
-    
+
     @media (max-width: 1023px) {
         row-gap: 1rem;
     }
 }
-

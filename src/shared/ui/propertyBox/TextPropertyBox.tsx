@@ -37,7 +37,9 @@ export const TextPropertyBox = ({
                             </Text>
                         </Anchor>
                     ) : (
-                        <Text size="sm" c={valueColor}>{value}</Text>
+                        <Text size="sm" c={valueColor}>
+                            {value}
+                        </Text>
                     )}
                 </Flex>
             ) : (
