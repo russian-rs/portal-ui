@@ -268,22 +268,21 @@ export const MyReports = () => {
                         </Flex>
                     </Flex>
                 </Flex>
-
-                <Flex className={classes.pagination}>
-                    <Pagination
-                        total={response.page.totalPages}
-                        value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
-                        disabled={isFetching}
-                        hideWithOnePage={true}
-                        onChange={(newPage) => {
-                            const pageNumber = newPage - 1
-                            setPageRequest({ ...pageRequest, pageNumber })
-                        }}
-                    />
-                    <Text c="dimmed">
-                        <FormattedMessage id={locales.total} values={{ total: response.page.totalElements }} />
-                    </Text>
-                </Flex>
+            </Flex>
+            <Flex className={classes.pagination}>
+                <Pagination
+                    total={response.page.totalPages}
+                    value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
+                    disabled={isFetching}
+                    hideWithOnePage={true}
+                    onChange={(newPage) => {
+                        const pageNumber = newPage - 1
+                        setPageRequest({ ...pageRequest, pageNumber })
+                    }}
+                />
+                <Text c="dimmed">
+                    <FormattedMessage id={locales.total} values={{ total: response.page.totalElements }} />
+                </Text>
             </Flex>
         </Flex>
     )

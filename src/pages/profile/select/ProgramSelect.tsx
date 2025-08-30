@@ -1,4 +1,4 @@
-import { Button, Group, Select, Text, useComputedColorScheme } from "@mantine/core"
+import { ActionIcon, Button, Group, Select, Text, useComputedColorScheme } from "@mantine/core"
 import { IconPencil, IconPlus } from "@tabler/icons-react"
 import { useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -8,11 +8,13 @@ import { getLocalizedName } from "src/shared/utils/getLocalName"
 export function ProgramSelectInline({
     value,
     canEdit,
+    type = "default",
     onChange,
     locale,
 }: {
     value: string | null | undefined
     canEdit: boolean
+    type?: "default" | "button"
     onChange: (program: string) => void
     locale: string
 }) {
@@ -49,43 +51,78 @@ export function ProgramSelectInline({
                     onDropdownOpen={() => setDropdownOpened(true)}
                     onDropdownClose={() => setDropdownOpened(false)}
                 />
-            ) : canEdit ? (
-                <Button
-                    variant="transparent"
-                    color={programObj ? "blue" : "gray"}
-                    rightSection={programObj ? <IconPencil size={14} /> : <IconPlus size={14} />}
-                    onClick={() => {
-                        setIsEditing(true)
-                        setDropdownOpened(true)
-                    }}
-                    size="sm"
-                    fw={programObj ? undefined : 500}
-                >
-                    {programObj ? (
-                        getLocalizedName(programObj, locale)
-                    ) : (
-                        <FormattedMessage id="pages.profile.selectProgram" />
-                    )}
-                </Button>
+            ) : type === "button" ? (
+                canEdit ? (
+                    <Button
+                        variant="transparent"
+                        color={programObj ? "blue" : "gray"}
+                        rightSection={programObj ? <IconPencil size={14} /> : <IconPlus size={14} />}
+                        onClick={() => {
+                            setIsEditing(true)
+                            setDropdownOpened(true)
+                        }}
+                        size="sm"
+                        fw={programObj ? undefined : 500}
+                    >
+                        {programObj ? (
+                            getLocalizedName(programObj, locale)
+                        ) : (
+                            <FormattedMessage id="pages.profile.selectProgram" />
+                        )}
+                    </Button>
+                ) : (
+                    <Text
+                        style={{ whiteSpace: "nowrap" }}
+                        size="sm"
+                        c={
+                            programObj
+                                ? undefined
+                                : colorScheme === "dark"
+                                  ? "var(--mantine-color-gray-light-color)"
+                                  : "dimmed"
+                        }
+                        fw={programObj ? undefined : 500}
+                    >
+                        {programObj ? (
+                            getLocalizedName(programObj, locale)
+                        ) : (
+                            <FormattedMessage id="pages.profile.selectProgram" />
+                        )}
+                    </Text>
+                )
             ) : (
-                <Text
-                    style={{ whiteSpace: "nowrap" }}
-                    size="sm"
-                    c={
-                        programObj
-                            ? undefined
-                            : colorScheme === "dark"
-                              ? "var(--mantine-color-gray-light-color)"
-                              : "dimmed"
-                    }
-                    fw={programObj ? undefined : 500}
-                >
-                    {programObj ? (
-                        getLocalizedName(programObj, locale)
-                    ) : (
-                        <FormattedMessage id="pages.profile.selectProgram" />
+                <>
+                    <Text
+                        style={{ whiteSpace: "nowrap" }}
+                        size="sm"
+                        c={
+                            programObj
+                                ? undefined
+                                : colorScheme === "dark"
+                                  ? "var(--mantine-color-gray-light-color)"
+                                  : "dimmed"
+                        }
+                        fw={programObj ? undefined : 500}
+                    >
+                        {programObj ? (
+                            getLocalizedName(programObj, locale)
+                        ) : (
+                            <FormattedMessage id="pages.profile.selectProgram" />
+                        )}
+                    </Text>
+                    {canEdit && (
+                        <ActionIcon
+                            variant="subtle"
+                            color="gray"
+                            onClick={() => {
+                                setIsEditing(true)
+                                setDropdownOpened(true)
+                            }}
+                        >
+                            {value ? <IconPencil size={14} /> : <IconPlus size={16} />}
+                        </ActionIcon>
                     )}
-                </Text>
+                </>
             )}
         </Group>
     )

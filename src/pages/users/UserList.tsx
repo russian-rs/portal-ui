@@ -346,6 +346,7 @@ export const UserList = () => {
                 </Table.Td>
                 <Table.Td>
                     <ProgramSelectInline
+                        type="button"
                         value={user.program?.code}
                         canEdit={canEditProgram()}
                         locale={intl.locale}
@@ -356,6 +357,7 @@ export const UserList = () => {
                 </Table.Td>
                 <Table.Td>
                     <ProjectSelectInline
+                        type="button"
                         value={user.project?.code}
                         canEdit={canEditProject(user.id)}
                         locale={intl.locale}
