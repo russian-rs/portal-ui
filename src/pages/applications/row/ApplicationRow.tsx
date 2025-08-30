@@ -31,10 +31,10 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
         queryFn: () => PrivateApplicationApiService.updateApplication(application).then((response) => response.data),
     })
 
-    const onStatusUpdate = (status: string, comment?: string) => {
+    const onStatusUpdate = (status: string, denyReason?: string) => {
         const updated = { ...application, status: status } as ApplicationDto
-        if (comment && status === "PAUSED") {
-            ;(updated as any).comment = comment
+        if (denyReason && status === "DENY") {
+            ;(updated as any).refuseReason = denyReason
         }
         setApplication(updated)
         setUpdated(true)

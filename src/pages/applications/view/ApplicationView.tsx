@@ -34,6 +34,7 @@ import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
+import { ApplicationStatus } from "src/shared/user/applications"
 import { hasPermission } from "src/shared/user/roles"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
@@ -84,12 +85,12 @@ export const ApplicationView = () => {
         )
     }
 
-    const onStatusChange = (status: string, comment?: string) => {
-        const updated = { ...application, status: status } as ApplicationDto
-        if (comment && status === "PAUSED") {
-            ;(updated as any).comment = comment
+    const onStatusChange = (status: string, denyReason?: string) => {
+        if (status === ApplicationStatus.DENY && denyReason) {
+            setApplication({ ...application, status: status, refuseReason: denyReason })
+        } else {
+            setApplication({ ...application, status: status })
         }
-        setApplication(updated)
     }
 
     const onContractChanged = (contract: ContractDto) => {
@@ -260,6 +261,9 @@ export const ApplicationView = () => {
                                     <Text size="sm" c="dimmed" className={classes.pauseReasonBlock}>
                                         <FormattedMessage id={locales.pauseReason} />: {application.comment}
                                     </Text>
+                                )}
+                                {application.status === ApplicationStatus.DENY && !!application.refuseReason && (
+                                    <TextPropertyBox name={locales.refuseReason} value={application.refuseReason} />
                                 )}
                             </Flex>
                         }
