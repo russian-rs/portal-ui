@@ -1,7 +1,8 @@
 import { Button, Combobox, Flex, InputBase, Modal, Text, Textarea, Tooltip, useCombobox } from "@mantine/core"
 import { ApplicationDto } from "@russian-rs/portal-api-axios"
-import React, { ReactNode, useState } from "react"
+import React, { ReactNode, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
+import { DenyReasonModal } from "src/shared/ui/denyReasonModal/DenyReasonModal"
 import { ApplicationStatus, getApplicationStatusColor, getApplicationStatusIcon } from "src/shared/user/applications"
 import { locales } from "./lib/locales"
 
@@ -22,6 +23,7 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
 
     const [value, setValue] = useState<string>(props.application.status || ApplicationStatus.CREATED)
     const [pauseOpened, setPauseOpened] = useState(false)
+    const [denyModalOpened, setDenyModalOpened] = useState(false)
     const [pauseReason, setPauseReason] = useState("")
     const [pendingStatus, setPendingStatus] = useState<string | null>(null)
 
@@ -29,6 +31,33 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
         if (props.onChange) {
             props.onChange(newValue, comment)
         }
+    }
+
+    const handleStatusChange = (newStatus: string) => {
+        if (newStatus === ApplicationStatus.DENY) {
+            setPendingStatus(newStatus)
+            setDenyModalOpened(true)
+            combobox.closeDropdown()
+        } else {
+            onChange(newStatus)
+            setValue(newStatus)
+            combobox.closeDropdown()
+        }
+    }
+
+    const handleDenyConfirm = (reason: string) => {
+        if (pendingStatus) {
+            onChange(pendingStatus, reason)
+            setValue(pendingStatus)
+            setPendingStatus(null)
+        }
+    }
+
+    const handleDenyCancel = () => {
+        setDenyModalOpened(false)
+        setPendingStatus(null)
+        // Возвращаем предыдущее значение статуса
+        setValue(props.application.status || ApplicationStatus.CREATED)
     }
 
     const options = Object.values(ApplicationStatus).map((status) => {
@@ -45,6 +74,10 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
         )
     })
 
+    useEffect(() => {
+        setValue(props.application.status || ApplicationStatus.CREATED)
+    }, [props.application.status])
+
     return (
         <Flex direction="column">
             {props.label && (
@@ -58,6 +91,12 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
                     if (val === ApplicationStatus.PAUSED) {
                         setPendingStatus(val)
                         setPauseOpened(true)
+                        combobox.closeDropdown()
+                        return
+                    }
+                    if (val === ApplicationStatus.DENY) {
+                        setPendingStatus(val)
+                        setDenyModalOpened(true)
                         combobox.closeDropdown()
                         return
                     }
@@ -156,6 +195,14 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
                     </Flex>
                 </Flex>
             </Modal>
+
+            <DenyReasonModal
+                opened={denyModalOpened}
+                onClose={handleDenyCancel}
+                onConfirm={handleDenyConfirm}
+                title={<FormattedMessage id={locales.denyReasonModal.title} />}
+                description={<FormattedMessage id={locales.denyReasonModal.description} />}
+            />
         </Flex>
     )
 }
