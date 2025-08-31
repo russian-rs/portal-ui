@@ -11,7 +11,7 @@ import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { TooltipLocalized } from "src/shared/ui/tooltip/TooltipLocalized"
 import { ContractDrawer } from "./ContractDrawer"
 import classes from "./ContractInfo.module.scss"
-import { hasPermission, UserGroup } from "src/shared/user/roles";
+import { hasPermission, UserGroup } from "src/shared/user/roles"
 
 interface ContractInfoProps {
     userInfo: UserInfoDto
@@ -30,11 +30,15 @@ export const ContractInfo = ({ contracts, userInfo }: ContractInfoProps) => {
                     <Text className={classes.title}>
                         <FormattedMessage id={locales.titleWithoutContract} />
                     </Text>
-                    {(userInfo.id === currentUser?.id || hasPermission(currentUser, [UserGroup.ADMIN, UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER, UserGroup.ADMIN_WP, UserGroup.DEVELOPER])) && (
-                        <Button
-                            variant="light"
-                            onClick={() => setDrawerOpened(true)}
-                        >
+                    {(userInfo.id === currentUser?.id ||
+                        hasPermission(currentUser, [
+                            UserGroup.ADMIN,
+                            UserGroup.ADMIN_SSO,
+                            UserGroup.ADMIN_VOLUNTEER,
+                            UserGroup.ADMIN_WP,
+                            UserGroup.DEVELOPER,
+                        ])) && (
+                        <Button variant="light" onClick={() => setDrawerOpened(true)}>
                             <FormattedMessage id={"pages.profile.contract.button"} />
                         </Button>
                     )}
@@ -70,13 +74,13 @@ export const ContractInfo = ({ contracts, userInfo }: ContractInfoProps) => {
                             </Button>
                         </TooltipLocalized>
                     )}
-                    {(hasPermission(currentUser, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])) && (
+                    {hasPermission(currentUser, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER]) && (
                         <Button
                             variant="outline"
                             onClick={() => setDrawerOpened(true)}
                             rightSection={<IconPencil size={14} />}
                         >
-                            <FormattedMessage id="pages.profile.buttons.edit"/>
+                            <FormattedMessage id="pages.profile.buttons.edit" />
                         </Button>
                     )}
                 </>

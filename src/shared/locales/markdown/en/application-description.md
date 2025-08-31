@@ -5,7 +5,7 @@ contribute to the development of the Russian diaspora, join our team.
 Participation in the organization’s activities is open to all Russian-speaking people, regardless of their residence
 permit (RP) or citizenship of the Republic of Serbia.
 
-For a member of the organization __without an RP__, an agreement on participation in long-term volunteer activities (
+For a member of the organization **without an RP**, an agreement on participation in long-term volunteer activities (
 usually
 for a period of 12 months) is concluded. Volunteering is a sufficient basis for obtaining an RP. When applying for an
 RP, you are required to provide confirmation of document submission no later than 3 days after submission. Please note
@@ -13,7 +13,7 @@ that volunteering requires at least 10 hours per week.
 Think carefully if you can dedicate enough time. If you stop submitting reports and maintaining communication, we will
 be forced to terminate the agreement.
 
-A member of the organization __with an RP or permanent residence permit (PR) on another basis__, who does not enter into
+A member of the organization **with an RP or permanent residence permit (PR) on another basis**, who does not enter into
 a
 volunteer contract (i.e., not obtaining an RP through volunteering), does not perform volunteer activities and, as such,
 weekly reporting is not required. A long-term volunteer contract is not concluded; confirmation of membership is

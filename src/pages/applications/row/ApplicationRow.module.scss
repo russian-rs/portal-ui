@@ -6,7 +6,7 @@
     margin-bottom: 0.75rem;
     border: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
     transition: all 0.2s ease;
-    
+
     &:hover {
         background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
         transform: translateY(-1px);
@@ -19,20 +19,19 @@
     border-top: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
 }
 
-
 .mobileRow {
     display: grid;
     grid-template-columns: 10rem 2fr;
     gap: 3rem;
     align-items: center;
     min-height: 40px;
-    
+
     @media (max-width: $mantine-breakpoint-sm) {
         grid-template-columns: 7rem 1fr;
         gap: 1rem;
         min-height: 36px;
     }
-    
+
     @media (min-width: $mantine-breakpoint-sm) and (max-width: $mantine-breakpoint-md) {
         grid-template-columns: 8rem 1fr;
         gap: 2rem;
@@ -42,11 +41,11 @@
 
 .mobileLabel {
     font-weight: 500;
-    
+
     @media (max-width: $mantine-breakpoint-sm) {
         font-size: 0.75rem;
     }
-    
+
     @media (min-width: $mantine-breakpoint-sm) and (max-width: $mantine-breakpoint-md) {
         font-size: 0.8rem;
     }
@@ -54,7 +53,7 @@
 
 .mobileStatusSelect {
     :global(.mantine-InputBase-section[data-position="left"]) {
-    --section-size: 1rem;
+        --section-size: 1rem;
     }
     :global(.mantine-InputBase-input) {
         padding-left: 1.5rem !important;

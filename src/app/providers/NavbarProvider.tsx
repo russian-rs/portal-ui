@@ -11,14 +11,9 @@ const defaultContextValue: NavbarContextType = {
     setMenuOpened: defaultFunction,
 }
 
-export const NavbarContext =
-    createContext<NavbarContextType>(defaultContextValue)
+export const NavbarContext = createContext<NavbarContextType>(defaultContextValue)
 
-export const NavbarContextProvider = ({
-    children,
-}: {
-    children?: ReactNode
-}) => {
+export const NavbarContextProvider = ({ children }: { children?: ReactNode }) => {
     const [opened, setOpened] = useState(true)
 
     return (
