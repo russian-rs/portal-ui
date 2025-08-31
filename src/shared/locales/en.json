@@ -502,6 +502,9 @@
     },
     "reporting": {
       "title": "Reporting Guidelines"
+    },
+    "volunteers-mintrud": {
+      "title": "Volunteers-Mintrud report"
     }
   },
   "errors": {
@@ -524,7 +527,8 @@
       "volunteers": "Volunteers",
       "all-volunteers": "All volunteers",
       "applications": "Applications",
-      "statistics": "Statistics"
+      "statistics": "Statistics",
+      "mintrud-report": "Mintrud report"
     },
     "account-settings": "Account settings",
     "support": "Contact support"
