@@ -1,11 +1,12 @@
 .container {
-    padding: 1rem;
+    padding: 0.5rem;
     background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
     border-radius: 0.5rem;
     border: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
 }
 
 .textarea {
+    flex-grow: 1;
     :global(.mantine-Textarea-input) {
         border-color: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-3));
     }

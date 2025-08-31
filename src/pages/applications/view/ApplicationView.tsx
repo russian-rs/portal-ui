@@ -1,6 +1,6 @@
 import { Blockquote, Button, Divider, Flex, Text } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
-import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
+import { ApplicationDto, ContractDto, NoteDto } from "@russian-rs/portal-api-axios"
 import {
     IconArrowRight,
     IconAt,
@@ -28,6 +28,7 @@ import { AddApplicationNote } from "src/pages/applications/note/AddApplicationNo
 import { ApplicationNote } from "src/pages/applications/note/ApplicationNote"
 import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
+import { resolveUsers } from "src/shared/api/user/UserApiService"
 import generateContractPdf from "src/shared/docs/contract"
 import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
@@ -61,7 +62,10 @@ export const ApplicationView = () => {
     const [application, setApplication] = useState<ApplicationDto>(defaultApplicationDto)
     setDocumentTitleByString(application.name)
 
-    const { isFetching: isLoading } = useQuery({
+    const noteLogins = application.notes?.map((note) => note.createdBy).filter(Boolean) || []
+    const { data: users } = resolveUsers(noteLogins)
+
+    const { isFetching: isLoading, refetch: refetchApplication } = useQuery({
         queryKey: ["getApplication", id],
         queryFn: () =>
             PrivateApplicationApiService.getApplication(id!!).then((response) => {
@@ -97,6 +101,14 @@ export const ApplicationView = () => {
 
     const onApplicationUpdate = (updatedApplication: ApplicationDto) => {
         setApplication(updatedApplication)
+    }
+
+    const onNoteAdded = (newNote: NoteDto) => {
+        refetchApplication()
+    }
+
+    const onNoteDeleted = (noteId: string) => {
+        refetchApplication()
     }
 
     return (
@@ -301,14 +313,19 @@ export const ApplicationView = () => {
                         <FormattedMessage id={locales.notes} />
                     </Text>
 
-                    <AddApplicationNote applicationId={application.id} />
+                    <AddApplicationNote applicationId={application.id} onNoteAdded={onNoteAdded} />
 
                     {application.notes && application.notes.length > 0 && (
                         <Flex direction="column" gap="sm">
                             {application.notes
                                 .sort((n1: any, n2: any) => dayjs(n2.createTime).diff(dayjs(n1.createTime)))
                                 .map((note: any) => (
-                                    <ApplicationNote key={note.id} note={note} />
+                                    <ApplicationNote
+                                        key={note.id}
+                                        note={note}
+                                        userInfo={users[note.createdBy]}
+                                        onNoteDeleted={onNoteDeleted}
+                                    />
                                 ))}
                         </Flex>
                     )}

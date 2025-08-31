@@ -1,18 +1,34 @@
 import { Button, Flex, Textarea } from "@mantine/core"
+import { IconChevronRight } from "@tabler/icons-react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { useIntl } from "react-intl"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { v4 as uuid } from "uuid"
 import classes from "./AddApplicationNote.module.scss"
 
 interface AddApplicationNoteProps {
     applicationId: string
+    onNoteAdded: (note: any) => void
 }
 
-export const AddApplicationNote = ({ applicationId }: AddApplicationNoteProps) => {
+export const AddApplicationNote = ({ applicationId, onNoteAdded }: AddApplicationNoteProps) => {
     const intl = useIntl()
     const [noteText, setNoteText] = useState("")
-    const [isLoading, setIsLoading] = useState(false)
+    const queryClient = useQueryClient()
+
+    const addNoteMutation = useMutation({
+        mutationFn: (noteData: { id: string; text: string }) =>
+            PrivateApplicationApiService.addNoteToApplication(applicationId, noteData),
+        onSuccess: (response, variables) => {
+            setNoteText("")
+
+            onNoteAdded(response.data)
+        },
+        onError: (error) => {
+            console.error("Failed to add note:", error)
+        },
+    })
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
         if (e.key === "Enter" && !e.shiftKey) {
@@ -24,37 +40,35 @@ export const AddApplicationNote = ({ applicationId }: AddApplicationNoteProps) =
     const handleSave = async () => {
         if (!noteText.trim()) return
 
-        setIsLoading(true)
-        try {
-            await PrivateApplicationApiService.addNoteToApplication(applicationId, {
-                id: uuid(),
-                text: noteText,
-            })
-
-            window.location.reload()
-        } catch (error) {
-            console.error("Failed to add note:", error)
-        } finally {
-            setIsLoading(false)
+        const noteData = {
+            id: uuid(),
+            text: noteText.trim(),
         }
+
+        addNoteMutation.mutate(noteData)
     }
 
     return (
-        <Flex direction="column" gap="sm" className={classes.container}>
+        <Flex gap="sm" align="end" className={classes.container}>
             <Textarea
                 className={classes.textarea}
                 placeholder={intl.formatMessage({
                     id: "pages.applications.addNote",
                 })}
+                autosize={true}
                 value={noteText}
                 onChange={(e) => setNoteText(e.target.value)}
                 onKeyDown={handleKeyPress}
-                minRows={3}
-                maxRows={6}
+                disabled={addNoteMutation.isPending}
             />
 
-            <Button onClick={handleSave} loading={isLoading} disabled={!noteText.trim()} size="sm">
-                <FormattedMessage id="common.save" />
+            <Button
+                onClick={handleSave}
+                loading={addNoteMutation.isPending}
+                disabled={!noteText.trim() || addNoteMutation.isPending}
+                size="sm"
+            >
+                <IconChevronRight />
             </Button>
         </Flex>
     )
