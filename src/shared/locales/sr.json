@@ -502,6 +502,9 @@
     },
     "reporting": {
       "title": "Vodič za predaju izveštaja"
+    },
+    "volunteers-mintrud": {
+      "title": "Izveštaj o volontiranju"
     }
   },
   "errors": {
@@ -524,7 +527,8 @@
       "volunteers": "Volonteri",
       "all-volunteers": "Svi volonteri",
       "applications": "Aplikacije",
-      "statistics": "Statistika"
+      "statistics": "Statistika",
+      "mintrud-report": "izveštaj o volontiranju"
     },
     "account-settings": "Podešavanja naloga",
     "support": "Kontaktirajte podršku"
