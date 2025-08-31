@@ -6,22 +6,18 @@ import { ProjectsApiService } from "src/shared/api/ProjectsApiService"
 const ProjectsContext = createContext<ProjectDto[]>([])
 
 export function ProjectsProvider({ children }: { children: React.ReactNode }) {
-  const { data } = useQuery<ProjectDto[]>({
-    queryKey: ['projects'],
-    queryFn: async () => {
-      const response = await ProjectsApiService.getProjects()
-      return response.data
-    },
-    staleTime: Infinity,
-  })
+    const { data } = useQuery<ProjectDto[]>({
+        queryKey: ["projects"],
+        queryFn: async () => {
+            const response = await ProjectsApiService.getProjects()
+            return response.data
+        },
+        staleTime: Infinity,
+    })
 
-  return (
-    <ProjectsContext.Provider value={data ?? []}>
-      {children}
-    </ProjectsContext.Provider>
-  )
+    return <ProjectsContext.Provider value={data ?? []}>{children}</ProjectsContext.Provider>
 }
 
 export function useProjects() {
-  return useContext(ProjectsContext)
-} 
+    return useContext(ProjectsContext)
+}

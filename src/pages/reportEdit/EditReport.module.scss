@@ -33,16 +33,14 @@
     width: 36rem;
 
     @media (max-width: $mantine-breakpoint-md) {
-        width: 100%
+        width: 100%;
     }
 }
 
 .buttonAddTask {
-
     transition: transform 0.2s;
 
     &:hover {
         transform: scale(1.1);
     }
 }
-

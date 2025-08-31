@@ -159,9 +159,6 @@ export const EditReport = () => {
             })
     }
 
-    console.log(tasks)
-    console.log(taskRefs)
-
     return (
         <Flex direction="column" className={classes.root}>
             <Text className={classes.title}>

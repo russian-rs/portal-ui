@@ -20,10 +20,10 @@ export function ProgramFilter({ value, onChange, className, placeholder }: Progr
 
     const programOptions = [
         { value: "NO_PROGRAM", label: intl.formatMessage({ id: locales.noProgram }) },
-        ...programs.map(program => ({
+        ...programs.map((program) => ({
             value: program.code.toUpperCase(),
             label: getLocalizedName(program, intl.locale),
-        }))
+        })),
     ]
 
     const handleChange = (newValue: string | null) => {
@@ -44,4 +44,4 @@ export function ProgramFilter({ value, onChange, className, placeholder }: Progr
             className={className}
         />
     )
-} 
+}

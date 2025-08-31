@@ -1,7 +1,8 @@
-import { Blockquote, Button, Divider, Flex, Text } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
-import { ApplicationDto, ContractDto, NoteDto } from "@russian-rs/portal-api-axios"
+import { Blockquote, Button, Divider, Flex, Text, useMantineTheme  } from "@mantine/core"
+import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import {
+    IconMailFilled,
     IconArrowRight,
     IconAt,
     IconBrandTelegram,
@@ -16,6 +17,8 @@ import {
     IconPencil,
     IconPhone,
     IconWorld,
+    IconListCheck,
+    IconPencil,
 } from "@tabler/icons-react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -31,12 +34,14 @@ import { PrivateApplicationApiService } from "src/shared/api/applications/Privat
 import { resolveUsers } from "src/shared/api/user/UserApiService"
 import generateContractPdf from "src/shared/docs/contract"
 import generateQuestionnairePdf from "src/shared/docs/questionnaire"
+import generateEnvelopPdf from "src/shared/docs/envelop"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
+import { ApplicationStatus } from "src/shared/user/applications"
 import { hasPermission } from "src/shared/user/roles"
 import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import classes from "./ApplicationView.module.scss"
@@ -48,6 +53,7 @@ export const ApplicationView = () => {
     const navigate = useNavigate()
     const { user } = useContext(UserContext)
     const intl = useIntl()
+    const theme = useMantineTheme();
     const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
     const queryClient = useQueryClient()
 
@@ -91,8 +97,12 @@ export const ApplicationView = () => {
         )
     }
 
-    const onStatusChange = (status: string) => {
-        setApplication({ ...application, status: status })
+    const onStatusChange = (status: string, denyReason?: string) => {
+        if (status === ApplicationStatus.DENY && denyReason) {
+            setApplication({ ...application, status: status, refuseReason: denyReason })
+        } else {
+            setApplication({ ...application, status: status })
+        }
     }
 
     const onContractChanged = (contract: ContractDto) => {
@@ -268,6 +278,9 @@ export const ApplicationView = () => {
                             />
                         }
                     />
+                    {application.status === ApplicationStatus.DENY && !!application.refuseReason && (
+                        <TextPropertyBox name={locales.refuseReason} value={application.refuseReason} />
+                    )}
                     <PropertyBox
                         name={locales.contractStart}
                         value={
@@ -300,6 +313,18 @@ export const ApplicationView = () => {
                         }}
                     >
                         <FormattedMessage id={locales.questionnaireDownload} />
+                    </Button>
+                    <Button
+                        variant="gradient"
+                        gradient={{from: theme.colors.cyan[6], to: theme.colors.indigo[5]}}
+                        rightSection={<IconMailFilled size={15} />}
+                        disabled={application.contract == null}
+                        className={classes.envelopGenerate}
+                        onClick={() => {
+                            generateEnvelopPdf(application)
+                        }}
+                    >
+                        <FormattedMessage id={locales.envelopDownload} />
                     </Button>
                     <Button variant="outline" rightSection={<IconPencil size={14} />} onClick={openDrawer}>
                         <FormattedMessage id="pages.profile.buttons.edit" />
