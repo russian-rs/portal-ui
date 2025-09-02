@@ -94,6 +94,13 @@
       "cancel-default-button": "Otkaži",
       "confirm-default-button": "Potvrdi",
       "reason-placeholder": "Razlog odbijanja"
+    },
+    "pause-reason-modal": {
+      "title": "Razlog pauze",
+      "description": "Molimo vas da navedete razlog pauze ove prijave",
+      "cancel-default-button": "Otkaži",
+      "confirm-default-button": "Pauziraj",
+      "reason-placeholder": "Razlog pauze"
     }
   },
   "footer": {
@@ -444,11 +451,6 @@
       "contract-start-short": "Ugovor",
       "contract-required": "Da biste završili, morate navesti datume ugovora",
       "showCompleted": "Prikaži završene",
-      "pause": {
-        "title": "Razlog pauze",
-        "reason": "Razlog pauze",
-        "submit": "Pauziraj"
-      },
       "menu": {
         "view": "Pogledaj",
         "contact": "Kontaktiraj"

@@ -7,6 +7,7 @@ import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
 import { ApplicationMenu } from "src/pages/applications/menu/ApplicationMenu"
+import { ApplicationStatus } from "src/shared/user/applications"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { useScreenSize } from "src/shared/hooks/useDesktop"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
@@ -31,10 +32,12 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
         queryFn: () => PrivateApplicationApiService.updateApplication(application).then((response) => response.data),
     })
 
-    const onStatusUpdate = (status: string, denyReason?: string) => {
+    const onStatusUpdate = (status: string, comment?: string) => {
         const updated = { ...application, status: status } as ApplicationDto
-        if (denyReason && status === "DENY") {
-            ;(updated as any).refuseReason = denyReason
+        if (status === ApplicationStatus.DENY && comment) {
+            ;(updated as any).refuseReason = comment
+        } else if (status === ApplicationStatus.PAUSED && comment) {
+            ;(updated as any).comment = comment
         }
         setApplication(updated)
         setUpdated(true)
@@ -107,7 +110,7 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                                     disabled={isUpdating}
                                     onChange={onStatusUpdate}
                                 />
-                                {application.status === "PAUSED" && (application as any).comment && (
+                                {application.status === ApplicationStatus.PAUSED && (application as any).comment && (
                                     <Text size="xs" c="dimmed" mt={4} style={{ whiteSpace: "pre-wrap" }}>
                                         {(application as any).comment}
                                     </Text>
@@ -158,7 +161,7 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                 />
             </Table.Td>
             <Table.Td className={classes.pauseReasonCell}>
-                {application.status === "PAUSED" && (application as any).comment ? (
+                {application.status === ApplicationStatus.PAUSED && (application as any).comment ? (
                     <Text
                         size={isLargeDesktop ? "sm" : "xs"}
                         c="dimmed"

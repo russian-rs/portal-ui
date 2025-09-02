@@ -1,8 +1,9 @@
-import { Button, Combobox, Flex, InputBase, Modal, Text, Textarea, Tooltip, useCombobox } from "@mantine/core"
+import { Combobox, Flex, InputBase, Text, Tooltip, useCombobox } from "@mantine/core"
 import { ApplicationDto } from "@russian-rs/portal-api-axios"
 import React, { ReactNode, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { DenyReasonModal } from "src/shared/ui/denyReasonModal/DenyReasonModal"
+import { PauseReasonModal } from "src/shared/ui/pauseReasonModal/PauseReasonModal"
 import { ApplicationStatus, getApplicationStatusColor, getApplicationStatusIcon } from "src/shared/user/applications"
 import { locales } from "./lib/locales"
 
@@ -24,7 +25,6 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
     const [value, setValue] = useState<string>(props.application.status || ApplicationStatus.CREATED)
     const [pauseOpened, setPauseOpened] = useState(false)
     const [denyModalOpened, setDenyModalOpened] = useState(false)
-    const [pauseReason, setPauseReason] = useState("")
     const [pendingStatus, setPendingStatus] = useState<string | null>(null)
 
     const onChange = (newValue: string, comment?: string) => {
@@ -45,12 +45,27 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
         }
     }
 
+    const handlePauseConfirm = (reason: string) => {
+        if (pendingStatus) {
+            onChange(pendingStatus, reason)
+            setValue(pendingStatus)
+            setPendingStatus(null)
+        }
+    }
+
     const handleDenyConfirm = (reason: string) => {
         if (pendingStatus) {
             onChange(pendingStatus, reason)
             setValue(pendingStatus)
             setPendingStatus(null)
         }
+    }
+
+    const handlePauseCancel = () => {
+        setPauseOpened(false)
+        setPendingStatus(null)
+        // Возвращаем предыдущее значение статуса
+        setValue(props.application.status || ApplicationStatus.CREATED)
     }
 
     const handleDenyCancel = () => {
@@ -134,67 +149,25 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
             </Combobox>
             {props.showInlineReason === true &&
                 value === ApplicationStatus.PAUSED &&
-                (props.application.comment || pauseReason) && (
+                props.application.comment && (
                     <Text
                         size="xs"
                         c="dimmed"
                         mt={6}
                         style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", overflowWrap: "anywhere" }}
                     >
-                        <FormattedMessage id={locales.pauseReason} />: {props.application.comment || pauseReason}
+                        <FormattedMessage id="common.pause-reason-modal.reason-placeholder" />: {props.application.comment}
                     </Text>
                 )}
 
-            <Modal
-                centered
+            <PauseReasonModal
                 opened={pauseOpened}
-                onClose={() => {
-                    setPauseOpened(false)
-                    setPauseReason("")
-                    setPendingStatus(null)
-                }}
-                title={<FormattedMessage id={locales.pauseTitle} />}
-            >
-                <Flex direction="column" gap="md">
-                    <Textarea
-                        label={<FormattedMessage id={locales.pauseReason} />}
-                        placeholder=""
-                        autosize
-                        minRows={3}
-                        value={pauseReason}
-                        onChange={(e) => setPauseReason(e.currentTarget.value)}
-                        withAsterisk
-                    />
-                    <Flex justify="flex-end" gap="sm">
-                        <Button
-                            variant="outline"
-                            onClick={() => {
-                                setPauseOpened(false)
-                                setPauseReason("")
-                                setPendingStatus(null)
-                            }}
-                        >
-                            <FormattedMessage id="common.confirm-modal.cancelDefaultButton" />
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                const reason = pauseReason.trim()
-                                if (!reason || !pendingStatus) {
-                                    return
-                                }
-                                setValue(pendingStatus)
-                                onChange(pendingStatus, reason)
-                                setPauseOpened(false)
-                                setPauseReason("")
-                                setPendingStatus(null)
-                            }}
-                            disabled={pauseReason.trim().length === 0}
-                        >
-                            <FormattedMessage id={locales.pauseSubmit} />
-                        </Button>
-                    </Flex>
-                </Flex>
-            </Modal>
+                onClose={handlePauseCancel}
+                onConfirm={handlePauseConfirm}
+                title={<FormattedMessage id="common.pause-reason-modal.title" />}
+                description={<FormattedMessage id="common.pause-reason-modal.description" />}
+                confirmButtonText={<FormattedMessage id="common.pause-reason-modal.confirm-default-button" />}
+            />
 
             <DenyReasonModal
                 opened={denyModalOpened}
