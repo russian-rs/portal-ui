@@ -94,6 +94,13 @@
       "confirm-default-button": "Confirm",
       "cancel-default-button": "Cancel",
       "reason-placeholder": "Reason for refusal"
+    },
+    "pause-reason-modal": {
+      "title": "Reason for pause",
+      "description": "Please specify the reason for pausing this application",
+      "confirm-default-button": "Pause",
+      "cancel-default-button": "Cancel",
+      "reason-placeholder": "Reason for pause"
     }
   },
   "footer": {
@@ -444,11 +451,6 @@
       "contract-start-short": "Contract",
       "contract-required": "Contract dates must be specified to complete",
       "showCompleted": "Show completed",
-      "pause": {
-        "title": "Pause reason",
-        "reason": "Pause reason",
-        "submit": "Pause"
-      },
       "menu": {
         "view": "View",
         "contact": "Contact"

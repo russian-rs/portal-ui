@@ -85,9 +85,11 @@ export const ApplicationView = () => {
         )
     }
 
-    const onStatusChange = (status: string, denyReason?: string) => {
-        if (status === ApplicationStatus.DENY && denyReason) {
-            setApplication({ ...application, status: status, refuseReason: denyReason })
+    const onStatusChange = (status: string, comment?: string) => {
+        if (status === ApplicationStatus.DENY && comment) {
+            setApplication({ ...application, status: status, refuseReason: comment })
+        } else if (status === ApplicationStatus.PAUSED && comment) {
+            setApplication({ ...application, status: status, comment: comment })
         } else {
             setApplication({ ...application, status: status })
         }
@@ -257,13 +259,15 @@ export const ApplicationView = () => {
                                     onChange={onStatusChange}
                                     showInlineReason={false}
                                 />
-                                {application.status === "PAUSED" && application.comment && (
+                                {application.status === ApplicationStatus.PAUSED && application.comment && (
                                     <Text size="sm" c="dimmed" className={classes.pauseReasonBlock}>
                                         <FormattedMessage id={locales.pauseReason} />: {application.comment}
                                     </Text>
                                 )}
                                 {application.status === ApplicationStatus.DENY && !!application.refuseReason && (
-                                    <TextPropertyBox name={locales.refuseReason} value={application.refuseReason} />
+                                    <Text size="sm" c="dimmed" className={classes.pauseReasonBlock}>
+                                        <FormattedMessage id={locales.refuseReason} />: {application.refuseReason}
+                                    </Text>
                                 )}
                             </Flex>
                         }

@@ -94,6 +94,13 @@
       "confirm-default-button": "Подтвердить",
       "cancel-default-button": "Отмена",
       "reason-placeholder": "Причина отказа"
+    },
+    "pause-reason-modal": {
+      "title": "Причина паузы",
+      "description": "Укажите причину приостановки заявки",
+      "confirm-default-button": "Приостановить",
+      "cancel-default-button": "Отмена",
+      "reason-placeholder": "Причина паузы"
     }
   },
   "footer": {
@@ -444,11 +451,6 @@
       "contract-start-short": "Договор",
       "contract-required": "Для завершения необходимо указать даты контракта",
       "showCompleted": "Показать завершенные",
-      "pause": {
-        "title": "Причина паузы",
-        "reason": "Причина паузы",
-        "submit": "Приостановить"
-      },
       "menu": {
         "view": "Посмотреть",
         "contact": "Написать"
