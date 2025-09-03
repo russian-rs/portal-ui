@@ -1,3 +1,4 @@
 export const locales = {
-    title: "pages.volunteers-mintrud.title",
+    titleReports: "pages.volunteers-reports.title",
+    titleMintrud: "pages.volunteers-mintrud.title",
 }

@@ -503,6 +503,9 @@
     "reporting": {
       "title": "Руководство по сдаче отчётности"
     },
+    "volunteers-reports": {
+      "title": "Отчеты по волонтерам"
+    },
     "volunteers-mintrud": {
       "title": "Отчет Минтруд по волонтерам"
     }
@@ -528,6 +531,7 @@
       "all-volunteers": "Все волонтеры",
       "applications": "Новые заявки",
       "statistics": "Статистика",
+      "reports": "Отчеты по волонтерам",
       "mintrud-report": "Отчёт Минтруд"
     },
     "account-settings": "Настройки уч. записи",
