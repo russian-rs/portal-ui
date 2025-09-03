@@ -503,6 +503,9 @@
     "reporting": {
       "title": "Vodič za predaju izveštaja"
     },
+    "volunteers-reports": {
+      "title": "Izveštaji o volonterima"
+    },
     "volunteers-mintrud": {
       "title": "Izveštaj o volontiranju"
     }
@@ -528,6 +531,7 @@
       "all-volunteers": "Svi volonteri",
       "applications": "Aplikacije",
       "statistics": "Statistika",
+      "reports": "Izveštaji o volonterima",
       "mintrud-report": "izveštaj o volontiranju"
     },
     "account-settings": "Podešavanja naloga",

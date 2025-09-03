@@ -16,6 +16,7 @@ const ApplicationView = lazy(() => import("src/pages/applications/view/Applicati
 const CleaningHowTo = lazy(() => import("src/pages/cleaning/CleaningHowTo"))
 const ReportingGuide = lazy(() => import("src/pages/reporting/ReportingGuide"))
 const MintrudReport = lazy(() => import("src/pages/volunteers/mintrud/MintrudReport"))
+const VolunteerReports = lazy(() => import("src/pages/volunteers/reports/VolunteerReports"))
 
 export const routes: RouteProps[] = [
     {
@@ -51,7 +52,11 @@ export const routes: RouteProps[] = [
         element: <UserList />,
     },
     {
-        path: "/volunteers/mintrud",
+        path: "/volunteers/reports",
+        element: <VolunteerReports />,
+    },
+    {
+        path: "/volunteers/reports/mintrud",
         element: <MintrudReport />,
     },
     {
