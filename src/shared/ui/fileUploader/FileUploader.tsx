@@ -17,6 +17,11 @@ interface FileUploaderProps {
     files?: FileInfoDto[]
     onFilesUploaded?: (files: FileInfoDto[]) => void
     onFilesLoading?: (files: string[]) => void
+    maxFiles?: number
+    maxSize?: number
+    files?: FileInfoDto[]
+    onFilesUploaded?: (files: FileInfoDto[]) => void
+    onFilesLoading?: (files: string[]) => void
 }
 
 export interface FileUploaderInterface {
