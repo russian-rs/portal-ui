@@ -3,7 +3,7 @@ import { Dropzone, FileWithPath } from "@mantine/dropzone"
 import { notifications } from "@mantine/notifications"
 import { FileInfoDto } from "@russian-rs/portal-api-axios"
 import { IconFiles, IconUpload, IconX } from "@tabler/icons-react"
-import { forwardRef, useImperativeHandle, useState } from "react"
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react"
 import { ErrorCode, FileRejection } from "react-dropzone-esm"
 import { FormattedMessage, useIntl } from "react-intl"
 import { FilesApiService } from "src/shared/api/FilesApiService"
@@ -16,7 +16,7 @@ interface FileUploaderProps {
     maxSize?: number
     files?: FileInfoDto[]
     onFilesUploaded?: (files: FileInfoDto[]) => void
-    onFilesLoading?: (files: String[]) => void
+    onFilesLoading?: (files: string[]) => void
 }
 
 export interface FileUploaderInterface {
@@ -26,37 +26,69 @@ export interface FileUploaderInterface {
 export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>((props, ref) => {
     const intl = useIntl()
 
-    const [loadingFiles, setLoadingFiles] = useState<String[]>([])
+    const [loadingFiles, setLoadingFiles] = useState<string[]>([])
+
+    const maxSize = props.maxSize ?? 5 // MB
+    const maxFiles = props.maxFiles ?? 7
+    const currentCount = props.files?.length ?? 0
+    const disabled = currentCount >= maxFiles
 
     useImperativeHandle(ref, () => ({
         delete: (id) => {
-            props.onFilesUploaded?.(props.files?.filter((it) => it.id != id) || [])
+            props.onFilesUploaded?.(props.files?.filter((it) => it.id !== id) || [])
         },
     }))
 
-    const onDrop = (files: FileWithPath[]) => {
-        setLoadingFiles(files.map((it) => it.name))
-        files.forEach((file) => {
-            FilesApiService.uploadFile(file)
-                .then((response) => {
-                    const fileInfo = response.data
-                    setLoadingFiles(loadingFiles.filter((it) => it !== file.name))
+    // Пробрасываем список «в процессе»
+    useEffect(() => {
+        if (props.onFilesLoading) {
+            props.onFilesLoading(loadingFiles)
+        }
+    }, [loadingFiles])
+
+    const onDrop = async (files: FileWithPath[]) => {
+        // Проверка лимита
+        if (currentCount + files.length > maxFiles) {
+            notifications.show(
+                ErrorNotification(
+                    <Text size="sm">
+                        <FormattedMessage id={locales.tooManyFiles} />
+                    </Text>
+                )
+            )
+            return
+        }
+
+        // показать прогресс: все имена в очереди
+        setLoadingFiles(files.map((f) => f.name))
+
+        try {
+            for (const file of files) {
+                try {
+                    // грузим по очереди, чтобы прогресс был предсказуем
+                    const resp = await FilesApiService.uploadFile(file)
+                    const fileInfo: FileInfoDto = resp.data
+                    // уведомляем родителя — он держит список файлов
                     props.onFilesUploaded?.([...(props.files || []), fileInfo])
-                })
-                .catch(() => {
-                    setLoadingFiles([])
-                })
-        })
+                } catch (e) {
+                    // можно добавить уведомление об ошибке конкретного файла
+                    // showError(file.name, intl.formatMessage({ id: `${locales.errors}.UploadFailed` }))
+                } finally {
+                    // снимаем файл из «в процессе»
+                    setLoadingFiles((prev) => prev.filter((name) => name !== file.name))
+                }
+            }
+        } finally {
+            // на случай рассинхронизации
+            setLoadingFiles([])
+        }
     }
 
     const onReject = (fileRejections: FileRejection[]) => {
-        fileRejections.forEach((fileRejection) => {
-            const errorCode = fileRejection.errors[0].code
-            if (errorCode == ErrorCode.FileTooLarge) {
-                showError(
-                    fileRejection.file.name,
-                    intl.formatMessage({ id: `${locales.errors}.${errorCode}` }, { maxSize: maxSize })
-                )
+        fileRejections.forEach((rej) => {
+            const errorCode = rej.errors[0]?.code
+            if (errorCode === ErrorCode.FileTooLarge) {
+                showError(rej.file.name, intl.formatMessage({ id: `${locales.errors}.${errorCode}` }, { maxSize }))
             }
         })
     }
@@ -65,23 +97,19 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
         notifications.show(
             ErrorNotification(
                 <Text fw="bold" size="sm">
-                    {intl.formatMessage({ id: locales.fileName }, { fileName: fileName })}
+                    {intl.formatMessage({ id: locales.fileName }, { fileName })}
                 </Text>,
                 <Text size="sm">{message}</Text>
             )
         )
     }
 
-    const maxSize = props.maxSize ? props.maxSize : 5
-    const maxFiles = props.maxFiles ? props.maxFiles : 7
-    const disabled = (props.files?.length || 0) >= maxFiles
-
     return (
         <Dropzone
             onDrop={onDrop}
             onReject={onReject}
-            multiple={false}
             disabled={disabled}
+            maxFiles={maxFiles}
             maxSize={maxSize * 1024 ** 2}
             loading={loadingFiles.length !== 0}
         >
@@ -101,7 +129,7 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
                         <FormattedMessage id={locales.title} />
                     </Text>
                     <Text className={classes.subTitle}>
-                        <FormattedMessage id={locales.description} values={{ maxFiles: maxFiles, maxSize: maxSize }} />
+                        <FormattedMessage id={locales.description} values={{ maxFiles, maxSize }} />
                     </Text>
                 </Flex>
             </Flex>
