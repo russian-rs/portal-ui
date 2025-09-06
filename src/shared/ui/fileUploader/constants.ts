@@ -3,4 +3,5 @@ export const locales = {
     description: "common.file-uploader.description",
     fileName: "common.file-uploader.file-name",
     errors: "common.file-uploader.errors",
+    tooManyFiles: "common.file-uploader.too-many-files",
 }
