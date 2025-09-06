@@ -1,8 +1,7 @@
+import { Blockquote, Button, Divider, Flex, Text, useMantineTheme } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
-import { Blockquote, Button, Divider, Flex, Text, useMantineTheme  } from "@mantine/core"
-import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
+import { ApplicationDto, ContractDto, NoteDto } from "@russian-rs/portal-api-axios"
 import {
-    IconMailFilled,
     IconArrowRight,
     IconAt,
     IconBrandTelegram,
@@ -14,11 +13,10 @@ import {
     IconLanguageHiragana,
     IconListCheck,
     IconLocation,
+    IconMailFilled,
     IconPencil,
     IconPhone,
     IconWorld,
-    IconListCheck,
-    IconPencil,
 } from "@tabler/icons-react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -33,8 +31,8 @@ import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { resolveUsers } from "src/shared/api/user/UserApiService"
 import generateContractPdf from "src/shared/docs/contract"
-import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 import generateEnvelopPdf from "src/shared/docs/envelop"
+import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
@@ -53,7 +51,7 @@ export const ApplicationView = () => {
     const navigate = useNavigate()
     const { user } = useContext(UserContext)
     const intl = useIntl()
-    const theme = useMantineTheme();
+    const theme = useMantineTheme()
     const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
     const queryClient = useQueryClient()
 
@@ -316,7 +314,7 @@ export const ApplicationView = () => {
                     </Button>
                     <Button
                         variant="gradient"
-                        gradient={{from: theme.colors.cyan[6], to: theme.colors.indigo[5]}}
+                        gradient={{ from: theme.colors.cyan[6], to: theme.colors.indigo[5] }}
                         rightSection={<IconMailFilled size={15} />}
                         disabled={application.contract == null}
                         className={classes.envelopGenerate}
