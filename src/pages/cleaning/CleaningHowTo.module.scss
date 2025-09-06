@@ -2,14 +2,53 @@
     padding: 1rem 2rem;
     flex-direction: column;
     row-gap: 1rem;
-    width: 64rem;
-
-    @media (max-width: $mantine-breakpoint-md) {
-        width: 100%;
-    }
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
 }
 
 .title {
     font-size: xx-large;
     font-weight: bolder;
+}
+
+.markdown {
+    display: block;
+    width: 100%;
+
+    :global(img) {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 1rem;
+        border-radius: 8px;
+    }
+
+    :global(ul),
+    :global(ol) {
+        margin: 0 0 1rem 1.25rem;
+        padding-left: 1.25rem;
+    }
+
+    :global(li) {
+        margin: 0.25rem 0;
+        line-height: 1.5;
+    }
+
+    :global(.warn) {
+        color: #d7263d;
+        font-weight: 700;
+    }
+
+    :global(h1),
+    :global(h2),
+    :global(h3) {
+        margin-top: 1.5rem;
+    }
+
+    :global(p) {
+        line-height: 1.6;
+    }
 }

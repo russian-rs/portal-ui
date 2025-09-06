@@ -87,6 +87,13 @@
       "confirmDefaultButton": "Potvrdi",
       "cancelDefaultButton": "Otkaži",
       "waitText": "Čekaj {timer} s"
+    },
+    "deny-reason-modal": {
+      "title": "Razlog odbijanja",
+      "description": "Molimo vas da navedete razlog odbijanja ove prijave",
+      "cancel-default-button": "Otkaži",
+      "confirm-default-button": "Potvrdi",
+      "reason-placeholder": "Razlog odbijanja"
     }
   },
   "footer": {
@@ -151,7 +158,21 @@
         "invalidEmail": "Neispravan format email-a",
         "invalidSymbols": "Neispravni simboli",
         "minLetters": "Najmanje {count} slova",
-        "maxLetters": "Maksimalno {count} karaktera"
+        "maxLetters": "Maksimalno {count} karaktera",
+        "title": "Molimo vas da popunite nedostajuće informacije u vašem profilu",
+        "description": "Da bi vaš profil bio potpun i da biste mogli da koristite sve mogućnosti portala, popunite sledeća polja:",
+        "footer": "🛠 Ovo će trajati samo nekoliko minuta. Nakon popunjavanja, sva funkcionalnost će ponovo biti dostupna",
+        "goToProfile": "Uredi profil",
+        "fields": {
+          "avatar": "fotografija profila",
+          "city": "grad",
+          "address": "adresa",
+          "birthDate": "datum rođenja",
+          "telegram": "telegram",
+          "phone": "telefon",
+          "program": "program",
+          "project": "projekat"
+        }
       },
       "buttons": {
         "edit": "Uredi",
@@ -456,9 +477,15 @@
         "bio": "Kratka biografija",
         "contractDownload": "Preuzimanje ugovora",
         "questionnaireDownload": "Preuzimanje upitnika",
+        "envelopDownload": "Preuzimanje koverata",
         "editTitle": "Uredi prijavu",
         "editSuccess": "Prijava je uspešno ažurirana",
-        "editError": "Greška pri ažuriranju prijave"
+        "editError": "Greška pri ažuriranju prijave",
+        "refuse-reason": "Razlog odbijanja",
+        "deny-reason-modal": {
+          "title": "Razlog odbijanja",
+          "description": "Molimo navedite razlog odbijanja"
+        }
       },
       "report": {
         "contract-from": "Datum početka",
