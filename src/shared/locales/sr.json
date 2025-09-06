@@ -583,10 +583,10 @@
                     "created-short": "Datum",
                     "type": "Tip",
                     "type-short": "Tip",
+                    "name-and-email": "Ime Prezime i E-mail",
+                    "name-and-email-short": "Ime i E-mail",
                     "name": "Ime i Prezime",
                     "name-short": "Ime",
-                    "name-and-email": "Ime i E-mail",
-                    "name-and-email-short": "Ime i E-mail",
                     "email": "E-mail",
                     "email-short": "Email",
                     "status": "Status",
@@ -643,7 +643,8 @@
                         "cancel": "Otkaži",
                         "save": "Sačuvaj",
                         "add": "Dodaj"
-                    }
+                    },
+                    "notes": "Napomene"
                 },
                 "cleaning": {
                     "title": "Čisti grad (glavni program)"
