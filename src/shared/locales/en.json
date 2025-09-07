@@ -446,6 +446,7 @@
             "contract-start-short": "Contract",
             "contract-required": "Contract dates must be specified to complete",
             "showCompleted": "Show completed",
+            "addNote": "Add note",
             "menu": {
                 "view": "View",
                 "contact": "Contact"
