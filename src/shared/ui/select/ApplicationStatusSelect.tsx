@@ -20,6 +20,8 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
         onDropdownClose: () => combobox.resetSelectedOption(),
     })
 
+    const isApplicationCompleted = props.application.status === ApplicationStatus.DONE
+
     const [value, setValue] = useState<string>(props.application.status || ApplicationStatus.CREATED)
     const [denyModalOpened, setDenyModalOpened] = useState(false)
     const [pendingStatus, setPendingStatus] = useState<string | null>(null)
@@ -89,7 +91,7 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
                         type="button"
                         pointer
                         variant="unstyled"
-                        disabled={props.disabled}
+                        disabled={props.disabled || isApplicationCompleted}
                         className={props.className}
                         onClick={() => combobox.toggleDropdown()}
                         leftSection={
