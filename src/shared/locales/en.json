@@ -94,6 +94,13 @@
       "confirm-default-button": "Confirm",
       "cancel-default-button": "Cancel",
       "reason-placeholder": "Reason for refusal"
+    },
+    "pause-reason-modal": {
+      "title": "Reason for pause",
+      "description": "Please specify the reason for pausing this application",
+      "confirm-default-button": "Pause",
+      "cancel-default-button": "Cancel",
+      "reason-placeholder": "Reason for pause"
     }
   },
   "footer": {
@@ -475,6 +482,7 @@
         "skills": "Skills",
         "goal": "Purpose of Participation in the Organization",
         "bio": "Brief Biography",
+        "pause-reason": "Pause reason",
         "contractDownload": "Download contract",
         "questionnaireDownload": "Download questionnaire",
         "envelopDownload": "Download envelop",
