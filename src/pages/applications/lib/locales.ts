@@ -17,5 +17,6 @@ export const locales = {
     contractStartShort: "pages.applications.contract-start-short",
     contractAdd: "pages.applications.contractAdd",
     showCompleted: "pages.applications.showCompleted",
+    pauseReason: "pages.applications.view.pause-reason",
     reset: "pages.report-list.reset",
 }

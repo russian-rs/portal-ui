@@ -240,6 +240,9 @@ export const Applications = () => {
                                 <Table.Th>
                                     <FormattedMessage id={isLargeDesktop ? locales.status : locales.statusShort} />
                                 </Table.Th>
+                                <Table.Th>
+                                    <FormattedMessage id={"pages.applications.view.pause-reason"} />
+                                </Table.Th>
                                 <Table.Th></Table.Th>
                             </Table.Tr>
                         </Table.Thead>

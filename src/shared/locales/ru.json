@@ -94,6 +94,13 @@
       "confirm-default-button": "Подтвердить",
       "cancel-default-button": "Отмена",
       "reason-placeholder": "Причина отказа"
+    },
+    "pause-reason-modal": {
+      "title": "Причина паузы",
+      "description": "Укажите причину приостановки заявки",
+      "confirm-default-button": "Приостановить",
+      "cancel-default-button": "Отмена",
+      "reason-placeholder": "Причина паузы"
     }
   },
   "footer": {
@@ -475,6 +482,7 @@
         "skills": "Навыки",
         "goal": "Цель участия в организации",
         "bio": "Краткая биография",
+        "pause-reason": "Причина паузы",
         "contractDownload": "Скачать договор",
         "questionnaireDownload": "Скачать анкету",
         "envelopDownload": "Скачать конверт",

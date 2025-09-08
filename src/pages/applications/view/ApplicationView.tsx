@@ -1,8 +1,6 @@
-import { useDisclosure } from "@mantine/hooks"
-import { Blockquote, Button, Divider, Flex, Text, useMantineTheme  } from "@mantine/core"
+import { Blockquote, Button, Divider, Flex, Text } from "@mantine/core"
 import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import {
-    IconMailFilled,
     IconArrowRight,
     IconAt,
     IconBrandTelegram,
@@ -23,13 +21,13 @@ import dayjs from "dayjs"
 import { useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
+import { useDisclosure } from "@mantine/hooks"
 import { UserContext } from "src/app/providers/UserContext"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
+import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import generateContractPdf from "src/shared/docs/contract"
-import generateQuestionnairePdf from "src/shared/docs/questionnaire"
-import generateEnvelopPdf from "src/shared/docs/envelop"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
@@ -38,18 +36,16 @@ import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
 import { ApplicationStatus } from "src/shared/user/applications"
 import { hasPermission } from "src/shared/user/roles"
-import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
-
+import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 
 export const ApplicationView = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const { user } = useContext(UserContext)
     const intl = useIntl()
-    const theme = useMantineTheme();
     const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
 
     if (!id) {
@@ -89,9 +85,11 @@ export const ApplicationView = () => {
         )
     }
 
-    const onStatusChange = (status: string, denyReason?: string) => {
-        if (status === ApplicationStatus.DENY && denyReason) {
-            setApplication({ ...application, status: status, refuseReason: denyReason })
+    const onStatusChange = (status: string, comment?: string) => {
+        if (status === ApplicationStatus.DENY && comment) {
+            setApplication({ ...application, status: status, refuseReason: comment })
+        } else if (status === ApplicationStatus.PAUSED && comment) {
+            setApplication({ ...application, status: status, comment: comment })
         } else {
             setApplication({ ...application, status: status })
         }
@@ -254,16 +252,26 @@ export const ApplicationView = () => {
                         align="start"
                         name={locales.status}
                         value={
-                            <ApplicationStatusSelect
-                                application={application}
-                                className={classes.statusSelect}
-                                onChange={onStatusChange}
-                            />
+                            <Flex direction="column" gap={4}>
+                                <ApplicationStatusSelect
+                                    application={application}
+                                    className={classes.statusSelect}
+                                    onChange={onStatusChange}
+                                    showInlineReason={false}
+                                />
+                                {application.status === ApplicationStatus.PAUSED && application.comment && (
+                                    <Text size="sm" c="dimmed" className={classes.pauseReasonBlock}>
+                                        <FormattedMessage id={locales.pauseReason} />: {application.comment}
+                                    </Text>
+                                )}
+                                {application.status === ApplicationStatus.DENY && !!application.refuseReason && (
+                                    <Text size="sm" c="dimmed" className={classes.pauseReasonBlock}>
+                                        <FormattedMessage id={locales.refuseReason} />: {application.refuseReason}
+                                    </Text>
+                                )}
+                            </Flex>
                         }
                     />
-                    {application.status === ApplicationStatus.DENY && !!application.refuseReason && (
-                        <TextPropertyBox name={locales.refuseReason} value={application.refuseReason} />
-                    )}
                     <PropertyBox
                         name={locales.contractStart}
                         value={
@@ -296,18 +304,6 @@ export const ApplicationView = () => {
                         }}
                     >
                         <FormattedMessage id={locales.questionnaireDownload} />
-                    </Button>
-                    <Button
-                        variant="gradient"
-                        gradient={{from: theme.colors.cyan[6], to: theme.colors.indigo[5]}}
-                        rightSection={<IconMailFilled size={15} />}
-                        disabled={application.contract == null}
-                        className={classes.envelopGenerate}
-                        onClick={() => {
-                            generateEnvelopPdf(application)
-                        }}
-                    >
-                        <FormattedMessage id={locales.envelopDownload} />
                     </Button>
                     <Button variant="outline" rightSection={<IconPencil size={14} />} onClick={openDrawer}>
                         <FormattedMessage id="pages.profile.buttons.edit" />

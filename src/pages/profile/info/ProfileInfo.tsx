@@ -75,10 +75,15 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
             .or(z.literal("")),
         telegram: z
             .string()
+            .regex(/^[a-zA-Z][a-zA-Z0-9_]*$/, intl.formatMessage({ id: "pages.profile.validation.invalidTelegram" }))
             .max(32, intl.formatMessage({ id: locales.maxLetters }, { count: 32 }))
             .optional()
             .or(z.literal("")),
-        phone: z.string().optional().or(z.literal("")),
+        phone: z
+            .string()
+            .regex(/^\+?\d{10,15}$/, intl.formatMessage({ id: "pages.profile.validation.invalidPhone" }))
+            .optional()
+            .or(z.literal("")),
     })
 
     const form = useForm({
@@ -102,11 +107,11 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         }
 
         const updateData: UserInfoUpdateRequest = {}
-        updateData.city = formValues.city?.trim() || ""
-        updateData.address = formValues.address?.trim() || ""
-        updateData.birthDate = formValues.birthDate?.trim() || ""
-        updateData.telegram = formValues.telegram?.trim() || ""
-        updateData.phone = formValues.phone?.trim() || ""
+        if (formValues.city?.trim()) updateData.city = formValues.city.trim()
+        if (formValues.address?.trim()) updateData.address = formValues.address.trim()
+        if (formValues.birthDate?.trim()) updateData.birthDate = formValues.birthDate.trim()
+        if (formValues.telegram?.trim()) updateData.telegram = formValues.telegram.trim()
+        if (formValues.phone?.trim()) updateData.phone = formValues.phone.trim()
 
         updateProfile(updateData)
     }
@@ -306,7 +311,6 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                     className={classes.button}
                     variant="outline"
                     rightSection={<IconPencil size={14} />}
-                    data-edit-profile-button
                 >
                     <FormattedMessage id={"pages.profile.buttons.edit"} />
                 </Button>

@@ -33,6 +33,8 @@ export const locales = {
     goal: "pages.applications.view.goal",
     bio: "pages.applications.view.bio",
 
+    pauseReason: "pages.applications.view.pause-reason",
+
     contractDownload: "pages.applications.view.contractDownload",
     questionnaireDownload: "pages.applications.view.questionnaireDownload",
     envelopDownload: "pages.applications.view.envelopDownload",
