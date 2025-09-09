@@ -15,6 +15,7 @@ import {
     IconWorld,
     IconListCheck,
     IconPencil,
+    IconMailFilled
 } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -40,6 +41,7 @@ import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
 import generateQuestionnairePdf from "src/shared/docs/questionnaire"
+import generateEnvelopPdf from "src/shared/docs/envelop"
 
 export const ApplicationView = () => {
     const { id } = useParams()
@@ -304,6 +306,18 @@ export const ApplicationView = () => {
                         }}
                     >
                         <FormattedMessage id={locales.questionnaireDownload} />
+                    </Button>
+                    <Button
+                        variant="gradient"
+                        gradient={{ from: "#FF7E5F", to: "#FEB47B" }}
+                        rightSection={<IconMailFilled  size={15} />}
+                        disabled={application.contract == null}
+                        className={classes.envelopGenerate}
+                        onClick={() => {
+                            generateEnvelopPdf(application)
+                        }}
+                    >
+                        <FormattedMessage id={locales.envelopDownload} />
                     </Button>
                     <Button variant="outline" rightSection={<IconPencil size={14} />} onClick={openDrawer}>
                         <FormattedMessage id="pages.profile.buttons.edit" />
