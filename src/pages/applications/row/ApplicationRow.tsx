@@ -1,18 +1,18 @@
-import { Avatar, Box, Card, Flex, Table, Text } from "@mantine/core"
+import { Avatar, Flex, Table, Text, Card, Box } from "@mantine/core"
 import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import { ReactNode, useState } from "react"
+import React, { ReactNode, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
 import { ApplicationMenu } from "src/pages/applications/menu/ApplicationMenu"
+import { ApplicationStatus } from "src/shared/user/applications"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { useScreenSize } from "src/shared/hooks/useDesktop"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
 import { getMantineColor } from "src/shared/ui/theme/CustomMantineTheme"
-import { ApplicationStatus } from "src/shared/user/applications"
 import classes from "./ApplicationRow.module.scss"
 
 interface ApplicationRowProps {
@@ -32,12 +32,14 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
         queryFn: () => PrivateApplicationApiService.updateApplication(application).then((response) => response.data),
     })
 
-    const onStatusUpdate = (status: string, denyReason?: string) => {
-        if (status === ApplicationStatus.DENY && denyReason) {
-            setApplication({ ...application, status: status, refuseReason: denyReason })
-        } else {
-            setApplication({ ...application, status: status })
+    const onStatusUpdate = (status: string, comment?: string) => {
+        const updated = { ...application, status: status } as ApplicationDto
+        if (status === ApplicationStatus.DENY && comment) {
+            ;(updated as any).refuseReason = comment
+        } else if (status === ApplicationStatus.PAUSED && comment) {
+            ;(updated as any).comment = comment
         }
+        setApplication(updated)
         setUpdated(true)
     }
 
@@ -108,6 +110,11 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                                     disabled={isUpdating}
                                     onChange={onStatusUpdate}
                                 />
+                                {application.status === ApplicationStatus.PAUSED && (application as any).comment && (
+                                    <Text size="xs" c="dimmed" mt={4} style={{ whiteSpace: "pre-wrap" }}>
+                                        {(application as any).comment}
+                                    </Text>
+                                )}
                             </div>
                         </div>
                     </Box>
@@ -150,7 +157,20 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                     className={classes.statusSelect}
                     disabled={isUpdating}
                     onChange={onStatusUpdate}
+                    showInlineReason={false}
                 />
+            </Table.Td>
+            <Table.Td className={classes.pauseReasonCell}>
+                {application.status === ApplicationStatus.PAUSED && (application as any).comment ? (
+                    <Text
+                        size={isLargeDesktop ? "sm" : "xs"}
+                        c="dimmed"
+                        className={classes.pauseReasonText}
+                        title={(application as any).comment}
+                    >
+                        {(application as any).comment}
+                    </Text>
+                ) : null}
             </Table.Td>
             <Table.Td>
                 <Flex align="center">

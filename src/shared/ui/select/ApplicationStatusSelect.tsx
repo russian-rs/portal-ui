@@ -1,18 +1,20 @@
 import { Combobox, Flex, InputBase, Text, Tooltip, useCombobox } from "@mantine/core"
 import { ApplicationDto } from "@russian-rs/portal-api-axios"
-import { ReactNode, useEffect, useState } from "react"
+import React, { ReactNode, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { DenyReasonModal } from "src/shared/ui/denyReasonModal/DenyReasonModal"
+import { PauseReasonModal } from "src/shared/ui/pauseReasonModal/PauseReasonModal"
 import { ApplicationStatus, getApplicationStatusColor, getApplicationStatusIcon } from "src/shared/user/applications"
 import { locales } from "./lib/locales"
 
 interface ApplicationStatusSelectProps {
     application: ApplicationDto
     className?: string
-    onChange?: (status: string, denyReason?: string) => void
+    onChange?: (status: string, comment?: string) => void
     label?: string
     disabled?: boolean
     withoutIcon?: boolean
+    showInlineReason?: boolean
 }
 
 export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => {
@@ -21,12 +23,13 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
     })
 
     const [value, setValue] = useState<string>(props.application.status || ApplicationStatus.CREATED)
+    const [pauseOpened, setPauseOpened] = useState(false)
     const [denyModalOpened, setDenyModalOpened] = useState(false)
     const [pendingStatus, setPendingStatus] = useState<string | null>(null)
 
-    const onChange = (newValue: string, denyReason?: string) => {
+    const onChange = (newValue: string, comment?: string) => {
         if (props.onChange) {
-            props.onChange(newValue, denyReason)
+            props.onChange(newValue, comment)
         }
     }
 
@@ -42,12 +45,27 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
         }
     }
 
+    const handlePauseConfirm = (reason: string) => {
+        if (pendingStatus) {
+            onChange(pendingStatus, reason)
+            setValue(pendingStatus)
+            setPendingStatus(null)
+        }
+    }
+
     const handleDenyConfirm = (reason: string) => {
         if (pendingStatus) {
             onChange(pendingStatus, reason)
             setValue(pendingStatus)
             setPendingStatus(null)
         }
+    }
+
+    const handlePauseCancel = () => {
+        setPauseOpened(false)
+        setPendingStatus(null)
+        // Возвращаем предыдущее значение статуса
+        setValue(props.application.status || ApplicationStatus.CREATED)
     }
 
     const handleDenyCancel = () => {
@@ -82,7 +100,26 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
                     <FormattedMessage id={props.label} />
                 </Text>
             )}
-            <Combobox store={combobox} onOptionSubmit={handleStatusChange}>
+            <Combobox
+                store={combobox}
+                onOptionSubmit={(val) => {
+                    if (val === ApplicationStatus.PAUSED) {
+                        setPendingStatus(val)
+                        setPauseOpened(true)
+                        combobox.closeDropdown()
+                        return
+                    }
+                    if (val === ApplicationStatus.DENY) {
+                        setPendingStatus(val)
+                        setDenyModalOpened(true)
+                        combobox.closeDropdown()
+                        return
+                    }
+                    setValue(val)
+                    combobox.closeDropdown()
+                    onChange(val)
+                }}
+            >
                 <Combobox.Target>
                     <InputBase
                         component="button"
@@ -110,6 +147,27 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
                     <Combobox.Options>{options}</Combobox.Options>
                 </Combobox.Dropdown>
             </Combobox>
+            {props.showInlineReason === true &&
+                value === ApplicationStatus.PAUSED &&
+                props.application.comment && (
+                    <Text
+                        size="xs"
+                        c="dimmed"
+                        mt={6}
+                        style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", overflowWrap: "anywhere" }}
+                    >
+                        <FormattedMessage id="common.pause-reason-modal.reason-placeholder" />: {props.application.comment}
+                    </Text>
+                )}
+
+            <PauseReasonModal
+                opened={pauseOpened}
+                onClose={handlePauseCancel}
+                onConfirm={handlePauseConfirm}
+                title={<FormattedMessage id="common.pause-reason-modal.title" />}
+                description={<FormattedMessage id="common.pause-reason-modal.description" />}
+                confirmButtonText={<FormattedMessage id="common.pause-reason-modal.confirm-default-button" />}
+            />
 
             <DenyReasonModal
                 opened={denyModalOpened}
