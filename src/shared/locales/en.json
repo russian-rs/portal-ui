@@ -516,6 +516,43 @@
     },
     "volunteers-mintrud": {
       "title": "Volunteers-Mintrud report"
+    },
+    "mintrud": {
+      "title": "Statistics (Mintrud)",
+      "year-label": "Year",
+      "summary": "Summary",
+      "total-volunteers": "Total volunteers",
+      "total-hours": "Total hours",
+
+      "program-stats": "By programs",
+      "program": "Program",
+      "volunteers": "Volunteers",
+      "hours": "Hours",
+      "other": "Other",
+
+      "volunteer-stats": "Volunteer statistics",
+      "gender": {
+        "female": "Women",
+        "male": "Men"
+      },
+      "age": {
+        "15-18": "15–18",
+        "18-30": "18–30",
+        "30-40": "30–40",
+        "40-65": "40–65",
+        "65-plus": "65+"
+      },
+
+      "final-users-stats": "Final users",
+      "final-users": {
+        "cultural-assets": "Cultural assets",
+        "natural-assets": "Natural assets",
+        "public-areas": "Public areas",
+        "other": "Other"
+      },
+
+      "total": "Total",
+      "empty": "No data for the selected year"
     }
   },
   "errors": {
