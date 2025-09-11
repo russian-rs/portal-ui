@@ -516,6 +516,43 @@
     },
     "volunteers-mintrud": {
       "title": "Izveštaj o volontiranju"
+    },
+    "mintrud": {
+      "title": "Statistika (Mintrud)",
+      "year-label": "Godina",
+      "summary": "Sažetak",
+      "total-volunteers": "Ukupno volontera",
+      "total-hours": "Ukupno sati",
+
+      "program-stats": "Po programima",
+      "program": "Program",
+      "volunteers": "Volonteri",
+      "hours": "Sati",
+      "other": "Ostalo",
+
+      "volunteer-stats": "Statistika volontera",
+      "gender": {
+        "female": "Žene",
+        "male": "Muškarci"
+      },
+      "age": {
+        "15-18": "15–18",
+        "18-30": "18–30",
+        "30-40": "30–40",
+        "40-65": "40–65",
+        "65-plus": "65+"
+      },
+
+      "final-users-stats": "Krajnji korisnici",
+      "final-users": {
+        "cultural-assets": "Kulturni objekti",
+        "natural-assets": "Prirodni objekti",
+        "public-areas": "Javni prostori",
+        "other": "Drugo"
+      },
+
+      "total": "Ukupno",
+      "empty": "Nema podataka za izabranu godinu"
     }
   },
   "errors": {
