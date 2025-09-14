@@ -335,7 +335,12 @@ export const ApplicationView = () => {
                     >
                         <FormattedMessage id={locales.envelopDownload} />
                     </Button>
-                    <Button variant="outline" rightSection={<IconPencil size={14} />} onClick={openDrawer}>
+                    <Button
+                        variant="outline"
+                        rightSection={<IconPencil size={14} />}
+                        onClick={openDrawer}
+                        disabled={application.status === ApplicationStatus.DONE}
+                    >
                         <FormattedMessage id="pages.profile.buttons.edit" />
                     </Button>
                 </Flex>
