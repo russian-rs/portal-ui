@@ -53,46 +53,38 @@ $table-width: 100%;
 
     th:nth-child(3),
     td:nth-child(3) {
-        // Имя
-        width: 200px;
-        min-width: 150px;
+        // Имя и email
+        width: 250px;
+        min-width: 200px;
     }
 
     th:nth-child(4),
     td:nth-child(4) {
-        // Email
-        width: 210px;
-        min-width: 190px;
-        overflow: hidden;
-    }
-
-    th:nth-child(5),
-    td:nth-child(5) {
         // Дата договора
         width: 130px;
         min-width: 120px;
     }
 
-    th:nth-child(6),
-    td:nth-child(6) {
+    th:nth-child(5),
+    td:nth-child(5) {
         // Статус
         width: 180px;
         min-width: 150px;
     }
 
-    th:nth-child(7),
-    td:nth-child(7) {
+    th:nth-child(6),
+    td:nth-child(6) {
         // Причина паузы
         width: 70px;
         min-width: 50px;
         overflow: hidden;
     }
 
-    th:nth-child(8),
-    td:nth-child(8) {
-        // Меню
-        width: 50px;
-        min-width: 50px;
+    th:nth-child(7),
+    td:nth-child(7) {
+        // Меню и заметки
+        width: 120px;
+        min-width: 120px;
     }
 
     // Адаптация для экранов 1024-1439px
@@ -123,44 +115,37 @@ $table-width: 100%;
 
         th:nth-child(3),
         td:nth-child(3) {
-            // Имя
-            width: 70px;
-            min-width: 70px;
+            // Имя и email
+            width: 180px;
+            min-width: 180px;
         }
 
         th:nth-child(4),
         td:nth-child(4) {
-            // Email
-            width: 70px;
-            min-width: 60px;
-        }
-
-        th:nth-child(5),
-        td:nth-child(5) {
             // Дата договора
             width: 80px;
             min-width: 70px;
         }
 
-        th:nth-child(6),
-        td:nth-child(6) {
+        th:nth-child(5),
+        td:nth-child(5) {
             // Статус
             width: 110px;
             min-width: 50px;
         }
 
-        th:nth-child(7),
-        td:nth-child(7) {
+        th:nth-child(6),
+        td:nth-child(6) {
             // Причина паузы
             width: 30px;
             min-width: 30px;
         }
 
-        th:nth-child(8),
-        td:nth-child(8) {
-            // Меню
-            width: 40px;
-            min-width: 40px;
+        th:nth-child(7),
+        td:nth-child(7) {
+            // Меню и заметки
+            width: 100px;
+            min-width: 100px;
         }
     }
 
@@ -192,42 +177,37 @@ $table-width: 100%;
 
         th:nth-child(3),
         td:nth-child(3) {
-            // Имя
-            width: 120px;
-            min-width: 70px;
+            // Имя и email
+            width: 150px;
+            min-width: 150px;
         }
 
         th:nth-child(4),
         td:nth-child(4) {
-            // Email
-            width: 120px;
-            min-width: 90px;
-        }
-
-        th:nth-child(5),
-        td:nth-child(5) {
             // Дата договора
             width: 100px;
             min-width: 80px;
         }
 
-        th:nth-child(6),
-        td:nth-child(6) {
+        th:nth-child(5),
+        td:nth-child(5) {
             // Статус
             width: 130px;
             min-width: 100px;
         }
-        th:nth-child(7),
-        td:nth-child(7) {
+
+        th:nth-child(6),
+        td:nth-child(6) {
             // Причина паузы
             width: 50px;
             min-width: 50px;
         }
-        th:nth-child(8),
-        td:nth-child(8) {
-            // Меню
-            width: 35px;
-            min-width: 35px;
+
+        th:nth-child(7),
+        td:nth-child(7) {
+            // Меню и заметки
+            width: 80px;
+            min-width: 80px;
         }
     }
 }
