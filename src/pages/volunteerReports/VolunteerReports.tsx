@@ -3,7 +3,8 @@ import {
     Flex, 
     Paper, 
     Text, 
-    Button
+    Button,
+    Pagination
 } from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
 import { IconMail } from "@tabler/icons-react"
@@ -57,7 +58,7 @@ export const VolunteerReports = () => {
 
     const [pageRequest, setPageRequest] = useState({
         pageNumber: Math.max(0, parseInt(searchParams.get("page") || "1") - 1),
-        pageSize: isMobile ? 10 : 25
+        pageSize: 10
     })
 
     useEffect(() => {
@@ -98,7 +99,15 @@ export const VolunteerReports = () => {
 
 
     const { data: volunteerData, isFetching } = useQuery({
-        queryKey: ["volunteerReports", debouncedSearch, pageRequest, selectedProgram, selectedProject, periodMonths],
+        queryKey: [
+            "volunteerReports",
+            debouncedSearch,
+            pageRequest.pageNumber,
+            pageRequest.pageSize,
+            selectedProgram,
+            selectedProject,
+            periodMonths,
+        ],
         queryFn: () => VolunteerReportApiService.getVolunteerReports({
             search: debouncedSearch,
             program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram || undefined,
@@ -106,7 +115,13 @@ export const VolunteerReports = () => {
             startDate: getStartDate().toISOString(),
             pageRequest
         }),
-        initialData: { content: [], page: defaultPageResponse }
+        placeholderData: { content: [], page: defaultPageResponse },
+        staleTime: 5 * 60 * 1000,
+        gcTime: 10 * 60 * 1000,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchOnMount: false,
+        // первый запрос выполнится при монтировании, далее не перезапрашиваем без изменения ключа
     })
 
     const [selectedVolunteers, setSelectedVolunteers] = useState<Set<string>>(new Set())
@@ -114,7 +129,7 @@ export const VolunteerReports = () => {
 
     const handleSelectAll = (checked: boolean) => {
         if (checked) {
-            const allIds = new Set<string>(volunteerData.content.map((v: VolunteerReportData) => v.id))
+            const allIds = new Set<string>((volunteerData?.content ?? []).map((v: VolunteerReportData) => v.id))
             setSelectedVolunteers(allIds)
         } else {
             setSelectedVolunteers(new Set())
@@ -163,7 +178,7 @@ export const VolunteerReports = () => {
                 <Paper p="md" withBorder>
                     <Flex justify="space-between" align="center" wrap="wrap" gap="md">
                         <Text size="sm" c="dimmed">
-                            <FormattedMessage id={locales.totalVolunteers} />: {volunteerData.page.totalElements}
+                            <FormattedMessage id={locales.totalVolunteers} />: {volunteerData?.page.totalElements ?? 0}
                         </Text>
                         <Text size="sm" c="dimmed">
                             <FormattedMessage id={locales.period} />: {getStartDate().format('DD.MM.YYYY')} - {dayjs().format('DD.MM.YYYY')}
@@ -177,17 +192,51 @@ export const VolunteerReports = () => {
                             <FormattedMessage id={locales.heatmap} />
                         </Text>
                     </Flex>
-                    <VolunteerReportHeatmap
-                        volunteers={volunteerData.content}
-                        startDate={getStartDate()}
-                        onVolunteerSelect={(volunteerId: string) => {
-                            const next = new Set(selectedVolunteers)
-                            if (next.has(volunteerId)) next.delete(volunteerId)
-                            else next.add(volunteerId)
-                            setSelectedVolunteers(next)
-                        }}
-                        selectedVolunteers={selectedVolunteers}
-                    />
+                    {(() => {
+                        const base = (volunteerData?.content ?? []) as VolunteerReportData[]
+                        let augmented = base
+                        if (import.meta.env.MODE !== 'production') {
+                            const start = getStartDate().startOf('isoWeek')
+                            const end = dayjs().startOf('isoWeek')
+                            const totalWeeks = end.diff(start, 'week') + 1
+                            const reports = Array.from({ length: Math.max(totalWeeks, 0) }).map((_, idx) => {
+                                const weekStart = start.clone().add(idx, 'week').toISOString()
+                                return { id: `demo-${idx}`, week: weekStart, hoursSpent: 12, status: 'APPROVED' as const, createTime: weekStart }
+                            })
+                            const demo: VolunteerReportData = {
+                                id: 'demo_all_ok',
+                                fullName: 'Demo Volunteer (All OK)',
+                                email: 'demo@example.com',
+                                username: 'demo_all_ok',
+                                avatar: null as any,
+                                program: undefined,
+                                project: undefined,
+                                contracts: [{ id: 1, startDate: start.toISOString(), endDate: end.toISOString() } as any],
+                                reports,
+                            }
+                            augmented = [...base, demo]
+                        }
+                        return (
+                            <VolunteerReportHeatmap
+                                volunteers={augmented}
+                                startDate={getStartDate()}
+                                onVolunteerSelect={(volunteerId: string) => {
+                                    const next = new Set(selectedVolunteers)
+                                    if (next.has(volunteerId)) next.delete(volunteerId)
+                                    else next.add(volunteerId)
+                                    setSelectedVolunteers(next)
+                                }}
+                                selectedVolunteers={selectedVolunteers}
+                            />
+                        )
+                    })()}
+                    <Flex justify="center" mt="md">
+                        <Pagination
+                            total={volunteerData?.page.totalPages ?? 1}
+                            value={(pageRequest.pageNumber ?? 0) + 1}
+                            onChange={(page) => setPageRequest(pr => ({ ...pr, pageNumber: page - 1 }))}
+                        />
+                    </Flex>
                 </Card>
 
                 <Card withBorder p="lg">
@@ -201,17 +250,51 @@ export const VolunteerReports = () => {
                             <FormattedMessage id={locales.sendMessage} />
                         </Button>
                     </Flex>
-                    <VolunteerReportTable
-                        volunteers={volunteerData.content}
-                        selectedVolunteers={selectedVolunteers}
-                        onVolunteerSelect={handleSelectVolunteer}
-                        startDate={getStartDate()}
-                        onVolunteerClick={(id: string) => console.log('open volunteer', id)}
-                    />
+                    {(() => {
+                        const base = (volunteerData?.content ?? []) as VolunteerReportData[]
+                        let augmented = base
+                        if (import.meta.env.MODE !== 'production') {
+                            const start = getStartDate().startOf('isoWeek')
+                            const end = dayjs().startOf('isoWeek')
+                            const totalWeeks = end.diff(start, 'week') + 1
+                            const reports = Array.from({ length: Math.max(totalWeeks, 0) }).map((_, idx) => {
+                                const weekStart = start.clone().add(idx, 'week').toISOString()
+                                return { id: `demo-${idx}`, week: weekStart, hoursSpent: 12, status: 'APPROVED' as const, createTime: weekStart }
+                            })
+                            const demo: VolunteerReportData = {
+                                id: 'demo_all_ok',
+                                fullName: 'Demo Volunteer (All OK)',
+                                email: 'demo@example.com',
+                                username: 'demo_all_ok',
+                                avatar: null as any,
+                                program: undefined,
+                                project: undefined,
+                                contracts: [{ id: 1, startDate: start.toISOString(), endDate: end.toISOString() } as any],
+                                reports,
+                            }
+                            augmented = [...base, demo]
+                        }
+                        return (
+                            <VolunteerReportTable
+                                volunteers={augmented}
+                                selectedVolunteers={selectedVolunteers}
+                                onVolunteerSelect={handleSelectVolunteer}
+                                startDate={getStartDate()}
+                                onVolunteerClick={(id: string) => console.log('open volunteer', id)}
+                            />
+                        )
+                    })()}
+                    <Flex justify="center" mt="md">
+                        <Pagination
+                            total={volunteerData?.page.totalPages ?? 1}
+                            value={(pageRequest.pageNumber ?? 0) + 1}
+                            onChange={(page) => setPageRequest(pr => ({ ...pr, pageNumber: page - 1 }))}
+                        />
+                    </Flex>
                     <VolunteerEmailDrawer
                         opened={emailDrawerOpen}
                         close={() => setEmailDrawerOpen(false)}
-                        recipients={volunteerData.content
+                        recipients={(volunteerData?.content ?? [])
                             .filter((v: VolunteerReportData) => selectedVolunteers.has(v.id) && !!v.email)
                             .map((v: VolunteerReportData) => ({ name: v.fullName, email: v.email }))}
                         subject={intl.formatMessage({ id: "pages.volunteer-reports.email-subject" })}

@@ -314,7 +314,7 @@
       "no-reports": "No Reports",
       "partial-reports": "Partial Reports",
       "full-reports": "Full Reports",
-      "pending": "Pending / not started",
+      "pending": "Pending",
       "legend": "Legend",
       "all-reports-badge": "All reports",
       "missed-weeks-badge": "{count} missed",

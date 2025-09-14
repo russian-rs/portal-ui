@@ -1,4 +1,5 @@
 import { Box, Flex, Text, Tooltip, Group, Badge } from "@mantine/core"
+import { IconCheck } from "@tabler/icons-react"
 import { useMediaQuery } from "@mantine/hooks"
 import dayjs from "dayjs"
 import React from "react"
@@ -21,15 +22,15 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
     selectedVolunteers
 }) => {
     const intl = useIntl()
-    const endDate = dayjs()
-    const totalWeeks = Math.ceil(endDate.diff(startDate, 'week', true))
+    const endDate = dayjs().startOf('isoWeek')
+    const totalWeeks = endDate.diff(startDate.startOf('isoWeek'), 'week') + 1
     const isSm = useMediaQuery('(max-width: 48em)')
     const cellSizePx = 20
     
     // Генерируем недели для отображения
     const generateWeeks = () => {
         const weeks = []
-        let currentDate = startDate.clone()
+        let currentDate = startDate.clone().startOf('isoWeek')
         
         for (let i = 0; i < totalWeeks; i++) {
             weeks.push({
@@ -49,19 +50,19 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
         const weekStart = startDate.clone().add(weekIndex, 'week').startOf('isoWeek')
         const isCurrentWeek = dayjs().isSame(weekStart, 'isoWeek')
 
-        // Недели ДО начала первого контракта — ожидание (серые)
+        // Недели ДО начала первого контракта — N/A (серые)
         const firstContractStart = volunteer.contracts && volunteer.contracts.length > 0
             ? volunteer.contracts
                 .map(c => dayjs(c.startDate).startOf('isoWeek'))
                 .reduce((earliest, d) => (d.isBefore(earliest) ? d : earliest))
             : null
         if (firstContractStart && weekStart.isBefore(firstContractStart, 'week')) {
-            return 'pending'
+            return 'na'
         }
 
-        // Если нет контрактов вовсе — всё до текущей недели считаем ожиданием
+        // Если нет контрактов вовсе — все недели N/A
         if (!firstContractStart) {
-            return 'pending'
+            return 'na'
         }
 
         // Ищем отчеты за эту неделю
@@ -71,8 +72,8 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
         })
         
         if (reportsForWeek.length === 0) {
-            // Текущая неделя без отчёта — ожидание (серый)
-            return isCurrentWeek ? 'pending' : 'noReports'
+            // Текущая неделя без отчёта — ожидание (белый)
+            return isCurrentWeek ? 'waiting' : 'noReports'
         }
 
         const totalHours = reportsForWeek.reduce((sum, report) => sum + report.hoursSpent, 0)
@@ -139,7 +140,11 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                         <Text size="xs"><FormattedMessage id={locales.fullReports} /></Text>
                     </Flex>
                     <Flex align="center" gap="xs">
-                        <Box className={`${classes.legendSquare} ${classes.pending}`} />
+                        <Box className={`${classes.legendSquare} ${classes.na}`} />
+                        <Text size="xs">N/A</Text>
+                    </Flex>
+                    <Flex align="center" gap="xs">
+                        <Box className={`${classes.legendSquare} ${classes.waiting}`} />
                         <Text size="xs"><FormattedMessage id={locales.pending} /></Text>
                     </Flex>
                 </Group>
@@ -153,7 +158,8 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                         const weeksColors = weeks.map((_, idx) => getSquareColor(volunteer, idx))
                         const missedCount = weeksColors.filter(c => c === 'noReports').length
                         const partialCount = weeksColors.filter(c => c === 'partialReports').length
-                        const allFull = missedCount === 0 && partialCount === 0
+                        const allNA = weeksColors.length > 0 && weeksColors.every(c => c === 'na')
+                        const allFull = !allNA && missedCount === 0 && partialCount === 0
                         const isSelected = selectedVolunteers.has(volunteer.id)
                         
                         return (
@@ -169,15 +175,21 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                                         </Text>
                                         <Badge
                                             size="xs"
-                                            variant={allFull ? "light" : "filled"}
-                                            color={missedCount > 0 ? "red" : partialCount > 0 ? "yellow" : "green"}
+                                            variant="filled"
+                                            color={allNA ? "gray" : missedCount > 0 ? "red" : partialCount > 0 ? "yellow" : "green"}
+                                            leftSection={!allNA && missedCount === 0 && partialCount === 0 ? <IconCheck size={12} style={{ marginRight: 0 }} /> : undefined}
+                                            px={6}
+                                            py={2}
+                                            styles={{ section: { marginRight: 0 } }}
                                         >
-                                            {missedCount > 0 ? (
-                                                <FormattedMessage id={locales.missedWeeksBadge} values={{ count: missedCount }} />
+                                            {allNA ? (
+                                                "N/A"
+                                            ) : missedCount > 0 ? (
+                                                String(missedCount)
                                             ) : partialCount > 0 ? (
-                                                <FormattedMessage id={locales.partialWeeksBadge} values={{ count: partialCount }} />
+                                                String(partialCount)
                                             ) : (
-                                                <FormattedMessage id={locales.allReportsBadge} />
+                                                ""
                                             )}
                                         </Badge>
                                     </div>
@@ -192,7 +204,20 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                                     {weeks.map((week, weekIndex) => (
                                         <Tooltip
                                             key={weekIndex}
-                                            label={getSquareTooltip(volunteer, weekIndex)}
+                                            label={(function(){
+                                                const color = getSquareColor(volunteer, weekIndex)
+                                                if (color === 'na') {
+                                                    const weekStart = startDate.clone().add(weekIndex, 'week').startOf('isoWeek')
+                                                    const weekEnd = weekStart.clone().add(1, 'week')
+                                                    return `${volunteer.fullName}: N/A — нет контракта за ${weekStart.format('DD.MM.YYYY')} - ${weekEnd.format('DD.MM.YYYY')}`
+                                                }
+                                                if (color === 'waiting') {
+                                                    const weekStart = startDate.clone().add(weekIndex, 'week').startOf('isoWeek')
+                                                    const weekEnd = weekStart.clone().add(1, 'week')
+                                                    return `${volunteer.fullName}: Ожидание — ${weekStart.format('DD.MM.YYYY')} - ${weekEnd.format('DD.MM.YYYY')}`
+                                                }
+                                                return getSquareTooltip(volunteer, weekIndex)
+                                            })()}
                                             position="top"
                                         >
                                             <Box

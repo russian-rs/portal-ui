@@ -314,7 +314,7 @@
       "no-reports": "Nema izveštaja",
       "partial-reports": "Delimični izveštaji",
       "full-reports": "Puni izveštaji",
-      "pending": "Na čekanju / nije radio",
+      "pending": "Na čekanju",
       "legend": "Legenda",
       "all-reports-badge": "Svi izveštaji",
       "missed-weeks-badge": "Propušteno: {count}",
