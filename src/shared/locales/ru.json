@@ -523,14 +523,12 @@
       "summary": "Итоги",
       "total-volunteers": "Всего волонтёров",
       "total-hours": "Всего часов",
-
       "program-stats": "По программам",
       "program": "Программа",
       "volunteers": "Волонтёры",
       "hours": "Часы",
-      "other": "Прочее",
-
-      "volunteer-stats": "Статистика волонтёров",
+      "other": "Другое",
+      "volunteer-stats": "Статистика по волонтёрам",
       "gender": {
         "female": "Женщины",
         "male": "Мужчины"
@@ -542,17 +540,24 @@
         "40-65": "40–65",
         "65-plus": "65+"
       },
-
-      "final-users-stats": "Конечные пользователи",
+      "citizens": "Граждане",
+      "foreigners": "Иностранцы",
+      "final-users-stats": "Конечные пользователи волонтёрства",
       "final-users": {
-        "cultural-assets": "Объекты культуры",
+        "cultural-assets": "Культурные ценности",
         "natural-assets": "Природные объекты",
         "public-areas": "Общественные пространства",
         "other": "Другое"
       },
-
       "total": "Итого",
-      "empty": "Нет данных за выбранный год"
+      "empty": "Нет данных за выбранный год",
+      "statGroups": {
+        "SOCIJALNA_ZASTITA": "Социальная защита",
+        "MEDIJI_I_KOMUNIKACIJE": "СМИ и коммуникации",
+        "KULTURNA_DOBA": "Культурная эпоха",
+        "JAVNE_POVRSINE": "Общественные пространства",
+        "ZIVOTNA_SREDINA": "Окружающая среда"
+      }
     }
   },
   "errors": {

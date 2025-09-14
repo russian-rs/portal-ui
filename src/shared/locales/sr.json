@@ -518,19 +518,17 @@
       "title": "Izveštaj o volontiranju"
     },
     "mintrud": {
-      "title": "Statistika (Mintrud)",
+      "title": "Statistika (Ministarstvo rada)",
       "year-label": "Godina",
-      "summary": "Sažetak",
+      "summary": "Rezime",
       "total-volunteers": "Ukupno volontera",
       "total-hours": "Ukupno sati",
-
       "program-stats": "Po programima",
       "program": "Program",
       "volunteers": "Volonteri",
       "hours": "Sati",
-      "other": "Ostalo",
-
-      "volunteer-stats": "Statistika volontera",
+      "other": "Drugo",
+      "volunteer-stats": "Podaci o volonterima",
       "gender": {
         "female": "Žene",
         "male": "Muškarci"
@@ -542,17 +540,24 @@
         "40-65": "40–65",
         "65-plus": "65+"
       },
-
-      "final-users-stats": "Krajnji korisnici",
+      "citizens": "Državljani",
+      "foreigners": "Stranci",
+      "final-users-stats": "Podaci o krajnjim korisnicima volontiranja",
       "final-users": {
-        "cultural-assets": "Kulturni objekti",
-        "natural-assets": "Prirodni objekti",
-        "public-areas": "Javni prostori",
+        "cultural-assets": "Kulturna dobra",
+        "natural-assets": "Prirodna dobra",
+        "public-areas": "Javne površine",
         "other": "Drugo"
       },
-
       "total": "Ukupno",
-      "empty": "Nema podataka za izabranu godinu"
+      "empty": "Nema podataka za izabranu godinu",
+      "statGroups": {
+        "SOCIJALNA_ZASTITA": "Socijalna zaštita",
+        "MEDIJI_I_KOMUNIKACIJE": "Mediji i komunikacije",
+        "KULTURNA_DOBA": "Kulturna epoha",
+        "JAVNE_POVRSINE": "Javne površine",
+        "ZIVOTNA_SREDINA": "Životna sredina"
+      }
     }
   },
   "errors": {

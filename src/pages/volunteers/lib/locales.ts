@@ -1,7 +1,7 @@
 export const locales = {
     titleReports: "pages.volunteers-reports.title",
-    titleMintrud: "pages.mintrud.title",
 
+    titleMintrud: "pages.mintrud.title",
     yearLabel: "pages.mintrud.year-label",
     summary: "pages.mintrud.summary",
     totalVolunteers: "pages.mintrud.total-volunteers",
@@ -22,14 +22,22 @@ export const locales = {
     age40to65: "pages.mintrud.age.40-65",
     age65AndAbove: "pages.mintrud.age.65-plus",
 
+    citizens: "pages.mintrud.citizens",
+    foreigners: "pages.mintrud.foreigners",
+
     finalUsersStats: "pages.mintrud.final-users-stats",
     culturalAssets: "pages.mintrud.final-users.cultural-assets",
     naturalAssets: "pages.mintrud.final-users.natural-assets",
     publicAreas: "pages.mintrud.final-users.public-areas",
     finalOther: "pages.mintrud.final-users.other",
     total: "pages.mintrud.total",
-
     empty: "pages.mintrud.empty",
+
+    statGroups: {
+        SOCIJALNA_ZASTITA: "pages.mintrud.statGroups.SOCIJALNA_ZASTITA",
+        MEDIJI_I_KOMUNIKACIJE: "pages.mintrud.statGroups.MEDIJI_I_KOMUNIKACIJE",
+        KULTURNA_DOBA: "pages.mintrud.statGroups.KULTURNA_DOBA",
+        JAVNE_POVRSINE: "pages.mintrud.statGroups.JAVNE_POVRSINE",
+        ZIVOTNA_SREDINA: "pages.mintrud.statGroups.ZIVOTNA_SREDINA",
+    },
 };
-
-

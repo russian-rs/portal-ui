@@ -518,18 +518,16 @@
       "title": "Volunteers-Mintrud report"
     },
     "mintrud": {
-      "title": "Statistics (Mintrud)",
+      "title": "Statistics (Ministry of Labour)",
       "year-label": "Year",
       "summary": "Summary",
       "total-volunteers": "Total volunteers",
       "total-hours": "Total hours",
-
       "program-stats": "By programs",
       "program": "Program",
       "volunteers": "Volunteers",
       "hours": "Hours",
       "other": "Other",
-
       "volunteer-stats": "Volunteer statistics",
       "gender": {
         "female": "Women",
@@ -542,17 +540,24 @@
         "40-65": "40–65",
         "65-plus": "65+"
       },
-
-      "final-users-stats": "Final users",
+      "citizens": "Citizens",
+      "foreigners": "Foreigners",
+      "final-users-stats": "Final users of volunteering",
       "final-users": {
         "cultural-assets": "Cultural assets",
         "natural-assets": "Natural assets",
         "public-areas": "Public areas",
         "other": "Other"
       },
-
       "total": "Total",
-      "empty": "No data for the selected year"
+      "empty": "No data for the selected year",
+      "statGroups": {
+        "SOCIJALNA_ZASTITA": "Social protection",
+        "MEDIJI_I_KOMUNIKACIJE": "Media and communications",
+        "KULTURNA_DOBA": "Cultural era",
+        "JAVNE_POVRSINE": "Public spaces",
+        "ZIVOTNA_SREDINA": "Environment"
+      }
     }
   },
   "errors": {
