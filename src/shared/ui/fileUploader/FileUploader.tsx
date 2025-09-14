@@ -27,6 +27,7 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
     const intl = useIntl()
 
     const [loadingFiles, setLoadingFiles] = useState<string[]>([])
+    const [uploadedFiles, setUploadedFiles] = useState<FileInfoDto[]>([])
 
     const maxSize = props.maxSize ?? 5 // MB
     const maxFiles = props.maxFiles ?? 7
@@ -61,18 +62,19 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
 
         // показать прогресс: все имена в очереди
         setLoadingFiles(files.map((f) => f.name))
+        // Инициализируем список загруженных файлов с текущими файлами
+        setUploadedFiles(props.files || [])
 
         try {
             for (const file of files) {
                 try {
                     // грузим по очереди, чтобы прогресс был предсказуем
                     const resp = await FilesApiService.uploadFile(file)
-                    const fileInfo: FileInfoDto = resp.data
-                    // уведомляем родителя — он держит список файлов
+                    const fileInfo = resp.data
+                    // Добавляем к локальному списку
+                    setUploadedFiles((prev) => [...prev, fileInfo])
+
                     props.onFilesUploaded?.([...(props.files || []), fileInfo])
-                } catch (e) {
-                    // можно добавить уведомление об ошибке конкретного файла
-                    // showError(file.name, intl.formatMessage({ id: `${locales.errors}.UploadFailed` }))
                 } finally {
                     // снимаем файл из «в процессе»
                     setLoadingFiles((prev) => prev.filter((name) => name !== file.name))
@@ -83,6 +85,14 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
             setLoadingFiles([])
         }
     }
+
+    // Уведомляем родителя о финальном списке файлов после завершения всех загрузок
+    useEffect(() => {
+        if (uploadedFiles.length > 0 && loadingFiles.length === 0) {
+            props.onFilesUploaded?.(uploadedFiles)
+            setUploadedFiles([]) // Сбрасываем локальное состояние
+        }
+    }, [uploadedFiles, loadingFiles])
 
     const onReject = (fileRejections: FileRejection[]) => {
         fileRejections.forEach((rej) => {
