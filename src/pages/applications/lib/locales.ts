@@ -7,6 +7,8 @@ export const locales = {
     createdShort: "pages.applications.created-short",
     type: "pages.applications.type",
     typeShort: "pages.applications.type-short",
+    nameAndEmail: "pages.applications.name-and-email",
+    nameAndEmailShort: "pages.applications.name-and-email-short",
     name: "pages.applications.name",
     nameShort: "pages.applications.name-short",
     email: "pages.applications.email",
