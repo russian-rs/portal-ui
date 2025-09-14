@@ -94,6 +94,13 @@
       "cancel-default-button": "Otkaži",
       "confirm-default-button": "Potvrdi",
       "reason-placeholder": "Razlog odbijanja"
+    },
+    "pause-reason-modal": {
+      "title": "Razlog pauze",
+      "description": "Molimo vas da navedete razlog pauze ove prijave",
+      "cancel-default-button": "Otkaži",
+      "confirm-default-button": "Pauziraj",
+      "reason-placeholder": "Razlog pauze"
     }
   },
   "footer": {
@@ -519,6 +526,7 @@
         "skills": "Veštine",
         "goal": "Cilj učestvovanja u organizaciji",
         "bio": "Kratka biografija",
+        "pause-reason": "Razlog pauze",
         "contractDownload": "Preuzimanje ugovora",
         "questionnaireDownload": "Preuzimanje upitnika",
         "envelopDownload": "Preuzimanje koverata",

@@ -1,150 +1,139 @@
-# Čist grad (Glavni program)
+# Čist grad (osnovni program)
 
 ### Opis programa
 
-Program **„Čist grad“** je inicijativa za one koji žele da svoje okruženje učine čistijim i prijatnijim.
-Program je usmeren na poboljšanje ekološke situacije u gradovima Srbije kroz redovno čišćenje javnih prostora.
-Zajedničkim naporima učesnika stvaramo udobno i bezbedno okruženje za sebe, svoju decu i sve oko nas.
+Program Čist grad je inicijativa za one koji žele da učine svoje okruženje čistijim i prijatnijim.
+Cilj programa je unapređenje ekološke situacije u gradovima Srbije kroz redovne akcije čišćenja javnih prostora i različite eko-događaje usmerene na promociju ekološkog načina života. Zajedničkim snagama stvaramo prijatno i bezbedno okruženje za nas, našu decu i sve oko nas.
 
-Volonteri u ovom programu treba da čiste odabrane javne prostore svake nedelje, posvećujući tome najmanje **10 sati
-nedeljno**.
+### Preporuke za čišćenje za volontere programa „Čist grad“
 
----
+Bezbednost tokom čišćenja:
 
-### Obaveze volontera u programu „Čist grad“
+- Pre početka čišćenja obavezno stavite rukavice i udobnu zatvorenu obuću.
+- Budite oprezni pri radu sa polomljenim staklom, rđavim metalom i drugim opasnim predmetima.
+- Ako radite u blizini saobraćajnica ili vodnih površina, pridržavajte se mera opreza i izbegavajte rizične delove.
+- Po toplom vremenu pijte vodu i pravite pauze kako biste izbegli pregrevanje.
+- Strogo se ne preporučuje sakupljanje korišćenih medicinskih predmeta/leševa ptica i svega što potencijalno ugrožava zdravlje.
 
-1. **Izbor mesta čišćenja**: Volonter samostalno bira područje za čišćenje, po mogućstvu u blizini svog mesta stanovanja
-   ili na lokacijama koje su mu poznate i gde primećuje nakupljanje smeća.
-   To može biti park, trg, put pored ulice, dečije igralište ili drugi javni prostor.
+Sakupljanje i odlaganje otpada:
 
-2. **Određivanje granica čišćenja**: Jasno označite granice odabranog područja kako biste efikasno isplanirali rad i
-   procenili obim predstojećih zadataka.
+- Koristite čvrste kese i dobro ih zavežite kako vetar ne bi raznosio otpad.
+- Nakon čišćenja ostavite kese na mestima predviđenim za odvoz komunalnih službi. Ako ste sakupili previše otpada na teško pristupačnom mestu i ne možete ga preneti do kontejnera — obavestite kuratora programa radi slanja prijave gradskim vlastima.
+- Ako je moguće, odvajajte otpad: plastiku, staklo i papir sakupljajte odvojeno radi reciklaže.
 
-3. **Procena količine i vrste otpada**: Pre početka čišćenja vizuelno procenite količinu i vrstu otpada. Ako se planira
-   odvojeno sakupljanje otpada, pripremite odgovarajuće kese za različite vrste otpada (plastika, staklo, papir itd.).
-
-4. **Fotografisanje procesa**: Obavezno pravite fotografije **pre, tokom i nakon** čišćenja. Snimite opšti izgled
-   teritorije pre početka rada, proces sakupljanja smeća, skupljene kese i konačni rezultat nakon čišćenja. Fotografije
-   služe kao dokaz obavljenog posla.
-
-5. **Nedeljno izveštavanje**: Svake nedelje volonteri su dužni da podnesu izveštaj o obavljenom radu na portalu za
-   volontere.
+Poštovanje ovih pravila pomoći će da proces čišćenja bude efikasan, bezbedan i praktičan za sve učesnike programa. Čist grad je odgovornost svakog od nas!
 
 ---
 
-## Preporuke za čišćenje za volontere programa „Čist grad“
+Potrebno nedeljno angažovanje volontera
 
-### Bezbednost tokom čišćenja:
+Svi volonteri učestvuju u programu u skladu sa Zakonom o volontiranju ([Službeni glasnik RS, br. 36/2010](https://russian.rs/laws/zakon-o-volonterstve/)). Svaki volonter treba da posveti najmanje 10 sati nedeljno volonterskim aktivnostima. Sami birate kako ćete rasporediti ovo vreme:
 
-- Pre početka čišćenja **nosite rukavice i udobnu zatvorenu obuću**.
-- Budite oprezni pri radu sa **slomljenim staklom, rđavim metalom i drugim opasnim predmetima**.
-- Ako radite **blizu puteva ili vodenih površina**, pridržavajte se mera predostrožnosti i izbegavajte opasne oblasti.
-- U toplom vremenu, **ne zaboravite da pijete vodu** i pravite pauze kako biste izbegli pregrevanje.
+- Odraditi veliku akciju čišćenja u jednom danu (npr. u parku ili duž određene ulice).
+- Podeliti čišćenje na više dana na različitim mestima (npr. kod kuće ili na dečijem igralištu).
+- Drugi načini usaglašeni sa kuratorom (npr. održavanje čistoće određene teritorije).
 
-### Sakupljanje i odlaganje otpada:
+Važno je da se ukupno za nedelju dana skupi najmanje 10 sati volonterskog rada.
 
-- Koristite **čvrste kese za otpad** i čvrsto ih vežite kako se smeće ne bi raznosilo vetrom.
-- Nakon čišćenja **ostavite kese na posebno određenim mestima** za odnošenje od strane komunalnih službi.
-- Ako je moguće, **razvrstavajte otpad**: plastiku, staklo i papir sakupljajte odvojeno radi kasnije reciklaže.
-
-Poštovanje ovih pravila učiniće proces čišćenja **efikasnim, bezbednim i pogodnim** za sve učesnike. **Čist grad – to je
-odgovornost svakog od nas!**
+Ako nemate mogućnost da sami kupite kese, rukavice ili druge potrebne potrepštine, organizacija može da ih obezbedi. Unapred kontaktirajte kuratora radi dogovora o mestu i vremenu preuzimanja. Ako potrepštine kupujete o svom trošku, imate pravo da ne češće od jednom u dve nedelje u nedeljnom izveštaju navedete jedan sat za nabavku potrošnog materijala.
+U slučaju da tokom nedelje imate sastanke sa kuratorom programa „Čist grad“ ili druge organizacione sastanke u okviru aktivnosti Dijaspore, imate pravo da u nedeljnom izveštaju navedete vreme utrošeno na te sastanke.
+Pored samog čišćenja, povremeno se raspodeljuju dodatni zadaci, uključujući praćenje divljih deponija, traženje informacija o eko-prijateljskim organizacijama i događajima u Srbiji i slično. Dodatni zadaci su konkurentni i nude se u opštem četu programa „Čist grad“. Ako imate dodatne ideje za razvoj smera — pišite u Telegram kuratoru programa „Čist grad“ Antonu @Giktom.
 
 ---
 
-## Dobijanje potrošnog materijala
+Obaveze volontera u programu „Čist grad” — 6 koraka
 
-Ako nemate mogućnost da sami kupite **kese, rukavice ili druge potrebne materijale**, organizacija je spremna da ih
-obezbedi. Da biste ih dobili, potrebno je da **kontaktirate koordinatora unapred** i dogovorite se o vremenu i mestu
-preuzimanja.
+1. Izbor mesta za čišćenje: Volonter samostalno bira lokaciju za čišćenje u bilo kojoj pogodnoj zoni (obližnje dvorište, zapušten javni prostor, drugi grad). To može biti dvorište, park, skver, bulevar, kej, prostor uz ulicu, dečija igrališta ili drugi javni prostor.
 
----
+Nije preporučljivo: čišćenje na teritoriji komercijalnih organizacija (na primer, čišćenje oko noćnog kluba ili zgrade Microsoft-a). Zabranjeno je čišćenje na teritorijama na koje je pristup zabranio vlasnik ili vlasti (npr. ograđeno gradilište).
 
-## Uputstvo za podnošenje izveštaja na portalu za volontere programa „Čist grad“
+2. Određivanje granica čišćenja: Jasno označite granice izabrane lokacije kako biste efikasno isplanirali rad i procenili obim predstojećih zadataka (screenshot mape sa označenim očišćenim prostorom biće vam potreban u sledećem koraku).
 
-Svi volonteri učestvuju u programu u okviru **Zakona o volontiranju
-** ([Službeni glasnik RS, br. 36/2010](https://russian.rs/laws/zakon-o-volonterstve/)). Svaki volonter treba da posveti
-najmanje **10 sati nedeljno** volonterskim aktivnostima. Možete raspodeliti vreme na sledeći način:
+3. Procena količine i sastava otpada: Pre početka čišćenja vizuelno procenite obim i tip otpada. Ako planirate odvojeno sakupljanje, pripremite odgovarajuće kese za različite tipove otpada (plastika, staklo, papir itd.).
 
-- Obaviti **veliko čišćenje u jednom danu** (npr. u parku ili duž određene ulice).
-- Podeliti čišćenje **na nekoliko dana** na različitim mestima (npr. oko kuće ili na dečijem igralištu).
-- Drugi dogovoreni načini sa koordinatorom (npr. **održavanje čistoće na određenoj teritoriji**).
+4. Ako otkrijete nelegalnu deponiju koju fizički ne možete da uklonite sopstvenim snagama (otpad u vodi, odbačen nameštaj itd.), popunite internu formu za monitoring Čistog grada na: https://forms.gle/Qa8nxn4KGCTd8WKh7. Jedna pronađena deponija može biti uračunata u nedeljni izveštaj, jer ste utrošili vreme na pronalaženje, opis situacije na licu mesta, fotografisanje i popunjavanje forme.
 
-Važno je da ukupno imate **najmanje 10 sati volonterskog rada nedeljno**.
+5. Fotografisanje procesa: Obavezno napravite fotografije PRE i POSLE čišćenja. Obratite pažnju na ugao snimanja; preporučuje se da fotografije PRE i POSLE budu napravljene sa iste tačke. Napravite opšti snimak lokacije pre početka radova, fotografišite sakupljene kese i krajnji rezultat nakon čišćenja. Fotografije služe kao dokaz obavljenog rada.
 
----
+6. Nedeljno izveštavanje: Svake nedelje volonter je dužan da dostavi izveštaj o urađenom poslu na portalu volonterstva.
 
-## Kako popuniti nedeljni izveštaj?
+Za popunjavanje nedeljnog izveštaja potrebno je:
 
-Da biste podneli nedeljni izveštaj, potrebno je:
+1. Prijavite se na portal volontera.
 
-1. **Prijavite se** na portal za volontere.
-2. Na levoj traci menija izaberite karticu **„Novi izveštaj“**.
-3. Popunite sva obavezna polja u obrascu i **priložite potrebne fotografije**.
+2. Na levoj bočnoj traci izaberite „Novi izveštaj“.
 
-### Obavezna polja:
+3. Popunite sva obavezna polja forme i otpremite potrebne fotografije u cloud na: https://files.russian.rs/f/13839. Zahtevi za strukturu foldera u cloudu opisani su u nastavku.
 
-1. **Naslov**: Unesite naziv zadatka u formatu:
+Obavezna polja u izveštaju na portalu volontera:
 
-    - _„Čišćenje teritorije [navesti konkretno mesto]“_.
-    - **Primer**: _„Čišćenje parka Kalemegdan“_, _„Čišćenje ulice Kneza Mihaila“_.
+1. Naziv: unesite naziv zadatka u formatu:
+   - „Čišćenje teritorije [navesti konkretno mesto]“. (Ako je tokom nedelje bilo više lokacija, za svaku kreirajte poseban zadatak.)
+   - Primer: „Čišćenje parka Kalemegdan“, „Čišćenje ulice Knez Mihailova“.
 
-2. **Opis**: Ukratko opišite šta ste uradili. Navedite šta ste očistili (npr. plastika, papir, staklo, lišće itd.) i da
-   li je primenjeno razvrstavanje otpada.
+2. Opis: ukratko opišite šta ste tačno uradili. Navedite šta ste čistili (na primer: plastika, papir, staklo, lišće itd.), da li je primenjeno odvojeno sakupljanje otpada. U opisu je obavezno navesti sakupljeni obim otpada u litrima (orijentišite se na zapreminu kesa).
+   - Primer: „Čišćenje smeća i suvog lišća kod ruske škole. Sakupljeno 360 litara.“ „Sakupljena plastika, staklo i papir; pometene staze; uklonjeni ostaci grana. Primenjeno odvojeno sakupljanje. Sakupljeno 720 litara.“
 
-    - **Primer**: _„Čišćenje smeća i suvog lišća pored ruske škole“, „Sakupili smo plastiku, staklo i papir, pomeli
-      staze, uklonili grane. Primenjeno odvojeno sakupljanje otpada.“_
+3. Rezultat: u ovo polje unesite link ka cloudu gde su vaše fotografije već otpremljene: https://files.russian.rs/f/13839. U folderu sa vašim imenom i prezimenom kreirajte za svaku lokaciju poseban folder sa fotografijama i u svaki od tih foldera dodajte slike. Za svaku lokaciju u polje „Rezultat“ dodajte link baš na folder te lokacije — potrebno je da generišete link (detalji su prikazani na screenshot-u).
 
-3. **Rezultat**: Ako imate link ka materijalima (npr. izveštaj u Google Docs ili objavu), dodajte ga ovde. Ako nema
-   linkova, ovo polje može ostati prazno.
+![1](/resources/cleaning/1.png)
 
-4. **Broj sati**: Navedite stvarno vreme provedeno u čišćenju. Ako je čišćenje obavljeno na više lokacija, kreirajte
-   zasebne zadatke za svaku lokaciju uz navođenje vremena.
+- Obavezne fotografije:
+  - Fotografija pre čišćenja (pokažite zagađene delove).
+  - Fotografija posle čišćenja (iz istog ugla, da se vidi razlika).
+  - Fotografija sakupljenih kesa sa otpadom.
+  - Screenshot Google mapa sa označenom zonom čišćenja.
+  - Prilikom fotografisanja uverite se da se u kadru ne nalaze prolaznici, treća lica i deca. Ovo je neophodno radi poštovanja pravila privatnosti i bezbednosti. Ako je nemoguće izbeći ljude u kadru, izaberite drugi ugao ili fotografišite kada okolo nema nikoga.
+- Nekorektne fotografije:
+  - Samo fotografija čistog mesta bez dokaza o čišćenju.
+  - Fotografija male površine uz prijavljeno veliko utrošeno vreme.
+  - Fotografije snimljene u mraku.
+  - Ponovno korišćenje starih fotografija.
 
-5. **Datum**: Unesite stvarni datum obavljanja čišćenja.
+Ako nemate pristup cloudu: potrebno je da pišete u Telegram kuratoru programa „Čist grad“ Antonu @Giktom.
 
-6. **Naručilac**: Popunjava se samo ako je čišćenje bilo na zahtev nekoga.
+4. Broj sati: navedite stvarno vreme koje ste utrošili na čišćenje. Ako je čišćenje obavljeno na više lokacija, napravite zasebne zadatke za svaku lokaciju sa naznačenim vremenom. Ako ste obavljali druge zadatke u okviru programa „Čist grad“, učestvovali na organizacionim sastancima ili samostalno kupovali potrošni materijal, takođe navedite utrošene sate u izveštaju.
 
-7. **Fajlovi**: Priložite najmanje **10 fotografija**.
-    - **Obavezne fotografije:**
-        - Fotografije **pre čišćenja** (prikazuju zagađenu oblast).
-        - Fotografije **nakon čišćenja** (iz istog ugla radi poređenja).
-        - Fotografije **tokom čišćenja**.
-        - Fotografije **sakupljenih kesa sa smećem**.
-        - **Snimak ekrana Google Maps** sa označenom zonom čišćenja.
+5. Datum: navedite stvarni datum izvršenja čišćenja.
 
-Nakon popunjavanja svih polja, **kliknite „Pošalji“**.
+6. Naručilac: popunjava se samo ako je čišćenje obavljeno na zahtev nekoga.
+
+7. Fajlovi: fotografije se NE prilažu uz izveštaje.
+
+8. Nakon popunjavanja svih polja kliknite „Pošalji“.
 
 ---
 
-## Zahtevi za fotografije i informacije u podnetim izveštajima
+### Primeri korektnih fotografija i izveštaja
 
-Fotografije moraju jasno prikazivati:
+U nastavku su prikazani primeri ispravno popunjenih izveštaja, fotografija i strukture foldera u cloudu. Koristite ih kao orijentir kako biste izbegli greške pri izradi izveštaja i uspešno potvrdili svoju volontersku aktivnost!
 
-- **Proces čišćenja**.
-- **Rezultate pre i posle**.
-- **Saglasnost sa navedenim vremenom**.
-- **Biti jasne i informativne**.
+### Primeri korektno kreiranih foldera u cloudu
 
-Prilikom fotografisanja, uverite se da u kadru nisu prisutni prolaznici, stranci i deca. Ovo je neophodno radi
-poštovanja pravila poverljivosti i bezbednosti. Ako je nemoguće izbeći ljude u kadru, izaberite drugi ugao ili napravite
-fotografiju u trenutku kada oko vas nema nikoga.
+![2](/resources/cleaning/2.png)
 
-U nastavku su predstavljeni primeri korektnih i nekorektnih fotografija u podnetim izveštajima. Koristite ih kao
-smernicu kako biste izbegli greške pri izradi izveštaja i uspešno potvrdili vašu volontersku aktivnost!
+### Primeri korektnih fotografija
 
-### **Korektne fotografije:**
+![3](/resources/cleaning/3.png)
 
-- Fotografije **pre i posle čišćenja iz istog ugla**.
-- Po želji - fotografije **sa procesom čišćenja**.
-- Fotografije **sakupljenih vreća sa smećem** na kraju čišćenja.
-- Fotografije **sa snimkom ekrana Google Maps** sa označenom zonom čišćenja.
+![4](/resources/cleaning/4.png)
 
-### **Nekorektne fotografije:**
+![5](/resources/cleaning/5.png)
 
-- Fotografije **samo očišćenog mesta** bez dokaza o čišćenju.
-- Fotografije **malog dela površine** pri prijavljenom dugom vremenu rada.
-- Fotografije **snimljene u toku noći**.
-- **Ponovno korišćenje starih fotografija**.
+![6](/resources/cleaning/6.png)
 
-Ako ne priložite dovoljan broj fotografija, **izveštaj može biti odbijen**.
+![7](/resources/cleaning/7.png)
+
+### Primeri korektno napisanog izveštaja
+
+![8](/resources/cleaning/8.png)
+
+![9](/resources/cleaning/9.png)
+
+### Primeri screenshot-a Google mapa
+
+![10](/resources/cleaning/10.png)
+
+![11](/resources/cleaning/011.png)
+
+
