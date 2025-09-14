@@ -24,7 +24,6 @@ export default function MintrudReport() {
         navigate("/unauthorized");
     }
 
-    // год берём из query-параметра ?year=YYYY, по умолчанию — текущий
     const [searchParams, setSearchParams] = useSearchParams();
     const currentYear = new Date().getFullYear();
     const urlYear = parseInt(searchParams.get("year") || String(currentYear), 10);
@@ -36,32 +35,44 @@ export default function MintrudReport() {
         setSearchParams(params, { replace: true });
     }, [year]);
 
-
     const { data: stats, isFetching } = useQuery<Statistics>({
         queryKey: ["mintrudStatistics", year],
         queryFn: () => StatisticsApiService.getStatistics(year).then((r) => r.data),
     });
 
+    const fmtInt = (n: number | null | undefined) =>
+        new Intl.NumberFormat(intl.locale, { maximumFractionDigits: 0 }).format(Number(n ?? 0));
 
-    const totalVolunteers = useMemo(() => {
-        const v = stats?.volunteerStatistics;
-        return (v?.femaleCount ?? 0) + (v?.maleCount ?? 0);
-    }, [stats]);
+    const fmtHours = (n: number | null | undefined) =>
+        new Intl.NumberFormat(intl.locale, { minimumFractionDigits: 0, maximumFractionDigits: 1 }).format(Number(n ?? 0));
 
-    const totalHours = useMemo(
-        () => stats?.programStatistics?.total?.totalTimeSpent ?? 0,
-        [stats]
-    );
+    const programKeyByCode: Record<string, string> = {
+        SOCIJALNA_ZASTITA: locales.statGroups.SOCIJALNA_ZASTITA,
+        MEDIJI_I_KOMUNIKACIJE: locales.statGroups.MEDIJI_I_KOMUNIKACIJE,
+        KULTURNA_DOBA: locales.statGroups.KULTURNA_DOBA,
+        JAVNE_POVRSINE: locales.statGroups.JAVNE_POVRSINE,
+        ZIVOTNA_SREDINA: locales.statGroups.ZIVOTNA_SREDINA,
+    };
+    const programName = (code: string | null | undefined) => {
+        if (!code) return intl.formatMessage({ id: locales.other });
+        const key = programKeyByCode[code];
+        return key ? intl.formatMessage({ id: key }) : code.replaceAll("_", " ");
+    };
+
+    const totalVolunteers = stats?.finalUsersStatistics?.totalCount ?? 0;
+    const totalHours = stats?.programStatistics?.total?.totalTimeSpent ?? 0;
 
     const programItems: ProgramStatItem[] = useMemo(() => {
         const items = stats?.programStatistics?.items ?? [];
-        // сортируем по количеству волонтеров (desc)
-        return [...items].sort(
-            (a, b) => (b.data.count ?? 0) - (a.data.count ?? 0)
-        );
+        return [...items].sort((a, b) => (b.data.count ?? 0) - (a.data.count ?? 0));
     }, [stats]);
 
-    const empty = !isFetching && !stats;
+    const isEmptyData =
+        !isFetching &&
+        !!stats &&
+        (stats.programStatistics?.total?.count ?? 0) === 0 &&
+        (stats.programStatistics?.total?.totalTimeSpent ?? 0) === 0 &&
+        (stats.finalUsersStatistics?.totalCount ?? 0) === 0;
 
     return (
         <Flex direction="column">
@@ -72,7 +83,7 @@ export default function MintrudReport() {
                     <FormattedMessage id={locales.titleMintrud} />
                 </Text>
 
-                {/* Выбор года */}
+                {/* Год */}
                 <Group align="center">
                     <Text size="sm" c="dimmed">
                         <FormattedMessage id={locales.yearLabel} />
@@ -95,18 +106,18 @@ export default function MintrudReport() {
                         <Text size="xs" c="dimmed">
                             <FormattedMessage id={locales.totalVolunteers} />
                         </Text>
-                        <Text fz={28} fw={700}>{totalVolunteers}</Text>
+                        <Text fz={28} fw={700}>{fmtInt(totalVolunteers)}</Text>
                     </Card>
 
                     <Card withBorder radius="md" p="md">
                         <Text size="xs" c="dimmed">
                             <FormattedMessage id={locales.totalHours} />
                         </Text>
-                        <Text fz={28} fw={700}>{totalHours}</Text>
+                        <Text fz={28} fw={700}>{fmtHours(totalHours)}</Text>
                     </Card>
                 </Group>
 
-                {/* Таблица по программам */}
+                {/* По программам */}
                 <Text mt="md" fw={600}>
                     <FormattedMessage id={locales.programStats} />
                 </Text>
@@ -120,81 +131,53 @@ export default function MintrudReport() {
                     </Table.Thead>
                     <Table.Tbody>
                         {programItems.map((item) => (
-                            <Table.Tr key={String(item.code)}>
-                                <Table.Td>
-                                    {item.code ?? <FormattedMessage id={locales.other} />}
-                                </Table.Td>
-                                <Table.Td ta="right">{item.data.count ?? 0}</Table.Td>
-                                <Table.Td ta="right">{item.data.totalTimeSpent ?? 0}</Table.Td>
+                            <Table.Tr key={String(item.code ?? "OTHER")}>
+                                <Table.Td>{programName(item.code)}</Table.Td>
+                                <Table.Td ta="right">{fmtInt(item.data.count)}</Table.Td>
+                                <Table.Td ta="right">{fmtHours(item.data.totalTimeSpent)}</Table.Td>
                             </Table.Tr>
                         ))}
                     </Table.Tbody>
+                    <Table.Tfoot>
+                        <Table.Tr>
+                            <Table.Th><FormattedMessage id={locales.total} /></Table.Th>
+                            <Table.Th ta="right">{fmtInt(stats?.programStatistics?.total?.count)}</Table.Th>
+                            <Table.Th ta="right">{fmtHours(stats?.programStatistics?.total?.totalTimeSpent)}</Table.Th>
+                        </Table.Tr>
+                    </Table.Tfoot>
                 </Table>
 
-                {/* Статистика по волонтёрам */}
+                {/* Волонтёры */}
                 <Text mt="lg" fw={600}>
                     <FormattedMessage id={locales.volunteerStats} />
                 </Text>
                 <Group>
-                    <StatBadge
-                        labelId={locales.genderFemale}
-                        value={stats?.volunteerStatistics?.femaleCount ?? 0}
-                    />
-                    <StatBadge
-                        labelId={locales.genderMale}
-                        value={stats?.volunteerStatistics?.maleCount ?? 0}
-                    />
-                    <StatBadge
-                        labelId={locales.age15to18}
-                        value={stats?.volunteerStatistics?.age15to18Count ?? 0}
-                    />
-                    <StatBadge
-                        labelId={locales.age18to30}
-                        value={stats?.volunteerStatistics?.age18to30Count ?? 0}
-                    />
-                    <StatBadge
-                        labelId={locales.age30to40}
-                        value={stats?.volunteerStatistics?.age30to40Count ?? 0}
-                    />
-                    <StatBadge
-                        labelId={locales.age40to65}
-                        value={stats?.volunteerStatistics?.age40to65Count ?? 0}
-                    />
-                    <StatBadge
-                        labelId={locales.age65AndAbove}
-                        value={stats?.volunteerStatistics?.age65AndAboveCount ?? 0}
-                    />
+                    <StatBadge labelId={locales.genderFemale} value={stats?.volunteerStatistics?.femaleCount ?? 0} />
+                    <StatBadge labelId={locales.genderMale} value={stats?.volunteerStatistics?.maleCount ?? 0} />
+                    <StatBadge labelId={locales.age15to18} value={stats?.volunteerStatistics?.age15to18Count ?? 0} />
+                    <StatBadge labelId={locales.age18to30} value={stats?.volunteerStatistics?.age18to30Count ?? 0} />
+                    <StatBadge labelId={locales.age30to40} value={stats?.volunteerStatistics?.age30to40Count ?? 0} />
+                    <StatBadge labelId={locales.age40to65} value={stats?.volunteerStatistics?.age40to65Count ?? 0} />
+                    <StatBadge labelId={locales.age65AndAbove} value={stats?.volunteerStatistics?.age65AndAboveCount ?? 0} />
+                    {/* граждане / иностранцы */}
+                    <StatBadge labelId={locales.citizens} value={stats?.volunteerStatistics?.citizensCount ?? 0} />
+                    <StatBadge labelId={locales.foreigners} value={stats?.volunteerStatistics?.foreignersCount ?? 0} />
                 </Group>
 
-                {/* Конечные пользователи (Минтруд) */}
+                {/* Конечные пользователи */}
                 <Text mt="lg" fw={600}>
                     <FormattedMessage id={locales.finalUsersStats} />
                 </Text>
                 <Group>
-                    <StatBadge
-                        labelId={locales.culturalAssets}
-                        value={stats?.finalUsersStatistics?.culturalAssetsCount ?? 0}
-                    />
-                    <StatBadge
-                        labelId={locales.naturalAssets}
-                        value={stats?.finalUsersStatistics?.naturalAssetsCount ?? 0}
-                    />
-                    <StatBadge
-                        labelId={locales.publicAreas}
-                        value={stats?.finalUsersStatistics?.publicAreasCount ?? 0}
-                    />
-                    <StatBadge
-                        labelId={locales.finalOther}
-                        value={stats?.finalUsersStatistics?.otherCount ?? 0}
-                    />
-                    <StatBadge
-                        labelId={locales.total}
-                        value={stats?.finalUsersStatistics?.totalCount ?? 0}
-                    />
+                    <StatBadge labelId={locales.culturalAssets} value={stats?.finalUsersStatistics?.culturalAssetsCount ?? 0} />
+                    <StatBadge labelId={locales.naturalAssets} value={stats?.finalUsersStatistics?.naturalAssetsCount ?? 0} />
+                    <StatBadge labelId={locales.publicAreas} value={stats?.finalUsersStatistics?.publicAreasCount ?? 0} />
+                    <StatBadge labelId={locales.finalOther} value={stats?.finalUsersStatistics?.otherCount ?? 0} />
+                    <StatBadge labelId={locales.total} value={stats?.finalUsersStatistics?.totalCount ?? 0} />
                 </Group>
 
-                {/* Пустое состояние */}
-                {empty && (
+                {/* Пусто */}
+                {isEmptyData && (
                     <Flex mt="xl" align="center" justify="center" direction="column" gap={8}>
                         <Text c="dimmed"><FormattedMessage id={locales.empty} /></Text>
                     </Flex>

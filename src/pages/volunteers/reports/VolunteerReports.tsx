@@ -4,8 +4,8 @@ import { Flex, Text } from "@mantine/core"
 import classes from "./VolunteerReports.module.scss"
 import { FormattedMessage } from "react-intl"
 import React from "react"
-import { IconChevronRight } from "@tabler/icons-react"
 import { useNavigate } from "react-router"
+import MintrudReport from "src/pages/volunteers/mintrud/MintrudReport"
 
 export default function VolunteerReports() {
     setDocumentTitleByLocale(locales.titleReports)
@@ -19,15 +19,7 @@ export default function VolunteerReports() {
                     <FormattedMessage id={locales.titleReports} />
                 </Text>
                 <Flex className={classes.reportContainer}>
-                    <Flex
-                        className={classes.report}
-                        onClick={() => navigate("/volunteers/reports/mintrud")}
-                    >
-                        <IconChevronRight className={classes.iconLeft} />
-                        <Text className={classes.reportName}>
-                            <FormattedMessage id={locales.titleMintrud} />
-                        </Text>
-                    </Flex>
+                    <MintrudReport/>
                 </Flex>
             </Flex>
         </Flex>
