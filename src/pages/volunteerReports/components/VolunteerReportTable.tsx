@@ -3,10 +3,12 @@ import { IconEye, IconMail, IconAlertTriangle, IconCheck, IconX } from "@tabler/
 import dayjs from "dayjs"
 import React, { useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
+import { useNavigate } from "react-router"
 import { VolunteerReportData } from "../lib/types"
 import { locales } from "../lib/locales"
 import { VolunteerReportApiService } from "../lib/VolunteerReportApiService"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
+import { VolunteerEmailDrawer } from "./VolunteerEmailDrawer"
 import classes from "./VolunteerReportTable.module.scss"
 
 interface VolunteerReportTableProps {
@@ -25,28 +27,11 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
     startDate
 }) => {
     const intl = useIntl()
-    const [mockVolunteers, setMockVolunteers] = useState<VolunteerReportData[]>([])
+    const navigate = useNavigate()
+    const [emailDrawerOpen, setEmailDrawerOpen] = useState(false)
+    const [selectedVolunteerForEmail, setSelectedVolunteerForEmail] = useState<VolunteerReportData | null>(null)
 
-    useEffect(() => {
-        let isMounted = true
-        const loadMocks = async () => {
-            if (volunteers.length > 0) return
-            try {
-                const startDate = dayjs().subtract(3, 'month').startOf('month').toISOString()
-                const res = await VolunteerReportApiService.getVolunteerReports({
-                    startDate,
-                    pageRequest: { pageNumber: 0, pageSize: 25 }
-                })
-                if (isMounted) setMockVolunteers(res.content)
-            } catch {
-
-            }
-        }
-        loadMocks()
-        return () => { isMounted = false }
-    }, [volunteers.length])
-
-    const data: VolunteerReportData[] = volunteers.length > 0 ? volunteers : mockVolunteers
+    const data: VolunteerReportData[] = volunteers
     const getVolunteerStats = (volunteer: VolunteerReportData) => {
         const totalReports = volunteer.reports.length
         const totalHours = volunteer.reports.reduce((sum, report) => sum + report.hoursSpent, 0)
@@ -230,13 +215,13 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
                                 
                                 <Table.Td>
                                     <Text size="sm">
-                                        {volunteer.program ? getLocalizedName(volunteer.program, intl.locale) : intl.formatMessage({ id: 'common.not-selected' })}
+                                        {volunteer.program ? getLocalizedName(volunteer.program, intl.locale) : intl.formatMessage({ id: locales.noProgram })}
                                     </Text>
                                 </Table.Td>
                                 
                                 <Table.Td>
                                     <Text size="sm">
-                                        {volunteer.project ? getLocalizedName(volunteer.project, intl.locale) : intl.formatMessage({ id: 'common.not-selected' })}
+                                        {volunteer.project ? getLocalizedName(volunteer.project, intl.locale) : intl.formatMessage({ id: locales.noProject })}
                                     </Text>
                                 </Table.Td>
                                 
@@ -290,7 +275,10 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
                                             <ActionIcon
                                                 variant="subtle"
                                                 color="blue"
-                                                onClick={() => onVolunteerClick(volunteer.id)}
+                                                onClick={() => {
+                                                    localStorage.setItem("volunteerReportsState", window.location.search)
+                                                    navigate(`/profile/${volunteer.username}`)
+                                                }}
                                             >
                                                 <IconEye size={16} />
                                             </ActionIcon>
@@ -301,8 +289,8 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
                                                 variant="subtle"
                                                 color="green"
                                                 onClick={() => {
-                                                    // TODO: Открыть email drawer для одного волонтера
-                                                    console.log('Send email to:', volunteer.email)
+                                                    setSelectedVolunteerForEmail(volunteer)
+                                                    setEmailDrawerOpen(true)
                                                 }}
                                             >
                                                 <IconMail size={16} />
@@ -315,6 +303,21 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
                     })}
                 </Table.Tbody>
             </Table>
+
+            {selectedVolunteerForEmail && (
+                <VolunteerEmailDrawer
+                    opened={emailDrawerOpen}
+                    close={() => {
+                        setEmailDrawerOpen(false)
+                        setSelectedVolunteerForEmail(null)
+                    }}
+                    recipients={[{
+                        name: selectedVolunteerForEmail.fullName,
+                        email: selectedVolunteerForEmail.email
+                    }]}
+                    subject={intl.formatMessage({ id: "pages.volunteer-reports.email-subject" })}
+                />
+            )}
         </div>
     )
 }

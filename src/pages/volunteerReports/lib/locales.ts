@@ -40,5 +40,7 @@ export const locales = {
     statusAllOk: "pages.volunteer-reports.status-text-all-ok",
     statusMissedLastWeek: "pages.volunteer-reports.status-text-missed-last-week",
     statusMissedWeeks: "pages.volunteer-reports.status-text-missed-weeks",
-    statusPartialLastWeek: "pages.volunteer-reports.status-text-partial-last-week"
+    statusPartialLastWeek: "pages.volunteer-reports.status-text-partial-last-week",
+    noProgram: "pages.report-list.program-filter-not-selected",
+    noProject: "pages.report-list.project-filter-not-selected",
 }

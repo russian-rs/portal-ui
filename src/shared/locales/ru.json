@@ -314,7 +314,7 @@
       "no-reports": "Нет отчетов",
       "partial-reports": "Частичные отчеты",
       "full-reports": "Полные отчеты",
-      "pending": "Ожидание / не работал",
+      "pending": "Ожидание",
       "legend": "Легенда",
       "all-reports-badge": "Все отчеты",
       "missed-weeks-badge": "{count} пропущено",

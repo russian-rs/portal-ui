@@ -1,107 +1,109 @@
 import { VolunteerReportPageRequest, VolunteerReportResponse, VolunteerReportData, VolunteerReport } from "./types"
 import dayjs from "dayjs"
 import { ReportApiService } from "src/shared/api/ReportApiService"
-import { PageRequest, ReportDto, ReportFilter, UserInfoDto } from "@russian-rs/portal-api-axios"
+import { PageRequest, ReportDto, ReportFilter, UserInfoDto, UserSearchFilter } from "@russian-rs/portal-api-axios"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 
 export class VolunteerReportApiService {
     static async getVolunteerReports(request: VolunteerReportPageRequest): Promise<VolunteerReportResponse> {
         const { startDate, search, program, project } = request
 
-        // 1) Собираем отчеты за период с фильтрами программы/проекта
+        // 1) Получаем всех волонтеров (активных пользователей)
+        const allVolunteers = await this.fetchAllVolunteers({
+            program: program === undefined ? null : program,
+            project: project === undefined ? null : project,
+        })
+
+        // 2) Получаем отчеты за период с фильтрами program/project (меньше запросов)
         const reports = await this.fetchReportsForPeriod({
             dateFrom: startDate,
             program: program === undefined ? null : program,
             project: project === undefined ? null : project,
         })
 
-        // 2) Группируем по логину пользователя и агрегируем по неделям
-        const aggregatedByUser: Record<string, VolunteerReportData> = {}
-
-        const ensureVolunteer = (user: UserInfoDto) => {
-            if (!aggregatedByUser[user.username]) {
-                aggregatedByUser[user.username] = {
-                    id: user.username,
-                    fullName: user.fullName,
-                    email: user.email,
-                    username: user.username,
-                    avatar: user.avatar,
-                    program: user.program,
-                    project: user.project,
-                    contracts: user.contracts,
-                    reports: [],
-                }
-            }
-            return aggregatedByUser[user.username]
-        }
-
-        // Собираем уникальные логины
-        const userLogins = Array.from(new Set(reports.map((r) => r.user).filter((u): u is string => !!u)))
-        // Резолвим пользователей
-        const users = await UserApiService.resolveUsers(userLogins).then((res) => res.data)
-        const usernameToUser: Record<string, UserInfoDto> = users.reduce((acc, u) => {
-            acc[u.username] = u
-            return acc
-        }, {} as Record<string, UserInfoDto>)
-
-        // Агрегируем по неделям, используя createTime как принадлежность недели
+        // 3) Группируем отчеты по пользователям
+        const reportsByUser: Record<string, any[]> = {}
         for (const report of reports) {
             if (!report.user) continue
-            const user = usernameToUser[report.user]
-            if (!user) continue
-
-            const container = ensureVolunteer(user)
-
-            const weekStartIso = dayjs(report.createTime).startOf('isoWeek').toISOString()
-            const hoursSpent = Math.max(0, Math.round((report.tasks?.reduce((sum, t) => sum + (t.timeSpent || 0), 0) || 0) / 60))
-
-            // Если уже есть запись за эту неделю — суммируем часы
-            const existing = container.reports.find((r) => r.week === weekStartIso)
-            if (existing) {
-                existing.hoursSpent += hoursSpent
-                // Обновим статус/время при необходимости
-                existing.status = (report.status as any) || existing.status
-                if (report.createTime && dayjs(report.createTime).isAfter(existing.createTime)) {
-                    existing.createTime = report.createTime
-                }
-            } else {
-                const vReport: VolunteerReport = {
-                    id: report.id,
-                    week: weekStartIso,
-                    hoursSpent,
-                    status: (report.status as any) || 'PENDING',
-                    createTime: report.createTime || weekStartIso,
-                }
-                container.reports.push(vReport)
+            if (!reportsByUser[report.user]) {
+                reportsByUser[report.user] = []
             }
+            reportsByUser[report.user].push(report)
         }
 
-        // 3) Применяем поисковый фильтр по ФИО/почте/логину (клиентская фильтрация)
-        let volunteers = Object.values(aggregatedByUser)
+        // 4) Создаем VolunteerReportData для каждого волонтера
+        const volunteers: VolunteerReportData[] = allVolunteers.map(user => {
+            const userReports = reportsByUser[user.username] || []
+            const volunteerReports: VolunteerReport[] = []
+
+            // Группируем отчеты по неделям
+            const reportsByWeek: Record<string, any[]> = {}
+            for (const report of userReports) {
+                const weekStartIso = dayjs(report.createTime).startOf('isoWeek').toISOString()
+                if (!reportsByWeek[weekStartIso]) {
+                    reportsByWeek[weekStartIso] = []
+                }
+                reportsByWeek[weekStartIso].push(report)
+            }
+
+            // Создаем агрегированные отчеты по неделям
+            for (const [week, weekReports] of Object.entries(reportsByWeek)) {
+                const hoursSpent = Math.max(0, Math.round(
+                    weekReports.reduce((sum: number, r: any) =>
+                        sum + (r.tasks?.reduce((taskSum: number, t: any) => taskSum + (t.timeSpent || 0), 0) || 0), 0
+                    ) / 60
+                ))
+
+                // Берем последний отчет недели для статуса и времени
+                const latestReport = weekReports.reduce((latest, current) =>
+                    dayjs(current.createTime).isAfter(dayjs(latest.createTime)) ? current : latest
+                )
+
+                volunteerReports.push({
+                    id: latestReport.id,
+                    week,
+                    hoursSpent,
+                    status: (latestReport.status as any) || 'PENDING',
+                    createTime: latestReport.createTime || week,
+                })
+            }
+
+            // Фильтруем отчеты по стартовой дате
+            const start = dayjs(startDate).startOf('isoWeek')
+            const filteredReports = volunteerReports.filter(r => !dayjs(r.week).isBefore(start, 'week'))
+
+            return {
+                id: user.username,
+                fullName: user.fullName,
+                email: user.email,
+                username: user.username,
+                avatar: user.avatar,
+                program: user.program,
+                project: user.project,
+                contracts: user.contracts,
+                reports: filteredReports,
+            }
+        })
+
+        // 5) Применяем поисковый фильтр по ФИО/почте/логину (клиентская фильтрация)
+        let filteredVolunteers = volunteers
         if (search && search.trim()) {
             const q = search.trim().toLowerCase()
-            volunteers = volunteers.filter((v) =>
+            filteredVolunteers = volunteers.filter((v) =>
                 v.fullName?.toLowerCase().includes(q) ||
                 v.email?.toLowerCase().includes(q) ||
                 v.username?.toLowerCase().includes(q)
             )
         }
 
-        // 4) Отбрасываем отчеты старше стартовой даты (на случай, если createTime попал до периода)
-        const start = dayjs(startDate).startOf('isoWeek')
-        volunteers = volunteers.map((v) => ({
-            ...v,
-            reports: v.reports.filter((r) => !dayjs(r.week).isBefore(start, 'week')),
-        }))
-
-        // 5) Пагинация по волонтерам
+        // 6) Пагинация по волонтерам
         const pageNumber = request.pageRequest.pageNumber ?? 0
         const pageSize = request.pageRequest.pageSize ?? 25
-        const totalElements = volunteers.length
+        const totalElements = filteredVolunteers.length
         const totalPages = Math.ceil(totalElements / pageSize)
         const startIndex = pageNumber * pageSize
         const endIndex = startIndex + pageSize
-        const content = volunteers.slice(startIndex, endIndex)
+        const content = filteredVolunteers.slice(startIndex, endIndex)
 
         return {
             content: content.map(v => ({ ...v, id: v.username })),
@@ -112,6 +114,39 @@ export class VolunteerReportApiService {
                 pageSize,
             },
         }
+    }
+
+    private static async fetchAllVolunteers(filter: Pick<ReportFilter, 'program' | 'project'>): Promise<UserInfoDto[]> {
+        // Получаем всех волонтеров через searchUsers без поиска, но с фильтрами
+        const pageSize = 150
+        let pageNumber = 0
+        const collected: UserInfoDto[] = []
+
+        while (true) {
+            const pageRequest: PageRequest = { pageNumber, pageSize }
+            const filterWithProgram: UserSearchFilter = {
+                program: filter.program === undefined ? null : filter.program,
+                project: filter.project === undefined ? null : filter.project,
+                onlyInactive: false, // Включаем всех пользователей, не только неактивных
+            }
+
+            try {
+                const response = await UserApiService.searchUsers("", pageRequest, filterWithProgram)
+                const data = response.data
+                collected.push(...data.content)
+
+                const totalPages = data.page.totalPages ?? 0
+                if (pageNumber >= (totalPages - 1) || pageNumber >= 19) {
+                    break
+                }
+                pageNumber += 1
+            } catch (error) {
+                console.error('Error fetching volunteers:', error)
+                break
+            }
+        }
+
+        return collected
     }
 
     private static async fetchReportsForPeriod(filter: Pick<ReportFilter, 'dateFrom' | 'program' | 'project'>): Promise<ReportDto[]> {
@@ -125,7 +160,7 @@ export class VolunteerReportApiService {
             const data = response.data
             collected.push(...data.content)
             const totalPages = data.page.totalPages ?? 0
-            if (pageNumber >= (totalPages - 1) || pageNumber >= 9) { // ограничим до 10 страниц на всякий случай
+            if (pageNumber >= (totalPages - 1) || pageNumber >= 9) {
                 break
             }
             pageNumber += 1
