@@ -453,6 +453,7 @@
             "contract-start-short": "Ugovor",
             "contract-required": "Da biste završili, morate navesti datume ugovora",
             "showCompleted": "Prikaži završene",
+            "add-note": "Dodaj zapis",
             "menu": {
                 "view": "Pogledaj",
                 "contact": "Kontaktiraj"

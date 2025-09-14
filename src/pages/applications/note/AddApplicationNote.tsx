@@ -52,7 +52,7 @@ export const AddApplicationNote = ({ applicationId, onNoteAdded }: AddApplicatio
             <Textarea
                 className={classes.textarea}
                 placeholder={intl.formatMessage({
-                    id: "pages.applications.addNote",
+                    id: "pages.applications.add-note",
                 })}
                 autosize={true}
                 value={noteText}
