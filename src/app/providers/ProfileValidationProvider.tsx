@@ -69,6 +69,11 @@ export const ProfileValidationProvider = ({ children }: { children?: ReactNode }
             missing.push(intl.formatMessage({ id: "pages.profile.validation.fields.project" }))
         }
 
+        // Не проверяем gender: бэк пока не сохраняет это поле в updateProfile
+        //    if (!user.gender) {
+        //        missing.push(intl.formatMessage({ id: "pages.profile.validation.fields.gender" }))
+        //    }
+
         return {
             isProfileComplete: missing.length === 0,
             missingFields: missing,

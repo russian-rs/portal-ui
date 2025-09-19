@@ -1,6 +1,6 @@
-import { Button, Container, Drawer, Flex, Text, TextInput } from "@mantine/core"
+import { Button, Container, Drawer, Flex, Text, TextInput, Select, Tooltip } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
-import { UserInfoDto, UserInfoUpdateRequest } from "@russian-rs/portal-api-axios"
+import { UserInfoDto, UserInfoUpdateRequest, GenderEnumDto } from "@russian-rs/portal-api-axios"
 import {
     IconBrandTelegram,
     IconPhone,
@@ -10,6 +10,8 @@ import {
     IconMail,
     IconDeviceFloppy,
     IconPencil,
+    IconGenderMale,
+    IconInfoCircle,
 } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import { useContext } from "react"
@@ -93,6 +95,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
             birthDate: userInfo?.birthDate || "",
             telegram: userInfo?.telegram || "",
             phone: userInfo?.phone || "",
+            gender: (userInfo?.gender as string) || "",
         },
         validate: zodResolver(validationSchema),
     })
@@ -112,6 +115,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         if (formValues.birthDate?.trim()) updateData.birthDate = formValues.birthDate.trim()
         if (formValues.telegram?.trim()) updateData.telegram = formValues.telegram.trim()
         if (formValues.phone?.trim()) updateData.phone = formValues.phone.trim()
+        if (formValues.gender?.trim()) updateData.gender = formValues.gender as GenderEnumDto
 
         updateProfile(updateData)
     }
@@ -240,6 +244,9 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     // Пользователи могут редактировать только свой проект или админы
     const canEditProject = isOwnProfile || isAdmin
 
+    // Пол можно установить один раз пользователем; админ может менять всегда
+    const canEditGender = isAdmin || (isOwnProfile && !userInfo?.gender)
+
     const handleProgramChange = (value: string | null) => {
         if (value) {
             updateProgram(value)
@@ -275,6 +282,16 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                 name={"pages.profile.props.address"}
                 value={userInfo?.address}
                 icon={<IconHome size={18} />}
+                className={classes.propertyBox}
+            />
+            <TextPropertyBox
+                name={"pages.profile.props.gender"}
+                value={
+                    userInfo?.gender
+                        ? intl.formatMessage({ id: `pages.profile.props.gender.${userInfo.gender.toLowerCase()}` })
+                        : intl.formatMessage({ id: "pages.profile.props.gender.notSelected" })
+                }
+                icon={<IconGenderMale size={18} />}
                 className={classes.propertyBox}
             />
             <TextPropertyBox
@@ -354,6 +371,46 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                             leftSection={iconPhone}
                             label={<FormattedMessage id="pages.profile.props.phone" />}
                             {...form.getInputProps("phone")}
+                        />
+                        <Select
+                            leftSection={<IconGenderMale size={16} />}
+                            label={
+                                <Flex align="center" gap={6}>
+                                    <FormattedMessage id="pages.profile.props.gender" />
+                                    <Tooltip
+                                        label={intl.formatMessage({ id: "pages.profile.props.gender.hint" })}
+                                        multiline
+                                        withArrow
+                                        w={380}
+                                        events={{ hover: true, focus: true, touch: true }}
+                                        withinPortal
+                                    >
+                                        <span
+                                            tabIndex={0}
+                                            role="button"
+                                            aria-label={intl.formatMessage({ id: "pages.profile.props.gender.hint" })}
+                                            style={{ display: "inline-flex" }}
+                                            onMouseDown={(e) => e.preventDefault()}
+                                            onTouchStart={(e) => e.preventDefault()}
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <IconInfoCircle size={14} />
+                                        </span>
+                                    </Tooltip>
+                                </Flex>
+                            }
+                            data={[
+                                {
+                                    value: GenderEnumDto.Male,
+                                    label: intl.formatMessage({ id: "pages.profile.props.gender.male" }),
+                                },
+                                {
+                                    value: GenderEnumDto.Female,
+                                    label: intl.formatMessage({ id: "pages.profile.props.gender.female" }),
+                                },
+                            ]}
+                            disabled={!canEditGender}
+                            {...form.getInputProps("gender")}
                         />
                         <Button type="submit" loading={isPending} rightSection={<IconDeviceFloppy size={14} />}>
                             <FormattedMessage id="pages.profile.buttons.save" />
