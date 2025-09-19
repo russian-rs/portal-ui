@@ -244,8 +244,8 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     // Пользователи могут редактировать только свой проект или админы
     const canEditProject = isOwnProfile || isAdmin
 
-    // Пол можно установить один раз пользователем; админ может менять всегда
-    const canEditGender = isAdmin || (isOwnProfile && !userInfo?.gender)
+    // Разрешаем менять пол своему профилю и админам
+    const canEditGender = isAdmin || isOwnProfile
 
     const handleProgramChange = (value: string | null) => {
         if (value) {

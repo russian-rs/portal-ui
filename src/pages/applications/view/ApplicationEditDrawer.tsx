@@ -140,7 +140,8 @@ export const ApplicationEditDrawer = ({
             return
         }
 
-        const updateData: Partial<ApplicationDto> = {}
+        type UpdateApplicationPayload = Partial<ApplicationDto> & { gender?: GenderEnumDto }
+        const updateData: UpdateApplicationPayload = {}
 
         if (form.values.name?.trim()) updateData.name = form.values.name.trim()
         if (form.values.patronymic?.trim()) updateData.patronymic = form.values.patronymic.trim()
@@ -150,7 +151,7 @@ export const ApplicationEditDrawer = ({
         if (form.values.birthDate?.trim()) updateData.birthDate = form.values.birthDate.trim()
         if (form.values.passport?.trim()) updateData.passport = form.values.passport.trim()
         if (form.values.address?.trim()) updateData.address = form.values.address.trim()
-        // Не отправляем gender: бэк пока не принимает это поле в updateApplication
+        if (form.values.gender?.trim()) updateData.gender = form.values.gender as GenderEnumDto
 
         updateApplication(updateData)
     }
