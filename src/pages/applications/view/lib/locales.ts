@@ -14,6 +14,7 @@ export const locales = {
     phone: "pages.applications.view.phone",
     telegram: "pages.applications.view.telegram",
     birthDate: "pages.applications.view.birth",
+    gender: "pages.applications.view.gender",
     passport: "pages.applications.view.passport",
     citizenship: "pages.applications.view.citizenship",
 

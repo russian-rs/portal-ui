@@ -147,18 +147,16 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
                     <Combobox.Options>{options}</Combobox.Options>
                 </Combobox.Dropdown>
             </Combobox>
-            {props.showInlineReason === true &&
-                value === ApplicationStatus.PAUSED &&
-                props.application.comment && (
-                    <Text
-                        size="xs"
-                        c="dimmed"
-                        mt={6}
-                        style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", overflowWrap: "anywhere" }}
-                    >
-                        <FormattedMessage id="common.pause-reason-modal.reason-placeholder" />: {props.application.comment}
-                    </Text>
-                )}
+            {props.showInlineReason === true && value === ApplicationStatus.PAUSED && props.application.comment && (
+                <Text
+                    size="xs"
+                    c="dimmed"
+                    mt={6}
+                    style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", overflowWrap: "anywhere" }}
+                >
+                    <FormattedMessage id="common.pause-reason-modal.reason-placeholder" />: {props.application.comment}
+                </Text>
+            )}
 
             <PauseReasonModal
                 opened={pauseOpened}
