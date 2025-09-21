@@ -22,11 +22,11 @@ $table-width: 100%;
 }
 
 .title {
-    font-size: xx-large;
+    font-size: x-large;
     font-weight: bolder;
 
     @media (max-width: $mantine-breakpoint-md) {
-        font-size: x-large;
+        font-size: medium;
         text-align: center;
     }
 }
