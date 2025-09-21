@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState, useEffect } from "react";
-import { Flex, Text, Table, NumberInput, Card, Group, Badge } from "@mantine/core";
+import { Flex, Text, Table, NumberInput, Card, Group } from "@mantine/core";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams, useNavigate } from "react-router";
