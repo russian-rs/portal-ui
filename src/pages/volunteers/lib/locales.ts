@@ -33,6 +33,10 @@ export const locales = {
     total: "pages.mintrud.total",
     empty: "pages.mintrud.empty",
 
+    ageStatsTitle: "pages.mintrud.charts.age",
+    genderStatsTitle: "pages.mintrud.charts.gender",
+    citizenshipStatsTitle: "pages.mintrud.charts.citizenship",
+
     statGroups: {
         SOCIJALNA_ZASTITA: "pages.mintrud.statGroups.SOCIJALNA_ZASTITA",
         MEDIJI_I_KOMUNIKACIJE: "pages.mintrud.statGroups.MEDIJI_I_KOMUNIKACIJE",

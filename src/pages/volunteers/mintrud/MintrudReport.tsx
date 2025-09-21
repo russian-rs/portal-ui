@@ -12,6 +12,7 @@ import CustomLoader from "src/shared/ui/loading/CustomLoader";
 import { StatisticsApiService } from "src/shared/api/StatisticsApiService";
 import type { ProgramStatItem, Statistics } from "@russian-rs/portal-api-axios";
 import classes from "./MintrudReport.module.scss"
+import { FinalUsersChart, VolunteersCharts } from "./MintrudCharts"
 
 export default function MintrudReport() {
     setDocumentTitleByLocale(locales.titleMintrud);
@@ -152,30 +153,13 @@ export default function MintrudReport() {
                 <Text mt="lg" fw={600}>
                     <FormattedMessage id={locales.volunteerStats} />
                 </Text>
-                <Group>
-                    <StatBadge labelId={locales.genderFemale} value={stats?.volunteerStatistics?.femaleCount ?? 0} />
-                    <StatBadge labelId={locales.genderMale} value={stats?.volunteerStatistics?.maleCount ?? 0} />
-                    <StatBadge labelId={locales.age15to18} value={stats?.volunteerStatistics?.age15to18Count ?? 0} />
-                    <StatBadge labelId={locales.age18to30} value={stats?.volunteerStatistics?.age18to30Count ?? 0} />
-                    <StatBadge labelId={locales.age30to40} value={stats?.volunteerStatistics?.age30to40Count ?? 0} />
-                    <StatBadge labelId={locales.age40to65} value={stats?.volunteerStatistics?.age40to65Count ?? 0} />
-                    <StatBadge labelId={locales.age65AndAbove} value={stats?.volunteerStatistics?.age65AndAboveCount ?? 0} />
-                    {/* граждане / иностранцы */}
-                    <StatBadge labelId={locales.citizens} value={stats?.volunteerStatistics?.citizensCount ?? 0} />
-                    <StatBadge labelId={locales.foreigners} value={stats?.volunteerStatistics?.foreignersCount ?? 0} />
-                </Group>
+                <VolunteersCharts stats={stats} />
 
                 {/* Конечные пользователи */}
                 <Text mt="lg" fw={600}>
                     <FormattedMessage id={locales.finalUsersStats} />
                 </Text>
-                <Group>
-                    <StatBadge labelId={locales.culturalAssets} value={stats?.finalUsersStatistics?.culturalAssetsCount ?? 0} />
-                    <StatBadge labelId={locales.naturalAssets} value={stats?.finalUsersStatistics?.naturalAssetsCount ?? 0} />
-                    <StatBadge labelId={locales.publicAreas} value={stats?.finalUsersStatistics?.publicAreasCount ?? 0} />
-                    <StatBadge labelId={locales.finalOther} value={stats?.finalUsersStatistics?.otherCount ?? 0} />
-                    <StatBadge labelId={locales.total} value={stats?.finalUsersStatistics?.totalCount ?? 0} />
-                </Group>
+                <FinalUsersChart stats={stats} />
 
                 {/* Пусто */}
                 {isEmptyData && (
@@ -185,13 +169,5 @@ export default function MintrudReport() {
                 )}
             </Flex>
         </Flex>
-    );
-}
-
-function StatBadge({ labelId, value }: { labelId: string; value: number }) {
-    return (
-        <Badge radius="md" variant="light" size="lg">
-            <FormattedMessage id={labelId} />:&nbsp;<b>{value}</b>
-        </Badge>
     );
 }
