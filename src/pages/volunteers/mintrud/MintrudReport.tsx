@@ -97,6 +97,7 @@ export default function MintrudReport() {
                         allowDecimal={false}
                         allowNegative={false}
                         w={120}
+                        disabled={isFetching}
                     />
                 </Group>
 
