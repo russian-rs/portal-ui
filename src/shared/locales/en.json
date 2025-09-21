@@ -557,6 +557,11 @@
         "KULTURNA_DOBA": "Cultural era",
         "JAVNE_POVRSINE": "Public spaces",
         "ZIVOTNA_SREDINA": "Environment"
+      },
+      "charts": {
+        "age": "Age distribution",
+        "gender": "Gender distribution",
+        "citizenship": "Citizenship status"
       }
     }
   },

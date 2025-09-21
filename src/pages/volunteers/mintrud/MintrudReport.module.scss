@@ -26,7 +26,18 @@ $table-width: 100%;
     font-weight: bolder;
 
     @media (max-width: $mantine-breakpoint-md) {
-        font-size: medium;
+        font-size: large;
+        text-align: center;
+    }
+}
+
+.chartTitle {
+    font-size: small;
+    font-weight: bolder;
+    text-align: center;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        font-size: x-small;
         text-align: center;
     }
 }

@@ -557,6 +557,11 @@
         "KULTURNA_DOBA": "Kulturna epoha",
         "JAVNE_POVRSINE": "Javne površine",
         "ZIVOTNA_SREDINA": "Životna sredina"
+      },
+      "charts": {
+        "age": "Statistika po uzrastu",
+        "gender": "Statistika po polu",
+        "citizenship": "Statistika po državljanstvu"
       }
     }
   },
