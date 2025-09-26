@@ -73,8 +73,9 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
                     const fileInfo = resp.data
                     // Добавляем к локальному списку
                     setUploadedFiles((prev) => [...prev, fileInfo])
-
-                    props.onFilesUploaded?.([...(props.files || []), fileInfo])
+                } catch (e) {
+                    // можно добавить уведомление об ошибке конкретного файла
+                    // showError(file.name, intl.formatMessage({ id: `${locales.errors}.UploadFailed` }))
                 } finally {
                     // снимаем файл из «в процессе»
                     setLoadingFiles((prev) => prev.filter((name) => name !== file.name))
@@ -119,7 +120,6 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
             onDrop={onDrop}
             onReject={onReject}
             disabled={disabled}
-            maxFiles={maxFiles}
             maxSize={maxSize * 1024 ** 2}
             loading={loadingFiles.length !== 0}
         >
