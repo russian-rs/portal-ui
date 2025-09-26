@@ -56,7 +56,16 @@ export const ApplicationNote = ({ note, userInfo, onNoteDeleted }: ApplicationNo
                         </ActionIcon>
                     )}
                 </Flex>
-                <Text size="sm">{note.text}</Text>
+                <Text
+                    size="sm"
+                    style={{
+                        whiteSpace: "pre-wrap",
+                        wordBreak: "break-word",
+                        overflowWrap: "anywhere",
+                    }}
+                >
+                    {note.text}
+                </Text>
             </Flex>
         </Paper>
     )
