@@ -42,7 +42,7 @@ export const CreateUser = () => {
             .string(requiredMessage)
             .min(6, minMessage(6))
             .max(16, maxMessage(16))
-            .regex(/^[a-zA-Z][a-zA-Z0-9]*$/, intl.formatMessage({ id: locales.invalidUsername })),
+            .regex(/^[a-zA-Z][a-zA-Z0-9._-]*$/, intl.formatMessage({ id: locales.invalidUsername })),
         contractFrom: z.date(requiredMessage),
         contractUntil: z.date(requiredMessage),
         contractType: z.string(requiredMessage),
