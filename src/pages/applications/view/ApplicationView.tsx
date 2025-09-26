@@ -1,4 +1,5 @@
 import { Blockquote, Button, Divider, Flex, Text } from "@mantine/core"
+import { useDisclosure } from "@mantine/hooks"
 import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import {
     IconArrowRight,
@@ -10,25 +11,25 @@ import {
     IconContract,
     IconEPassport,
     IconLanguageHiragana,
+    IconListCheck,
     IconLocation,
+    IconMailFilled,
+    IconPencil,
     IconPhone,
     IconWorld,
-    IconListCheck,
-    IconPencil,
-    IconMailFilled
 } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
-import { useDisclosure } from "@mantine/hooks"
 import { UserContext } from "src/app/providers/UserContext"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
-import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import generateContractPdf from "src/shared/docs/contract"
+import generateEnvelopPdf from "src/shared/docs/envelop"
+import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
@@ -37,11 +38,10 @@ import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
 import { ApplicationStatus } from "src/shared/user/applications"
 import { hasPermission } from "src/shared/user/roles"
+import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
-import generateQuestionnairePdf from "src/shared/docs/questionnaire"
-import generateEnvelopPdf from "src/shared/docs/envelop"
 
 export const ApplicationView = () => {
     const { id } = useParams()
@@ -310,7 +310,7 @@ export const ApplicationView = () => {
                     <Button
                         variant="gradient"
                         gradient={{ from: "#FF7E5F", to: "#FEB47B" }}
-                        rightSection={<IconMailFilled  size={15} />}
+                        rightSection={<IconMailFilled size={15} />}
                         disabled={application.contract == null}
                         className={classes.envelopGenerate}
                         onClick={() => {
@@ -319,7 +319,12 @@ export const ApplicationView = () => {
                     >
                         <FormattedMessage id={locales.envelopDownload} />
                     </Button>
-                    <Button variant="outline" rightSection={<IconPencil size={14} />} onClick={openDrawer}>
+                    <Button
+                        variant="outline"
+                        rightSection={<IconPencil size={14} />}
+                        onClick={openDrawer}
+                        disabled={application.status === ApplicationStatus.DONE}
+                    >
                         <FormattedMessage id="pages.profile.buttons.edit" />
                     </Button>
                 </Flex>
