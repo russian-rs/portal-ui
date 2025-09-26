@@ -1,6 +1,6 @@
 import { Combobox, Flex, InputBase, Text, Tooltip, useCombobox } from "@mantine/core"
 import { ApplicationDto } from "@russian-rs/portal-api-axios"
-import React, { ReactNode, useEffect, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { DenyReasonModal } from "src/shared/ui/denyReasonModal/DenyReasonModal"
 import { PauseReasonModal } from "src/shared/ui/pauseReasonModal/PauseReasonModal"
@@ -147,18 +147,16 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
                     <Combobox.Options>{options}</Combobox.Options>
                 </Combobox.Dropdown>
             </Combobox>
-            {props.showInlineReason === true &&
-                value === ApplicationStatus.PAUSED &&
-                props.application.comment && (
-                    <Text
-                        size="xs"
-                        c="dimmed"
-                        mt={6}
-                        style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", overflowWrap: "anywhere" }}
-                    >
-                        <FormattedMessage id="common.pause-reason-modal.reason-placeholder" />: {props.application.comment}
-                    </Text>
-                )}
+            {props.showInlineReason === true && value === ApplicationStatus.PAUSED && props.application.comment && (
+                <Text
+                    size="xs"
+                    c="dimmed"
+                    mt={6}
+                    style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", overflowWrap: "anywhere" }}
+                >
+                    <FormattedMessage id="common.pause-reason-modal.reason-placeholder" />: {props.application.comment}
+                </Text>
+            )}
 
             <PauseReasonModal
                 opened={pauseOpened}
@@ -181,6 +179,11 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
 }
 
 const isDisabled = (status: ApplicationStatus, application: ApplicationDto): boolean => {
+    // Блокируем изменение статуса, если заявка уже завершена
+    if (application.status === ApplicationStatus.DONE) {
+        return true
+    }
+
     switch (status) {
         case ApplicationStatus.DONE:
             return application.contract == null
