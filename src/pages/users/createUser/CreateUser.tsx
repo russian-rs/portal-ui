@@ -40,8 +40,8 @@ export const CreateUser = () => {
         email: z.string(requiredMessage).email(intl.formatMessage({ id: locales.invalidEmail })),
         username: z
             .string(requiredMessage)
-            .min(6, minMessage(4))
-            .max(16, maxMessage(32))
+            .min(4, minMessage(4))
+            .max(32, maxMessage(32))
             .regex(/^[a-zA-Z][a-zA-Z0-9._-]*$/, intl.formatMessage({ id: locales.invalidUsername })),
         contractFrom: z.date(requiredMessage),
         contractUntil: z.date(requiredMessage),
