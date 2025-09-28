@@ -68,27 +68,29 @@ To fill out the weekly report, you need to:
 Required fields to fill out in the volunteer portal report:
 
 1. Title: enter the task title in the format:
-   - “Cleanup of [specify exact place].” (If there were several places during the week, create a separate task for each.)
-   - Example: “Cleanup of Kalemegdan Park,” “Cleanup of Kneza Mihaila Street.”
+
+    - “Cleanup of [specify exact place].” (If there were several places during the week, create a separate task for each.)
+    - Example: “Cleanup of Kalemegdan Park,” “Cleanup of Kneza Mihaila Street.”
 
 2. Description: briefly describe what exactly you did. Specify what you cleaned (for example: plastic, paper, glass, leaves, etc.), whether separate waste collection was used. The description must include the collected volume of waste in liters (use the bag volume as a reference).
-   - Example: “Cleanup of trash and dry leaves near the Russian school. Collected 360 liters.” “Collected plastic, glass, and paper; swept paths; removed leftover branches. Used separate collection. Collected 720 liters.”
+
+    - Example: “Cleanup of trash and dry leaves near the Russian school. Collected 360 liters.” “Collected plastic, glass, and paper; swept paths; removed leftover branches. Used separate collection. Collected 720 liters.”
 
 3. Result: in this field, paste a link to the cloud where your photos have already been uploaded: https://files.russian.rs/f/13839. In the folder with your first and last name, create a separate folder for each location with photos and add photos to each of these folders. For each location, add a link specifically to that location’s folder to the “Result” field — you need to create a link (details shown in the screenshot).
 
 ![1](/resources/cleaning/1.png)
 
 - Required photos:
-  - Photo before cleanup (show polluted areas).
-  - Photo after cleanup (from the same angle to show the difference).
-  - Photo of collected trash bags.
-  - Screenshot of Google Maps with the cleaned area highlighted.
-  - When taking photos, make sure no passers-by, bystanders, or children are in the frame. This is necessary to comply with privacy and safety rules. If it is impossible to avoid people in the frame, choose another angle or take the photo when no one is around.
+    - Photo before cleanup (show polluted areas).
+    - Photo after cleanup (from the same angle to show the difference).
+    - Photo of collected trash bags.
+    - Screenshot of Google Maps with the cleaned area highlighted.
+    - When taking photos, make sure no passers-by, bystanders, or children are in the frame. This is necessary to comply with privacy and safety rules. If it is impossible to avoid people in the frame, choose another angle or take the photo when no one is around.
 - Incorrect photos:
-  - Only a photo of a clean place without proof of cleanup.
-  - A photo of a small area with a large amount of claimed work time.
-  - Photos taken at night.
-  - Reusing old photos.
+    - Only a photo of a clean place without proof of cleanup.
+    - A photo of a small area with a large amount of claimed work time.
+    - Photos taken at night.
+    - Reusing old photos.
 
 If you have not been granted access to the cloud: write to the Clean City program curator Anton on Telegram @Giktom.
 
@@ -135,5 +137,3 @@ Below are examples of correct reports, photos, and the folder structure in the c
 ![10](/resources/cleaning/10.png)
 
 ![11](/resources/cleaning/011.png)
-
-

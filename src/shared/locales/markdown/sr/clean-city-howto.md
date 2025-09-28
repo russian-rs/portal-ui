@@ -68,27 +68,29 @@ Za popunjavanje nedeljnog izveštaja potrebno je:
 Obavezna polja u izveštaju na portalu volontera:
 
 1. Naziv: unesite naziv zadatka u formatu:
-   - „Čišćenje teritorije [navesti konkretno mesto]“. (Ako je tokom nedelje bilo više lokacija, za svaku kreirajte poseban zadatak.)
-   - Primer: „Čišćenje parka Kalemegdan“, „Čišćenje ulice Knez Mihailova“.
+
+    - „Čišćenje teritorije [navesti konkretno mesto]“. (Ako je tokom nedelje bilo više lokacija, za svaku kreirajte poseban zadatak.)
+    - Primer: „Čišćenje parka Kalemegdan“, „Čišćenje ulice Knez Mihailova“.
 
 2. Opis: ukratko opišite šta ste tačno uradili. Navedite šta ste čistili (na primer: plastika, papir, staklo, lišće itd.), da li je primenjeno odvojeno sakupljanje otpada. U opisu je obavezno navesti sakupljeni obim otpada u litrima (orijentišite se na zapreminu kesa).
-   - Primer: „Čišćenje smeća i suvog lišća kod ruske škole. Sakupljeno 360 litara.“ „Sakupljena plastika, staklo i papir; pometene staze; uklonjeni ostaci grana. Primenjeno odvojeno sakupljanje. Sakupljeno 720 litara.“
+
+    - Primer: „Čišćenje smeća i suvog lišća kod ruske škole. Sakupljeno 360 litara.“ „Sakupljena plastika, staklo i papir; pometene staze; uklonjeni ostaci grana. Primenjeno odvojeno sakupljanje. Sakupljeno 720 litara.“
 
 3. Rezultat: u ovo polje unesite link ka cloudu gde su vaše fotografije već otpremljene: https://files.russian.rs/f/13839. U folderu sa vašim imenom i prezimenom kreirajte za svaku lokaciju poseban folder sa fotografijama i u svaki od tih foldera dodajte slike. Za svaku lokaciju u polje „Rezultat“ dodajte link baš na folder te lokacije — potrebno je da generišete link (detalji su prikazani na screenshot-u).
 
 ![1](/resources/cleaning/1.png)
 
 - Obavezne fotografije:
-  - Fotografija pre čišćenja (pokažite zagađene delove).
-  - Fotografija posle čišćenja (iz istog ugla, da se vidi razlika).
-  - Fotografija sakupljenih kesa sa otpadom.
-  - Screenshot Google mapa sa označenom zonom čišćenja.
-  - Prilikom fotografisanja uverite se da se u kadru ne nalaze prolaznici, treća lica i deca. Ovo je neophodno radi poštovanja pravila privatnosti i bezbednosti. Ako je nemoguće izbeći ljude u kadru, izaberite drugi ugao ili fotografišite kada okolo nema nikoga.
+    - Fotografija pre čišćenja (pokažite zagađene delove).
+    - Fotografija posle čišćenja (iz istog ugla, da se vidi razlika).
+    - Fotografija sakupljenih kesa sa otpadom.
+    - Screenshot Google mapa sa označenom zonom čišćenja.
+    - Prilikom fotografisanja uverite se da se u kadru ne nalaze prolaznici, treća lica i deca. Ovo je neophodno radi poštovanja pravila privatnosti i bezbednosti. Ako je nemoguće izbeći ljude u kadru, izaberite drugi ugao ili fotografišite kada okolo nema nikoga.
 - Nekorektne fotografije:
-  - Samo fotografija čistog mesta bez dokaza o čišćenju.
-  - Fotografija male površine uz prijavljeno veliko utrošeno vreme.
-  - Fotografije snimljene u mraku.
-  - Ponovno korišćenje starih fotografija.
+    - Samo fotografija čistog mesta bez dokaza o čišćenju.
+    - Fotografija male površine uz prijavljeno veliko utrošeno vreme.
+    - Fotografije snimljene u mraku.
+    - Ponovno korišćenje starih fotografija.
 
 Ako nemate pristup cloudu: potrebno je da pišete u Telegram kuratoru programa „Čist grad“ Antonu @Giktom.
 
@@ -135,5 +137,3 @@ U nastavku su prikazani primeri ispravno popunjenih izveštaja, fotografija i st
 ![10](/resources/cleaning/10.png)
 
 ![11](/resources/cleaning/011.png)
-
-
