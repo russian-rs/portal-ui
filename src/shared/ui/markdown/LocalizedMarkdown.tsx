@@ -17,10 +17,7 @@ export const LocalizedMarkdown = ({ id, className }: LocalizedMarkdownProps) => 
         })
     }, [])
 
-    const highlightIfStartsWith = (
-        children: any,
-        markers: string[]
-    ) => {
+    const highlightIfStartsWith = (children: any, markers: string[]) => {
         const childArray = Array.isArray(children) ? children : [children]
         if (childArray.length > 0 && typeof childArray[0] === "string") {
             const text = childArray[0] as string
@@ -49,26 +46,14 @@ export const LocalizedMarkdown = ({ id, className }: LocalizedMarkdownProps) => 
         "Ako nemate pristup cloudu:",
     ]
 
-    const liMarkers = [
-        "Некорректные фото:",
-        "Incorrect photos:",
-        "Nekorektne fotografije:",
-    ]
+    const liMarkers = ["Некорректные фото:", "Incorrect photos:", "Nekorektne fotografije:"]
 
     return (
         <div className={className}>
             <ReactMarkdown
                 components={{
-                    p: ({ children }) => (
-                        <p>
-                            {highlightIfStartsWith(children, pMarkers)}
-                        </p>
-                    ),
-                    li: ({ children }) => (
-                        <li>
-                            {highlightIfStartsWith(children, liMarkers)}
-                        </li>
-                    ),
+                    p: ({ children }) => <p>{highlightIfStartsWith(children, pMarkers)}</p>,
+                    li: ({ children }) => <li>{highlightIfStartsWith(children, liMarkers)}</li>,
                     a: ({ href, children }) => (
                         <a href={href as string} target="_blank" rel="noopener noreferrer">
                             {children}

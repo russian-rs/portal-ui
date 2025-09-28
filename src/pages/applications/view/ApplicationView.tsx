@@ -1,5 +1,5 @@
 import { Blockquote, Button, Divider, Flex, Text } from "@mantine/core"
-import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
+import { ApplicationDto, ContractDto, GenderEnumDto } from "@russian-rs/portal-api-axios"
 import {
     IconArrowRight,
     IconAt,
@@ -15,7 +15,7 @@ import {
     IconWorld,
     IconListCheck,
     IconPencil,
-    IconMailFilled
+    IconMailFilled,
 } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -156,6 +156,16 @@ export const ApplicationView = () => {
                                 icon={<IconCake size={14} />}
                             />
                         )}
+                        <TextPropertyBox
+                            name={locales.gender}
+                            value={
+                                (application as any)?.gender
+                                    ? (application as any).gender === GenderEnumDto.Male
+                                        ? intl.formatMessage({ id: "pages.profile.props.gender.male" })
+                                        : intl.formatMessage({ id: "pages.profile.props.gender.female" })
+                                    : intl.formatMessage({ id: "pages.profile.props.gender.notSelected" })
+                            }
+                        />
                         {application.passport && (
                             <TextPropertyBox
                                 name={locales.passport}
@@ -310,7 +320,7 @@ export const ApplicationView = () => {
                     <Button
                         variant="gradient"
                         gradient={{ from: "#FF7E5F", to: "#FEB47B" }}
-                        rightSection={<IconMailFilled  size={15} />}
+                        rightSection={<IconMailFilled size={15} />}
                         disabled={application.contract == null}
                         className={classes.envelopGenerate}
                         onClick={() => {
