@@ -1,585 +1,585 @@
 {
-  "common": {
-    "buttons": {
-      "login": "Prijavite se",
-      "logout": "Odjava"
-    },
-    "file-uploader": {
-      "title": "Prenesite datoteke ili kliknite da biste izabrali",
-      "description": "Max. broj: {maxFiles}, veličina do {maxSize} Mb",
-      "file-name": "Fajl {fileName}",
-      "errors": {
-        "file-invalid-type": "Nevalidni format fajla",
-        "file-too-large": "Veličina fajla je veća od {maxSize} Mb",
-        "file-too-small": "Premala veličina fajla",
-        "too-many-files": "Previše datoteka"
-      }
-    },
-    "user-search": {
-      "placeholder": "Ime Prezime"
-    },
-    "report-status": {
-      "CREATED": "Stvoren",
-      "REJECTED": "Odbijen",
-      "ACCEPTED": "Prihvaćen"
-    },
-    "week-picker": {
-      "label": "Nedelja",
-      "empty": "Nije izabrano"
-    },
-    "report-status-select": {
-      "label": "Status",
-      "empty": "Nije izabrano"
-    },
-    "roles": {
-      "ADMIN": "Admin",
-      "ADMIN_SSO": "Admin SSO",
-      "ADMIN_VOLUNTEER": "Admin volontiranja",
-      "ADMIN_WP": "Admin WordPress",
-      "DEVELOPER": "Programer",
-      "INSIDE_VOLUNTEER": "Unutrašnji volonter",
-      "MAIN_VOLUNTEER": "Volonter osnovnog pr.",
-      "GUIDES": "Autor vodiča",
-      "LAWYERS": "Advokat",
-      "MEDIA": "Autor",
-      "TEACHER": "Učitelj",
-      "SEO_MANAGER": "SEO menadžer",
-      "INTERVIEWER": "Intervjuer",
-      "MEMBER": "Član organizacije"
-    },
-    "contract-type": {
-      "REGULAR": "Redovno (sa boravokom)",
-      "ASSOCIATED": "Pridruženi",
-      "select": {
-        "label": "Vrsta ugovora",
-        "empty": "Nije izabrano"
-      }
-    },
-    "application-status": {
-      "CREATED": "Kreirano",
-      "IN_PROGRESS": "U obradi",
-      "CLARIFICATION": "Pojašnjenje",
-      "PAUSED": "Na pauzi",
-      "READY_TO_SEND": "Spremno za slanje",
-      "DOCS_SENT": "Dokumenti poslati",
-      "DOCS_RECEIVED": "Dokumenti primljeni",
-      "DONE": "Završeno",
-      "DENY": "Odbijeno"
-    },
-    "application-type": {
-      "NEW": "Nova",
-      "PROLONGATION": "Produženje"
-    },
-    "copy-text": {
-      "tooltip": "Kliknite da kopirate",
-      "notification": "Kopirano u međumemoriju"
-    },
-    "email-drawer": {
-      "title": "Pošalji Poruku",
-      "recipients": "Primaoci",
-      "subject": "Tema Emaila",
-      "send": "Pošalji",
-      "emptySubject": "Tema je obavezna",
-      "emptyContent": "Prazno telo emaila",
-      "success": "Poruka uspešno poslata"
-    },
-    "confirm-modal": {
-      "confirmDefaultButton": "Potvrdi",
-      "cancelDefaultButton": "Otkaži",
-      "waitText": "Čekaj {timer} s"
-    },
-    "deny-reason-modal": {
-      "title": "Razlog odbijanja",
-      "description": "Molimo vas da navedete razlog odbijanja ove prijave",
-      "cancel-default-button": "Otkaži",
-      "confirm-default-button": "Potvrdi",
-      "reason-placeholder": "Razlog odbijanja"
-    },
-    "pause-reason-modal": {
-      "title": "Razlog pauze",
-      "description": "Molimo vas da navedete razlog pauze ove prijave",
-      "cancel-default-button": "Otkaži",
-      "confirm-default-button": "Pauziraj",
-      "reason-placeholder": "Razlog pauze"
-    }
-  },
-  "footer": {
-    "copyright": "© «Ruska Dijaspora u Srbiji»"
-  },
-  "pages": {
-    "notFound": {
-      "title": "Nešto je pošlo po zlu...",
-      "documentTitle": "Stranica nije pronađena",
-      "description": "Stranica koju pokušavate da otvorite ne postoji. Možda ste pogrešno uneli adresu ili je stranica premeštena na drugu URL adresu. Ako mislite da je ovo greška, obratite se podršci.",
-      "homeButton": "Početna",
-      "backButton": "Nazad"
-    },
-    "unauthorized": {
-      "title": "Nema pristupa",
-      "documentTitle": "Nedovoljna prava",
-      "description": "Nemate dovoljno dozvola za pregled sadržaja. Ako mislite da je ovo greška, obratite se podršci.",
-      "homeButton": "Početna",
-      "backButton": "Nazad"
-    },
-    "welcome": {
-      "title": "Portal volontera",
-      "documentTitle": "Portal volontera",
-      "subTitle": "platforma na kojoj vaša pomoć društvu postaje još efikasnija",
-      "bottomText": "Pridružite nam se i učinite svet boljim mestom!",
-      "benefits": {
-        "1": {
-          "name": "Pogodno izveštavanje",
-          "description": "Lako i brzo predajte izveštaje o svojim volonterskim aktivnostima."
+    "common": {
+        "buttons": {
+            "login": "Prijavite se",
+            "logout": "Odjava"
         },
-        "2": {
-          "name": "Provera i podrška",
-          "description": "Naši administratori pažljivo proveravaju vaše izveštavanje, osiguravajući transparentnost i integritet procesa. Uvek možete dobiti savete i trikove za poboljšanje svog rada."
+        "file-uploader": {
+            "title": "Prenesite datoteke ili kliknite da biste izabrali",
+            "description": "Max. broj: {maxFiles}, veličina do {maxSize} Mb",
+            "file-name": "Fajl {fileName}",
+            "errors": {
+                "file-invalid-type": "Nevalidni format fajla",
+                "file-too-large": "Veličina fajla je veća od {maxSize} Mb",
+                "file-too-small": "Premala veličina fajla",
+                "too-many-files": "Previše datoteka"
+            }
         },
-        "3": {
-          "name": "Prijavite se za pridruživanje",
-          "description": "Želite da budete deo tima? Popunite prijavu za pridruživanje ruskoj dijaspori. Pomoći ćemo vam da pronađete odgovarajući volonterski program u kojem će vaši napori imati najviše koristi."
-        }
-      },
-      "buttons": {
-        "application": "Želite da volontirate?"
-      }
-    },
-    "profile": {
-      "documentTitle": "Profil",
-      "props": {
-        "city": "Grad",
-        "address": "Adresa",
-        "birthDate": "Datum rođenja",
-        "phone": "Telefon",
-        "email": "Email",
-        "telegram": "Telegram"
-      },
-      "validation": {
-        "invalidPhone": "Neispravan format broja telefona",
-        "invalidTelegram": "Neispravan format",
-        "invalidBirthDate": "Neispravan format datuma",
-        "tooYoung": "Morate imati najmanje 18 godina",
-        "invalidDate": "Neispravan format datuma",
-        "contractTypeRequired": "Izaberite tip ugovora",
-        "endDateAfterStart": "Datum završetka mora biti kasniji od datuma početka",
-        "invalidEmail": "Neispravan format email-a",
-        "invalidSymbols": "Neispravni simboli",
-        "minLetters": "Najmanje {count} slova",
-        "maxLetters": "Maksimalno {count} karaktera",
-        "title": "Molimo vas da popunite nedostajuće informacije u vašem profilu",
-        "description": "Da bi vaš profil bio potpun i da biste mogli da koristite sve mogućnosti portala, popunite sledeća polja:",
-        "footer": "🛠 Ovo će trajati samo nekoliko minuta. Nakon popunjavanja, sva funkcionalnost će ponovo biti dostupna",
-        "goToProfile": "Uredi profil",
-        "fields": {
-          "avatar": "fotografija profila",
-          "city": "grad",
-          "address": "adresa",
-          "birthDate": "datum rođenja",
-          "telegram": "telegram",
-          "phone": "telefon",
-          "program": "program",
-          "project": "projekat"
-        }
-      },
-      "buttons": {
-        "edit": "Uredi",
-        "editTooltip": "Ova funkcionalnost je u razvoju, za uređivanje pogledajte podršku",
-        "save": "Sačuvaj"
-      },
-      "updateError": "Došlo je do greške",
-      "profileUpdated": "Profil je uspešno izmenjen",
-      "avatarUpdated": "Slika profila je uspešno ažurirana",
-      "contract": {
-        "no-contract": "Nema ugovoru",
-        "title": "Informacije o trenutnom ugovoru",
-        "date-until": "Datum završetka",
-        "type": "Vrsta ugovora",
-        "days-left": "Još dana: {count}",
-        "prolongation": "Produži",
-        "prolongation-info": "Ugovor se može produžiti najranije 3 meseca pre isteka tekućeg",
-        "prolongation-disable": "Ova funkcionalnost je još uvek u razvoju",
-        "button": "Dodati ugovor",
-        "add": "Dodajući ugovor",
-        "startDate": "Datum početka",
-        "endDate": "Datum završetka",
-        "save": "Sačuvaj",
-        "created": "Ugovor je uspešno izmenjen",
-        "createError": "Greška pri kreiranju ugovora",
-        "number": "Ugovor {number}",
-        "cannotDeleteLast": "Ne možete obrisati poslednji ugovor. Volonter mora imati bar jedan ugovor."
-      },
-      "selectProgram": "Izaberite program",
-      "selectProject": "Izaberite projekat"
-    },
-    "report": {
-      "document-title": "Izveštaj",
-      "report-from": "Izveštaj od {date}",
-      "creator": "Volonter",
-      "creation-date": "Datum popunjavanja izveštaja",
-      "time-spent-total": "Ukupna količina vremena",
-      "time-spent-hours": "{h} sat.",
-      "time-spent-minutes": "{m} min",
-      "task-date": "Datum izvršenja",
-      "task-customer": "Kupac",
-      "task-result": "Rezultat",
-      "task-files": "Priložene datoteke",
-      "edit": "Uredi",
-      "accept": "Prihvati",
-      "reject": "Odbaci",
-      "comment": "Komentar",
-      "comment-required": "Komentar je obavezan kada odbijete izveštaj",
-      "comments": "Komentari o izveštaju",
-      "moderator": "Moderator Portala",
-      "delete": "Izbrišite izveštaj",
-      "delete-submit": "Dodirnite ponovo da biste uklonili"
-    },
-    "edit-report": {
-      "title": "Napravite novi izveštaj",
-      "title-edit": "Uredi izveštaj",
-      "description": "Izveštaj treba da sadrži ukupno najmanje 10 sati. Svaki zadatak mora imati dokaz obavljenog posla. Ako nastavite da radite zadatak od prošle nedelje, napredak (inkrement) u odnosu na prethodnu nedelju trebalo bi da bude vidljiv. U suprotnom, izveštaj možda neće biti prihvaćen.",
-      "task": "Zadatak {index}",
-      "task-name": "Naziv",
-      "task-description": "Opis",
-      "task-description-description": "Kratak opis onoga što ste uradili",
-      "task-result": "Rezultat",
-      "task-result-description": "Link do članka, post, Google Docs, GitHub i još mnogo toga",
-      "task-time-spent": "Broj sati",
-      "task-time-spent-description": "Koliko je vremena potrošeno",
-      "task-time-spent-suffix": " sat.",
-      "task-date": "Datum",
-      "task-date-description": "Kada je zadatak završen",
-      "task-customer": "Kupac",
-      "task-customer-description": "Ko je bio inicijator zadatka",
-      "required": "Obavezno",
-      "min-letters": "Najmanje {count} znakova",
-      "invalid-url": "Nevalidni format URL",
-      "add-task-button": "Dodaj zadatak",
-      "send-button": "Pošaljite",
-      "save-button": "Sačuvaj",
-      "fill-up-button": "Popuniti",
-      "confirm-title": "Nema dovoljno sati",
-      "confirm-description": "Vaš izveštaj rezimira sve zadatke za manje od 10 sati. Izveštaj možda neće biti prihvaćen. Da li sigurno želite da ga pošaljete?",
-      "different-weeks-alert": "Zadaci se obavljaju u različitim kalendarskim nedeljama"
-    },
-    "my-reports": {
-      "title": "Moji izveštaji",
-      "total": "Ukupno: {total}",
-      "filters": "Filteri",
-      "reset-filter": "Resetujti filtere",
-      "empty-reports": "Ništa nije pronađeno",
-      "new-report": "Novi izveštaj",
-      "report": {
-        "created": "Stvoren",
-        "status": "Status",
-        "task-count": "Broj zadataka",
-        "time-spent": "Broj sati",
-        "week": "Nedelja"
-      }
-    },
-    "report-list": {
-      "title": "Svi izveštaji",
-      "volunteer": "Volonter",
-      "creation-date": "Datum popunjavanja",
-      "weeks": "Izveštajne nedelje",
-      "status": "Status",
-      "time-spent": "Potrošeni sati",
-      "program": "Program",
-      "project": "Projekat",
-      "task-count": "Zadataka: {count}",
-      "files-count": "Priloga: {count}",
-      "files": "Prilozi",
-      "total": "Ukupno: {count}",
-      "empty": "Nije pronađen nijedan izveštaj",
-      "reset": "Resetujte filtere",
-      "program-filter": "Filter programa",
-      "program-filter-not-selected": "Nije odabrano",
-      "project-filter": "Filter projekata",
-      "project-filter-not-selected": "Nije odabrano"
-    },
-    "volunteer-reports": {
-      "title": "Praćenje izveštaja volontera",
-      "description": "Monitoring aktivnosti volontera i njihovog izveštavanja",
-      "filters": "Filteri",
-      "search": "Pretraga po imenu ili emailu",
-      "program": "Program",
-      "project": "Projekat",
-      "period": "Period",
-      "reset": "Resetuj",
-      "heatmap": "Toplinska mapa aktivnosti",
-      "table": "Lista volontera",
-      "select-all": "Izaberi sve",
-      "send-email": "Pošalji email",
-      "volunteer": "Volonter",
-      "program-column": "Program",
-      "project-column": "Projekat",
-      "reports-stats": "Statistika izveštaja",
-      "last-report": "Poslednji izveštaj",
-      "status": "Status",
-      "actions": "Akcije",
-      "view-profile": "Pogledaj profil",
-      "send-message": "Pošalji poruku",
-      "no-reports": "Nema izveštaja",
-      "partial-reports": "Delimični izveštaji",
-      "full-reports": "Puni izveštaji",
-      "pending": "Na čekanju",
-      "legend": "Legenda",
-      "all-reports-badge": "Svi izveštaji",
-      "missed-weeks-badge": "Propušteno: {count}",
-      "partial-weeks-badge": "Delimičnih: {count}",
-      "total-hours": "Ukupno sati",
-      "avg-per-week": "Prosek: {value} h/nedelji",
-      "hours": "sati",
-      "status-text-all-ok": "Svi izveštaji predati",
-      "status-text-missed-last-week": "Nema izveštaja prošle nedelje",
-      "status-text-missed-weeks": "Nema izveštaja {count} nedelja",
-      "status-text-partial-last-week": "Delimičan izveštaj prošle nedelje",
-      "total-volunteers": "Ukupno volontera",
-      "total-weeks": "Ukupno nedelja",
-      "active-filters": "Aktivni filteri",
-      "no-data": "Nema podataka za prikaz",
-      "volunteers-not-found": "Volonteri nisu pronađeni",
-      "email-subject": "Podsetnik: nedeljni izveštaj nije predat"
-    },
-    "user-list": {
-      "title": "Svi volonteri",
-      "total": "Ukupno: {total}",
-      "search": "Pretraga",
-      "new-user": "Novi volonter",
-      "first-name": "Ime",
-      "last-name": "Prezime",
-      "full-name": "Ime Prezime",
-      "contract-info": "Informacije o ugovoru",
-      "contract-from": "Datum početka",
-      "contract-until": "Datum završetka",
-      "email": "e-mail",
-      "username": "Korisničko ime",
-      "roles": "Uloge",
-      "program": "Program",
-      "filter-by-program": "Filter po programima",
-      "no-program": "Bez programa",
-      "project": "Projekat",
-      "filter-by-project": "Filter po projektima",
-      "no-project": "Bez projekta",
-      "contractDue": "Ugovor do",
-      "create-button": "Stvoriti",
-      "menu-common": "Opšte",
-      "menu-control": "Upravljanje",
-      "menu-view": "Pogledajte",
-      "menu-contact": "Pisati",
-      "menu-reports": "Izveštaji",
-      "menu-activate": "Aktiviraj",
-      "menu-deactivate": "Deaktiviraj",
-      "empty": "Nije pronađen nijedan korisnik",
-      "required": "Obavezno",
-      "min-letters": "Minimum {count}",
-      "max-letters": "Maximum {count}",
-      "invalid-email": "Neverni e-mail",
-      "invalid-name": "Nevažeći znakovi",
-      "invalid-username": "Samo latinična slova i brojevi, ne može početi sa brojem",
-      "user-created-message": "Korisnik je uspešno kreiran"
-    },
-    "playgrounds": {
-      "title": "Izveštaj o igralištu",
-      "description": "Uputstvo za punjenje",
-      "requirements": "Volonter je dužan da prati najmanje 3 igrališta i da mu posveti najmanje 10 sati svake nedelje",
-      "whats-new": "Obrazac za popunjavanje izveštaja objedinjen je za volontere svih programa ruske dijaspore. Sada se izveštaj o praćenju igrališta mora popuniti samo jednom nedeljno, informacije o sva 3 igrališta moraju se uneti u jedan izveštaj.<br/>Nije potrebno popuniti plan puta.",
-      "steps": {
-        "1": {
-          "title": "Idite na stranicu za kreiranje izveštaja",
-          "link": "<a href='/report/create'>Na ovom linku</a> ili preko bočnog menija"
+        "user-search": {
+            "placeholder": "Ime Prezime"
         },
-        "2": {
-          "title": "Popunite Excel datoteku prema šablonu",
-          "description": "1 igralište = 1 popunjena datoteka",
-          "link": "Možete preuzeti šablon <a href='https://docs.google.com/spreadsheets/d/1Vu1m7sVkMmSn8blN6K2-9eL6KGCiMwcvze9Ydn3HrTA' target='_blank'>po linku</a>",
-          "hint": "Kopirajte datoteku na sebe <i>Datoteka - Napravite kopiju</i>.<br/>Popunite tabelu i preuzmite kao .xlsx fajl <i>Datoteka - Preuzimanje</i>"
+        "report-status": {
+            "CREATED": "Stvoren",
+            "REJECTED": "Odbijen",
+            "ACCEPTED": "Prihvaćen"
         },
-        "3": {
-          "title": "Unesite informacije o tri igrališta",
-          "description": "1 igralište = 1 zadatak",
-          "fields": "U polju <strong>Naziv</strong> navedite ime lokacije, na primer <i>Igralište u parku Šumice</i>. U polju <strong>Opis</strong> popunite svoj prošireni komentar o igralištu. U polju <strong>Rezultat</strong> navedite vezu do igrališta na Google mapama. Polje <strong>kupac</strong> nije neophodno za popunjavanje.<br/>Ukupna količina potrošenih sati na svim igralištima treba da bude najmanje 10.<br/>U datoteke priložite fotografiju igrališta i datoteku ispunjenu Excel-om sa opcijama igrališta."
+        "week-picker": {
+            "label": "Nedelja",
+            "empty": "Nije izabrano"
         },
-        "4": {
-          "title": "Sve je spremno!",
-          "hint": "Ne zaboravite da pritisnete dugme <strong>Pošalji</strong>"
-        }
-      }
-    },
-    "application": {
-      "terms": {
-        "title": "Pridruživanje i učešće u aktivnostima organizacije",
-        "required": "Obavezno",
-        "agree-1": "Pročitao/la sam i slažem se sa ciljevima i uslovima navedenim u <a href='https://russian.rs/about/documents' target='_blank'>statutu i etičkom kodeksu organizacije</a>",
-        "agree-2": "Slažem se sa obradom i čuvanjem podataka koje sam naveo/la u skladu sa <a href='https://russian.rs/privacy-policy' target='_blank'>politikom privatnosti</a>",
-        "button-application": "Popunite prijavu"
-      },
-      "form": {
-        "title": "Prijava za članstvo",
-        "required": "Obavezno za popunjavanje",
-        "invalid-symbols": "Nevažeći simboli",
-        "button-send": "Pošalji prijavu",
-        "min-letters": "Minimalna dužina - {count}",
-        "max-letters": "Maksimalna dužina - {count}",
-        "form-error": "Prijava nije ispravno popunjena",
-        "captcha-error": "Captcha provera nije prošla",
-        "application-sent": "",
-        "email": "Vaš e-mail",
-        "email-invalid": "Neispravan format e-maila",
-        "name": "Ime Prezime",
-        "name-description": "Kao u pasošu, latiničnim slovima",
-        "patronymic": "Ime oca (Patronim)",
-        "patronymic-description": "U Srbiji se označava imenom, navedite latinicom (na primer, Ivan)",
-        "birth-date": "Datum rođenja",
-        "passport": "Serija i broj pasoša (međunarodnog)",
-        "passport-description": "Bez znakova i razmaka",
-        "citizenship": "Državljanstvo",
-        "telegram": "Vaš Telegram za kontakt",
-        "telegram-description": "Samo korisničko ime bez simbola",
-        "in-serbia": "Već sam u Srbiji",
-        "out-serbia": "Još nisam u Srbiji",
-        "enter-date": "Datum poslednjeg ulaska u Srbiju",
-        "address": "Vaša adresa u Srbiji za prijem dokumenata",
-        "address-description": "Na srpskom jeziku sa poštanskim brojem. Primer: 11197, Beograd (Novi Beograd), Ulica Jurija Gagarina 10, stan 4",
-        "phone": "Kontakt telefon",
-        "phone-description": "Sa kodom +381, bez razmaka",
-        "phone-invalid": "Neispravan format telefona",
-        "residence-required": "Potreban mi je boravak",
-        "residence-not-required": "Bez boravka",
-        "agreement-1": "Imam osiguranje ili sam spreman da ga samostalno ugovorim",
-        "agreement-1-error": "Osiguranje je obavezno za dobijanje boravka",
-        "agreement-2": "Nisam prekršio pravila boravka u Republici Srbiji",
-        "agreement-3": "Imam dovoljno sredstava za život",
-        "agreement-3-error": "Naša organizacija ne obezbeđuje učesnicima sredstva za život",
-        "agreement-4": "Spreman sam da posvetim najmanje 10 sati nedeljno volonterstvu i da podnosim izveštaje o urađenom radu svake nedelje",
-        "agreement-4-error": "Ovo je obavezan zahtev",
-        "agreement-5": "Volonterski ugovor će biti sastavljen na srpskom jeziku, moći ću da ga razumem",
-        "agreement-required": "Bez ovoga ne možemo razmotriti vašu prijavu",
-        "occupation": "Vaša delatnost",
-        "check-experience": "Imam iskustvo u volonterstvu",
-        "experience": "Opišite vaše iskustvo u volonterstvu",
-        "languages": "Koje jezike poznajete",
-        "languages-description": "Sa navedenim nivoom poznavanja",
-        "skills": "Koje veštine posedujete",
-        "skills-description": "Razvoj, grafički dizajn, psihologija, fotografija itd.",
-        "goal": "Koji je vaš cilj za članstvo u organizaciji?",
-        "bio": "Napišite kratku biografiju o sebi"
-      },
-      "view": {
-        "title": "Status vaše prijave za volontiranje",
-        "last-status": "Poslednji status: {status}",
-        "last-update": "Poslednje ažuriranje: {date}",
-        "refuse-reason": "Razlog odbijanja: {reason}",
-        "questions": "Ako imate pitanja u vezi sa prijavom, možete ih poslati na <a href='mailto:info@russian.rs' target='_blank'>info@russian.rs</a>",
-        "link": "Ova stranica je uvek dostupna preko trenutnog linka"
-      },
-      "existing": {
-        "title": "Ne morate da popunjavate anketu",
-        "description": "Anketu za volontiranje popunjavaju samo novi članovi organizacije"
-      }
-    },
-    "applications": {
-      "title": "Prijave za članstvo",
-      "empty": "Nijedna prijava nije pronađena",
-      "total": "Ukupno: {count}",
-      "created": "Kreirano",
-      "created-short": "Datum",
-      "type": "Tip",
-      "type-short": "Tip",
-      "name": "Ime i Prezime",
-      "name-short": "Ime",
-      "email": "E-mail",
-      "email-short": "Email",
-      "status": "Status",
-      "status-short": "Status",
-      "contractStart": "Ugovor (početak)",
-      "contract-start-short": "Ugovor",
-      "contract-required": "Da biste završili, morate navesti datume ugovora",
-      "showCompleted": "Prikaži završene",
-      "menu": {
-        "view": "Pogledaj",
-        "contact": "Kontaktiraj"
-      },
-      "view": {
-        "title": "Prijavni formular",
-        "created-at": "Popunjeno",
-        "status": "Status prijave",
-        "contract-start": "Ugovor (početak)",
-        "type": "Tip",
-        "name": "Ime i Prezime",
-        "patronymic": "Ime oca (Patronim)",
-        "email": "E-mail",
-        "phone": "Telefon",
-        "telegram": "Telegram",
-        "birth": "Datum rođenja",
-        "passport": "Broj pasoša",
-        "citizenship": "Državljanstvo",
-        "in-serbia": "Osoba je navela da je već u Srbiji i",
-        "out-serbia": "Osoba je navela da još nije u Srbiji i",
-        "enter": "Datum ulaska u Srbiju",
-        "address": "Adresa u Srbiji",
-        "residence-required": "potrebna je boravišna dozvola",
-        "residence-not-required": "nije potrebna boravišna dozvola",
-        "occupation": "Zanimanje",
-        "experience": "Ima volontersko iskustvo",
-        "no-experience": "Nema volontersko iskustvo",
-        "languages": "Poznavanje jezika",
-        "skills": "Veštine",
-        "goal": "Cilj učestvovanja u organizaciji",
-        "bio": "Kratka biografija",
-        "pause-reason": "Razlog pauze",
-        "contractDownload": "Preuzimanje ugovora",
-        "questionnaireDownload": "Preuzimanje upitnika",
-        "envelopDownload": "Preuzimanje koverata",
-        "editTitle": "Uredi prijavu",
-        "editSuccess": "Prijava je uspešno ažurirana",
-        "editError": "Greška pri ažuriranju prijave",
-        "refuse-reason": "Razlog odbijanja",
+        "report-status-select": {
+            "label": "Status",
+            "empty": "Nije izabrano"
+        },
+        "roles": {
+            "ADMIN": "Admin",
+            "ADMIN_SSO": "Admin SSO",
+            "ADMIN_VOLUNTEER": "Admin volontiranja",
+            "ADMIN_WP": "Admin WordPress",
+            "DEVELOPER": "Programer",
+            "INSIDE_VOLUNTEER": "Unutrašnji volonter",
+            "MAIN_VOLUNTEER": "Volonter osnovnog pr.",
+            "GUIDES": "Autor vodiča",
+            "LAWYERS": "Advokat",
+            "MEDIA": "Autor",
+            "TEACHER": "Učitelj",
+            "SEO_MANAGER": "SEO menadžer",
+            "INTERVIEWER": "Intervjuer",
+            "MEMBER": "Član organizacije"
+        },
+        "contract-type": {
+            "REGULAR": "Redovno (sa boravokom)",
+            "ASSOCIATED": "Pridruženi",
+            "select": {
+                "label": "Vrsta ugovora",
+                "empty": "Nije izabrano"
+            }
+        },
+        "application-status": {
+            "CREATED": "Kreirano",
+            "IN_PROGRESS": "U obradi",
+            "CLARIFICATION": "Pojašnjenje",
+            "PAUSED": "Na pauzi",
+            "READY_TO_SEND": "Spremno za slanje",
+            "DOCS_SENT": "Dokumenti poslati",
+            "DOCS_RECEIVED": "Dokumenti primljeni",
+            "DONE": "Završeno",
+            "DENY": "Odbijeno"
+        },
+        "application-type": {
+            "NEW": "Nova",
+            "PROLONGATION": "Produženje"
+        },
+        "copy-text": {
+            "tooltip": "Kliknite da kopirate",
+            "notification": "Kopirano u međumemoriju"
+        },
+        "email-drawer": {
+            "title": "Pošalji Poruku",
+            "recipients": "Primaoci",
+            "subject": "Tema Emaila",
+            "send": "Pošalji",
+            "emptySubject": "Tema je obavezna",
+            "emptyContent": "Prazno telo emaila",
+            "success": "Poruka uspešno poslata"
+        },
+        "confirm-modal": {
+            "confirmDefaultButton": "Potvrdi",
+            "cancelDefaultButton": "Otkaži",
+            "waitText": "Čekaj {timer} s"
+        },
         "deny-reason-modal": {
-          "title": "Razlog odbijanja",
-          "description": "Molimo navedite razlog odbijanja"
+            "title": "Razlog odbijanja",
+            "description": "Molimo vas da navedete razlog odbijanja ove prijave",
+            "cancel-default-button": "Otkaži",
+            "confirm-default-button": "Potvrdi",
+            "reason-placeholder": "Razlog odbijanja"
+        },
+        "pause-reason-modal": {
+            "title": "Razlog pauze",
+            "description": "Molimo vas da navedete razlog pauze ove prijave",
+            "cancel-default-button": "Otkaži",
+            "confirm-default-button": "Pauziraj",
+            "reason-placeholder": "Razlog pauze"
         }
-      },
-      "report": {
-        "contract-from": "Datum početka",
-        "contract-until": "Datum završetka",
-        "required": "Obavezno",
-        "contract-until-before": "Ranije od datuma početka",
-        "cancel": "Otkaži",
-        "save": "Sačuvaj",
-        "add": "Dodaj"
-      }
     },
-    "cleaning": {
-      "title": "Čisti grad (glavni program)"
+    "footer": {
+        "copyright": "© «Ruska Dijaspora u Srbiji»"
     },
-    "reporting": {
-      "title": "Vodič za predaju izveštaja"
+    "pages": {
+        "notFound": {
+            "title": "Nešto je pošlo po zlu...",
+            "documentTitle": "Stranica nije pronađena",
+            "description": "Stranica koju pokušavate da otvorite ne postoji. Možda ste pogrešno uneli adresu ili je stranica premeštena na drugu URL adresu. Ako mislite da je ovo greška, obratite se podršci.",
+            "homeButton": "Početna",
+            "backButton": "Nazad"
+        },
+        "unauthorized": {
+            "title": "Nema pristupa",
+            "documentTitle": "Nedovoljna prava",
+            "description": "Nemate dovoljno dozvola za pregled sadržaja. Ako mislite da je ovo greška, obratite se podršci.",
+            "homeButton": "Početna",
+            "backButton": "Nazad"
+        },
+        "welcome": {
+            "title": "Portal volontera",
+            "documentTitle": "Portal volontera",
+            "subTitle": "platforma na kojoj vaša pomoć društvu postaje još efikasnija",
+            "bottomText": "Pridružite nam se i učinite svet boljim mestom!",
+            "benefits": {
+                "1": {
+                    "name": "Pogodno izveštavanje",
+                    "description": "Lako i brzo predajte izveštaje o svojim volonterskim aktivnostima."
+                },
+                "2": {
+                    "name": "Provera i podrška",
+                    "description": "Naši administratori pažljivo proveravaju vaše izveštavanje, osiguravajući transparentnost i integritet procesa. Uvek možete dobiti savete i trikove za poboljšanje svog rada."
+                },
+                "3": {
+                    "name": "Prijavite se za pridruživanje",
+                    "description": "Želite da budete deo tima? Popunite prijavu za pridruživanje ruskoj dijaspori. Pomoći ćemo vam da pronađete odgovarajući volonterski program u kojem će vaši napori imati najviše koristi."
+                }
+            },
+            "buttons": {
+                "application": "Želite da volontirate?"
+            }
+        },
+        "profile": {
+            "documentTitle": "Profil",
+            "props": {
+                "city": "Grad",
+                "address": "Adresa",
+                "birthDate": "Datum rođenja",
+                "phone": "Telefon",
+                "email": "Email",
+                "telegram": "Telegram"
+            },
+            "validation": {
+                "invalidPhone": "Neispravan format broja telefona",
+                "invalidTelegram": "Neispravan format",
+                "invalidBirthDate": "Neispravan format datuma",
+                "tooYoung": "Morate imati najmanje 18 godina",
+                "invalidDate": "Neispravan format datuma",
+                "contractTypeRequired": "Izaberite tip ugovora",
+                "endDateAfterStart": "Datum završetka mora biti kasniji od datuma početka",
+                "invalidEmail": "Neispravan format email-a",
+                "invalidSymbols": "Neispravni simboli",
+                "minLetters": "Najmanje {count} slova",
+                "maxLetters": "Maksimalno {count} karaktera",
+                "title": "Molimo vas da popunite nedostajuće informacije u vašem profilu",
+                "description": "Da bi vaš profil bio potpun i da biste mogli da koristite sve mogućnosti portala, popunite sledeća polja:",
+                "footer": "🛠 Ovo će trajati samo nekoliko minuta. Nakon popunjavanja, sva funkcionalnost će ponovo biti dostupna",
+                "goToProfile": "Uredi profil",
+                "fields": {
+                    "avatar": "fotografija profila",
+                    "city": "grad",
+                    "address": "adresa",
+                    "birthDate": "datum rođenja",
+                    "telegram": "telegram",
+                    "phone": "telefon",
+                    "program": "program",
+                    "project": "projekat"
+                }
+            },
+            "buttons": {
+                "edit": "Uredi",
+                "editTooltip": "Ova funkcionalnost je u razvoju, za uređivanje pogledajte podršku",
+                "save": "Sačuvaj"
+            },
+            "updateError": "Došlo je do greške",
+            "profileUpdated": "Profil je uspešno izmenjen",
+            "avatarUpdated": "Slika profila je uspešno ažurirana",
+            "contract": {
+                "no-contract": "Nema ugovoru",
+                "title": "Informacije o trenutnom ugovoru",
+                "date-until": "Datum završetka",
+                "type": "Vrsta ugovora",
+                "days-left": "Još dana: {count}",
+                "prolongation": "Produži",
+                "prolongation-info": "Ugovor se može produžiti najranije 3 meseca pre isteka tekućeg",
+                "prolongation-disable": "Ova funkcionalnost je još uvek u razvoju",
+                "button": "Dodati ugovor",
+                "add": "Dodajući ugovor",
+                "startDate": "Datum početka",
+                "endDate": "Datum završetka",
+                "save": "Sačuvaj",
+                "created": "Ugovor je uspešno izmenjen",
+                "createError": "Greška pri kreiranju ugovora",
+                "number": "Ugovor {number}",
+                "cannotDeleteLast": "Ne možete obrisati poslednji ugovor. Volonter mora imati bar jedan ugovor."
+            },
+            "selectProgram": "Izaberite program",
+            "selectProject": "Izaberite projekat"
+        },
+        "report": {
+            "document-title": "Izveštaj",
+            "report-from": "Izveštaj od {date}",
+            "creator": "Volonter",
+            "creation-date": "Datum popunjavanja izveštaja",
+            "time-spent-total": "Ukupna količina vremena",
+            "time-spent-hours": "{h} sat.",
+            "time-spent-minutes": "{m} min",
+            "task-date": "Datum izvršenja",
+            "task-customer": "Kupac",
+            "task-result": "Rezultat",
+            "task-files": "Priložene datoteke",
+            "edit": "Uredi",
+            "accept": "Prihvati",
+            "reject": "Odbaci",
+            "comment": "Komentar",
+            "comment-required": "Komentar je obavezan kada odbijete izveštaj",
+            "comments": "Komentari o izveštaju",
+            "moderator": "Moderator Portala",
+            "delete": "Izbrišite izveštaj",
+            "delete-submit": "Dodirnite ponovo da biste uklonili"
+        },
+        "edit-report": {
+            "title": "Napravite novi izveštaj",
+            "title-edit": "Uredi izveštaj",
+            "description": "Izveštaj treba da sadrži ukupno najmanje 10 sati. Svaki zadatak mora imati dokaz obavljenog posla. Ako nastavite da radite zadatak od prošle nedelje, napredak (inkrement) u odnosu na prethodnu nedelju trebalo bi da bude vidljiv. U suprotnom, izveštaj možda neće biti prihvaćen.",
+            "task": "Zadatak {index}",
+            "task-name": "Naziv",
+            "task-description": "Opis",
+            "task-description-description": "Kratak opis onoga što ste uradili",
+            "task-result": "Rezultat",
+            "task-result-description": "Link do članka, post, Google Docs, GitHub i još mnogo toga",
+            "task-time-spent": "Broj sati",
+            "task-time-spent-description": "Koliko je vremena potrošeno",
+            "task-time-spent-suffix": " sat.",
+            "task-date": "Datum",
+            "task-date-description": "Kada je zadatak završen",
+            "task-customer": "Kupac",
+            "task-customer-description": "Ko je bio inicijator zadatka",
+            "required": "Obavezno",
+            "min-letters": "Najmanje {count} znakova",
+            "invalid-url": "Nevalidni format URL",
+            "add-task-button": "Dodaj zadatak",
+            "send-button": "Pošaljite",
+            "save-button": "Sačuvaj",
+            "fill-up-button": "Popuniti",
+            "confirm-title": "Nema dovoljno sati",
+            "confirm-description": "Vaš izveštaj rezimira sve zadatke za manje od 10 sati. Izveštaj možda neće biti prihvaćen. Da li sigurno želite da ga pošaljete?",
+            "different-weeks-alert": "Zadaci se obavljaju u različitim kalendarskim nedeljama"
+        },
+        "my-reports": {
+            "title": "Moji izveštaji",
+            "total": "Ukupno: {total}",
+            "filters": "Filteri",
+            "reset-filter": "Resetujti filtere",
+            "empty-reports": "Ništa nije pronađeno",
+            "new-report": "Novi izveštaj",
+            "report": {
+                "created": "Stvoren",
+                "status": "Status",
+                "task-count": "Broj zadataka",
+                "time-spent": "Broj sati",
+                "week": "Nedelja"
+            }
+        },
+        "report-list": {
+            "title": "Svi izveštaji",
+            "volunteer": "Volonter",
+            "creation-date": "Datum popunjavanja",
+            "weeks": "Izveštajne nedelje",
+            "status": "Status",
+            "time-spent": "Potrošeni sati",
+            "program": "Program",
+            "project": "Projekat",
+            "task-count": "Zadataka: {count}",
+            "files-count": "Priloga: {count}",
+            "files": "Prilozi",
+            "total": "Ukupno: {count}",
+            "empty": "Nije pronađen nijedan izveštaj",
+            "reset": "Resetujte filtere",
+            "program-filter": "Filter programa",
+            "program-filter-not-selected": "Nije odabrano",
+            "project-filter": "Filter projekata",
+            "project-filter-not-selected": "Nije odabrano"
+        },
+        "volunteer-reports": {
+            "title": "Praćenje izveštaja volontera",
+            "description": "Monitoring aktivnosti volontera i njihovog izveštavanja",
+            "filters": "Filteri",
+            "search": "Pretraga po imenu ili emailu",
+            "program": "Program",
+            "project": "Projekat",
+            "period": "Period",
+            "reset": "Resetuj",
+            "heatmap": "Toplinska mapa aktivnosti",
+            "table": "Lista volontera",
+            "select-all": "Izaberi sve",
+            "send-email": "Pošalji email",
+            "volunteer": "Volonter",
+            "program-column": "Program",
+            "project-column": "Projekat",
+            "reports-stats": "Statistika izveštaja",
+            "last-report": "Poslednji izveštaj",
+            "status": "Status",
+            "actions": "Akcije",
+            "view-profile": "Pogledaj profil",
+            "send-message": "Pošalji poruku",
+            "no-reports": "Nema izveštaja",
+            "partial-reports": "Delimični izveštaji",
+            "full-reports": "Puni izveštaji",
+            "pending": "Na čekanju",
+            "legend": "Legenda",
+            "all-reports-badge": "Svi izveštaji",
+            "missed-weeks-badge": "Propušteno: {count}",
+            "partial-weeks-badge": "Delimičnih: {count}",
+            "total-hours": "Ukupno sati",
+            "avg-per-week": "Prosek: {value} h/nedelji",
+            "hours": "sati",
+            "status-text-all-ok": "Svi izveštaji predati",
+            "status-text-missed-last-week": "Nema izveštaja prošle nedelje",
+            "status-text-missed-weeks": "Nema izveštaja {count} nedelja",
+            "status-text-partial-last-week": "Delimičan izveštaj prošle nedelje",
+            "total-volunteers": "Ukupno volontera",
+            "total-weeks": "Ukupno nedelja",
+            "active-filters": "Aktivni filteri",
+            "no-data": "Nema podataka za prikaz",
+            "volunteers-not-found": "Volonteri nisu pronađeni",
+            "email-subject": "Podsetnik: nedeljni izveštaj nije predat"
+        },
+        "user-list": {
+            "title": "Svi volonteri",
+            "total": "Ukupno: {total}",
+            "search": "Pretraga",
+            "new-user": "Novi volonter",
+            "first-name": "Ime",
+            "last-name": "Prezime",
+            "full-name": "Ime Prezime",
+            "contract-info": "Informacije o ugovoru",
+            "contract-from": "Datum početka",
+            "contract-until": "Datum završetka",
+            "email": "e-mail",
+            "username": "Korisničko ime",
+            "roles": "Uloge",
+            "program": "Program",
+            "filter-by-program": "Filter po programima",
+            "no-program": "Bez programa",
+            "project": "Projekat",
+            "filter-by-project": "Filter po projektima",
+            "no-project": "Bez projekta",
+            "contractDue": "Ugovor do",
+            "create-button": "Stvoriti",
+            "menu-common": "Opšte",
+            "menu-control": "Upravljanje",
+            "menu-view": "Pogledajte",
+            "menu-contact": "Pisati",
+            "menu-reports": "Izveštaji",
+            "menu-activate": "Aktiviraj",
+            "menu-deactivate": "Deaktiviraj",
+            "empty": "Nije pronađen nijedan korisnik",
+            "required": "Obavezno",
+            "min-letters": "Minimum {count}",
+            "max-letters": "Maximum {count}",
+            "invalid-email": "Neverni e-mail",
+            "invalid-name": "Nevažeći znakovi",
+            "invalid-username": "Samo latinična slova i brojevi, ne može početi sa brojem",
+            "user-created-message": "Korisnik je uspešno kreiran"
+        },
+        "playgrounds": {
+            "title": "Izveštaj o igralištu",
+            "description": "Uputstvo za punjenje",
+            "requirements": "Volonter je dužan da prati najmanje 3 igrališta i da mu posveti najmanje 10 sati svake nedelje",
+            "whats-new": "Obrazac za popunjavanje izveštaja objedinjen je za volontere svih programa ruske dijaspore. Sada se izveštaj o praćenju igrališta mora popuniti samo jednom nedeljno, informacije o sva 3 igrališta moraju se uneti u jedan izveštaj.<br/>Nije potrebno popuniti plan puta.",
+            "steps": {
+                "1": {
+                    "title": "Idite na stranicu za kreiranje izveštaja",
+                    "link": "<a href='/report/create'>Na ovom linku</a> ili preko bočnog menija"
+                },
+                "2": {
+                    "title": "Popunite Excel datoteku prema šablonu",
+                    "description": "1 igralište = 1 popunjena datoteka",
+                    "link": "Možete preuzeti šablon <a href='https://docs.google.com/spreadsheets/d/1Vu1m7sVkMmSn8blN6K2-9eL6KGCiMwcvze9Ydn3HrTA' target='_blank'>po linku</a>",
+                    "hint": "Kopirajte datoteku na sebe <i>Datoteka - Napravite kopiju</i>.<br/>Popunite tabelu i preuzmite kao .xlsx fajl <i>Datoteka - Preuzimanje</i>"
+                },
+                "3": {
+                    "title": "Unesite informacije o tri igrališta",
+                    "description": "1 igralište = 1 zadatak",
+                    "fields": "U polju <strong>Naziv</strong> navedite ime lokacije, na primer <i>Igralište u parku Šumice</i>. U polju <strong>Opis</strong> popunite svoj prošireni komentar o igralištu. U polju <strong>Rezultat</strong> navedite vezu do igrališta na Google mapama. Polje <strong>kupac</strong> nije neophodno za popunjavanje.<br/>Ukupna količina potrošenih sati na svim igralištima treba da bude najmanje 10.<br/>U datoteke priložite fotografiju igrališta i datoteku ispunjenu Excel-om sa opcijama igrališta."
+                },
+                "4": {
+                    "title": "Sve je spremno!",
+                    "hint": "Ne zaboravite da pritisnete dugme <strong>Pošalji</strong>"
+                }
+            }
+        },
+        "application": {
+            "terms": {
+                "title": "Pridruživanje i učešće u aktivnostima organizacije",
+                "required": "Obavezno",
+                "agree-1": "Pročitao/la sam i slažem se sa ciljevima i uslovima navedenim u <a href='https://russian.rs/about/documents' target='_blank'>statutu i etičkom kodeksu organizacije</a>",
+                "agree-2": "Slažem se sa obradom i čuvanjem podataka koje sam naveo/la u skladu sa <a href='https://russian.rs/privacy-policy' target='_blank'>politikom privatnosti</a>",
+                "button-application": "Popunite prijavu"
+            },
+            "form": {
+                "title": "Prijava za članstvo",
+                "required": "Obavezno za popunjavanje",
+                "invalid-symbols": "Nevažeći simboli",
+                "button-send": "Pošalji prijavu",
+                "min-letters": "Minimalna dužina - {count}",
+                "max-letters": "Maksimalna dužina - {count}",
+                "form-error": "Prijava nije ispravno popunjena",
+                "captcha-error": "Captcha provera nije prošla",
+                "application-sent": "",
+                "email": "Vaš e-mail",
+                "email-invalid": "Neispravan format e-maila",
+                "name": "Ime Prezime",
+                "name-description": "Kao u pasošu, latiničnim slovima",
+                "patronymic": "Ime oca (Patronim)",
+                "patronymic-description": "U Srbiji se označava imenom, navedite latinicom (na primer, Ivan)",
+                "birth-date": "Datum rođenja",
+                "passport": "Serija i broj pasoša (međunarodnog)",
+                "passport-description": "Bez znakova i razmaka",
+                "citizenship": "Državljanstvo",
+                "telegram": "Vaš Telegram za kontakt",
+                "telegram-description": "Samo korisničko ime bez simbola",
+                "in-serbia": "Već sam u Srbiji",
+                "out-serbia": "Još nisam u Srbiji",
+                "enter-date": "Datum poslednjeg ulaska u Srbiju",
+                "address": "Vaša adresa u Srbiji za prijem dokumenata",
+                "address-description": "Na srpskom jeziku sa poštanskim brojem. Primer: 11197, Beograd (Novi Beograd), Ulica Jurija Gagarina 10, stan 4",
+                "phone": "Kontakt telefon",
+                "phone-description": "Sa kodom +381, bez razmaka",
+                "phone-invalid": "Neispravan format telefona",
+                "residence-required": "Potreban mi je boravak",
+                "residence-not-required": "Bez boravka",
+                "agreement-1": "Imam osiguranje ili sam spreman da ga samostalno ugovorim",
+                "agreement-1-error": "Osiguranje je obavezno za dobijanje boravka",
+                "agreement-2": "Nisam prekršio pravila boravka u Republici Srbiji",
+                "agreement-3": "Imam dovoljno sredstava za život",
+                "agreement-3-error": "Naša organizacija ne obezbeđuje učesnicima sredstva za život",
+                "agreement-4": "Spreman sam da posvetim najmanje 10 sati nedeljno volonterstvu i da podnosim izveštaje o urađenom radu svake nedelje",
+                "agreement-4-error": "Ovo je obavezan zahtev",
+                "agreement-5": "Volonterski ugovor će biti sastavljen na srpskom jeziku, moći ću da ga razumem",
+                "agreement-required": "Bez ovoga ne možemo razmotriti vašu prijavu",
+                "occupation": "Vaša delatnost",
+                "check-experience": "Imam iskustvo u volonterstvu",
+                "experience": "Opišite vaše iskustvo u volonterstvu",
+                "languages": "Koje jezike poznajete",
+                "languages-description": "Sa navedenim nivoom poznavanja",
+                "skills": "Koje veštine posedujete",
+                "skills-description": "Razvoj, grafički dizajn, psihologija, fotografija itd.",
+                "goal": "Koji je vaš cilj za članstvo u organizaciji?",
+                "bio": "Napišite kratku biografiju o sebi"
+            },
+            "view": {
+                "title": "Status vaše prijave za volontiranje",
+                "last-status": "Poslednji status: {status}",
+                "last-update": "Poslednje ažuriranje: {date}",
+                "refuse-reason": "Razlog odbijanja: {reason}",
+                "questions": "Ako imate pitanja u vezi sa prijavom, možete ih poslati na <a href='mailto:info@russian.rs' target='_blank'>info@russian.rs</a>",
+                "link": "Ova stranica je uvek dostupna preko trenutnog linka"
+            },
+            "existing": {
+                "title": "Ne morate da popunjavate anketu",
+                "description": "Anketu za volontiranje popunjavaju samo novi članovi organizacije"
+            }
+        },
+        "applications": {
+            "title": "Prijave za članstvo",
+            "empty": "Nijedna prijava nije pronađena",
+            "total": "Ukupno: {count}",
+            "created": "Kreirano",
+            "created-short": "Datum",
+            "type": "Tip",
+            "type-short": "Tip",
+            "name": "Ime i Prezime",
+            "name-short": "Ime",
+            "email": "E-mail",
+            "email-short": "Email",
+            "status": "Status",
+            "status-short": "Status",
+            "contractStart": "Ugovor (početak)",
+            "contract-start-short": "Ugovor",
+            "contract-required": "Da biste završili, morate navesti datume ugovora",
+            "showCompleted": "Prikaži završene",
+            "menu": {
+                "view": "Pogledaj",
+                "contact": "Kontaktiraj"
+            },
+            "view": {
+                "title": "Prijavni formular",
+                "created-at": "Popunjeno",
+                "status": "Status prijave",
+                "contract-start": "Ugovor (početak)",
+                "type": "Tip",
+                "name": "Ime i Prezime",
+                "patronymic": "Ime oca (Patronim)",
+                "email": "E-mail",
+                "phone": "Telefon",
+                "telegram": "Telegram",
+                "birth": "Datum rođenja",
+                "passport": "Broj pasoša",
+                "citizenship": "Državljanstvo",
+                "in-serbia": "Osoba je navela da je već u Srbiji i",
+                "out-serbia": "Osoba je navela da još nije u Srbiji i",
+                "enter": "Datum ulaska u Srbiju",
+                "address": "Adresa u Srbiji",
+                "residence-required": "potrebna je boravišna dozvola",
+                "residence-not-required": "nije potrebna boravišna dozvola",
+                "occupation": "Zanimanje",
+                "experience": "Ima volontersko iskustvo",
+                "no-experience": "Nema volontersko iskustvo",
+                "languages": "Poznavanje jezika",
+                "skills": "Veštine",
+                "goal": "Cilj učestvovanja u organizaciji",
+                "bio": "Kratka biografija",
+                "pause-reason": "Razlog pauze",
+                "contractDownload": "Preuzimanje ugovora",
+                "questionnaireDownload": "Preuzimanje upitnika",
+                "envelopDownload": "Preuzimanje koverata",
+                "editTitle": "Uredi prijavu",
+                "editSuccess": "Prijava je uspešno ažurirana",
+                "editError": "Greška pri ažuriranju prijave",
+                "refuse-reason": "Razlog odbijanja",
+                "deny-reason-modal": {
+                    "title": "Razlog odbijanja",
+                    "description": "Molimo navedite razlog odbijanja"
+                }
+            },
+            "report": {
+                "contract-from": "Datum početka",
+                "contract-until": "Datum završetka",
+                "required": "Obavezno",
+                "contract-until-before": "Ranije od datuma početka",
+                "cancel": "Otkaži",
+                "save": "Sačuvaj",
+                "add": "Dodaj"
+            }
+        },
+        "cleaning": {
+            "title": "Čisti grad (glavni program)"
+        },
+        "reporting": {
+            "title": "Vodič za predaju izveštaja"
+        }
+    },
+    "errors": {
+        "request": "Došlo je do greške",
+        "file-download": "Greška pri preuzimanju datoteke"
+    },
+    "navbar": {
+        "reports": {
+            "reporting": "Izveštavanje",
+            "my-reports": "Moji izveštaji",
+            "new-report": "Novi izveštaj",
+            "new-report-playground": "Izveštaj o igralištu",
+            "report": "Izveštaj",
+            "all": "Svi izveštaji",
+            "summary": "Rezime",
+            "cleaning": "Izveštaj \"Čisti grad\"",
+            "reporting-guide": "Vodič za predaju izveštaja",
+            "volunteer-reports": "Praćenje izveštaja volontera"
+        },
+        "volunteers": {
+            "volunteers": "Volonteri",
+            "all-volunteers": "Svi volonteri",
+            "applications": "Aplikacije",
+            "statistics": "Statistika"
+        },
+        "account-settings": "Podešavanja naloga",
+        "support": "Kontaktirajte podršku"
     }
-  },
-  "errors": {
-    "request": "Došlo je do greške",
-    "file-download": "Greška pri preuzimanju datoteke"
-  },
-  "navbar": {
-    "reports": {
-      "reporting": "Izveštavanje",
-      "my-reports": "Moji izveštaji",
-      "new-report": "Novi izveštaj",
-      "new-report-playground": "Izveštaj o igralištu",
-      "report": "Izveštaj",
-      "all": "Svi izveštaji",
-      "summary": "Rezime",
-      "cleaning": "Izveštaj \"Čisti grad\"",
-      "reporting-guide": "Vodič za predaju izveštaja",
-      "volunteer-reports": "Praćenje izveštaja volontera"
-    },
-    "volunteers": {
-      "volunteers": "Volonteri",
-      "all-volunteers": "Svi volonteri",
-      "applications": "Aplikacije",
-      "statistics": "Statistika"
-    },
-    "account-settings": "Podešavanja naloga",
-    "support": "Kontaktirajte podršku"
-  }
 }
