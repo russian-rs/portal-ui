@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useState } from "react"
+import React, { createContext, ReactNode, useMemo, useState } from "react"
 import { defaultFunction } from "src/shared/lib/defaultFunction"
 
 interface NavbarContextType {
@@ -16,14 +16,13 @@ export const NavbarContext = createContext<NavbarContextType>(defaultContextValu
 export const NavbarContextProvider = ({ children }: { children?: ReactNode }) => {
     const [opened, setOpened] = useState(true)
 
-    return (
-        <NavbarContext.Provider
-            value={{
-                menuOpened: opened,
-                setMenuOpened: setOpened,
-            }}
-        >
-            {children}
-        </NavbarContext.Provider>
-    )
+    const value = useMemo(() => {
+        const v: NavbarContextType = {
+            menuOpened: opened,
+            setMenuOpened: setOpened,
+        }
+        return v
+    }, [opened])
+
+    return <NavbarContext.Provider value={value}>{children}</NavbarContext.Provider>
 }
