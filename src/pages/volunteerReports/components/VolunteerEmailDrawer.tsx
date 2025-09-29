@@ -37,7 +37,7 @@ export const VolunteerEmailDrawer = (props: VolunteerEmailDrawerProps) => {
 
     const { isFetching: sending, refetch: send } = useQuery({
         enabled: false,
-        queryKey: ["sendVolunteerEmail", topic, content, props.recipients.map(r => r.email).join(",")],
+        queryKey: ["sendVolunteerEmail", topic, content, props.recipients.map((r) => r.email).join(",")],
         queryFn: async () => {
             for (const recipient of props.recipients) {
                 await MailApiService.sendMail(
@@ -49,12 +49,7 @@ export const VolunteerEmailDrawer = (props: VolunteerEmailDrawerProps) => {
                     uploadedFiles.map((f) => f.id)
                 )
             }
-            notifications.show(
-                SuccessNotification(
-                    <Text size="sm">Отправлено</Text>,
-                    null
-                )
-            )
+            notifications.show(SuccessNotification(<Text size="sm">Отправлено</Text>, null))
             props.close()
             setTopic("")
             setContent("")
@@ -109,9 +104,7 @@ export const VolunteerEmailDrawer = (props: VolunteerEmailDrawerProps) => {
                     autosize
                     minRows={1}
                     withAsterisk
-                    value={props.recipients
-                        .map((r) => `${r.name} <${r.email}>`)
-                        .join(", ")}
+                    value={props.recipients.map((r) => `${r.name} <${r.email}>`).join(", ")}
                 />
                 <TextInput
                     withAsterisk
@@ -200,5 +193,3 @@ export const VolunteerEmailDrawer = (props: VolunteerEmailDrawerProps) => {
 }
 
 export default VolunteerEmailDrawer
-
-

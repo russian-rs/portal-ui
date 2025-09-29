@@ -1,12 +1,11 @@
 import { Avatar, Badge, Checkbox, Flex, Table, Text, Tooltip, ActionIcon } from "@mantine/core"
 import { IconEye, IconMail, IconAlertTriangle, IconCheck, IconX } from "@tabler/icons-react"
 import dayjs from "dayjs"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate } from "react-router"
 import { VolunteerReportData } from "../lib/types"
 import { locales } from "../lib/locales"
-import { VolunteerReportApiService } from "../lib/VolunteerReportApiService"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { VolunteerEmailDrawer } from "./VolunteerEmailDrawer"
 import classes from "./VolunteerReportTable.module.scss"
@@ -24,7 +23,7 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
     selectedVolunteers,
     onVolunteerSelect,
     onVolunteerClick,
-    startDate
+    startDate,
 }) => {
     const intl = useIntl()
     const navigate = useNavigate()
@@ -36,71 +35,69 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
         const totalReports = volunteer.reports.length
         const totalHours = volunteer.reports.reduce((sum, report) => sum + report.hoursSpent, 0)
         const averageHoursPerWeek = totalReports > 0 ? (totalHours / totalReports).toFixed(1) : 0
-        
-        const lastReport = volunteer.reports.length > 0 
-            ? volunteer.reports.reduce((latest, report) => 
-                dayjs(report.week).isAfter(dayjs(latest.week)) ? report : latest
-              )
-            : null
-        
+
+        const lastReport =
+            volunteer.reports.length > 0
+                ? volunteer.reports.reduce((latest, report) =>
+                      dayjs(report.week).isAfter(dayjs(latest.week)) ? report : latest
+                  )
+                : null
+
         const weeksSinceLastReport = (() => {
             if (!lastReport) return 0
-            const currentWeekStart = dayjs().startOf('isoWeek')
-            const lastReportWeekStart = dayjs(lastReport.week).startOf('isoWeek')
-            let diffWeeks = currentWeekStart.diff(lastReportWeekStart, 'week')
-            const hasReportThisWeek = volunteer.reports.some(r =>
-                dayjs(r.week).isSame(currentWeekStart, 'isoWeek')
-            )
+            const currentWeekStart = dayjs().startOf("isoWeek")
+            const lastReportWeekStart = dayjs(lastReport.week).startOf("isoWeek")
+            let diffWeeks = currentWeekStart.diff(lastReportWeekStart, "week")
+            const hasReportThisWeek = volunteer.reports.some((r) => dayjs(r.week).isSame(currentWeekStart, "isoWeek"))
             if (!hasReportThisWeek && diffWeeks > 0) diffWeeks -= 1
             return Math.max(diffWeeks, 0)
         })()
 
-        const lastWeekStart = dayjs().startOf('isoWeek').subtract(1, 'week')
+        const lastWeekStart = dayjs().startOf("isoWeek").subtract(1, "week")
         const lastWeekHours = volunteer.reports
-            .filter(r => dayjs(r.week).isSame(lastWeekStart, 'isoWeek'))
+            .filter((r) => dayjs(r.week).isSame(lastWeekStart, "isoWeek"))
             .reduce((sum, r) => sum + r.hoursSpent, 0)
-        
+
         return {
             totalReports,
             totalHours,
             averageHoursPerWeek,
             lastReport,
             weeksSinceLastReport,
-            lastWeekHours
+            lastWeekHours,
         }
     }
 
     // Агрегаты по всему периоду (с учётом контрактов)
     const getPeriodAggregates = (volunteer: VolunteerReportData) => {
         const now = dayjs()
-        const totalWeeks = Math.ceil(now.diff(startDate, 'week', true))
-        const firstContractStart = volunteer.contracts && volunteer.contracts.length > 0
-            ? volunteer.contracts
-                .map(c => dayjs(c.startDate).startOf('isoWeek'))
-                .reduce((earliest, d) => (d.isBefore(earliest) ? d : earliest))
-            : null
+        const totalWeeks = Math.ceil(now.diff(startDate, "week", true))
+        const firstContractStart =
+            volunteer.contracts && volunteer.contracts.length > 0
+                ? volunteer.contracts
+                      .map((c) => dayjs(c.startDate).startOf("isoWeek"))
+                      .reduce((earliest, d) => (d.isBefore(earliest) ? d : earliest))
+                : null
+
+        if (!firstContractStart) {
+            // Нет контрактов — считаем N/A (как в теплокарте)
+            return { missedCount: 0, partialCount: 0, hasContracts: false }
+        }
 
         let missedCount = 0
         let partialCount = 0
 
         for (let i = 0; i < totalWeeks; i++) {
-            const weekStart = startDate.clone().add(i, 'week').startOf('isoWeek')
-            const isCurrentWeek = dayjs().isSame(weekStart, 'isoWeek')
+            const weekStart = startDate.clone().add(i, "week").startOf("isoWeek")
+            const isCurrentWeek = dayjs().isSame(weekStart, "isoWeek")
 
             // До начала первого контракта — игнорируем
-            if (firstContractStart && weekStart.isBefore(firstContractStart, 'week')) {
-                continue
-            }
-            if (!firstContractStart) {
-                // если контрактов нет — считаем все до текущей недели как отсутствующие
-                if (!isCurrentWeek) {
-                    missedCount += 1
-                }
+            if (firstContractStart && weekStart.isBefore(firstContractStart, "week")) {
                 continue
             }
 
             const hours = volunteer.reports
-                .filter(r => dayjs(r.week).isSame(weekStart, 'isoWeek'))
+                .filter((r) => dayjs(r.week).isSame(weekStart, "isoWeek"))
                 .reduce((sum, r) => sum + r.hoursSpent, 0)
 
             if (isCurrentWeek) {
@@ -112,68 +109,86 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
             else if (hours < 10) partialCount += 1
         }
 
-        return { missedCount, partialCount }
+        return { missedCount, partialCount, hasContracts: true }
     }
 
     const getVolunteerStatusColor = (volunteer: VolunteerReportData) => {
-        const { missedCount, partialCount } = getPeriodAggregates(volunteer)
-        if (missedCount > 0) return 'red'
-        if (partialCount > 0) return 'yellow'
-        return 'green'
+        const { missedCount, partialCount, hasContracts } = getPeriodAggregates(volunteer)
+        if (!hasContracts) return "gray"
+        if (missedCount > 0) return "red"
+        if (partialCount > 0) return "yellow"
+        return "green"
     }
 
     const getVolunteerStatusText = (volunteer: VolunteerReportData) => {
-        const { missedCount, partialCount } = getPeriodAggregates(volunteer)
+        const { missedCount, partialCount, hasContracts } = getPeriodAggregates(volunteer)
+        if (!hasContracts) return "N/A"
         if (missedCount > 0) return intl.formatMessage({ id: locales.statusMissedWeeks }, { count: missedCount })
         if (partialCount > 0) return intl.formatMessage({ id: locales.statusPartialLastWeek })
         return intl.formatMessage({ id: locales.statusAllOk })
     }
 
-    const getStatusIcon = (color: 'green' | 'yellow' | 'red') => {
+    const getStatusIcon = (color: "green" | "yellow" | "red") => {
         switch (color) {
-            case 'green':
+            case "green":
                 return <IconCheck size={12} />
-            case 'yellow':
+            case "yellow":
                 return <IconAlertTriangle size={12} />
-            case 'red':
+            case "red":
             default:
                 return <IconX size={12} />
         }
     }
 
-            if (data.length === 0) {
-            return (
-                <Flex justify="center" p="xl">
-                    <Text c="dimmed"><FormattedMessage id={locales.volunteersNotFound} /></Text>
-                </Flex>
-            )
-        }
+    if (data.length === 0) {
+        return (
+            <Flex justify="center" p="xl">
+                <Text c="dimmed">
+                    <FormattedMessage id={locales.volunteersNotFound} />
+                </Text>
+            </Flex>
+        )
+    }
 
     return (
         <div className={classes.tableContainer}>
             <Table className={classes.table}>
                 <Table.Thead>
                     <Table.Tr>
-                        <Table.Th style={{ width: '50px' }}>
+                        <Table.Th style={{ width: "50px" }}>
                             <Checkbox
                                 checked={selectedVolunteers.size === data.length && data.length > 0}
                                 indeterminate={selectedVolunteers.size > 0 && selectedVolunteers.size < data.length}
                                 onChange={(event) => {
                                     if (event.currentTarget.checked) {
-                                        data.forEach(v => onVolunteerSelect(v.id, true))
+                                        data.forEach((v) => onVolunteerSelect(v.id, true))
                                     } else {
-                                        data.forEach(v => onVolunteerSelect(v.id, false))
+                                        data.forEach((v) => onVolunteerSelect(v.id, false))
                                     }
                                 }}
                             />
                         </Table.Th>
-                        <Table.Th><FormattedMessage id={locales.volunteer} /></Table.Th>
-                        <Table.Th><FormattedMessage id={locales.programColumn} /></Table.Th>
-                        <Table.Th><FormattedMessage id={locales.projectColumn} /></Table.Th>
-                        <Table.Th><FormattedMessage id={locales.reportsStats} /></Table.Th>
-                        <Table.Th><FormattedMessage id={locales.lastReport} /></Table.Th>
-                        <Table.Th><FormattedMessage id={locales.status} /></Table.Th>
-                        <Table.Th style={{ width: '100px' }}><FormattedMessage id={locales.actions} /></Table.Th>
+                        <Table.Th>
+                            <FormattedMessage id={locales.volunteer} />
+                        </Table.Th>
+                        <Table.Th>
+                            <FormattedMessage id={locales.programColumn} />
+                        </Table.Th>
+                        <Table.Th>
+                            <FormattedMessage id={locales.projectColumn} />
+                        </Table.Th>
+                        <Table.Th>
+                            <FormattedMessage id={locales.reportsStats} />
+                        </Table.Th>
+                        <Table.Th>
+                            <FormattedMessage id={locales.lastReport} />
+                        </Table.Th>
+                        <Table.Th>
+                            <FormattedMessage id={locales.status} />
+                        </Table.Th>
+                        <Table.Th style={{ width: "100px" }}>
+                            <FormattedMessage id={locales.actions} />
+                        </Table.Th>
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
@@ -182,26 +197,24 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
                         const isSelected = selectedVolunteers.has(volunteer.id)
                         const statusColor = getVolunteerStatusColor(volunteer)
                         const statusText = getVolunteerStatusText(volunteer)
-                        
+
                         return (
-                            <Table.Tr 
-                                key={volunteer.id} 
-                                className={`${classes.tableRow} ${isSelected ? classes.selectedRow : ''}`}
+                            <Table.Tr
+                                key={volunteer.id}
+                                className={`${classes.tableRow} ${isSelected ? classes.selectedRow : ""}`}
                             >
                                 <Table.Td>
                                     <Checkbox
                                         checked={isSelected}
-                                        onChange={(event) => onVolunteerSelect(volunteer.id, event.currentTarget.checked)}
+                                        onChange={(event) =>
+                                            onVolunteerSelect(volunteer.id, event.currentTarget.checked)
+                                        }
                                     />
                                 </Table.Td>
-                                
+
                                 <Table.Td>
                                     <Flex align="center" gap="sm" className={classes.volunteerCell}>
-                                        <Avatar
-                                            size={32}
-                                            src={volunteer.avatar?.link}
-                                            name={volunteer.fullName}
-                                        />
+                                        <Avatar size={32} src={volunteer.avatar?.link} name={volunteer.fullName} />
                                         <div>
                                             <Text fw={500} size="sm">
                                                 {volunteer.fullName}
@@ -212,19 +225,23 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
                                         </div>
                                     </Flex>
                                 </Table.Td>
-                                
+
                                 <Table.Td>
                                     <Text size="sm">
-                                        {volunteer.program ? getLocalizedName(volunteer.program, intl.locale) : intl.formatMessage({ id: locales.noProgram })}
+                                        {volunteer.program
+                                            ? getLocalizedName(volunteer.program, intl.locale)
+                                            : intl.formatMessage({ id: locales.noProgram })}
                                     </Text>
                                 </Table.Td>
-                                
+
                                 <Table.Td>
                                     <Text size="sm">
-                                        {volunteer.project ? getLocalizedName(volunteer.project, intl.locale) : intl.formatMessage({ id: locales.noProject })}
+                                        {volunteer.project
+                                            ? getLocalizedName(volunteer.project, intl.locale)
+                                            : intl.formatMessage({ id: locales.noProject })}
                                     </Text>
                                 </Table.Td>
-                                
+
                                 <Table.Td>
                                     <div className={classes.statsCell}>
                                         <Text size="sm" fw={500}>
@@ -234,17 +251,22 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
                                             <FormattedMessage id={locales.totalHours} />: {stats.totalHours}
                                         </Text>
                                         <Text size="xs" c="dimmed">
-                                            <FormattedMessage id={locales.avgPerWeek} values={{ value: stats.averageHoursPerWeek }} />
+                                            <FormattedMessage
+                                                id={locales.avgPerWeek}
+                                                values={{ value: stats.averageHoursPerWeek }}
+                                            />
                                         </Text>
                                     </div>
                                 </Table.Td>
-                                
+
                                 <Table.Td>
-                                    {stats.lastReport ? (
+                                    {volunteer.contracts && volunteer.contracts.length === 0 ? (
+                                        <Text size="sm" c="dimmed">
+                                            N/A
+                                        </Text>
+                                    ) : stats.lastReport ? (
                                         <div>
-                                            <Text size="sm">
-                                                {dayjs(stats.lastReport.week).format('DD.MM.YYYY')}
-                                            </Text>
+                                            <Text size="sm">{dayjs(stats.lastReport.week).format("DD.MM.YYYY")}</Text>
                                             <Text size="xs" c="dimmed">
                                                 {stats.lastReport.hoursSpent} <FormattedMessage id={locales.hours} />
                                             </Text>
@@ -255,20 +277,20 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
                                         </Text>
                                     )}
                                 </Table.Td>
-                                
+
                                 <Table.Td>
                                     <Tooltip label={statusText}>
-                                        <Badge 
+                                        <Badge
                                             className={classes.statusBadge}
-                                            color={statusColor} 
+                                            color={statusColor}
                                             variant="light"
                                             size="md"
                                             radius="sm"
-                                            leftSection={getStatusIcon(statusColor as 'green' | 'yellow' | 'red')}
+                                            leftSection={getStatusIcon(statusColor as "green" | "yellow" | "red")}
                                         />
                                     </Tooltip>
                                 </Table.Td>
-                                
+
                                 <Table.Td>
                                     <Flex gap="xs" justify="center">
                                         <Tooltip label={intl.formatMessage({ id: locales.viewProfile })}>
@@ -276,14 +298,17 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
                                                 variant="subtle"
                                                 color="blue"
                                                 onClick={() => {
-                                                    localStorage.setItem("volunteerReportsState", window.location.search)
+                                                    localStorage.setItem(
+                                                        "volunteerReportsState",
+                                                        window.location.search
+                                                    )
                                                     navigate(`/profile/${volunteer.username}`)
                                                 }}
                                             >
                                                 <IconEye size={16} />
                                             </ActionIcon>
                                         </Tooltip>
-                                        
+
                                         <Tooltip label={intl.formatMessage({ id: locales.sendMessage })}>
                                             <ActionIcon
                                                 variant="subtle"
@@ -311,10 +336,12 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
                         setEmailDrawerOpen(false)
                         setSelectedVolunteerForEmail(null)
                     }}
-                    recipients={[{
-                        name: selectedVolunteerForEmail.fullName,
-                        email: selectedVolunteerForEmail.email
-                    }]}
+                    recipients={[
+                        {
+                            name: selectedVolunteerForEmail.fullName,
+                            email: selectedVolunteerForEmail.email,
+                        },
+                    ]}
                     subject={intl.formatMessage({ id: "pages.volunteer-reports.email-subject" })}
                 />
             )}

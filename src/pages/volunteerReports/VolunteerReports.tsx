@@ -1,23 +1,12 @@
-import { 
-    Card, 
-    Flex, 
-    Paper, 
-    Text, 
-    Button,
-    Pagination
-} from "@mantine/core"
-import { useMediaQuery } from "@mantine/hooks"
+import { Card, Flex, Paper, Text, Button, Pagination } from "@mantine/core"
 import { IconMail } from "@tabler/icons-react"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
-import { hasPermission } from "src/shared/user/roles"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
-
-
 import { hasAccess } from "./lib/roles"
 import { locales } from "./lib/locales"
 import { defaultPageResponse } from "./lib/defaults"
@@ -27,16 +16,13 @@ import { VolunteerReportFilters } from "./components/VolunteerReportFilters"
 import { VolunteerReportHeatmap } from "./components/VolunteerReportHeatmap"
 import { VolunteerReportTable } from "./components/VolunteerReportTable"
 import { VolunteerEmailDrawer } from "./components/VolunteerEmailDrawer"
-
 import classes from "./VolunteerReports.module.scss"
 
 export const VolunteerReports = () => {
     const { user } = useContext(UserContext)
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
-    const queryClient = useQueryClient()
     const intl = useIntl()
-    const isMobile = useMediaQuery('(max-width: 768px)')
 
     setDocumentTitleByLocale(locales.title)
 
@@ -46,19 +32,14 @@ export const VolunteerReports = () => {
 
     const [search, setSearch] = useState(searchParams.get("search") || "")
     const [debouncedSearch, setDebouncedSearch] = useState(search)
-    const [selectedProgram, setSelectedProgram] = useState<string | null>(
-        searchParams.get("program") || null
-    )
-    const [selectedProject, setSelectedProject] = useState<string | null>(
-        searchParams.get("project") || null
-    )
-    const [periodMonths, setPeriodMonths] = useState<string>(
-        searchParams.get("period") || "3"
-    )
+    const [selectedProgram, setSelectedProgram] = useState<string | null>(searchParams.get("program") || null)
+    const [selectedProject, setSelectedProject] = useState<string | null>(searchParams.get("project") || null)
+    const [periodMonths, setPeriodMonths] = useState<string>(searchParams.get("period") || "3")
+    const [hideNA, setHideNA] = useState<string>(searchParams.get("hideNA") || "false")
 
     const [pageRequest, setPageRequest] = useState({
         pageNumber: Math.max(0, parseInt(searchParams.get("page") || "1") - 1),
-        pageSize: 10
+        pageSize: 10,
     })
 
     useEffect(() => {
@@ -66,7 +47,7 @@ export const VolunteerReports = () => {
             const trimmed = search.trim()
             setDebouncedSearch(trimmed)
             if (trimmed !== debouncedSearch) {
-                setPageRequest(prev => ({ ...prev, pageNumber: 0 }))
+                setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
             }
         }, 400)
         return () => clearTimeout(id)
@@ -79,26 +60,25 @@ export const VolunteerReports = () => {
         if (selectedProject) params.set("project", selectedProject)
         if (periodMonths) params.set("period", periodMonths)
         if (pageRequest.pageNumber > 0) params.set("page", String(pageRequest.pageNumber + 1))
+        if (hideNA === "true") params.set("hideNA", hideNA)
         setSearchParams(params)
-    }, [debouncedSearch, selectedProgram, selectedProject, periodMonths, pageRequest.pageNumber])
+    }, [debouncedSearch, selectedProgram, selectedProject, periodMonths, pageRequest.pageNumber, hideNA])
 
     const getStartDate = () => {
         const now = dayjs()
         switch (periodMonths) {
             case "3":
-                return now.subtract(3, 'month').startOf('month')
+                return now.subtract(3, "month").startOf("month")
             case "6":
-                return now.subtract(6, 'month').startOf('month')
+                return now.subtract(6, "month").startOf("month")
             case "year":
-                return now.startOf('year')
+                return now.startOf("year")
             default:
-                return now.subtract(3, 'month').startOf('month')
+                return now.subtract(3, "month").startOf("month")
         }
     }
 
-
-
-    const { data: volunteerData, isFetching } = useQuery({
+    const { data: volunteerData } = useQuery({
         queryKey: [
             "volunteerReports",
             debouncedSearch,
@@ -108,13 +88,14 @@ export const VolunteerReports = () => {
             selectedProject,
             periodMonths,
         ],
-        queryFn: () => VolunteerReportApiService.getVolunteerReports({
-            search: debouncedSearch,
-            program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram || undefined,
-            project: selectedProject === "NO_PROJECT" ? "" : selectedProject || undefined,
-            startDate: getStartDate().toISOString(),
-            pageRequest
-        }),
+        queryFn: () =>
+            VolunteerReportApiService.getVolunteerReports({
+                search: debouncedSearch,
+                program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram || undefined,
+                project: selectedProject === "NO_PROJECT" ? "" : selectedProject || undefined,
+                startDate: getStartDate().toISOString(),
+                pageRequest,
+            }),
         placeholderData: { content: [], page: defaultPageResponse },
         staleTime: 5 * 60 * 1000,
         gcTime: 10 * 60 * 1000,
@@ -127,17 +108,8 @@ export const VolunteerReports = () => {
     const [selectedVolunteers, setSelectedVolunteers] = useState<Set<string>>(new Set())
     const [emailDrawerOpen, setEmailDrawerOpen] = useState(false)
 
-    const handleSelectAll = (checked: boolean) => {
-        if (checked) {
-            const allIds = new Set<string>((volunteerData?.content ?? []).map((v: VolunteerReportData) => v.id))
-            setSelectedVolunteers(allIds)
-        } else {
-            setSelectedVolunteers(new Set())
-        }
-    }
-
     const handleSelectVolunteer = (volunteerId: string, checked: boolean) => {
-        setSelectedVolunteers(prev => {
+        setSelectedVolunteers((prev) => {
             const next = new Set(prev)
             if (checked) {
                 next.add(volunteerId)
@@ -148,14 +120,12 @@ export const VolunteerReports = () => {
         })
     }
 
-
-
     return (
         <div className={classes.root}>
             <Flex direction="column" gap="lg">
-                    <Text size="xl" fw={700}>
-                        <FormattedMessage id={locales.title} />
-                    </Text>
+                <Text size="xl" fw={700}>
+                    <FormattedMessage id={locales.title} />
+                </Text>
 
                 <VolunteerReportFilters
                     search={search}
@@ -171,8 +141,10 @@ export const VolunteerReports = () => {
                         setSelectedProgram(null)
                         setSelectedProject(null)
                         setPeriodMonths("3")
-                        setPageRequest(prev => ({ ...prev, pageNumber: 0 }))
+                        setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
                     }}
+                    hideNA={hideNA === "true"}
+                    onHideNAChange={(val) => setHideNA(val ? "true" : "false")}
                 />
 
                 <Paper p="md" withBorder>
@@ -181,7 +153,8 @@ export const VolunteerReports = () => {
                             <FormattedMessage id={locales.totalVolunteers} />: {volunteerData?.page.totalElements ?? 0}
                         </Text>
                         <Text size="sm" c="dimmed">
-                            <FormattedMessage id={locales.period} />: {getStartDate().format('DD.MM.YYYY')} - {dayjs().format('DD.MM.YYYY')}
+                            <FormattedMessage id={locales.period} />: {getStartDate().format("DD.MM.YYYY")} -{" "}
+                            {dayjs().format("DD.MM.YYYY")}
                         </Text>
                     </Flex>
                 </Paper>
@@ -193,25 +166,36 @@ export const VolunteerReports = () => {
                         </Text>
                     </Flex>
                     {(() => {
-                        const base = (volunteerData?.content ?? []) as VolunteerReportData[]
+                        let base = (volunteerData?.content ?? []) as VolunteerReportData[]
+                        if (hideNA === "true") {
+                            base = base.filter((v) => (v.contracts?.length ?? 0) > 0)
+                        }
                         let augmented = base
-                        if (import.meta.env.MODE !== 'production') {
-                            const start = getStartDate().startOf('isoWeek')
-                            const end = dayjs().startOf('isoWeek')
-                            const totalWeeks = end.diff(start, 'week') + 1
+                        if (import.meta.env.MODE !== "production") {
+                            const start = getStartDate().startOf("isoWeek")
+                            const end = dayjs().startOf("isoWeek")
+                            const totalWeeks = end.diff(start, "week") + 1
                             const reports = Array.from({ length: Math.max(totalWeeks, 0) }).map((_, idx) => {
-                                const weekStart = start.clone().add(idx, 'week').toISOString()
-                                return { id: `demo-${idx}`, week: weekStart, hoursSpent: 12, status: 'APPROVED' as const, createTime: weekStart }
+                                const weekStart = start.clone().add(idx, "week").toISOString()
+                                return {
+                                    id: `demo-${idx}`,
+                                    week: weekStart,
+                                    hoursSpent: 12,
+                                    status: "APPROVED" as const,
+                                    createTime: weekStart,
+                                }
                             })
                             const demo: VolunteerReportData = {
-                                id: 'demo_all_ok',
-                                fullName: 'Demo Volunteer (All OK)',
-                                email: 'demo@example.com',
-                                username: 'demo_all_ok',
+                                id: "demo_all_ok",
+                                fullName: "Demo Volunteer (All OK)",
+                                email: "demo@example.com",
+                                username: "demo_all_ok",
                                 avatar: null as any,
                                 program: undefined,
                                 project: undefined,
-                                contracts: [{ id: 1, startDate: start.toISOString(), endDate: end.toISOString() } as any],
+                                contracts: [
+                                    { id: 1, startDate: start.toISOString(), endDate: end.toISOString() } as any,
+                                ],
                                 reports,
                             }
                             augmented = [...base, demo]
@@ -234,7 +218,7 @@ export const VolunteerReports = () => {
                         <Pagination
                             total={volunteerData?.page.totalPages ?? 1}
                             value={(pageRequest.pageNumber ?? 0) + 1}
-                            onChange={(page) => setPageRequest(pr => ({ ...pr, pageNumber: page - 1 }))}
+                            onChange={(page) => setPageRequest((pr) => ({ ...pr, pageNumber: page - 1 }))}
                         />
                     </Flex>
                 </Card>
@@ -251,25 +235,36 @@ export const VolunteerReports = () => {
                         </Button>
                     </Flex>
                     {(() => {
-                        const base = (volunteerData?.content ?? []) as VolunteerReportData[]
+                        let base = (volunteerData?.content ?? []) as VolunteerReportData[]
+                        if (hideNA === "true") {
+                            base = base.filter((v) => (v.contracts?.length ?? 0) > 0)
+                        }
                         let augmented = base
-                        if (import.meta.env.MODE !== 'production') {
-                            const start = getStartDate().startOf('isoWeek')
-                            const end = dayjs().startOf('isoWeek')
-                            const totalWeeks = end.diff(start, 'week') + 1
+                        if (import.meta.env.MODE !== "production") {
+                            const start = getStartDate().startOf("isoWeek")
+                            const end = dayjs().startOf("isoWeek")
+                            const totalWeeks = end.diff(start, "week") + 1
                             const reports = Array.from({ length: Math.max(totalWeeks, 0) }).map((_, idx) => {
-                                const weekStart = start.clone().add(idx, 'week').toISOString()
-                                return { id: `demo-${idx}`, week: weekStart, hoursSpent: 12, status: 'APPROVED' as const, createTime: weekStart }
+                                const weekStart = start.clone().add(idx, "week").toISOString()
+                                return {
+                                    id: `demo-${idx}`,
+                                    week: weekStart,
+                                    hoursSpent: 12,
+                                    status: "APPROVED" as const,
+                                    createTime: weekStart,
+                                }
                             })
                             const demo: VolunteerReportData = {
-                                id: 'demo_all_ok',
-                                fullName: 'Demo Volunteer (All OK)',
-                                email: 'demo@example.com',
-                                username: 'demo_all_ok',
+                                id: "demo_all_ok",
+                                fullName: "Demo Volunteer (All OK)",
+                                email: "demo@example.com",
+                                username: "demo_all_ok",
                                 avatar: null as any,
                                 program: undefined,
                                 project: undefined,
-                                contracts: [{ id: 1, startDate: start.toISOString(), endDate: end.toISOString() } as any],
+                                contracts: [
+                                    { id: 1, startDate: start.toISOString(), endDate: end.toISOString() } as any,
+                                ],
                                 reports,
                             }
                             augmented = [...base, demo]
@@ -280,7 +275,7 @@ export const VolunteerReports = () => {
                                 selectedVolunteers={selectedVolunteers}
                                 onVolunteerSelect={handleSelectVolunteer}
                                 startDate={getStartDate()}
-                                onVolunteerClick={(id: string) => console.log('open volunteer', id)}
+                                onVolunteerClick={(id: string) => console.log("open volunteer", id)}
                             />
                         )
                     })()}
@@ -288,7 +283,7 @@ export const VolunteerReports = () => {
                         <Pagination
                             total={volunteerData?.page.totalPages ?? 1}
                             value={(pageRequest.pageNumber ?? 0) + 1}
-                            onChange={(page) => setPageRequest(pr => ({ ...pr, pageNumber: page - 1 }))}
+                            onChange={(page) => setPageRequest((pr) => ({ ...pr, pageNumber: page - 1 }))}
                         />
                     </Flex>
                     <VolunteerEmailDrawer
