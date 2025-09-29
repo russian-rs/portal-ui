@@ -1,540 +1,540 @@
 {
-  "common": {
-    "buttons": {
-      "login": "Login",
-      "logout": "Logout"
-    },
-    "file-uploader": {
-      "title": "Drag files or click to choose",
-      "description": "Max files: {maxFiles}, size up to {maxSize} Mb",
-      "file-name": "File {fileName}",
-      "errors": {
-        "file-invalid-type": "Invalid file format",
-        "file-too-large": "File size exceeds {maxSize} Mb limit",
-        "file-too-small": "Too little file size",
-        "too-many-files": "Too many files"
-      }
-    },
-    "user-search": {
-      "placeholder": "Name Surname"
-    },
-    "report-status": {
-      "CREATED": "Created",
-      "REJECTED": "Rejected",
-      "ACCEPTED": "Accepted"
-    },
-    "week-picker": {
-      "label": "Week",
-      "empty": "Not selected"
-    },
-    "report-status-select": {
-      "label": "Status",
-      "empty": "Not selected"
-    },
-    "roles": {
-      "ADMIN": "Admin",
-      "ADMIN_SSO": "Admin SSO",
-      "ADMIN_VOLUNTEER": "Admin of volunteers",
-      "ADMIN_WP": "Admin WordPress",
-      "DEVELOPER": "Developer",
-      "INSIDE_VOLUNTEER": "Internal volunteer",
-      "MAIN_VOLUNTEER": "Main volunteer",
-      "GUIDES": "Guide author",
-      "LAWYERS": "Lawyer",
-      "MEDIA": "Media author",
-      "TEACHER": "Teacher",
-      "SEO_MANAGER": "SEO manager",
-      "INTERVIEWER": "Interviewer",
-      "MEMBER": "Member"
-    },
-    "contract-type": {
-      "REGULAR": "Regular (with residence permit)",
-      "ASSOCIATED": "Associated",
-      "select": {
-        "label": "Contract type",
-        "empty": "Not selected"
-      }
-    },
-    "application-status": {
-      "CREATED": "Created",
-      "IN_PROGRESS": "In Progress",
-      "CLARIFICATION": "Clarification",
-      "PAUSED": "Paused",
-      "READY_TO_SEND": "Ready to Send",
-      "DOCS_SENT": "Documents Sent",
-      "DOCS_RECEIVED": "Documents Received",
-      "DONE": "Completed",
-      "DENY": "Denied"
-    },
-    "application-type": {
-      "NEW": "New",
-      "PROLONGATION": "Prolongation"
-    },
-    "copy-text": {
-      "tooltip": "Click to copy",
-      "notification": "Copied to clipboard"
-    },
-    "email-drawer": {
-      "title": "Send Message",
-      "recipients": "Recipients",
-      "subject": "Email Subject",
-      "send": "Send",
-      "emptySubject": "Subject is required",
-      "emptyContent": "Empty email body",
-      "success": "Message sent successfully"
-    },
-    "confirm-modal": {
-      "confirmDefaultButton": "Confirm",
-      "cancelDefaultButton": "Cancel",
-      "waitText": "Wait {timer} s"
-    },
-    "deny-reason-modal": {
-      "title": "Reason for refusal",
-      "description": "Please specify the reason for refusing this application",
-      "confirm-default-button": "Confirm",
-      "cancel-default-button": "Cancel",
-      "reason-placeholder": "Reason for refusal"
-    },
-    "pause-reason-modal": {
-      "title": "Reason for pause",
-      "description": "Please specify the reason for pausing this application",
-      "confirm-default-button": "Pause",
-      "cancel-default-button": "Cancel",
-      "reason-placeholder": "Reason for pause"
-    }
-  },
-  "footer": {
-    "copyright": "© «Russian Diaspora in Serbia»"
-  },
-  "pages": {
-    "notFound": {
-      "title": "Something is not right...",
-      "documentTitle": "Page not found",
-      "description": "Page you are trying to open does not exist. You may have mistyped the address, or the page has been moved to another URL. If you think this is an error contact support.",
-      "homeButton": "Home page",
-      "backButton": "Go back"
-    },
-    "unauthorized": {
-      "title": "No access",
-      "documentTitle": "Insufficient rights",
-      "description": "You do not have sufficient rights to view the content. If you believe this is an error, please contact support.",
-      "homeButton": "Home page",
-      "backButton": "Go back"
-    },
-    "welcome": {
-      "title": "Volunteer portal",
-      "documentTitle": "Volunteer portal",
-      "subTitle": "a platform where your help to society becomes even more effective",
-      "bottomText": "Join us and make the world a better place!",
-      "benefits": {
-        "1": {
-          "name": "Convenient reporting",
-          "description": "Submit reports on your volunteer activities quickly and easily."
+    "common": {
+        "buttons": {
+            "login": "Login",
+            "logout": "Logout"
         },
-        "2": {
-          "name": "Checking and support",
-          "description": "Our administrators carefully check your reports, ensuring transparency and fairness of the process. You can always get advice and recommendations to improve your work."
+        "file-uploader": {
+            "title": "Drag files or click to choose",
+            "description": "Max files: {maxFiles}, size up to {maxSize} Mb",
+            "file-name": "File {fileName}",
+            "errors": {
+                "file-invalid-type": "Invalid file format",
+                "file-too-large": "File size exceeds {maxSize} Mb limit",
+                "file-too-small": "Too little file size",
+                "too-many-files": "Too many files"
+            }
         },
-        "3": {
-          "name": "Apply for membership",
-          "description": "Want to become part of the team? Fill out an application to join the Russian Diaspora. We will help you find a suitable volunteer program where your efforts will bring maximum benefit."
-        }
-      },
-      "buttons": {
-        "application": "Submit an application"
-      }
-    },
-    "profile": {
-      "documentTitle": "Profile",
-      "props": {
-        "city": "City",
-        "address": "Address",
-        "birthDate": "Birth date",
-        "phone": "Phone",
-        "email": "Email",
-        "telegram": "Telegram"
-      },
-      "validation": {
-        "invalidPhone": "Invalid number",
-        "invalidTelegram": "Invalid format",
-        "invalidBirthDate": "Invalid date format",
-        "tooYoung": "You must be at least 18 years old",
-        "invalidDate": "Invalid date format",
-        "contractTypeRequired": "Select contract type",
-        "endDateAfterStart": "The end date must be later than the start date",
-        "invalidEmail": "Invalid email format",
-        "invalidSymbols": "Invalid symbols",
-        "minLetters": "Minimum {count} letters",
-        "maxLetters": "Maximum {count} characters",
-        "title": "Please fill in the missing information in your profile",
-        "description": "To make your profile complete and you can use all the portal features, fill in the following fields:",
-        "footer": "🛠 This will take just a couple of minutes. After filling, all functionality will be available again",
-        "goToProfile": "Edit profile",
-        "fields": {
-          "avatar": "profile photo",
-          "city": "city",
-          "address": "address",
-          "birthDate": "birth date",
-          "telegram": "telegram",
-          "phone": "phone",
-          "program": "program",
-          "project": "project"
-        }
-      },
-      "buttons": {
-        "edit": "Edit",
-        "editTooltip": "This functionality is under development, please contact support for editing",
-        "save": "Save"
-      },
-      "updateError": "Error when updating profile",
-      "profileUpdated": "Profile updated successfully",
-      "avatarUpdated": "Profile image updated successfully",
-      "contract": {
-        "no-contract": "No contracts",
-        "title": "Current contract information",
-        "date-until": "End date",
-        "type": "Contract type",
-        "days-left": "Days left: {count}",
-        "prolongation": "Extend",
-        "prolongation-info": "The contract can be extended no earlier than 3 months before the expiration of the current one",
-        "prolongation-disable": "This functionality is still under development",
-        "button": "Add contract",
-        "add": "Adding a contract",
-        "startDate": "Start date",
-        "endDate": "End date",
-        "save": "Save",
-        "created": "Contract successfully created",
-        "createError": "Error creating contract",
-        "number": "Contract {number}",
-        "cannotDeleteLast": "Cannot delete the last contract. A volunteer must have at least one contract."
-      },
-      "selectProgram": "Select a program",
-      "selectProject": "Select a project"
-    },
-    "report": {
-      "document-title": "Report",
-      "report-from": "Report from {date}",
-      "creator": "Volunteer",
-      "creation-date": "Date of report completion",
-      "time-spent-total": "Total amount of time",
-      "time-spent-hours": "{h} h",
-      "time-spent-minutes": "{m} min",
-      "task-date": "Completion date",
-      "task-customer": "Customer",
-      "task-result": "Result of work",
-      "task-files": "Attached files",
-      "edit": "Edit",
-      "accept": "Accept",
-      "reject": "Reject",
-      "comment": "Comment",
-      "comment-required": "When rejecting report comment is required",
-      "comments": "Report's comments",
-      "moderator": "Portal Moderator",
-      "delete": "Delete report",
-      "delete-submit": "Press again to delete"
-    },
-    "edit-report": {
-      "title": "Create new report",
-      "title-edit": "Edit report",
-      "description": "The report must contain at least 10 hours in total. Each task must have proof of work done. If you continue to do a task from last week, then progress (increment) compared to the previous week must be visible. Otherwise, the report may not be accepted.",
-      "task": "Task {index}",
-      "task-name": "Name",
-      "task-description": "Description",
-      "task-description-description": "A brief description of what you did",
-      "task-result": "Result",
-      "task-result-description": "Link to article, post, Google Docs, GitHub, etc.",
-      "task-time-spent": "Time spent",
-      "task-time-spent-description": "How much time was spent",
-      "task-time-spent-suffix": " h.",
-      "task-date": "Date",
-      "task-date-description": "When the task was completed",
-      "task-customer": "Customer",
-      "task-customer-description": "Who initiated the task?",
-      "required": "Required",
-      "min-letters": "Minimum {count} letters",
-      "invalid-url": "Invalid URL format",
-      "add-task-button": "Add task",
-      "send-button": "Submit",
-      "save-button": "Save",
-      "fill-up-button": "Fill up",
-      "confirm-title": "Not enough time spent",
-      "confirm-description": "Your report shows less than 10 hours total for all tasks. The report may not be accepted. Are you sure you want to send it?",
-      "different-weeks-alert": "The tasks were completed in different calendar weeks."
-    },
-    "my-reports": {
-      "title": "My reports",
-      "total": "Total: {total}",
-      "filters": "Filters",
-      "reset-filter": "Reset filters",
-      "empty-reports": "Nothing found",
-      "new-report": "New report",
-      "report": {
-        "created": "Created",
-        "status": "Status",
-        "task-count": "Total tasks",
-        "time-spent": "Time spent",
-        "week": "Week"
-      }
-    },
-    "report-list": {
-      "title": "All reports",
-      "volunteer": "Volunteer",
-      "creation-date": "Creation date",
-      "weeks": "Reporting weeks",
-      "status": "Status",
-      "time-spent": "Time spent",
-      "program": "Program",
-      "project": "Project",
-      "task-count": "Tasks: {count}",
-      "files-count": "Attachments: {count}",
-      "files": "Files",
-      "total": "Total: {count}",
-      "empty": "Reports not found",
-      "reset": "Reset filters",
-      "program-filter": "Program filter",
-      "program-filter-not-selected": "Not selected",
-      "project-filter": "Project filter",
-      "project-filter-not-selected": "Not selected"
-    },
-    "user-list": {
-      "title": "All volunteers",
-      "total": "Total: {total}",
-      "search": "Search",
-      "new-user": "New user",
-      "first-name": "First name",
-      "last-name": "Last name",
-      "full-name": "Name Surname",
-      "contract-info": "Contract info",
-      "contract-from": "Start date",
-      "contract-until": "End date",
-      "email": "e-mail",
-      "username": "Username",
-      "roles": "Roles",
-      "program": "Program",
-      "filter-by-program": "Filter by programs",
-      "no-program": "No program",
-      "project": "Project",
-      "filter-by-project": "Filter by projects",
-      "no-project": "No project",
-      "contractDue": "Contract until",
-      "create-button": "Create",
-      "menu-common": "Common",
-      "menu-control": "Control",
-      "menu-view": "View",
-      "menu-contact": "Contact",
-      "menu-reports": "Reports",
-      "menu-activate": "Activate",
-      "menu-deactivate": "Deactivate",
-      "empty": "Nothing found",
-      "required": "Required",
-      "min-letters": "At least {count} symbols",
-      "max-letters": "At most {count} symbols",
-      "invalid-email": "Invalid e-mail",
-      "invalid-name": "Invalid characters",
-      "invalid-username": "Only latin letters and numbers, cannot start with a number",
-      "user-created-message": "User successfully created"
-    },
-    "playgrounds": {
-      "title": "Playgrounds report",
-      "description": "Instructions for filling",
-      "requirements": "A volunteer is required to monitor at least 3 playgrounds and devote at least 10 hours to this every week.",
-      "whats-new": "The form for filling out reports has been unified for volunteers of all Russian Diaspora programs. Now the site monitoring report must be filled out and sent only once a week, information about all 3 sites must be entered into one report.<br/>There is no need to fill out a route sheet.",
-      "steps": {
-        "1": {
-          "title": "Go to the report creation page",
-          "link": "<a href='/report/create'>Follow this link</a> or via the side menu"
+        "user-search": {
+            "placeholder": "Name Surname"
         },
-        "2": {
-          "title": "Fill in the Excel file using the template",
-          "description": "1 playground = 1 completed file",
-          "link": "You can download the template <a href='https://docs.google.com/spreadsheets/d/1Vu1m7sVkMmSn8blN6K2-9eL6KGCiMwcvze9Ydn3HrTA' target='_blank'>by link</a>",
-          "hint": "Copy the file to yourself <i>File - Make a copy</i>.<br/>Fill in the table and download as .xlsx file <i>File - Download</i>"
+        "report-status": {
+            "CREATED": "Created",
+            "REJECTED": "Rejected",
+            "ACCEPTED": "Accepted"
         },
-        "3": {
-          "title": "Enter information about three playgrounds",
-          "description": "1 playground = 1 task",
-          "fields": "In the <strong>Name</strong> field, specify the name of the site, for example <i>Playground in Šumice Park</i>. In the <strong>Description</strong> field, fill in your detailed comment on the playground. In the <strong>Result</strong> field, enter the link to the playground on Google Maps. The <strong>Customer</strong> field is not required.<br/>The total number of hours spent across all playgrounds must be at least 10.<br/>Please attach a photo of the playground and a completed Excel file with the playground parameters to the files."
+        "week-picker": {
+            "label": "Week",
+            "empty": "Not selected"
         },
-        "4": {
-          "title": "All is ready!",
-          "hint": "Don't forget to click the <strong>Submit</strong> button"
-        }
-      }
-    },
-    "application": {
-      "terms": {
-        "title": "Joining and Participating in Organization Activities",
-        "required": "Required",
-        "agree-1": "I have read and agree with the goals and terms outlined in the <a href='https://russian.rs/about/documents' target='_blank'>charter and code of ethics of the organization</a>",
-        "agree-2": "I consent to the processing and storage of the information I provided in accordance with the <a href='https://russian.rs/privacy-policy' target='_blank'>privacy policy</a>",
-        "button-application": "Fill Out the Application Form"
-      },
-      "form": {
-        "title": "Membership Application Form",
-        "required": "Required to fill out",
-        "invalid-symbols": "Invalid symbols",
-        "button-send": "Submit Application",
-        "min-letters": "Minimum length - {count}",
-        "max-letters": "Maximum length - {count}",
-        "form-error": "The form is filled out incorrectly",
-        "captcha-error": "Captcha verification failed",
-        "application-sent": "Your application received",
-        "email": "Your e-mail",
-        "email-invalid": "Invalid e-mail format",
-        "name": "First Name Last Name",
-        "name-description": "As in the passport, in Latin characters",
-        "patronymic": "Patronymic (Father's Name)",
-        "patronymic-description": "In Serbia, it is indicated by the name, provide it in Latin (e.g., Ivan)",
-        "birth-date": "Date of Birth",
-        "passport": "Passport series and number (international passport)",
-        "passport-description": "Without symbols and spaces",
-        "citizenship": "Citizenship",
-        "telegram": "Your Telegram for contact",
-        "telegram-description": "Username only, without symbols",
-        "in-serbia": "I am already in Serbia",
-        "out-serbia": "I am not in Serbia yet",
-        "enter-date": "Last date of entry into Serbia",
-        "address": "Your address in Serbia for receiving documents",
-        "address-description": "In Serbian with a postal code. Example: 11197, Beograd (Novi Beograd), Ulica Jurija Gagarina 10, stan 4",
-        "phone": "Contact phone number",
-        "phone-description": "With code +381, without spaces",
-        "phone-invalid": "Invalid phone format",
-        "residence-required": "I need a residence permit",
-        "residence-not-required": "Without a residence permit",
-        "agreement-1": "I have insurance or am ready to arrange it independently",
-        "agreement-1-error": "Insurance is required to obtain a residence permit",
-        "agreement-2": "I have not violated the residency rules in the Republic of Serbia",
-        "agreement-3": "I have sufficient funds for living",
-        "agreement-3-error": "Our organization does not provide participants with funds for living",
-        "agreement-4": "I am ready to dedicate at least 10 hours a week to volunteering and submit weekly work reports",
-        "agreement-4-error": "This is a mandatory requirement",
-        "agreement-5": "The volunteer agreement will be drawn up in Serbian, and I will be able to understand it",
-        "agreement-required": "Without this, we cannot review your application",
-        "occupation": "Your occupation",
-        "check-experience": "I have volunteering experience",
-        "experience": "Describe your volunteering experience",
-        "languages": "Which languages do you know",
-        "languages-description": "Indicating your proficiency level",
-        "skills": "What skills do you have",
-        "skills-description": "Development, graphic design, psychology, photography, etc.",
-        "goal": "Why do you want to become a member of the organization?",
-        "bio": "Write a brief biography about yourself"
-      },
-      "view": {
-        "title": "The status of your volunteer application",
-        "last-status": "Last status: {status}",
-        "last-update": "Last update: {date}",
-        "refuse-reason": "Reason for refusal: {reason}",
-        "questions": "If you have any questions about the application, you can send them to <a href='mailto:info@russian.rs' target='_blank'>info@russian.rs</a>",
-        "link": "This page is always accessible via the current link"
-      },
-      "existing": {
-        "title": "You don't need to fill out the form",
-        "description": "The volunteer form is only for new members of the organization"
-      }
-    },
-    "applications": {
-      "title": "Applications for Admission",
-      "empty": "No applications found",
-      "total": "Total: {count}",
-      "created": "Created",
-      "created-short": "Date",
-      "type": "Type",
-      "type-short": "Type",
-      "name": "First and Last Name",
-      "name-short": "Name",
-      "email": "E-mail",
-      "email-short": "Email",
-      "status": "Status",
-      "status-short": "Status",
-      "contractStart": "Contract (start)",
-      "contract-start-short": "Contract",
-      "contract-required": "Contract dates must be specified to complete",
-      "showCompleted": "Show completed",
-      "menu": {
-        "view": "View",
-        "contact": "Contact"
-      },
-      "view": {
-        "title": "Application Form",
-        "created-at": "Filled Out",
-        "status": "Application Status",
-        "contract-start": "Contract (start)",
-        "type": "Type",
-        "name": "First and Last Name",
-        "patronymic": "Patronymic (Father's Name)",
-        "email": "E-mail",
-        "phone": "Phone",
-        "telegram": "Telegram",
-        "birth": "Date of Birth",
-        "passport": "Passport Number",
-        "citizenship": "Citizenship",
-        "in-serbia": "The person already in Serbia and",
-        "out-serbia": "The person not yet in Serbia and",
-        "enter": "Date of Entry into Serbia",
-        "address": "Address in Serbia",
-        "residence-required": "residence permit is required",
-        "residence-not-required": "residence permit is not required",
-        "occupation": "Occupation",
-        "experience": "Has volunteering experience",
-        "no-experience": "Does not have volunteering experience",
-        "languages": "Language Proficiency",
-        "skills": "Skills",
-        "goal": "Purpose of Participation in the Organization",
-        "bio": "Brief Biography",
-        "pause-reason": "Pause reason",
-        "contractDownload": "Download contract",
-        "questionnaireDownload": "Download questionnaire",
-        "envelopDownload": "Download envelop",
-        "editTitle": "Edit application",
-        "editSuccess": "Application updated successfully",
-        "editError": "Error updating application",
-        "refuse-reason": "Reason for refusal",
+        "report-status-select": {
+            "label": "Status",
+            "empty": "Not selected"
+        },
+        "roles": {
+            "ADMIN": "Admin",
+            "ADMIN_SSO": "Admin SSO",
+            "ADMIN_VOLUNTEER": "Admin of volunteers",
+            "ADMIN_WP": "Admin WordPress",
+            "DEVELOPER": "Developer",
+            "INSIDE_VOLUNTEER": "Internal volunteer",
+            "MAIN_VOLUNTEER": "Main volunteer",
+            "GUIDES": "Guide author",
+            "LAWYERS": "Lawyer",
+            "MEDIA": "Media author",
+            "TEACHER": "Teacher",
+            "SEO_MANAGER": "SEO manager",
+            "INTERVIEWER": "Interviewer",
+            "MEMBER": "Member"
+        },
+        "contract-type": {
+            "REGULAR": "Regular (with residence permit)",
+            "ASSOCIATED": "Associated",
+            "select": {
+                "label": "Contract type",
+                "empty": "Not selected"
+            }
+        },
+        "application-status": {
+            "CREATED": "Created",
+            "IN_PROGRESS": "In Progress",
+            "CLARIFICATION": "Clarification",
+            "PAUSED": "Paused",
+            "READY_TO_SEND": "Ready to Send",
+            "DOCS_SENT": "Documents Sent",
+            "DOCS_RECEIVED": "Documents Received",
+            "DONE": "Completed",
+            "DENY": "Denied"
+        },
+        "application-type": {
+            "NEW": "New",
+            "PROLONGATION": "Prolongation"
+        },
+        "copy-text": {
+            "tooltip": "Click to copy",
+            "notification": "Copied to clipboard"
+        },
+        "email-drawer": {
+            "title": "Send Message",
+            "recipients": "Recipients",
+            "subject": "Email Subject",
+            "send": "Send",
+            "emptySubject": "Subject is required",
+            "emptyContent": "Empty email body",
+            "success": "Message sent successfully"
+        },
+        "confirm-modal": {
+            "confirmDefaultButton": "Confirm",
+            "cancelDefaultButton": "Cancel",
+            "waitText": "Wait {timer} s"
+        },
         "deny-reason-modal": {
-          "title": "Reason for refusal",
-          "description": "Please specify the reason for refusal"
+            "title": "Reason for refusal",
+            "description": "Please specify the reason for refusing this application",
+            "confirm-default-button": "Confirm",
+            "cancel-default-button": "Cancel",
+            "reason-placeholder": "Reason for refusal"
+        },
+        "pause-reason-modal": {
+            "title": "Reason for pause",
+            "description": "Please specify the reason for pausing this application",
+            "confirm-default-button": "Pause",
+            "cancel-default-button": "Cancel",
+            "reason-placeholder": "Reason for pause"
         }
-      },
-      "report": {
-        "contract-from": "Start Date",
-        "contract-until": "End Date",
-        "required": "Required",
-        "contract-until-before": "Before the start date",
-        "cancel": "Cancel",
-        "save": "Save",
-        "add": "Add"
-      }
     },
-    "cleaning": {
-      "title": "Clean City (main program)"
+    "footer": {
+        "copyright": "© «Russian Diaspora in Serbia»"
     },
-    "reporting": {
-      "title": "Reporting Guidelines"
+    "pages": {
+        "notFound": {
+            "title": "Something is not right...",
+            "documentTitle": "Page not found",
+            "description": "Page you are trying to open does not exist. You may have mistyped the address, or the page has been moved to another URL. If you think this is an error contact support.",
+            "homeButton": "Home page",
+            "backButton": "Go back"
+        },
+        "unauthorized": {
+            "title": "No access",
+            "documentTitle": "Insufficient rights",
+            "description": "You do not have sufficient rights to view the content. If you believe this is an error, please contact support.",
+            "homeButton": "Home page",
+            "backButton": "Go back"
+        },
+        "welcome": {
+            "title": "Volunteer portal",
+            "documentTitle": "Volunteer portal",
+            "subTitle": "a platform where your help to society becomes even more effective",
+            "bottomText": "Join us and make the world a better place!",
+            "benefits": {
+                "1": {
+                    "name": "Convenient reporting",
+                    "description": "Submit reports on your volunteer activities quickly and easily."
+                },
+                "2": {
+                    "name": "Checking and support",
+                    "description": "Our administrators carefully check your reports, ensuring transparency and fairness of the process. You can always get advice and recommendations to improve your work."
+                },
+                "3": {
+                    "name": "Apply for membership",
+                    "description": "Want to become part of the team? Fill out an application to join the Russian Diaspora. We will help you find a suitable volunteer program where your efforts will bring maximum benefit."
+                }
+            },
+            "buttons": {
+                "application": "Submit an application"
+            }
+        },
+        "profile": {
+            "documentTitle": "Profile",
+            "props": {
+                "city": "City",
+                "address": "Address",
+                "birthDate": "Birth date",
+                "phone": "Phone",
+                "email": "Email",
+                "telegram": "Telegram"
+            },
+            "validation": {
+                "invalidPhone": "Invalid number",
+                "invalidTelegram": "Invalid format",
+                "invalidBirthDate": "Invalid date format",
+                "tooYoung": "You must be at least 18 years old",
+                "invalidDate": "Invalid date format",
+                "contractTypeRequired": "Select contract type",
+                "endDateAfterStart": "The end date must be later than the start date",
+                "invalidEmail": "Invalid email format",
+                "invalidSymbols": "Invalid symbols",
+                "minLetters": "Minimum {count} letters",
+                "maxLetters": "Maximum {count} characters",
+                "title": "Please fill in the missing information in your profile",
+                "description": "To make your profile complete and you can use all the portal features, fill in the following fields:",
+                "footer": "🛠 This will take just a couple of minutes. After filling, all functionality will be available again",
+                "goToProfile": "Edit profile",
+                "fields": {
+                    "avatar": "profile photo",
+                    "city": "city",
+                    "address": "address",
+                    "birthDate": "birth date",
+                    "telegram": "telegram",
+                    "phone": "phone",
+                    "program": "program",
+                    "project": "project"
+                }
+            },
+            "buttons": {
+                "edit": "Edit",
+                "editTooltip": "This functionality is under development, please contact support for editing",
+                "save": "Save"
+            },
+            "updateError": "Error when updating profile",
+            "profileUpdated": "Profile updated successfully",
+            "avatarUpdated": "Profile image updated successfully",
+            "contract": {
+                "no-contract": "No contracts",
+                "title": "Current contract information",
+                "date-until": "End date",
+                "type": "Contract type",
+                "days-left": "Days left: {count}",
+                "prolongation": "Extend",
+                "prolongation-info": "The contract can be extended no earlier than 3 months before the expiration of the current one",
+                "prolongation-disable": "This functionality is still under development",
+                "button": "Add contract",
+                "add": "Adding a contract",
+                "startDate": "Start date",
+                "endDate": "End date",
+                "save": "Save",
+                "created": "Contract successfully created",
+                "createError": "Error creating contract",
+                "number": "Contract {number}",
+                "cannotDeleteLast": "Cannot delete the last contract. A volunteer must have at least one contract."
+            },
+            "selectProgram": "Select a program",
+            "selectProject": "Select a project"
+        },
+        "report": {
+            "document-title": "Report",
+            "report-from": "Report from {date}",
+            "creator": "Volunteer",
+            "creation-date": "Date of report completion",
+            "time-spent-total": "Total amount of time",
+            "time-spent-hours": "{h} h",
+            "time-spent-minutes": "{m} min",
+            "task-date": "Completion date",
+            "task-customer": "Customer",
+            "task-result": "Result of work",
+            "task-files": "Attached files",
+            "edit": "Edit",
+            "accept": "Accept",
+            "reject": "Reject",
+            "comment": "Comment",
+            "comment-required": "When rejecting report comment is required",
+            "comments": "Report's comments",
+            "moderator": "Portal Moderator",
+            "delete": "Delete report",
+            "delete-submit": "Press again to delete"
+        },
+        "edit-report": {
+            "title": "Create new report",
+            "title-edit": "Edit report",
+            "description": "The report must contain at least 10 hours in total. Each task must have proof of work done. If you continue to do a task from last week, then progress (increment) compared to the previous week must be visible. Otherwise, the report may not be accepted.",
+            "task": "Task {index}",
+            "task-name": "Name",
+            "task-description": "Description",
+            "task-description-description": "A brief description of what you did",
+            "task-result": "Result",
+            "task-result-description": "Link to article, post, Google Docs, GitHub, etc.",
+            "task-time-spent": "Time spent",
+            "task-time-spent-description": "How much time was spent",
+            "task-time-spent-suffix": " h.",
+            "task-date": "Date",
+            "task-date-description": "When the task was completed",
+            "task-customer": "Customer",
+            "task-customer-description": "Who initiated the task?",
+            "required": "Required",
+            "min-letters": "Minimum {count} letters",
+            "invalid-url": "Invalid URL format",
+            "add-task-button": "Add task",
+            "send-button": "Submit",
+            "save-button": "Save",
+            "fill-up-button": "Fill up",
+            "confirm-title": "Not enough time spent",
+            "confirm-description": "Your report shows less than 10 hours total for all tasks. The report may not be accepted. Are you sure you want to send it?",
+            "different-weeks-alert": "The tasks were completed in different calendar weeks."
+        },
+        "my-reports": {
+            "title": "My reports",
+            "total": "Total: {total}",
+            "filters": "Filters",
+            "reset-filter": "Reset filters",
+            "empty-reports": "Nothing found",
+            "new-report": "New report",
+            "report": {
+                "created": "Created",
+                "status": "Status",
+                "task-count": "Total tasks",
+                "time-spent": "Time spent",
+                "week": "Week"
+            }
+        },
+        "report-list": {
+            "title": "All reports",
+            "volunteer": "Volunteer",
+            "creation-date": "Creation date",
+            "weeks": "Reporting weeks",
+            "status": "Status",
+            "time-spent": "Time spent",
+            "program": "Program",
+            "project": "Project",
+            "task-count": "Tasks: {count}",
+            "files-count": "Attachments: {count}",
+            "files": "Files",
+            "total": "Total: {count}",
+            "empty": "Reports not found",
+            "reset": "Reset filters",
+            "program-filter": "Program filter",
+            "program-filter-not-selected": "Not selected",
+            "project-filter": "Project filter",
+            "project-filter-not-selected": "Not selected"
+        },
+        "user-list": {
+            "title": "All volunteers",
+            "total": "Total: {total}",
+            "search": "Search",
+            "new-user": "New user",
+            "first-name": "First name",
+            "last-name": "Last name",
+            "full-name": "Name Surname",
+            "contract-info": "Contract info",
+            "contract-from": "Start date",
+            "contract-until": "End date",
+            "email": "e-mail",
+            "username": "Username",
+            "roles": "Roles",
+            "program": "Program",
+            "filter-by-program": "Filter by programs",
+            "no-program": "No program",
+            "project": "Project",
+            "filter-by-project": "Filter by projects",
+            "no-project": "No project",
+            "contractDue": "Contract until",
+            "create-button": "Create",
+            "menu-common": "Common",
+            "menu-control": "Control",
+            "menu-view": "View",
+            "menu-contact": "Contact",
+            "menu-reports": "Reports",
+            "menu-activate": "Activate",
+            "menu-deactivate": "Deactivate",
+            "empty": "Nothing found",
+            "required": "Required",
+            "min-letters": "At least {count} symbols",
+            "max-letters": "At most {count} symbols",
+            "invalid-email": "Invalid e-mail",
+            "invalid-name": "Invalid characters",
+            "invalid-username": "Only latin letters and numbers, cannot start with a number",
+            "user-created-message": "User successfully created"
+        },
+        "playgrounds": {
+            "title": "Playgrounds report",
+            "description": "Instructions for filling",
+            "requirements": "A volunteer is required to monitor at least 3 playgrounds and devote at least 10 hours to this every week.",
+            "whats-new": "The form for filling out reports has been unified for volunteers of all Russian Diaspora programs. Now the site monitoring report must be filled out and sent only once a week, information about all 3 sites must be entered into one report.<br/>There is no need to fill out a route sheet.",
+            "steps": {
+                "1": {
+                    "title": "Go to the report creation page",
+                    "link": "<a href='/report/create'>Follow this link</a> or via the side menu"
+                },
+                "2": {
+                    "title": "Fill in the Excel file using the template",
+                    "description": "1 playground = 1 completed file",
+                    "link": "You can download the template <a href='https://docs.google.com/spreadsheets/d/1Vu1m7sVkMmSn8blN6K2-9eL6KGCiMwcvze9Ydn3HrTA' target='_blank'>by link</a>",
+                    "hint": "Copy the file to yourself <i>File - Make a copy</i>.<br/>Fill in the table and download as .xlsx file <i>File - Download</i>"
+                },
+                "3": {
+                    "title": "Enter information about three playgrounds",
+                    "description": "1 playground = 1 task",
+                    "fields": "In the <strong>Name</strong> field, specify the name of the site, for example <i>Playground in Šumice Park</i>. In the <strong>Description</strong> field, fill in your detailed comment on the playground. In the <strong>Result</strong> field, enter the link to the playground on Google Maps. The <strong>Customer</strong> field is not required.<br/>The total number of hours spent across all playgrounds must be at least 10.<br/>Please attach a photo of the playground and a completed Excel file with the playground parameters to the files."
+                },
+                "4": {
+                    "title": "All is ready!",
+                    "hint": "Don't forget to click the <strong>Submit</strong> button"
+                }
+            }
+        },
+        "application": {
+            "terms": {
+                "title": "Joining and Participating in Organization Activities",
+                "required": "Required",
+                "agree-1": "I have read and agree with the goals and terms outlined in the <a href='https://russian.rs/about/documents' target='_blank'>charter and code of ethics of the organization</a>",
+                "agree-2": "I consent to the processing and storage of the information I provided in accordance with the <a href='https://russian.rs/privacy-policy' target='_blank'>privacy policy</a>",
+                "button-application": "Fill Out the Application Form"
+            },
+            "form": {
+                "title": "Membership Application Form",
+                "required": "Required to fill out",
+                "invalid-symbols": "Invalid symbols",
+                "button-send": "Submit Application",
+                "min-letters": "Minimum length - {count}",
+                "max-letters": "Maximum length - {count}",
+                "form-error": "The form is filled out incorrectly",
+                "captcha-error": "Captcha verification failed",
+                "application-sent": "Your application received",
+                "email": "Your e-mail",
+                "email-invalid": "Invalid e-mail format",
+                "name": "First Name Last Name",
+                "name-description": "As in the passport, in Latin characters",
+                "patronymic": "Patronymic (Father's Name)",
+                "patronymic-description": "In Serbia, it is indicated by the name, provide it in Latin (e.g., Ivan)",
+                "birth-date": "Date of Birth",
+                "passport": "Passport series and number (international passport)",
+                "passport-description": "Without symbols and spaces",
+                "citizenship": "Citizenship",
+                "telegram": "Your Telegram for contact",
+                "telegram-description": "Username only, without symbols",
+                "in-serbia": "I am already in Serbia",
+                "out-serbia": "I am not in Serbia yet",
+                "enter-date": "Last date of entry into Serbia",
+                "address": "Your address in Serbia for receiving documents",
+                "address-description": "In Serbian with a postal code. Example: 11197, Beograd (Novi Beograd), Ulica Jurija Gagarina 10, stan 4",
+                "phone": "Contact phone number",
+                "phone-description": "With code +381, without spaces",
+                "phone-invalid": "Invalid phone format",
+                "residence-required": "I need a residence permit",
+                "residence-not-required": "Without a residence permit",
+                "agreement-1": "I have insurance or am ready to arrange it independently",
+                "agreement-1-error": "Insurance is required to obtain a residence permit",
+                "agreement-2": "I have not violated the residency rules in the Republic of Serbia",
+                "agreement-3": "I have sufficient funds for living",
+                "agreement-3-error": "Our organization does not provide participants with funds for living",
+                "agreement-4": "I am ready to dedicate at least 10 hours a week to volunteering and submit weekly work reports",
+                "agreement-4-error": "This is a mandatory requirement",
+                "agreement-5": "The volunteer agreement will be drawn up in Serbian, and I will be able to understand it",
+                "agreement-required": "Without this, we cannot review your application",
+                "occupation": "Your occupation",
+                "check-experience": "I have volunteering experience",
+                "experience": "Describe your volunteering experience",
+                "languages": "Which languages do you know",
+                "languages-description": "Indicating your proficiency level",
+                "skills": "What skills do you have",
+                "skills-description": "Development, graphic design, psychology, photography, etc.",
+                "goal": "Why do you want to become a member of the organization?",
+                "bio": "Write a brief biography about yourself"
+            },
+            "view": {
+                "title": "The status of your volunteer application",
+                "last-status": "Last status: {status}",
+                "last-update": "Last update: {date}",
+                "refuse-reason": "Reason for refusal: {reason}",
+                "questions": "If you have any questions about the application, you can send them to <a href='mailto:info@russian.rs' target='_blank'>info@russian.rs</a>",
+                "link": "This page is always accessible via the current link"
+            },
+            "existing": {
+                "title": "You don't need to fill out the form",
+                "description": "The volunteer form is only for new members of the organization"
+            }
+        },
+        "applications": {
+            "title": "Applications for Admission",
+            "empty": "No applications found",
+            "total": "Total: {count}",
+            "created": "Created",
+            "created-short": "Date",
+            "type": "Type",
+            "type-short": "Type",
+            "name": "First and Last Name",
+            "name-short": "Name",
+            "email": "E-mail",
+            "email-short": "Email",
+            "status": "Status",
+            "status-short": "Status",
+            "contractStart": "Contract (start)",
+            "contract-start-short": "Contract",
+            "contract-required": "Contract dates must be specified to complete",
+            "showCompleted": "Show completed",
+            "menu": {
+                "view": "View",
+                "contact": "Contact"
+            },
+            "view": {
+                "title": "Application Form",
+                "created-at": "Filled Out",
+                "status": "Application Status",
+                "contract-start": "Contract (start)",
+                "type": "Type",
+                "name": "First and Last Name",
+                "patronymic": "Patronymic (Father's Name)",
+                "email": "E-mail",
+                "phone": "Phone",
+                "telegram": "Telegram",
+                "birth": "Date of Birth",
+                "passport": "Passport Number",
+                "citizenship": "Citizenship",
+                "in-serbia": "The person already in Serbia and",
+                "out-serbia": "The person not yet in Serbia and",
+                "enter": "Date of Entry into Serbia",
+                "address": "Address in Serbia",
+                "residence-required": "residence permit is required",
+                "residence-not-required": "residence permit is not required",
+                "occupation": "Occupation",
+                "experience": "Has volunteering experience",
+                "no-experience": "Does not have volunteering experience",
+                "languages": "Language Proficiency",
+                "skills": "Skills",
+                "goal": "Purpose of Participation in the Organization",
+                "bio": "Brief Biography",
+                "pause-reason": "Pause reason",
+                "contractDownload": "Download contract",
+                "questionnaireDownload": "Download questionnaire",
+                "envelopDownload": "Download envelop",
+                "editTitle": "Edit application",
+                "editSuccess": "Application updated successfully",
+                "editError": "Error updating application",
+                "refuse-reason": "Reason for refusal",
+                "deny-reason-modal": {
+                    "title": "Reason for refusal",
+                    "description": "Please specify the reason for refusal"
+                }
+            },
+            "report": {
+                "contract-from": "Start Date",
+                "contract-until": "End Date",
+                "required": "Required",
+                "contract-until-before": "Before the start date",
+                "cancel": "Cancel",
+                "save": "Save",
+                "add": "Add"
+            }
+        },
+        "cleaning": {
+            "title": "Clean City (main program)"
+        },
+        "reporting": {
+            "title": "Reporting Guidelines"
+        }
+    },
+    "errors": {
+        "request": "Error occurred",
+        "file-download": "Error downloading file"
+    },
+    "navbar": {
+        "reports": {
+            "reporting": "Reporting",
+            "my-reports": "My reports",
+            "new-report": "New report",
+            "new-report-playground": "Playground report",
+            "report": "Report",
+            "all": "All reports",
+            "summary": "Summary",
+            "cleaning": "Report for \"Clean City\"",
+            "reporting-guide": "Reporting Guidelines"
+        },
+        "volunteers": {
+            "volunteers": "Volunteers",
+            "all-volunteers": "All volunteers",
+            "applications": "Applications",
+            "statistics": "Statistics"
+        },
+        "account-settings": "Account settings",
+        "support": "Contact support"
     }
-  },
-  "errors": {
-    "request": "Error occurred",
-    "file-download": "Error downloading file"
-  },
-  "navbar": {
-    "reports": {
-      "reporting": "Reporting",
-      "my-reports": "My reports",
-      "new-report": "New report",
-      "new-report-playground": "Playground report",
-      "report": "Report",
-      "all": "All reports",
-      "summary": "Summary",
-      "cleaning": "Report for \"Clean City\"",
-      "reporting-guide": "Reporting Guidelines"
-    },
-    "volunteers": {
-      "volunteers": "Volunteers",
-      "all-volunteers": "All volunteers",
-      "applications": "Applications",
-      "statistics": "Statistics"
-    },
-    "account-settings": "Account settings",
-    "support": "Contact support"
-  }
 }
