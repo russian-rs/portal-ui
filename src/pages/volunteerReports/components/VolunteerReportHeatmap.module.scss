@@ -1,11 +1,11 @@
 .heatmapContainer {
     width: 100%;
-    overflow-x: auto;
+    overflow-x: hidden;
 }
 
 .heatmapWrapper {
     width: 100%;
-    min-width: 800px;
+    min-width: 0;
 }
 
 .heatmapGrid {
@@ -69,6 +69,7 @@
 .weekSquares {
     display: grid;
     gap: 2px;
+    grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
 }
 
 .weekSquare {
@@ -77,7 +78,7 @@
     border-radius: 3px;
     cursor: pointer;
     transition: all 0.2s ease;
-    
+
     &:hover {
         transform: scale(1.1);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -96,14 +97,26 @@
     background-color: var(--mantine-color-green-6);
 }
 
-.na { /* нет контракта */
+.na {
+    /* нет контракта */
     background-color: var(--mantine-color-gray-6);
     border: 1px solid var(--mantine-color-gray-5);
 }
 
-.waiting { /* ожидание: текущая неделя без отчёта */
+.waiting {
+    /* ожидание: текущая неделя без отчёта */
     background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
     border: 1px solid var(--mantine-color-gray-5);
+}
+
+.exceptionVacation {
+    background-color: var(--mantine-color-blue-5);
+    border: 1px solid var(--mantine-color-blue-6);
+}
+
+.exceptionSick {
+    background-color: var(--mantine-color-blue-1);
+    border: 1px solid var(--mantine-color-blue-4);
 }
 
 .legendSquare {
@@ -117,22 +130,22 @@
         grid-template-columns: 1fr;
         gap: 0.5rem;
     }
-    
+
     .weekHeaders {
         margin-left: 0;
         grid-template-columns: repeat(auto-fit, minmax(16px, 1fr));
     }
-    
+
     .volunteerRow {
         grid-template-columns: 1fr;
         gap: 0.5rem;
         padding: 0.75rem 0;
     }
-    
+
     .weekSquares {
-        grid-template-columns: repeat(auto-fit, minmax(16px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(16px, 1fr));
     }
-    
+
     .weekSquare {
         width: 100%;
         height: auto;
@@ -142,7 +155,7 @@
 
 @media (max-width: $mantine-breakpoint-sm) {
     .heatmapWrapper {
-        min-width: 520px;
+        min-width: 0;
     }
 }
 

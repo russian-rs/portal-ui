@@ -4,18 +4,15 @@ export interface VolunteerReport {
     id: string
     week: string // Дата начала недели в ISO формате
     hoursSpent: number
-    status: 'PENDING' | 'APPROVED' | 'REJECTED'
+    status: "PENDING" | "APPROVED" | "REJECTED"
     createTime: string
 }
 
 export type VolunteerReportData = {
     id: string // используем username как стабильный строковый идентификатор
-} & Pick<
-    UserInfoDto,
-    'fullName' | 'email' | 'username' | 'avatar' | 'program' | 'project' | 'contracts'
-> & {
-    reports: VolunteerReport[]
-}
+} & Pick<UserInfoDto, "fullName" | "email" | "username" | "avatar" | "program" | "project" | "contracts"> & {
+        reports: VolunteerReport[]
+    }
 
 export interface VolunteerReportFilter {
     search?: string
@@ -41,4 +38,3 @@ export interface VolunteerReportResponse {
         pageSize: number
     }
 }
-

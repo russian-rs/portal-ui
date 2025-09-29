@@ -32,14 +32,14 @@ export class VolunteerReportApiService {
         }
 
         // 4) Создаем VolunteerReportData для каждого волонтера
-        const volunteers: VolunteerReportData[] = allVolunteers.map(user => {
+        const volunteers: VolunteerReportData[] = allVolunteers.map((user) => {
             const userReports = reportsByUser[user.username] || []
             const volunteerReports: VolunteerReport[] = []
 
             // Группируем отчеты по неделям
             const reportsByWeek: Record<string, any[]> = {}
             for (const report of userReports) {
-                const weekStartIso = dayjs(report.createTime).startOf('isoWeek').toISOString()
+                const weekStartIso = dayjs(report.createTime).startOf("isoWeek").toISOString()
                 if (!reportsByWeek[weekStartIso]) {
                     reportsByWeek[weekStartIso] = []
                 }
@@ -48,11 +48,17 @@ export class VolunteerReportApiService {
 
             // Создаем агрегированные отчеты по неделям
             for (const [week, weekReports] of Object.entries(reportsByWeek)) {
-                const hoursSpent = Math.max(0, Math.round(
-                    weekReports.reduce((sum: number, r: any) =>
-                        sum + (r.tasks?.reduce((taskSum: number, t: any) => taskSum + (t.timeSpent || 0), 0) || 0), 0
-                    ) / 60
-                ))
+                const hoursSpent = Math.max(
+                    0,
+                    Math.round(
+                        weekReports.reduce(
+                            (sum: number, r: any) =>
+                                sum +
+                                (r.tasks?.reduce((taskSum: number, t: any) => taskSum + (t.timeSpent || 0), 0) || 0),
+                            0
+                        ) / 60
+                    )
+                )
 
                 // Берем последний отчет недели для статуса и времени
                 const latestReport = weekReports.reduce((latest, current) =>
@@ -63,14 +69,14 @@ export class VolunteerReportApiService {
                     id: latestReport.id,
                     week,
                     hoursSpent,
-                    status: (latestReport.status as any) || 'PENDING',
+                    status: (latestReport.status as any) || "PENDING",
                     createTime: latestReport.createTime || week,
                 })
             }
 
             // Фильтруем отчеты по стартовой дате
-            const start = dayjs(startDate).startOf('isoWeek')
-            const filteredReports = volunteerReports.filter(r => !dayjs(r.week).isBefore(start, 'week'))
+            const start = dayjs(startDate).startOf("isoWeek")
+            const filteredReports = volunteerReports.filter((r) => !dayjs(r.week).isBefore(start, "week"))
 
             return {
                 id: user.username,
@@ -89,10 +95,11 @@ export class VolunteerReportApiService {
         let filteredVolunteers = volunteers
         if (search && search.trim()) {
             const q = search.trim().toLowerCase()
-            filteredVolunteers = volunteers.filter((v) =>
-                v.fullName?.toLowerCase().includes(q) ||
-                v.email?.toLowerCase().includes(q) ||
-                v.username?.toLowerCase().includes(q)
+            filteredVolunteers = volunteers.filter(
+                (v) =>
+                    v.fullName?.toLowerCase().includes(q) ||
+                    v.email?.toLowerCase().includes(q) ||
+                    v.username?.toLowerCase().includes(q)
             )
         }
 
@@ -106,7 +113,7 @@ export class VolunteerReportApiService {
         const content = filteredVolunteers.slice(startIndex, endIndex)
 
         return {
-            content: content.map(v => ({ ...v, id: v.username })),
+            content: content.map((v) => ({ ...v, id: v.username })),
             page: {
                 totalElements,
                 totalPages,
@@ -116,7 +123,7 @@ export class VolunteerReportApiService {
         }
     }
 
-    private static async fetchAllVolunteers(filter: Pick<ReportFilter, 'program' | 'project'>): Promise<UserInfoDto[]> {
+    private static async fetchAllVolunteers(filter: Pick<ReportFilter, "program" | "project">): Promise<UserInfoDto[]> {
         // Получаем всех волонтеров через searchUsers без поиска, но с фильтрами
         const pageSize = 150
         let pageNumber = 0
@@ -136,12 +143,12 @@ export class VolunteerReportApiService {
                 collected.push(...data.content)
 
                 const totalPages = data.page.totalPages ?? 0
-                if (pageNumber >= (totalPages - 1) || pageNumber >= 19) {
+                if (pageNumber >= totalPages - 1 || pageNumber >= 19) {
                     break
                 }
                 pageNumber += 1
             } catch (error) {
-                console.error('Error fetching volunteers:', error)
+                console.error("Error fetching volunteers:", error)
                 break
             }
         }
@@ -149,7 +156,9 @@ export class VolunteerReportApiService {
         return collected
     }
 
-    private static async fetchReportsForPeriod(filter: Pick<ReportFilter, 'dateFrom' | 'program' | 'project'>): Promise<ReportDto[]> {
+    private static async fetchReportsForPeriod(
+        filter: Pick<ReportFilter, "dateFrom" | "program" | "project">
+    ): Promise<ReportDto[]> {
         const pageSize = 200
         let pageNumber = 0
         const collected: ReportDto[] = []
@@ -160,7 +169,7 @@ export class VolunteerReportApiService {
             const data = response.data
             collected.push(...data.content)
             const totalPages = data.page.totalPages ?? 0
-            if (pageNumber >= (totalPages - 1) || pageNumber >= 9) {
+            if (pageNumber >= totalPages - 1 || pageNumber >= 9) {
                 break
             }
             pageNumber += 1
@@ -168,4 +177,3 @@ export class VolunteerReportApiService {
         return collected
     }
 }
-

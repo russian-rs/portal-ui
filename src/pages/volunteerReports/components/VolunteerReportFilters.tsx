@@ -1,4 +1,4 @@
-import { Box, Flex, Input, Paper, Select, Text, Button } from "@mantine/core"
+import { Box, Flex, Input, Paper, Select, Text, Button, Checkbox } from "@mantine/core"
 import { IconSearch, IconFilter, IconX } from "@tabler/icons-react"
 import React from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -15,6 +15,8 @@ interface VolunteerReportFiltersProps {
     onProjectChange: (value: string | null) => void
     periodMonths: string
     onPeriodChange: (value: string) => void
+    hideNA: boolean
+    onHideNAChange: (value: boolean) => void
     onReset: () => void
 }
 
@@ -27,7 +29,9 @@ export const VolunteerReportFilters: React.FC<VolunteerReportFiltersProps> = ({
     onProjectChange,
     periodMonths,
     onPeriodChange,
-    onReset
+    hideNA,
+    onHideNAChange,
+    onReset,
 }) => {
     const intl = useIntl()
     const hasActiveFilters = search || selectedProgram || selectedProject || periodMonths !== "3"
@@ -37,17 +41,19 @@ export const VolunteerReportFilters: React.FC<VolunteerReportFiltersProps> = ({
             <Flex direction="column" gap="md">
                 <Flex align="center" gap="sm">
                     <IconFilter size={20} />
-                    <Text fw={500}><FormattedMessage id={locales.filters} /></Text>
+                    <Text fw={500}>
+                        <FormattedMessage id={locales.filters} />
+                    </Text>
                     {hasActiveFilters && (
-                                                    <Button
-                                variant="subtle"
-                                size="xs"
-                                leftSection={<IconX size={14} />}
-                                onClick={onReset}
-                                color="gray"
-                            >
-                                <FormattedMessage id={locales.reset} />
-                            </Button>
+                        <Button
+                            variant="subtle"
+                            size="xs"
+                            leftSection={<IconX size={14} />}
+                            onClick={onReset}
+                            color="gray"
+                        >
+                            <FormattedMessage id={locales.reset} />
+                        </Button>
                     )}
                 </Flex>
                 <Flex gap="md" wrap="wrap" align="flex-end">
@@ -83,9 +89,16 @@ export const VolunteerReportFilters: React.FC<VolunteerReportFiltersProps> = ({
                             data={[
                                 { value: "3", label: "Последние 3 месяца" },
                                 { value: "6", label: "Последние 6 месяцев" },
-                                { value: "year", label: "С начала года" }
+                                { value: "year", label: "С начала года" },
                             ]}
                             className={classes.periodSelect}
+                        />
+                    </Box>
+                    <Box className={classes.filterItem}>
+                        <Checkbox
+                            label="Скрывать без контрактов (N/A)"
+                            checked={hideNA}
+                            onChange={(e) => onHideNAChange(e.currentTarget.checked)}
                         />
                     </Box>
                 </Flex>

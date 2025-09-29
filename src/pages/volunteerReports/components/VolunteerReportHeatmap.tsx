@@ -1,8 +1,7 @@
-import { Box, Flex, Text, Tooltip, Group, Badge } from "@mantine/core"
+import { Box, Flex, Text, Tooltip, Group, Badge, Menu } from "@mantine/core"
 import { IconCheck } from "@tabler/icons-react"
-import { useMediaQuery } from "@mantine/hooks"
 import dayjs from "dayjs"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { VolunteerReportData } from "../lib/types"
 import { locales } from "../lib/locales"
@@ -19,27 +18,45 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
     volunteers,
     startDate,
     onVolunteerSelect,
-    selectedVolunteers
+    selectedVolunteers,
 }) => {
     const intl = useIntl()
-    const endDate = dayjs().startOf('isoWeek')
-    const totalWeeks = endDate.diff(startDate.startOf('isoWeek'), 'week') + 1
-    const isSm = useMediaQuery('(max-width: 48em)')
+    const endDate = dayjs().startOf("isoWeek")
+    const totalWeeks = endDate.diff(startDate.startOf("isoWeek"), "week") + 1
     const cellSizePx = 20
-    
+
+    type ExceptionType = "vacation" | "sick"
+    const [exceptions, setExceptions] = useState<Record<string, ExceptionType>>(() => {
+        try {
+            const raw = localStorage.getItem("volunteerHeatmapExceptions")
+            return raw ? JSON.parse(raw) : {}
+        } catch {
+            return {}
+        }
+    })
+    useEffect(() => {
+        try {
+            localStorage.setItem("volunteerHeatmapExceptions", JSON.stringify(exceptions))
+        } catch {}
+    }, [exceptions])
+
+    const [openCellKey, setOpenCellKey] = useState<string | null>(null)
+    const getCellKey = (volunteerId: string, weekIndex: number) =>
+        `${volunteerId}:${startDate.clone().add(weekIndex, "week").startOf("isoWeek").toISOString()}`
+
     // Генерируем недели для отображения
     const generateWeeks = () => {
         const weeks = []
-        let currentDate = startDate.clone().startOf('isoWeek')
-        
+        let currentDate = startDate.clone().startOf("isoWeek")
+
         for (let i = 0; i < totalWeeks; i++) {
             weeks.push({
                 date: currentDate.clone(),
-                weekNumber: i + 1
+                weekNumber: i + 1,
             })
-            currentDate = currentDate.add(1, 'week')
+            currentDate = currentDate.add(1, "week")
         }
-        
+
         return weeks
     }
 
@@ -47,77 +64,123 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
 
     // Получаем цвет для квадратика на основе количества часов за неделю и дат контрактов
     const getSquareColor = (volunteer: VolunteerReportData, weekIndex: number) => {
-        const weekStart = startDate.clone().add(weekIndex, 'week').startOf('isoWeek')
-        const isCurrentWeek = dayjs().isSame(weekStart, 'isoWeek')
+        const weekStart = startDate.clone().add(weekIndex, "week").startOf("isoWeek")
+        const isCurrentWeek = dayjs().isSame(weekStart, "isoWeek")
+
+        const key = getCellKey(volunteer.id, weekIndex)
+        if (exceptions[key] === "vacation") return "exceptionVacation"
+        if (exceptions[key] === "sick") return "exceptionSick"
 
         // Недели ДО начала первого контракта — N/A (серые)
-        const firstContractStart = volunteer.contracts && volunteer.contracts.length > 0
-            ? volunteer.contracts
-                .map(c => dayjs(c.startDate).startOf('isoWeek'))
-                .reduce((earliest, d) => (d.isBefore(earliest) ? d : earliest))
-            : null
-        if (firstContractStart && weekStart.isBefore(firstContractStart, 'week')) {
-            return 'na'
+        const firstContractStart =
+            volunteer.contracts && volunteer.contracts.length > 0
+                ? volunteer.contracts
+                      .map((c) => dayjs(c.startDate).startOf("isoWeek"))
+                      .reduce((earliest, d) => (d.isBefore(earliest) ? d : earliest))
+                : null
+        if (firstContractStart && weekStart.isBefore(firstContractStart, "week")) {
+            return "na"
         }
 
         // Если нет контрактов вовсе — все недели N/A
         if (!firstContractStart) {
-            return 'na'
+            return "na"
         }
 
         // Ищем отчеты за эту неделю
-        const reportsForWeek = volunteer.reports.filter(report => {
+        const reportsForWeek = volunteer.reports.filter((report) => {
             const reportDate = dayjs(report.week)
-            return reportDate.isSame(weekStart, 'isoWeek')
+            return reportDate.isSame(weekStart, "isoWeek")
         })
-        
+
         if (reportsForWeek.length === 0) {
             // Текущая неделя без отчёта — ожидание (белый)
-            return isCurrentWeek ? 'waiting' : 'noReports'
+            return isCurrentWeek ? "waiting" : "noReports"
         }
 
         const totalHours = reportsForWeek.reduce((sum, report) => sum + report.hoursSpent, 0)
-        if (totalHours >= 10) return 'fullReports'
-        return 'partialReports' // 1–9 часов
+        if (totalHours >= 10) return "fullReports"
+        return "partialReports" // 1–9 часов
     }
 
     // Получаем подсказку для квадратика
     const getSquareTooltip = (volunteer: VolunteerReportData, weekIndex: number) => {
-        const weekStart = startDate.clone().add(weekIndex, 'week').startOf('isoWeek')
-        const weekEnd = weekStart.clone().add(1, 'week')
-        
-        const reportsForWeek = volunteer.reports.filter(report => {
+        const weekStart = startDate.clone().add(weekIndex, "week").startOf("isoWeek")
+        const weekEnd = weekStart.clone().add(1, "week")
+
+        const reportsForWeek = volunteer.reports.filter((report) => {
             const reportDate = dayjs(report.week)
-            return reportDate.isSame(weekStart, 'isoWeek')
+            return reportDate.isSame(weekStart, "isoWeek")
         })
-        
+
         if (reportsForWeek.length === 0) {
-            return `${volunteer.fullName}: Нет отчетов за ${weekStart.format('DD.MM.YYYY')} - ${weekEnd.format('DD.MM.YYYY')}`
+            return `${volunteer.fullName}: Нет отчетов за ${weekStart.format("DD.MM.YYYY")} - ${weekEnd.format("DD.MM.YYYY")}`
         }
-        
+
         const totalHours = reportsForWeek.reduce((sum, report) => sum + report.hoursSpent, 0)
         const reportCount = reportsForWeek.length
-        
-        return `${volunteer.fullName}: ${reportCount} отчет(ов), ${totalHours} часов за ${weekStart.format('DD.MM.YYYY')} - ${weekEnd.format('DD.MM.YYYY')}`
+
+        return `${volunteer.fullName}: ${reportCount} отчет(ов), ${totalHours} часов за ${weekStart.format("DD.MM.YYYY")} - ${weekEnd.format("DD.MM.YYYY")}`
     }
 
-    // Обработчик клика по квадратику
-    const handleSquareClick = (volunteerId: string) => {
-        onVolunteerSelect(volunteerId)
+    // Меню для отметки исключений на клетке
+    const renderCellWithMenu = (
+        volunteer: VolunteerReportData,
+        weekIndex: number,
+        square: React.ReactNode,
+        cellKey: string
+    ) => {
+        const hasException = !!exceptions[cellKey]
+        return (
+            <Menu
+                withinPortal
+                opened={openCellKey === cellKey}
+                onChange={(opened) => setOpenCellKey(opened ? cellKey : null)}
+                position="bottom-start"
+            >
+                <Menu.Target>
+                    <div onClick={() => setOpenCellKey(openCellKey === cellKey ? null : cellKey)}>{square}</div>
+                </Menu.Target>
+                <Menu.Dropdown>
+                    <Menu.Item onClick={() => setExceptions((prev) => ({ ...prev, [cellKey]: "vacation" }))}>
+                        Отпуск
+                    </Menu.Item>
+                    <Menu.Item onClick={() => setExceptions((prev) => ({ ...prev, [cellKey]: "sick" }))}>
+                        Больничный
+                    </Menu.Item>
+                    {hasException && (
+                        <Menu.Item
+                            color="red"
+                            onClick={() =>
+                                setExceptions((prev) => {
+                                    const next = { ...prev }
+                                    delete next[cellKey]
+                                    return next
+                                })
+                            }
+                        >
+                            Снять отметку
+                        </Menu.Item>
+                    )}
+                </Menu.Dropdown>
+            </Menu>
+        )
     }
 
     const getVolunteerStats = (volunteer: VolunteerReportData) => {
         const totalReports = volunteer.reports.length
         const totalHours = volunteer.reports.reduce((sum, report) => sum + report.hoursSpent, 0)
         const missedWeeks = totalWeeks - totalReports
-        
+
         return { totalReports, totalHours, missedWeeks }
     }
 
     if (volunteers.length === 0) {
         return (
             <Box p="xl" ta="center">
-                <Text c="dimmed"><FormattedMessage id={locales.noData} /></Text>
+                <Text c="dimmed">
+                    <FormattedMessage id={locales.noData} />
+                </Text>
             </Box>
         )
     }
@@ -126,18 +189,26 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
         <div className={classes.heatmapContainer}>
             <Flex justify="center" mb="lg">
                 <Group gap="xs">
-                    <Text size="sm" fw={500}><FormattedMessage id={locales.legend} />:</Text>
+                    <Text size="sm" fw={500}>
+                        <FormattedMessage id={locales.legend} />:
+                    </Text>
                     <Flex align="center" gap="xs">
                         <Box className={`${classes.legendSquare} ${classes.noReports}`} />
-                        <Text size="xs"><FormattedMessage id={locales.noReports} /></Text>
+                        <Text size="xs">
+                            <FormattedMessage id={locales.noReports} />
+                        </Text>
                     </Flex>
                     <Flex align="center" gap="xs">
                         <Box className={`${classes.legendSquare} ${classes.partialReports}`} />
-                        <Text size="xs"><FormattedMessage id={locales.partialReports} /></Text>
+                        <Text size="xs">
+                            <FormattedMessage id={locales.partialReports} />
+                        </Text>
                     </Flex>
                     <Flex align="center" gap="xs">
                         <Box className={`${classes.legendSquare} ${classes.fullReports}`} />
-                        <Text size="xs"><FormattedMessage id={locales.fullReports} /></Text>
+                        <Text size="xs">
+                            <FormattedMessage id={locales.fullReports} />
+                        </Text>
                     </Flex>
                     <Flex align="center" gap="xs">
                         <Box className={`${classes.legendSquare} ${classes.na}`} />
@@ -145,23 +216,32 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                     </Flex>
                     <Flex align="center" gap="xs">
                         <Box className={`${classes.legendSquare} ${classes.waiting}`} />
-                        <Text size="xs"><FormattedMessage id={locales.pending} /></Text>
+                        <Text size="xs">
+                            <FormattedMessage id={locales.pending} />
+                        </Text>
+                    </Flex>
+                    <Flex align="center" gap="xs">
+                        <Box className={`${classes.legendSquare} ${classes.exceptionVacation}`} />
+                        <Text size="xs">Отпуск</Text>
+                    </Flex>
+                    <Flex align="center" gap="xs">
+                        <Box className={`${classes.legendSquare} ${classes.exceptionSick}`} />
+                        <Text size="xs">Больничный</Text>
                     </Flex>
                 </Group>
             </Flex>
 
             <div className={classes.heatmapWrapper}>
                 <div className={classes.heatmapGrid}>
-
                     {volunteers.map((volunteer, volunteerIndex) => {
                         const stats = getVolunteerStats(volunteer)
                         const weeksColors = weeks.map((_, idx) => getSquareColor(volunteer, idx))
-                        const missedCount = weeksColors.filter(c => c === 'noReports').length
-                        const partialCount = weeksColors.filter(c => c === 'partialReports').length
-                        const allNA = weeksColors.length > 0 && weeksColors.every(c => c === 'na')
+                        const missedCount = weeksColors.filter((c) => c === "noReports").length
+                        const partialCount = weeksColors.filter((c) => c === "partialReports").length
+                        const allNA = weeksColors.length > 0 && weeksColors.every((c) => c === "na")
                         const allFull = !allNA && missedCount === 0 && partialCount === 0
                         const isSelected = selectedVolunteers.has(volunteer.id)
-                        
+
                         return (
                             <div key={volunteer.id} className={classes.volunteerRow}>
                                 <div className={classes.volunteerInfo}>
@@ -169,64 +249,93 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                                         <Text
                                             size="sm"
                                             fw={500}
-                                            className={`${classes.volunteerName} ${isSelected ? classes.selectedVolunteer : ''}`}
+                                            className={`${classes.volunteerName} ${isSelected ? classes.selectedVolunteer : ""}`}
                                         >
                                             {volunteer.fullName}
                                         </Text>
                                         <Badge
                                             size="xs"
                                             variant="filled"
-                                            color={allNA ? "gray" : missedCount > 0 ? "red" : partialCount > 0 ? "yellow" : "green"}
-                                            leftSection={!allNA && missedCount === 0 && partialCount === 0 ? <IconCheck size={12} style={{ marginRight: 0 }} /> : undefined}
+                                            color={
+                                                allNA
+                                                    ? "gray"
+                                                    : missedCount > 0
+                                                      ? "red"
+                                                      : partialCount > 0
+                                                        ? "yellow"
+                                                        : "green"
+                                            }
+                                            leftSection={
+                                                !allNA && missedCount === 0 && partialCount === 0 ? (
+                                                    <IconCheck size={12} style={{ marginRight: 0 }} />
+                                                ) : undefined
+                                            }
                                             px={6}
                                             py={2}
                                             styles={{ section: { marginRight: 0 } }}
                                         >
-                                            {allNA ? (
-                                                "N/A"
-                                            ) : missedCount > 0 ? (
-                                                String(missedCount)
-                                            ) : partialCount > 0 ? (
-                                                String(partialCount)
-                                            ) : (
-                                                ""
-                                            )}
+                                            {allNA
+                                                ? "N/A"
+                                                : missedCount > 0
+                                                  ? String(missedCount)
+                                                  : partialCount > 0
+                                                    ? String(partialCount)
+                                                    : ""}
                                         </Badge>
                                     </div>
                                     <Text size="xs" c="dimmed">
                                         {stats.totalReports} отчетов, {stats.totalHours} часов
                                     </Text>
                                 </div>
-                                <div 
-                                    className={classes.weekSquares}
-                                    style={isSm ? undefined : { gridTemplateColumns: `repeat(${totalWeeks}, ${cellSizePx}px)` }}
-                                >
-                                    {weeks.map((week, weekIndex) => (
-                                        <Tooltip
-                                            key={weekIndex}
-                                            label={(function(){
-                                                const color = getSquareColor(volunteer, weekIndex)
-                                                if (color === 'na') {
-                                                    const weekStart = startDate.clone().add(weekIndex, 'week').startOf('isoWeek')
-                                                    const weekEnd = weekStart.clone().add(1, 'week')
-                                                    return `${volunteer.fullName}: N/A — нет контракта за ${weekStart.format('DD.MM.YYYY')} - ${weekEnd.format('DD.MM.YYYY')}`
-                                                }
-                                                if (color === 'waiting') {
-                                                    const weekStart = startDate.clone().add(weekIndex, 'week').startOf('isoWeek')
-                                                    const weekEnd = weekStart.clone().add(1, 'week')
-                                                    return `${volunteer.fullName}: Ожидание — ${weekStart.format('DD.MM.YYYY')} - ${weekEnd.format('DD.MM.YYYY')}`
-                                                }
-                                                return getSquareTooltip(volunteer, weekIndex)
-                                            })()}
-                                            position="top"
-                                        >
-                                            <Box
-                                                className={`${classes.weekSquare} ${classes[getSquareColor(volunteer, weekIndex)]}`}
-                                                onClick={() => handleSquareClick(volunteer.id)}
-                                                style={{ cursor: 'pointer' }}
-                                            />
-                                        </Tooltip>
-                                    ))}
+                                <div className={classes.weekSquares}>
+                                    {weeks.map((week, weekIndex) => {
+                                        const color = getSquareColor(volunteer, weekIndex)
+                                        const cellKey = getCellKey(volunteer.id, weekIndex)
+                                        const square = (
+                                            <Tooltip
+                                                label={(function () {
+                                                    if (color === "na") {
+                                                        const weekStart = startDate
+                                                            .clone()
+                                                            .add(weekIndex, "week")
+                                                            .startOf("isoWeek")
+                                                        const weekEnd = weekStart.clone().add(1, "week")
+                                                        return `${volunteer.fullName}: N/A — нет контракта за ${weekStart.format("DD.MM.YYYY")} - ${weekEnd.format(
+                                                            "DD.MM.YYYY"
+                                                        )}`
+                                                    }
+                                                    if (color === "waiting") {
+                                                        const weekStart = startDate
+                                                            .clone()
+                                                            .add(weekIndex, "week")
+                                                            .startOf("isoWeek")
+                                                        const weekEnd = weekStart.clone().add(1, "week")
+                                                        return `${volunteer.fullName}: Ожидание — ${weekStart.format("DD.MM.YYYY")} - ${weekEnd.format(
+                                                            "DD.MM.YYYY"
+                                                        )}`
+                                                    }
+                                                    if (color === "exceptionVacation") {
+                                                        return `${volunteer.fullName}: Отпуск`
+                                                    }
+                                                    if (color === "exceptionSick") {
+                                                        return `${volunteer.fullName}: Больничный`
+                                                    }
+                                                    return getSquareTooltip(volunteer, weekIndex)
+                                                })()}
+                                                position="top"
+                                            >
+                                                <Box
+                                                    className={`${classes.weekSquare} ${classes[color]}`}
+                                                    style={{ cursor: "pointer" }}
+                                                />
+                                            </Tooltip>
+                                        )
+                                        return (
+                                            <React.Fragment key={weekIndex}>
+                                                {renderCellWithMenu(volunteer, weekIndex, square, cellKey)}
+                                            </React.Fragment>
+                                        )
+                                    })}
                                 </div>
                             </div>
                         )
@@ -236,14 +345,20 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
             <Flex justify="center" mt="lg">
                 <Group gap="lg">
                     <Flex align="center" gap="xs">
-                        <Text size="sm" fw={500}><FormattedMessage id={locales.period} />:</Text>
+                        <Text size="sm" fw={500}>
+                            <FormattedMessage id={locales.period} />:
+                        </Text>
                         <Text size="sm" c="dimmed">
-                            {startDate.format('DD.MM.YYYY')} - {endDate.format('DD.MM.YYYY')}
+                            {startDate.format("DD.MM.YYYY")} - {endDate.format("DD.MM.YYYY")}
                         </Text>
                     </Flex>
                     <Flex align="center" gap="xs">
-                        <Text size="sm" fw={500}><FormattedMessage id={locales.totalWeeks} />:</Text>
-                        <Text size="sm" c="dimmed">{totalWeeks}</Text>
+                        <Text size="sm" fw={500}>
+                            <FormattedMessage id={locales.totalWeeks} />:
+                        </Text>
+                        <Text size="sm" c="dimmed">
+                            {totalWeeks}
+                        </Text>
                     </Flex>
                 </Group>
             </Flex>

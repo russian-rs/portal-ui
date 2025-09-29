@@ -6,4 +6,3 @@ const allowed = ["ADMIN", "ADMIN_VOLUNTEER", "MAIN_VOLUNTEER"]
 export const hasAccess = (user: UserInfoDto | null): boolean => {
     return hasPermission(user, allowed)
 }
-

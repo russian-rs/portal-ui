@@ -5,7 +5,7 @@
 
 .filterItem {
     min-width: 200px;
-    
+
     @media (max-width: $mantine-breakpoint-md) {
         min-width: 100%;
     }
@@ -13,7 +13,7 @@
 
 .searchInput {
     min-width: 250px;
-    
+
     @media (max-width: $mantine-breakpoint-md) {
         min-width: 100%;
     }
@@ -21,7 +21,7 @@
 
 .periodSelect {
     min-width: 200px;
-    
+
     @media (max-width: $mantine-breakpoint-md) {
         min-width: 100%;
     }
@@ -31,4 +31,3 @@
     background-color: light-dark(var(--mantine-color-blue-0), var(--mantine-color-blue-9));
     border: 1px solid light-dark(var(--mantine-color-blue-2), var(--mantine-color-blue-7));
 }
-
