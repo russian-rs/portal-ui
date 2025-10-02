@@ -1,4 +1,4 @@
-import { Box, Collapse, Group, rem, Text, ThemeIcon, UnstyledButton } from "@mantine/core"
+import { Anchor, Box, Collapse, Group, rem, ThemeIcon, UnstyledButton } from "@mantine/core"
 import { IconChevronRight } from "@tabler/icons-react"
 import React, { useContext, useState } from "react"
 import { FormattedMessage } from "react-intl"
@@ -6,6 +6,7 @@ import { UserContext } from "src/app/providers/UserContext"
 import { ItemGroupProps } from "src/shared/ui/appNavbar/AppNavbar"
 import classes from "src/shared/ui/appNavbar/links/NavbarLinksGroup.module.scss"
 import { hasPermission } from "src/shared/user/roles"
+import { Link } from "react-router"
 
 export function LinksGroup({ icon: Icon, label, initiallyOpened, items, link, roles }: ItemGroupProps) {
     const hasChildren = Array.isArray(items)
@@ -14,11 +15,18 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, items, link, ro
 
     const children = (hasChildren ? items : [])
         ?.filter((item) => hasPermission(user, item.roles, item.hideFrom))
-        .map((item) => (
-            <Text<"a"> component="a" className={classes.link} href={item.link} key={item.label}>
-                <FormattedMessage id={item.label} />
-            </Text>
-        ))
+        .map((item) => {
+            const isExternal = item.link?.startsWith("http://") || item.link?.startsWith("https://")
+            return isExternal ? (
+                <Anchor className={classes.link} href={item.link} key={item.label}>
+                    <FormattedMessage id={item.label} />
+                </Anchor>
+            ) : (
+                <Anchor component={Link} className={classes.link} to={item.link} key={item.label}>
+                    <FormattedMessage id={item.label} />
+                </Anchor>
+            )
+        })
 
     return (
         <>
@@ -27,7 +35,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, items, link, ro
                 className={classes.control}
                 component={link ? "a" : "button"}
                 href={link ? link : ""}
-                target="_blank"
+                target={link?.startsWith("http") ? "_blank" : undefined}
             >
                 <Group justify="space-between" gap={0}>
                     <Box style={{ display: "flex", alignItems: "center" }}>
