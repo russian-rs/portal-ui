@@ -1,5 +1,5 @@
 import { AppShell, Group, ScrollArea, Transition } from "@mantine/core"
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useMemo, useRef } from "react"
 import { NavbarContext } from "src/app/providers/NavbarProvider"
 import { UserContext } from "src/app/providers/UserContext"
 import { useDesktop } from "src/shared/hooks/useDesktop"
@@ -28,7 +28,7 @@ export interface ItemGroupProps {
     roles?: string[]
 }
 
-export const AppNavbar = () => {
+export const AppNavbar = React.memo(function AppNavbar() {
     const isDesktop = useDesktop()
     const { user } = useContext(UserContext)
 
@@ -38,9 +38,11 @@ export const AppNavbar = () => {
         setMenuOpened(isDesktop)
     }, [isDesktop])
 
-    const items = Content.filter((item) => hasPermission(user, item.roles)).map((item) => (
-        <LinksGroup {...item} key={item.label} />
-    ))
+    const items = useMemo(() => {
+        return Content.filter((item) => hasPermission(user, item.roles)).map((item) => (
+            <LinksGroup {...item} key={item.label} />
+        ))
+    }, [user])
 
     return (
         <Transition mounted={menuOpened} transition="scale-x" timingFunction="ease">
@@ -67,4 +69,4 @@ export const AppNavbar = () => {
             )}
         </Transition>
     )
-}
+})
