@@ -49,7 +49,7 @@ export const Content: ItemGroupProps[] = [
             {
                 label: "navbar.volunteers.reports",
                 link: "/volunteers/reports",
-                roles: ["ADMIN_VOLUNTEER", "ADMIN_SSO"],
+                roles: ["ADMIN_VOLUNTEER"],
             },
         ],
         roles: ["ADMIN_VOLUNTEER", "ADMIN_SSO", "INTERVIEWER"],
