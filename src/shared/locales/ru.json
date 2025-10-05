@@ -442,6 +442,8 @@
             "created-short": "Дата",
             "type": "Тип",
             "type-short": "Тип",
+            "name-and-email": "Имя Фамилия, E-mail",
+            "name-and-email-short": "Имя, Email",
             "name": "Имя Фамилия",
             "name-short": "Имя",
             "email": "E-mail",
@@ -452,6 +454,7 @@
             "contract-start-short": "Договор",
             "contract-required": "Для завершения необходимо указать даты контракта",
             "showCompleted": "Показать завершенные",
+            "add-note": "Добавить заметку",
             "menu": {
                 "view": "Посмотреть",
                 "contact": "Написать"
@@ -494,7 +497,8 @@
                 "deny-reason-modal": {
                     "title": "Причина отказа",
                     "description": "Пожалуйста, укажите причину отказа"
-                }
+                },
+                "notes": "Заметки"
             },
             "report": {
                 "contract-from": "Дата начала",
