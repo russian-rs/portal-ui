@@ -35,12 +35,179 @@ $table-width: 100%;
     width: 100%;
 
     // Базовые ширины колонок для больших экранов (1440px+)
+    th:nth-child(1),
+    td:nth-child(1) {
+        // Дата создания
+        width: 110px;
+        min-width: 110px;
+    }
 
-    th,
-    td {
+    th:nth-child(2),
+    td:nth-child(2) {
+        // Тип
+        width: 100px;
+        min-width: 90px;
         overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+        // Имя и email
+        width: 250px;
+        min-width: 200px;
+    }
+
+    th:nth-child(4),
+    td:nth-child(4) {
+        // Дата договора
+        width: 130px;
+        min-width: 120px;
+    }
+
+    th:nth-child(5),
+    td:nth-child(5) {
+        // Статус
+        width: 180px;
+        min-width: 150px;
+    }
+
+    th:nth-child(6),
+    td:nth-child(6) {
+        // Причина паузы
+        width: 70px;
+        min-width: 50px;
+        overflow: hidden;
+    }
+
+    th:nth-child(7),
+    td:nth-child(7) {
+        // Меню и заметки
+        width: 120px;
+        min-width: 120px;
+    }
+
+    // Адаптация для экранов 1024-1439px
+    @media (max-width: 1439px) and (min-width: 1024px) {
+        font-size: 0.8rem;
+
+        th,
+        td {
+            padding: 0.3rem 0.2rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: wrap;
+        }
+
+        th:nth-child(1),
+        td:nth-child(1) {
+            // Дата создания
+            width: 90px;
+            min-width: 90px;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            // Тип
+            width: 60px;
+            min-width: 60px;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            // Имя и email
+            width: 180px;
+            min-width: 180px;
+        }
+
+        th:nth-child(4),
+        td:nth-child(4) {
+            // Дата договора
+            width: 80px;
+            min-width: 70px;
+        }
+
+        th:nth-child(5),
+        td:nth-child(5) {
+            // Статус
+            width: 110px;
+            min-width: 50px;
+        }
+
+        th:nth-child(6),
+        td:nth-child(6) {
+            // Причина паузы
+            width: 30px;
+            min-width: 30px;
+        }
+
+        th:nth-child(7),
+        td:nth-child(7) {
+            // Меню и заметки
+            width: 100px;
+            min-width: 100px;
+        }
+    }
+
+    // Для совсем маленьких экранов (1024-1200px)
+    @media (max-width: 1200px) and (min-width: 1024px) {
+        font-size: 0.75rem;
+
+        th,
+        td {
+            padding: 0.25rem 0.15rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: wrap;
+        }
+
+        th:nth-child(1),
+        td:nth-child(1) {
+            // Дата создания
+            width: 70px;
+            min-width: 70px;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            // Тип
+            width: 50px;
+            min-width: 50px;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            // Имя и email
+            width: 150px;
+            min-width: 150px;
+        }
+
+        th:nth-child(4),
+        td:nth-child(4) {
+            // Дата договора
+            width: 100px;
+            min-width: 80px;
+        }
+
+        th:nth-child(5),
+        td:nth-child(5) {
+            // Статус
+            width: 130px;
+            min-width: 100px;
+        }
+
+        th:nth-child(6),
+        td:nth-child(6) {
+            // Причина паузы
+            width: 50px;
+            min-width: 50px;
+        }
+
+        th:nth-child(7),
+        td:nth-child(7) {
+            // Меню и заметки
+            width: 80px;
+            min-width: 80px;
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 import { Blockquote, Button, Divider, Flex, Text } from "@mantine/core"
+import { useDisclosure } from "@mantine/hooks"
 import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
 import {
     IconArrowRight,
@@ -10,25 +11,28 @@ import {
     IconContract,
     IconEPassport,
     IconLanguageHiragana,
+    IconListCheck,
     IconLocation,
+    IconMailFilled,
+    IconPencil,
     IconPhone,
     IconWorld,
-    IconListCheck,
-    IconPencil,
-    IconMailFilled
 } from "@tabler/icons-react"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
-import { useDisclosure } from "@mantine/hooks"
 import { UserContext } from "src/app/providers/UserContext"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
-import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
+import { AddApplicationNote } from "src/pages/applications/note/AddApplicationNote"
+import { ApplicationNote } from "src/pages/applications/note/ApplicationNote"
 import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
+import { resolveUsers } from "src/shared/api/user/UserApiService"
 import generateContractPdf from "src/shared/docs/contract"
+import generateEnvelopPdf from "src/shared/docs/envelop"
+import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 import { setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
@@ -37,11 +41,10 @@ import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
 import { ApplicationStatus } from "src/shared/user/applications"
 import { hasPermission } from "src/shared/user/roles"
+import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
-import generateQuestionnairePdf from "src/shared/docs/questionnaire"
-import generateEnvelopPdf from "src/shared/docs/envelop"
 
 export const ApplicationView = () => {
     const { id } = useParams()
@@ -49,6 +52,8 @@ export const ApplicationView = () => {
     const { user } = useContext(UserContext)
     const intl = useIntl()
     const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
+
+    const queryClient = useQueryClient()
 
     if (!id) {
         navigate("/not-found", { replace: true })
@@ -61,7 +66,10 @@ export const ApplicationView = () => {
     const [application, setApplication] = useState<ApplicationDto>(defaultApplicationDto)
     setDocumentTitleByString(application.name)
 
-    const { isFetching: isLoading } = useQuery({
+    const noteLogins = application.notes?.map((note) => note.createdBy).filter(Boolean) || []
+    const { data: users } = resolveUsers(noteLogins)
+
+    const { isFetching: isLoading, refetch: refetchApplication } = useQuery({
         queryKey: ["getApplication", id],
         queryFn: () =>
             PrivateApplicationApiService.getApplication(id!!).then((response) => {
@@ -103,6 +111,14 @@ export const ApplicationView = () => {
 
     const onApplicationUpdate = (updatedApplication: ApplicationDto) => {
         setApplication(updatedApplication)
+    }
+
+    const onNoteAdded = () => {
+        refetchApplication()
+    }
+
+    const onNoteDeleted = () => {
+        refetchApplication()
     }
 
     return (
@@ -310,7 +326,7 @@ export const ApplicationView = () => {
                     <Button
                         variant="gradient"
                         gradient={{ from: "#FF7E5F", to: "#FEB47B" }}
-                        rightSection={<IconMailFilled  size={15} />}
+                        rightSection={<IconMailFilled size={15} />}
                         disabled={application.contract == null}
                         className={classes.envelopGenerate}
                         onClick={() => {
@@ -322,6 +338,31 @@ export const ApplicationView = () => {
                     <Button variant="outline" rightSection={<IconPencil size={14} />} onClick={openDrawer}>
                         <FormattedMessage id="pages.profile.buttons.edit" />
                     </Button>
+                </Flex>
+
+                <Divider className={classes.divider} />
+
+                <Flex className={classes.notes} direction="column" gap="md">
+                    <Text fw="bold" size="lg">
+                        <FormattedMessage id={locales.notes} />
+                    </Text>
+
+                    <AddApplicationNote applicationId={application.id} onNoteAdded={onNoteAdded} />
+
+                    {application.notes && application.notes.length > 0 && (
+                        <Flex direction="column" gap="sm">
+                            {application.notes
+                                .sort((n1: any, n2: any) => dayjs(n2.createTime).diff(dayjs(n1.createTime)))
+                                .map((note: any) => (
+                                    <ApplicationNote
+                                        key={note.id}
+                                        note={note}
+                                        userInfo={users[note.createdBy]}
+                                        onNoteDeleted={onNoteDeleted}
+                                    />
+                                ))}
+                        </Flex>
+                    )}
                 </Flex>
             </Flex>
 

@@ -227,10 +227,9 @@ export const Applications = () => {
                                     <FormattedMessage id={isLargeDesktop ? locales.type : locales.typeShort} />
                                 </Table.Th>
                                 <Table.Th>
-                                    <FormattedMessage id={isLargeDesktop ? locales.name : locales.nameShort} />
-                                </Table.Th>
-                                <Table.Th>
-                                    <FormattedMessage id={isLargeDesktop ? locales.email : locales.emailShort} />
+                                    <FormattedMessage
+                                        id={isLargeDesktop ? locales.nameAndEmail : locales.nameAndEmailShort}
+                                    />
                                 </Table.Th>
                                 <Table.Th>
                                     <FormattedMessage
