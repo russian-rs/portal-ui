@@ -221,10 +221,9 @@ export const Applications = () => {
                         <Table.Thead>
                             <Table.Tr>
                                 <Table.Th>
-                                    <FormattedMessage id={isLargeDesktop ? locales.created : locales.createdShort} />
-                                </Table.Th>
-                                <Table.Th>
-                                    <FormattedMessage id={isLargeDesktop ? locales.type : locales.typeShort} />
+                                    <FormattedMessage
+                                        id={isLargeDesktop ? locales.createdAndType : locales.createdShortAndTypeShort}
+                                    />
                                 </Table.Th>
                                 <Table.Th>
                                     <FormattedMessage
@@ -238,9 +237,6 @@ export const Applications = () => {
                                 </Table.Th>
                                 <Table.Th>
                                     <FormattedMessage id={isLargeDesktop ? locales.status : locales.statusShort} />
-                                </Table.Th>
-                                <Table.Th>
-                                    <FormattedMessage id={"pages.applications.view.pause-reason"} />
                                 </Table.Th>
                                 <Table.Th></Table.Th>
                             </Table.Tr>
