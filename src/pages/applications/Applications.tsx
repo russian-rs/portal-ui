@@ -270,24 +270,24 @@ export const Applications = () => {
                         </Text>
                     </Flex>
                 )}
-                {page.totalPages > 1 && (
-                    <Flex className={classes.paginationArea}>
-                        <Pagination
-                            className={classes.pagination}
-                            total={page.totalPages}
-                            value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
-                            disabled={isFetching}
-                            onChange={(newPage) => {
-                                const pageNumber = newPage - 1
-                                setPageRequest({ ...pageRequest, pageNumber })
-                            }}
-                        />
-                        <Text c="dimmed">
-                            <FormattedMessage id={locales.total} values={{ count: page.totalElements }} />
-                        </Text>
-                    </Flex>
-                )}
             </Flex>
+
+            {page.totalPages > 1 && (
+                <Flex className={classes.pagination}>
+                    <Pagination
+                        total={page.totalPages}
+                        value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
+                        disabled={isFetching}
+                        onChange={(newPage) => {
+                            const pageNumber = newPage - 1
+                            setPageRequest({ ...pageRequest, pageNumber })
+                        }}
+                    />
+                    <Text c="dimmed">
+                        <FormattedMessage id={locales.total} values={{ count: page.totalElements }} />
+                    </Text>
+                </Flex>
+            )}
         </Flex>
     )
 }
