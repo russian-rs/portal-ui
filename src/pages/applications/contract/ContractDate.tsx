@@ -92,7 +92,9 @@ export const ContractDate = ({ application, onChange, className }: ContractEditM
                     onClick={toggle}
                     className={className}
                     disabled={isApplicationCompleted}
-                    style={{ padding: 0 }}
+                    size="xs"
+                    h={28}
+                    px="sm"
                 >
                     {application.contract && <Text size="sm">{dayjs(contract.startDate).format("DD MMM YYYY")}</Text>}
                     {!application.contract && (
