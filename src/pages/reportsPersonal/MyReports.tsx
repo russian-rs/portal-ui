@@ -1,4 +1,5 @@
 import { Badge, Button, Flex, Pagination, Text } from "@mantine/core"
+import { useMediaQuery } from "@mantine/hooks"
 import { PageRequest, ReportFilter } from "@russian-rs/portal-api-axios"
 import { IconChevronRight, IconClockCheck, IconListCheck, IconPlus, IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
@@ -19,7 +20,6 @@ import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
 import { WeekPicker } from "src/shared/ui/weekPicker/WeekPicker"
 import classes from "./MyReports.module.scss"
-import { useMediaQuery } from "@mantine/hooks"
 
 export const MyReports = () => {
     setDocumentTitleByLocale(locales.documentTitle)
@@ -223,7 +223,7 @@ export const MyReports = () => {
         <Flex direction="column">
             <CustomLoader visible={isFetching} className={classes.loader} />
             <Flex className={classes.root}>
-                <Flex direction="column" gap="md" w="100%">
+                <Flex direction="column" gap="md" w="100%" className={classes.content}>
                     <Flex columnGap="xl" rowGap="md" align="center" wrap="wrap-reverse">
                         <Text className={classes.title}>
                             <FormattedMessage id={locales.documentTitle} />
@@ -267,22 +267,22 @@ export const MyReports = () => {
                             {rows}
                         </Flex>
                     </Flex>
-                    <Flex className={classes.pagination}>
-                        <Pagination
-                            total={response.page.totalPages}
-                            value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
-                            disabled={isFetching}
-                            hideWithOnePage={true}
-                            onChange={(newPage) => {
-                                const pageNumber = newPage - 1
-                                setPageRequest({ ...pageRequest, pageNumber })
-                            }}
-                        />
-                        <Text c="dimmed">
-                            <FormattedMessage id={locales.total} values={{ total: response.page.totalElements }} />
-                        </Text>
-                    </Flex>
                 </Flex>
+            </Flex>
+            <Flex className={classes.pagination}>
+                <Pagination
+                    total={response.page.totalPages}
+                    value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
+                    disabled={isFetching}
+                    hideWithOnePage={true}
+                    onChange={(newPage) => {
+                        const pageNumber = newPage - 1
+                        setPageRequest({ ...pageRequest, pageNumber })
+                    }}
+                />
+                <Text c="dimmed">
+                    <FormattedMessage id={locales.total} values={{ total: response.page.totalElements }} />
+                </Text>
             </Flex>
         </Flex>
     )
