@@ -179,7 +179,6 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
 }
 
 const isDisabled = (status: ApplicationStatus, application: ApplicationDto): boolean => {
-    // Блокируем изменение статуса, если заявка уже завершена
     if (application.status === ApplicationStatus.DONE) {
         return true
     }
