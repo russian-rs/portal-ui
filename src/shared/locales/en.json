@@ -308,6 +308,7 @@
             "contract-from": "Start date",
             "contract-until": "End date",
             "email": "e-mail",
+            "full-name-email": "Name Surname, e-mail",
             "username": "Username",
             "roles": "Roles",
             "program": "Program",
