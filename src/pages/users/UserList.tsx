@@ -1,4 +1,16 @@
-import { Avatar, Badge, Button, CloseButton, Flex, Input, Pagination, Paper, Table, Text } from "@mantine/core"
+import {
+    Avatar,
+    Badge,
+    Button,
+    CloseButton,
+    Collapse,
+    Flex,
+    Input,
+    Pagination,
+    Paper,
+    Table,
+    Text,
+} from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
 import { ContractDto, PageRequest } from "@russian-rs/portal-api-axios"
 import { IconLock, IconPencil, IconPlus, IconUfo } from "@tabler/icons-react"
@@ -43,6 +55,7 @@ export const UserList = () => {
     const [selectedProject, setSelectedProject] = useState<string | null>(searchParams.get("project") || null)
 
     const isMobile = useMediaQuery("(max-width: 1360px)")
+    const [filtersOpened, setFiltersOpened] = useState(false)
 
     const [filter] = useState(defaultFilter)
     const [pageRequest, setPageRequest] = useState<PageRequest>({
@@ -481,23 +494,61 @@ export const UserList = () => {
         <Flex direction="column">
             <CustomLoader visible={isFetching} className={classes.loader} />
             <Flex className={classes.root}>
-                <Flex className={classes.filters}>
-                    <Input
-                        placeholder={intl.formatMessage({ id: locales.search })}
-                        value={search}
-                        onChange={(event) => setSearch(event.currentTarget.value)}
-                        rightSectionPointerEvents="all"
-                        rightSection={
-                            <CloseButton
-                                aria-label="Clear input"
-                                onClick={() => setSearch("")}
-                                style={{ display: search ? undefined : "none" }}
-                            />
-                        }
-                    />
-                    <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
-                    <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
-                </Flex>
+                {isMobile ? (
+                    <>
+                        <Button variant="light" size="sm" onClick={() => setFiltersOpened((v) => !v)}>
+                            <FormattedMessage id="common.filters" defaultMessage="Фильтры" />
+                            {(() => {
+                                let count = 0
+                                if ((debouncedSearch || "").trim()) count += 1
+                                if (selectedProgram !== null) count += 1
+                                if (selectedProject !== null) count += 1
+                                return count > 0 ? (
+                                    <Badge ml={8} size="sm" variant="light" color="blue">
+                                        {count}
+                                    </Badge>
+                                ) : null
+                            })()}
+                        </Button>
+                        <Collapse in={filtersOpened}>
+                            <Flex className={classes.filters}>
+                                <Input
+                                    placeholder={intl.formatMessage({ id: locales.search })}
+                                    value={search}
+                                    onChange={(event) => setSearch(event.currentTarget.value)}
+                                    rightSectionPointerEvents="all"
+                                    rightSection={
+                                        <CloseButton
+                                            aria-label="Clear input"
+                                            onClick={() => setSearch("")}
+                                            style={{ display: search ? undefined : "none" }}
+                                        />
+                                    }
+                                />
+                                <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
+                                <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
+                            </Flex>
+                        </Collapse>
+                    </>
+                ) : (
+                    <Flex className={classes.filters}>
+                        <Input
+                            placeholder={intl.formatMessage({ id: locales.search })}
+                            value={search}
+                            onChange={(event) => setSearch(event.currentTarget.value)}
+                            rightSectionPointerEvents="all"
+                            rightSection={
+                                <CloseButton
+                                    aria-label="Clear input"
+                                    onClick={() => setSearch("")}
+                                    style={{ display: search ? undefined : "none" }}
+                                />
+                            }
+                        />
+                        <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
+                        <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
+                    </Flex>
+                )}
                 {isMobile ? (
                     <Flex direction="column" rowGap={8} className={classes.mobileList}>
                         {cards}
