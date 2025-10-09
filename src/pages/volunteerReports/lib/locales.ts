@@ -43,4 +43,12 @@ export const locales = {
     statusPartialLastWeek: "pages.volunteer-reports.status-text-partial-last-week",
     noProgram: "pages.report-list.program-filter-not-selected",
     noProject: "pages.report-list.project-filter-not-selected",
+    tooltipNA: "pages.volunteer-reports.tooltip.na",
+    tooltipWaiting: "pages.volunteer-reports.tooltip.waiting",
+    tooltipNoReports: "pages.volunteer-reports.tooltip.no-reports",
+    tooltipReports: "pages.volunteer-reports.tooltip.reports",
+    tooltipWeek: "pages.volunteer-reports.tooltip.week",
+    period3m: "pages.volunteer-reports.period-3m",
+    period6m: "pages.volunteer-reports.period-6m",
+    periodYtd: "pages.volunteer-reports.period-ytd",
 }

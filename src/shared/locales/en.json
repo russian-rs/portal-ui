@@ -338,7 +338,17 @@
             "active-filters": "Active Filters",
             "no-data": "No data to display",
             "volunteers-not-found": "Volunteers not found",
-            "email-subject": "Reminder: weekly report not submitted"
+            "email-subject": "Reminder: weekly report not submitted",
+            "tooltip": {
+                "na": "{name}: N/A — no contract for {from} - {to} ({week})",
+                "waiting": "{name}: Pending — {from} - {to} ({week})",
+                "no-reports": "{name}: No reports for {from} - {to} ({week})",
+                "reports": "{name}: {count, plural, one {# report} other {# reports}}, {hours} {hoursLabel} for {from} - {to} ({week})",
+                "week": "Week {num}"
+            },
+            "period-3m": "Last 3 months",
+            "period-6m": "Last 6 months",
+            "period-ytd": "Year to date"
         },
         "user-list": {
             "title": "All volunteers",
