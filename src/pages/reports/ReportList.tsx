@@ -1,9 +1,9 @@
 import { Avatar, Flex, Pagination, Table, Text } from "@mantine/core"
 import { PageRequest, ReportDto, ReportFilter, UserInfoDto } from "@russian-rs/portal-api-axios"
-import { IconFile, IconClock, IconListCheck, IconUfo } from "@tabler/icons-react"
+import { IconClock, IconFile, IconListCheck, IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
@@ -15,23 +15,22 @@ import { getSpentTimeFromReport } from "src/shared/report/timeSpent"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
 
+import { Badge, useComputedColorScheme } from "@mantine/core"
+import { useMediaQuery } from "@mantine/hooks"
+import { usePrograms } from "src/app/providers/ProgramsProvider"
+import { useProjects } from "src/app/providers/ProjectsProvider"
+import { getReportStatusColor } from "src/shared/report/status"
+import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
+import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
+import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { UserSearch } from "src/shared/ui/userSearch/UserSearch"
 import { WeekPicker } from "src/shared/ui/weekPicker/WeekPicker"
 import { hasPermission } from "src/shared/user/roles"
+import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { defaultFilter, defaultPage, defaultPageResponse, defaultUser } from "./lib/defaults"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
 import classes from "./ReportList.module.scss"
-import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
-import { useMediaQuery } from "@mantine/hooks"
-import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
-import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
-import { Badge } from "@mantine/core"
-import { getReportStatusColor } from "src/shared/report/status"
-import { usePrograms } from "src/app/providers/ProgramsProvider"
-import { useProjects } from "src/app/providers/ProjectsProvider"
-import { getLocalizedName } from "src/shared/utils/getLocalName"
-import { useComputedColorScheme } from "@mantine/core"
 
 export const ReportList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -643,25 +642,25 @@ export const ReportList = () => {
                         </Text>
                     </Flex>
                 )}
-                {page.totalPages > 1 && (
-                    <Flex className={classes.pagination}>
-                        <Pagination
-                            total={page.totalPages}
-                            value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
-                            disabled={isFetchingReports}
-                            onChange={(newPage) => {
-                                const pageNumber = newPage - 1
-                                setPageRequest({ ...pageRequest, pageNumber })
-
-                                updateUrlParams(filter, selectedProgram, selectedProject, pageNumber)
-                            }}
-                        />
-                        <Text c="dimmed">
-                            <FormattedMessage id={locales.total} values={{ count: page.totalElements }} />
-                        </Text>
-                    </Flex>
-                )}
             </Flex>
+            {page.totalPages > 1 && (
+                <Flex className={classes.pagination}>
+                    <Pagination
+                        total={page.totalPages}
+                        value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
+                        disabled={isFetchingReports}
+                        onChange={(newPage) => {
+                            const pageNumber = newPage - 1
+                            setPageRequest({ ...pageRequest, pageNumber })
+
+                            updateUrlParams(filter, selectedProgram, selectedProject, pageNumber)
+                        }}
+                    />
+                    <Text c="dimmed">
+                        <FormattedMessage id={locales.total} values={{ count: page.totalElements }} />
+                    </Text>
+                </Flex>
+            )}
         </Flex>
     )
 }

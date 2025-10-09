@@ -352,6 +352,7 @@
             "contract-from": "Datum početka",
             "contract-until": "Datum završetka",
             "email": "e-mail",
+            "full-name-email": "Ime Prezime, e-mail",
             "username": "Korisničko ime",
             "roles": "Uloge",
             "program": "Program",
@@ -485,6 +486,8 @@
             "created-short": "Datum",
             "type": "Tip",
             "type-short": "Tip",
+            "name-and-email": "Ime i Prezime, E-mail",
+            "name-and-email-short": "Ime, Email",
             "name": "Ime i Prezime",
             "name-short": "Ime",
             "email": "E-mail",
@@ -495,6 +498,7 @@
             "contract-start-short": "Ugovor",
             "contract-required": "Da biste završili, morate navesti datume ugovora",
             "showCompleted": "Prikaži završene",
+            "add-note": "Dodaj zapis",
             "menu": {
                 "view": "Pogledaj",
                 "contact": "Kontaktiraj"
@@ -537,7 +541,8 @@
                 "deny-reason-modal": {
                     "title": "Razlog odbijanja",
                     "description": "Molimo navedite razlog odbijanja"
-                }
+                },
+                "notes": "Zapisi"
             },
             "report": {
                 "contract-from": "Datum početka",

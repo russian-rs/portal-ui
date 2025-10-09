@@ -352,6 +352,7 @@
             "contract-from": "Start date",
             "contract-until": "End date",
             "email": "e-mail",
+            "full-name-email": "Name Surname, e-mail",
             "username": "Username",
             "roles": "Roles",
             "program": "Program",
@@ -485,6 +486,8 @@
             "created-short": "Date",
             "type": "Type",
             "type-short": "Type",
+            "name-and-email": "First and Last Name, E-mail",
+            "name-and-email-short": "Name, Email",
             "name": "First and Last Name",
             "name-short": "Name",
             "email": "E-mail",
@@ -495,6 +498,7 @@
             "contract-start-short": "Contract",
             "contract-required": "Contract dates must be specified to complete",
             "showCompleted": "Show completed",
+            "add-note": "Add note",
             "menu": {
                 "view": "View",
                 "contact": "Contact"
@@ -537,7 +541,8 @@
                 "deny-reason-modal": {
                     "title": "Reason for refusal",
                     "description": "Please specify the reason for refusal"
-                }
+                },
+                "notes": "Notes"
             },
             "report": {
                 "contract-from": "Start Date",
