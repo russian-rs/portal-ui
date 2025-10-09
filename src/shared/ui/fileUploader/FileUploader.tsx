@@ -14,8 +14,9 @@ import classes from "./FileUploader.module.scss"
 interface FileUploaderProps {
     maxFiles?: number
     maxSize?: number
+    files?: FileInfoDto[]
     onFilesUploaded?: (files: FileInfoDto[]) => void
-    onFilesLoading?: (files: String[]) => void
+    onFilesLoading?: (files: string[]) => void
 }
 
 export interface FileUploaderInterface {
@@ -25,25 +26,21 @@ export interface FileUploaderInterface {
 export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>((props, ref) => {
     const intl = useIntl()
 
+    const [loadingFiles, setLoadingFiles] = useState<string[]>([])
     const [uploadedFiles, setUploadedFiles] = useState<FileInfoDto[]>([])
-    const [loadingFiles, setLoadingFiles] = useState<String[]>([])
 
-    const maxSize = props.maxSize ? props.maxSize : 5
-    const maxFiles = props.maxFiles ? props.maxFiles : 7
-    const disabled = uploadedFiles.length >= maxFiles
+    const maxSize = props.maxSize ?? 5 // MB
+    const maxFiles = props.maxFiles ?? 7
+    const currentCount = props.files?.length ?? 0
+    const disabled = currentCount >= maxFiles
 
     useImperativeHandle(ref, () => ({
         delete: (id) => {
-            setUploadedFiles(uploadedFiles.filter((it) => it.id != id))
+            props.onFilesUploaded?.(props.files?.filter((it) => it.id !== id) || [])
         },
     }))
 
-    useEffect(() => {
-        if (props.onFilesUploaded) {
-            props.onFilesUploaded(uploadedFiles)
-        }
-    }, [uploadedFiles])
-
+    // Пробрасываем список «в процессе»
     useEffect(() => {
         if (props.onFilesLoading) {
             props.onFilesLoading(loadingFiles)
@@ -51,7 +48,8 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
     }, [loadingFiles])
 
     const onDrop = async (files: FileWithPath[]) => {
-        if (uploadedFiles.length + files.length > maxFiles) {
+        // Проверка лимита
+        if (currentCount + files.length > maxFiles) {
             notifications.show(
                 ErrorNotification(
                     <Text size="sm">
@@ -64,38 +62,44 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
 
         // показать прогресс: все имена в очереди
         setLoadingFiles(files.map((f) => f.name))
-
-        const uploaded: any[] = []
+        // Инициализируем список загруженных файлов с текущими файлами
+        setUploadedFiles(props.files || [])
 
         try {
             for (const file of files) {
                 try {
-                    // Ждём завершения КАЖДОЙ загрузки прежде чем перейти к следующей
+                    // грузим по очереди, чтобы прогресс был предсказуем
                     const resp = await FilesApiService.uploadFile(file)
-                    uploaded.push(resp.data)
+                    const fileInfo = resp.data
+                    // Добавляем к локальному списку
+                    setUploadedFiles((prev) => [...prev, fileInfo])
+                } catch (e) {
+                    // можно добавить уведомление об ошибке конкретного файла
+                    // showError(file.name, intl.formatMessage({ id: `${locales.errors}.UploadFailed` }))
                 } finally {
-                    // помечаем текущий файл как обработанный
+                    // снимаем файл из «в процессе»
                     setLoadingFiles((prev) => prev.filter((name) => name !== file.name))
                 }
             }
-
-            if (uploaded.length) {
-                setUploadedFiles((prev) => [...prev, ...uploaded])
-            }
         } finally {
-            // на всякий случай скрываем прогресс
+            // на случай рассинхронизации
             setLoadingFiles([])
         }
     }
 
+    // Уведомляем родителя о финальном списке файлов после завершения всех загрузок
+    useEffect(() => {
+        if (uploadedFiles.length > 0 && loadingFiles.length === 0) {
+            props.onFilesUploaded?.(uploadedFiles)
+            setUploadedFiles([]) // Сбрасываем локальное состояние
+        }
+    }, [uploadedFiles, loadingFiles])
+
     const onReject = (fileRejections: FileRejection[]) => {
-        fileRejections.forEach((fileRejection) => {
-            const errorCode = fileRejection.errors[0].code
-            if (errorCode == ErrorCode.FileTooLarge) {
-                showError(
-                    fileRejection.file.name,
-                    intl.formatMessage({ id: `${locales.errors}.${errorCode}` }, { maxSize: maxSize })
-                )
+        fileRejections.forEach((rej) => {
+            const errorCode = rej.errors[0]?.code
+            if (errorCode === ErrorCode.FileTooLarge) {
+                showError(rej.file.name, intl.formatMessage({ id: `${locales.errors}.${errorCode}` }, { maxSize }))
             }
         })
     }
@@ -104,7 +108,7 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
         notifications.show(
             ErrorNotification(
                 <Text fw="bold" size="sm">
-                    {intl.formatMessage({ id: locales.fileName }, { fileName: fileName })}
+                    {intl.formatMessage({ id: locales.fileName }, { fileName })}
                 </Text>,
                 <Text size="sm">{message}</Text>
             )
@@ -116,7 +120,6 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
             onDrop={onDrop}
             onReject={onReject}
             disabled={disabled}
-            maxFiles={maxFiles}
             maxSize={maxSize * 1024 ** 2}
             loading={loadingFiles.length !== 0}
         >
@@ -136,7 +139,7 @@ export const FileUploader = forwardRef<FileUploaderInterface, FileUploaderProps>
                         <FormattedMessage id={locales.title} />
                     </Text>
                     <Text className={classes.subTitle}>
-                        <FormattedMessage id={locales.description} values={{ maxFiles: maxFiles, maxSize: maxSize }} />
+                        <FormattedMessage id={locales.description} values={{ maxFiles, maxSize }} />
                     </Text>
                 </Flex>
             </Flex>
