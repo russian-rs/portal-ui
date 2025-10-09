@@ -338,7 +338,17 @@
             "active-filters": "Активные фильтры",
             "no-data": "Нет данных для отображения",
             "volunteers-not-found": "Волонтеры не найдены",
-            "email-subject": "Напоминание: не сдан еженедельный отчет"
+            "email-subject": "Напоминание: не сдан еженедельный отчет",
+            "tooltip": {
+                "na": "{name}: N/A — нет контракта за {from} - {to} ({week})",
+                "waiting": "{name}: Ожидание — {from} - {to} ({week})",
+                "no-reports": "{name}: Нет отчетов за {from} - {to} ({week})",
+                "reports": "{name}: {count, plural, one {# отчет} few {# отчета} many {# отчетов} other {# отчетов}}, {hours} {hoursLabel} за {from} - {to} ({week})",
+                "week": "Неделя {num}"
+            },
+            "period-3m": "Последние 3 месяца",
+            "period-6m": "Последние 6 месяцев",
+            "period-ytd": "С начала года"
         },
         "user-list": {
             "title": "Все волонтеры",

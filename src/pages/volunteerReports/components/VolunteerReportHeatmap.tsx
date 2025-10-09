@@ -80,7 +80,7 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
         return "partialReports" // 1–9 часов
     }
 
-    // Получаем подсказку для квадратика
+    // Получаем подсказку для квадратика (локализовано)
     const getSquareTooltip = (volunteer: VolunteerReportData, weekIndex: number) => {
         const weekStart = startDate.clone().add(weekIndex, "week").startOf("isoWeek")
         const weekEnd = weekStart.clone().add(1, "week")
@@ -91,13 +91,32 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
         })
 
         if (reportsForWeek.length === 0) {
-            return `${volunteer.fullName}: Нет отчетов за ${weekStart.format("DD.MM.YYYY")} - ${weekEnd.format("DD.MM.YYYY")}`
+            return intl.formatMessage(
+                { id: locales.tooltipNoReports },
+                {
+                    name: volunteer.fullName,
+                    from: weekStart.format("DD.MM.YYYY"),
+                    to: weekEnd.format("DD.MM.YYYY"),
+                    week: intl.formatMessage({ id: locales.tooltipWeek }, { num: weekIndex + 1 }),
+                }
+            )
         }
 
         const totalHours = reportsForWeek.reduce((sum, report) => sum + report.hoursSpent, 0)
         const reportCount = reportsForWeek.length
 
-        return `${volunteer.fullName}: ${reportCount} отчет(ов), ${totalHours} часов за ${weekStart.format("DD.MM.YYYY")} - ${weekEnd.format("DD.MM.YYYY")}`
+        return intl.formatMessage(
+            { id: locales.tooltipReports },
+            {
+                name: volunteer.fullName,
+                count: reportCount,
+                hours: totalHours,
+                hoursLabel: intl.formatMessage({ id: locales.hours }),
+                from: weekStart.format("DD.MM.YYYY"),
+                to: weekEnd.format("DD.MM.YYYY"),
+                week: intl.formatMessage({ id: locales.tooltipWeek }, { num: weekIndex + 1 }),
+            }
+        )
     }
 
     // Формирует общий текст для окошка информации по квадратику, включая номер недели
@@ -105,16 +124,32 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
         const color = getSquareColor(volunteer, weekIndex)
         const weekStart = startDate.clone().add(weekIndex, "week").startOf("isoWeek")
         const weekEnd = weekStart.clone().add(1, "week")
-        const weekNumber = weekIndex + 1
+        const weekLabel = intl.formatMessage({ id: locales.tooltipWeek }, { num: weekIndex + 1 })
 
         if (color === "na") {
-            return `${volunteer.fullName}: N/A — нет контракта за ${weekStart.format("DD.MM.YYYY")} - ${weekEnd.format("DD.MM.YYYY")} (Неделя ${weekNumber})`
+            return intl.formatMessage(
+                { id: locales.tooltipNA },
+                {
+                    name: volunteer.fullName,
+                    from: weekStart.format("DD.MM.YYYY"),
+                    to: weekEnd.format("DD.MM.YYYY"),
+                    week: weekLabel,
+                }
+            )
         }
         if (color === "waiting") {
-            return `${volunteer.fullName}: Ожидание — ${weekStart.format("DD.MM.YYYY")} - ${weekEnd.format("DD.MM.YYYY")} (Неделя ${weekNumber})`
+            return intl.formatMessage(
+                { id: locales.tooltipWaiting },
+                {
+                    name: volunteer.fullName,
+                    from: weekStart.format("DD.MM.YYYY"),
+                    to: weekEnd.format("DD.MM.YYYY"),
+                    week: weekLabel,
+                }
+            )
         }
 
-        return `${getSquareTooltip(volunteer, weekIndex)} (Неделя ${weekNumber})`
+        return getSquareTooltip(volunteer, weekIndex)
     }
 
     const getVolunteerStats = (volunteer: VolunteerReportData) => {

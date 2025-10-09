@@ -83,9 +83,9 @@ export const VolunteerReportFilters: React.FC<VolunteerReportFiltersProps> = ({
                             value={periodMonths}
                             onChange={(value) => onPeriodChange(value || "3")}
                             data={[
-                                { value: "3", label: "Последние 3 месяца" },
-                                { value: "6", label: "Последние 6 месяцев" },
-                                { value: "year", label: "С начала года" },
+                                { value: "3", label: intl.formatMessage({ id: locales.period3m }) },
+                                { value: "6", label: intl.formatMessage({ id: locales.period6m }) },
+                                { value: "year", label: intl.formatMessage({ id: locales.periodYtd }) },
                             ]}
                             className={classes.periodSelect}
                         />
