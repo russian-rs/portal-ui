@@ -1,4 +1,4 @@
-import { Box, Flex, Input, Paper, Select, Text, Button, Checkbox } from "@mantine/core"
+import { Box, Flex, Input, Paper, Select, Text, Button } from "@mantine/core"
 import { IconSearch, IconFilter, IconX } from "@tabler/icons-react"
 import React from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -15,8 +15,6 @@ interface VolunteerReportFiltersProps {
     onProjectChange: (value: string | null) => void
     periodMonths: string
     onPeriodChange: (value: string) => void
-    hideNA: boolean
-    onHideNAChange: (value: boolean) => void
     onReset: () => void
 }
 
@@ -29,8 +27,6 @@ export const VolunteerReportFilters: React.FC<VolunteerReportFiltersProps> = ({
     onProjectChange,
     periodMonths,
     onPeriodChange,
-    hideNA,
-    onHideNAChange,
     onReset,
 }) => {
     const intl = useIntl()
@@ -92,13 +88,6 @@ export const VolunteerReportFilters: React.FC<VolunteerReportFiltersProps> = ({
                                 { value: "year", label: "С начала года" },
                             ]}
                             className={classes.periodSelect}
-                        />
-                    </Box>
-                    <Box className={classes.filterItem}>
-                        <Checkbox
-                            label="Скрывать без контрактов (N/A)"
-                            checked={hideNA}
-                            onChange={(e) => onHideNAChange(e.currentTarget.checked)}
                         />
                     </Box>
                 </Flex>

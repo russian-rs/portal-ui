@@ -1,7 +1,7 @@
-import { Box, Flex, Text, Tooltip, Group, Badge, Menu } from "@mantine/core"
+import { Box, Flex, Text, Group, Badge, Popover } from "@mantine/core"
 import { IconCheck } from "@tabler/icons-react"
 import dayjs from "dayjs"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { VolunteerReportData } from "../lib/types"
 import { locales } from "../lib/locales"
@@ -25,25 +25,6 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
     const totalWeeks = endDate.diff(startDate.startOf("isoWeek"), "week") + 1
     const cellSizePx = 20
 
-    type ExceptionType = "vacation" | "sick"
-    const [exceptions, setExceptions] = useState<Record<string, ExceptionType>>(() => {
-        try {
-            const raw = localStorage.getItem("volunteerHeatmapExceptions")
-            return raw ? JSON.parse(raw) : {}
-        } catch {
-            return {}
-        }
-    })
-    useEffect(() => {
-        try {
-            localStorage.setItem("volunteerHeatmapExceptions", JSON.stringify(exceptions))
-        } catch {}
-    }, [exceptions])
-
-    const [openCellKey, setOpenCellKey] = useState<string | null>(null)
-    const getCellKey = (volunteerId: string, weekIndex: number) =>
-        `${volunteerId}:${startDate.clone().add(weekIndex, "week").startOf("isoWeek").toISOString()}`
-
     // Генерируем недели для отображения
     const generateWeeks = () => {
         const weeks = []
@@ -66,10 +47,6 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
     const getSquareColor = (volunteer: VolunteerReportData, weekIndex: number) => {
         const weekStart = startDate.clone().add(weekIndex, "week").startOf("isoWeek")
         const isCurrentWeek = dayjs().isSame(weekStart, "isoWeek")
-
-        const key = getCellKey(volunteer.id, weekIndex)
-        if (exceptions[key] === "vacation") return "exceptionVacation"
-        if (exceptions[key] === "sick") return "exceptionSick"
 
         // Недели ДО начала первого контракта — N/A (серые)
         const firstContractStart =
@@ -123,48 +100,21 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
         return `${volunteer.fullName}: ${reportCount} отчет(ов), ${totalHours} часов за ${weekStart.format("DD.MM.YYYY")} - ${weekEnd.format("DD.MM.YYYY")}`
     }
 
-    // Меню для отметки исключений на клетке
-    const renderCellWithMenu = (
-        volunteer: VolunteerReportData,
-        weekIndex: number,
-        square: React.ReactNode,
-        cellKey: string
-    ) => {
-        const hasException = !!exceptions[cellKey]
-        return (
-            <Menu
-                withinPortal
-                opened={openCellKey === cellKey}
-                onChange={(opened) => setOpenCellKey(opened ? cellKey : null)}
-                position="bottom-start"
-            >
-                <Menu.Target>
-                    <div onClick={() => setOpenCellKey(openCellKey === cellKey ? null : cellKey)}>{square}</div>
-                </Menu.Target>
-                <Menu.Dropdown>
-                    <Menu.Item onClick={() => setExceptions((prev) => ({ ...prev, [cellKey]: "vacation" }))}>
-                        Отпуск
-                    </Menu.Item>
-                    <Menu.Item onClick={() => setExceptions((prev) => ({ ...prev, [cellKey]: "sick" }))}>
-                        Больничный
-                    </Menu.Item>
-                    {hasException && (
-                        <Menu.Item
-                            color="red"
-                            onClick={() =>
-                                setExceptions((prev) => {
-                                    const next = { ...prev }
-                                    delete next[cellKey]
-                                    return next
-                                })
-                            }
-                        >
-                            Снять отметку
-                        </Menu.Item>
-                    )}
-                </Menu.Dropdown>
-            </Menu>
-        )
+    // Формирует общий текст для окошка информации по квадратику, включая номер недели
+    const getSquareInfoLabel = (volunteer: VolunteerReportData, weekIndex: number) => {
+        const color = getSquareColor(volunteer, weekIndex)
+        const weekStart = startDate.clone().add(weekIndex, "week").startOf("isoWeek")
+        const weekEnd = weekStart.clone().add(1, "week")
+        const weekNumber = weekIndex + 1
+
+        if (color === "na") {
+            return `${volunteer.fullName}: N/A — нет контракта за ${weekStart.format("DD.MM.YYYY")} - ${weekEnd.format("DD.MM.YYYY")} (Неделя ${weekNumber})`
+        }
+        if (color === "waiting") {
+            return `${volunteer.fullName}: Ожидание — ${weekStart.format("DD.MM.YYYY")} - ${weekEnd.format("DD.MM.YYYY")} (Неделя ${weekNumber})`
+        }
+
+        return `${getSquareTooltip(volunteer, weekIndex)} (Неделя ${weekNumber})`
     }
 
     const getVolunteerStats = (volunteer: VolunteerReportData) => {
@@ -220,26 +170,16 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                             <FormattedMessage id={locales.pending} />
                         </Text>
                     </Flex>
-                    <Flex align="center" gap="xs">
-                        <Box className={`${classes.legendSquare} ${classes.exceptionVacation}`} />
-                        <Text size="xs">Отпуск</Text>
-                    </Flex>
-                    <Flex align="center" gap="xs">
-                        <Box className={`${classes.legendSquare} ${classes.exceptionSick}`} />
-                        <Text size="xs">Больничный</Text>
-                    </Flex>
                 </Group>
             </Flex>
 
             <div className={classes.heatmapWrapper}>
                 <div className={classes.heatmapGrid}>
-                    {volunteers.map((volunteer, volunteerIndex) => {
-                        const stats = getVolunteerStats(volunteer)
+                    {volunteers.map((volunteer) => {
                         const weeksColors = weeks.map((_, idx) => getSquareColor(volunteer, idx))
                         const missedCount = weeksColors.filter((c) => c === "noReports").length
                         const partialCount = weeksColors.filter((c) => c === "partialReports").length
                         const allNA = weeksColors.length > 0 && weeksColors.every((c) => c === "na")
-                        const allFull = !allNA && missedCount === 0 && partialCount === 0
                         const isSelected = selectedVolunteers.has(volunteer.id)
 
                         return (
@@ -250,6 +190,8 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                                             size="sm"
                                             fw={500}
                                             className={`${classes.volunteerName} ${isSelected ? classes.selectedVolunteer : ""}`}
+                                            style={{ cursor: "pointer" }}
+                                            onClick={() => onVolunteerSelect(volunteer.id)}
                                         >
                                             {volunteer.fullName}
                                         </Text>
@@ -283,59 +225,29 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                                                     : ""}
                                         </Badge>
                                     </div>
-                                    <Text size="xs" c="dimmed">
-                                        {stats.totalReports} отчетов, {stats.totalHours} часов
-                                    </Text>
                                 </div>
                                 <div className={classes.weekSquares}>
-                                    {weeks.map((week, weekIndex) => {
-                                        const color = getSquareColor(volunteer, weekIndex)
-                                        const cellKey = getCellKey(volunteer.id, weekIndex)
-                                        const square = (
-                                            <Tooltip
-                                                label={(function () {
-                                                    if (color === "na") {
-                                                        const weekStart = startDate
-                                                            .clone()
-                                                            .add(weekIndex, "week")
-                                                            .startOf("isoWeek")
-                                                        const weekEnd = weekStart.clone().add(1, "week")
-                                                        return `${volunteer.fullName}: N/A — нет контракта за ${weekStart.format("DD.MM.YYYY")} - ${weekEnd.format(
-                                                            "DD.MM.YYYY"
-                                                        )}`
-                                                    }
-                                                    if (color === "waiting") {
-                                                        const weekStart = startDate
-                                                            .clone()
-                                                            .add(weekIndex, "week")
-                                                            .startOf("isoWeek")
-                                                        const weekEnd = weekStart.clone().add(1, "week")
-                                                        return `${volunteer.fullName}: Ожидание — ${weekStart.format("DD.MM.YYYY")} - ${weekEnd.format(
-                                                            "DD.MM.YYYY"
-                                                        )}`
-                                                    }
-                                                    if (color === "exceptionVacation") {
-                                                        return `${volunteer.fullName}: Отпуск`
-                                                    }
-                                                    if (color === "exceptionSick") {
-                                                        return `${volunteer.fullName}: Больничный`
-                                                    }
-                                                    return getSquareTooltip(volunteer, weekIndex)
-                                                })()}
-                                                position="top"
-                                            >
+                                    {weeks.map((_, weekIndex) => (
+                                        <Popover key={weekIndex} position="top" withArrow shadow="md" withinPortal>
+                                            <Popover.Target>
                                                 <Box
-                                                    className={`${classes.weekSquare} ${classes[color]}`}
+                                                    className={`${classes.weekSquare} ${classes[getSquareColor(volunteer, weekIndex)]}`}
                                                     style={{ cursor: "pointer" }}
                                                 />
-                                            </Tooltip>
-                                        )
-                                        return (
-                                            <React.Fragment key={weekIndex}>
-                                                {renderCellWithMenu(volunteer, weekIndex, square, cellKey)}
-                                            </React.Fragment>
-                                        )
-                                    })}
+                                            </Popover.Target>
+                                            <Popover.Dropdown
+                                                style={{
+                                                    maxWidth: "min(86vw, 420px)",
+                                                    overflowWrap: "anywhere",
+                                                    wordBreak: "break-word",
+                                                }}
+                                            >
+                                                <Text size="xs" style={{ whiteSpace: "normal", lineHeight: 1.35 }}>
+                                                    {getSquareInfoLabel(volunteer, weekIndex)}
+                                                </Text>
+                                            </Popover.Dropdown>
+                                        </Popover>
+                                    ))}
                                 </div>
                             </div>
                         )

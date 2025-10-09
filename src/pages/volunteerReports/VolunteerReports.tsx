@@ -35,7 +35,6 @@ export const VolunteerReports = () => {
     const [selectedProgram, setSelectedProgram] = useState<string | null>(searchParams.get("program") || null)
     const [selectedProject, setSelectedProject] = useState<string | null>(searchParams.get("project") || null)
     const [periodMonths, setPeriodMonths] = useState<string>(searchParams.get("period") || "3")
-    const [hideNA, setHideNA] = useState<string>(searchParams.get("hideNA") || "false")
 
     const [pageRequest, setPageRequest] = useState({
         pageNumber: Math.max(0, parseInt(searchParams.get("page") || "1") - 1),
@@ -60,9 +59,8 @@ export const VolunteerReports = () => {
         if (selectedProject) params.set("project", selectedProject)
         if (periodMonths) params.set("period", periodMonths)
         if (pageRequest.pageNumber > 0) params.set("page", String(pageRequest.pageNumber + 1))
-        if (hideNA === "true") params.set("hideNA", hideNA)
         setSearchParams(params)
-    }, [debouncedSearch, selectedProgram, selectedProject, periodMonths, pageRequest.pageNumber, hideNA])
+    }, [debouncedSearch, selectedProgram, selectedProject, periodMonths, pageRequest.pageNumber])
 
     const getStartDate = () => {
         const now = dayjs()
@@ -143,8 +141,6 @@ export const VolunteerReports = () => {
                         setPeriodMonths("3")
                         setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
                     }}
-                    hideNA={hideNA === "true"}
-                    onHideNAChange={(val) => setHideNA(val ? "true" : "false")}
                 />
 
                 <Paper p="md" withBorder>
@@ -166,10 +162,7 @@ export const VolunteerReports = () => {
                         </Text>
                     </Flex>
                     {(() => {
-                        let base = (volunteerData?.content ?? []) as VolunteerReportData[]
-                        if (hideNA === "true") {
-                            base = base.filter((v) => (v.contracts?.length ?? 0) > 0)
-                        }
+                        const base = (volunteerData?.content ?? []) as VolunteerReportData[]
                         let augmented = base
                         if (import.meta.env.MODE !== "production") {
                             const start = getStartDate().startOf("isoWeek")
@@ -235,10 +228,7 @@ export const VolunteerReports = () => {
                         </Button>
                     </Flex>
                     {(() => {
-                        let base = (volunteerData?.content ?? []) as VolunteerReportData[]
-                        if (hideNA === "true") {
-                            base = base.filter((v) => (v.contracts?.length ?? 0) > 0)
-                        }
+                        const base = (volunteerData?.content ?? []) as VolunteerReportData[]
                         let augmented = base
                         if (import.meta.env.MODE !== "production") {
                             const start = getStartDate().startOf("isoWeek")
