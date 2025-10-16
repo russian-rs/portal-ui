@@ -8,6 +8,7 @@ $table-min-width: 58rem;
 
     @media (max-width: $mantine-breakpoint-md) {
         padding: 0.5rem;
+        row-gap: 0.5rem;
     }
 }
 
