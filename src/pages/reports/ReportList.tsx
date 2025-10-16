@@ -1,6 +1,6 @@
 import { Avatar, Button, Collapse, Flex, Pagination, Table, Text } from "@mantine/core"
 import { PageRequest, ReportDto, ReportFilter, UserInfoDto } from "@russian-rs/portal-api-axios"
-import { IconClock, IconFile, IconListCheck, IconUfo } from "@tabler/icons-react"
+import { IconClock, IconFile, IconListCheck, IconUfo, IconFilterEdit } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
@@ -548,8 +548,14 @@ export const ReportList = () => {
                 </Text>
                 <div ref={listStartRef} />
                 {isMobile ? (
-                    <>
-                        <Button variant="light" size="sm" onClick={() => setFiltersOpened((v) => !v)}>
+                    <Flex direction="column">
+                        <Button
+                            variant="light"
+                            size="sm"
+                            color="green"
+                            onClick={() => setFiltersOpened((v) => !v)}
+                            leftSection={<IconFilterEdit size={16} />}
+                        >
                             <FormattedMessage id="common.filters" defaultMessage="Фильтры" />
                             {activeFiltersCount > 0 && (
                                 <Badge ml={8} size="sm" variant="light" color="blue">
@@ -557,7 +563,7 @@ export const ReportList = () => {
                                 </Badge>
                             )}
                         </Button>
-                        <Collapse in={filtersOpened}>
+                        <Collapse in={filtersOpened} style={{ marginTop: 8 }}>
                             <Flex className={classes.filters}>
                                 <UserSearch
                                     key={`user-search-${resetKey}`}
@@ -632,7 +638,7 @@ export const ReportList = () => {
                                 </Flex>
                             </Flex>
                         </Collapse>
-                    </>
+                    </Flex>
                 ) : (
                     <Flex className={classes.filters}>
                         <UserSearch
