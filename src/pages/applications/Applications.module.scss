@@ -254,7 +254,6 @@ $table-width: 100%;
 
 .pagination {
     z-index: 2;
-    flex-wrap: wrap;
     position: sticky;
     bottom: 0;
     width: $table-width;
@@ -268,6 +267,10 @@ $table-width: 100%;
 
     @media (max-width: $mantine-breakpoint-md) {
         padding: 0.5rem;
+    }
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        gap: 0.5rem;
     }
 }
 
