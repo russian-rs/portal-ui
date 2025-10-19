@@ -282,6 +282,7 @@ export const Applications = () => {
                             const pageNumber = newPage - 1
                             setPageRequest({ ...pageRequest, pageNumber })
                         }}
+                        siblings={isMobile ? 0 : 1}
                     />
                     <Text c="dimmed">
                         <FormattedMessage id={locales.total} values={{ count: page.totalElements }} />
