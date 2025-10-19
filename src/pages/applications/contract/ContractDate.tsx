@@ -5,11 +5,12 @@ import { useDisclosure } from "@mantine/hooks"
 import { ApplicationDto, ContractDto, ContractTypeEnum } from "@russian-rs/portal-api-axios"
 import { IconCalendarMonth, IconCalendarOff, IconDeviceFloppy, IconPencil, IconPlus } from "@tabler/icons-react"
 import dayjs from "dayjs"
-import React, { useState } from "react"
+import { useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import classes from "src/pages/applications/contract/ContractDate.module.scss"
 import { DEFAULT_DATE_FORMAT } from "src/shared/datetime/formats"
 import { ContractTypeSelect } from "src/shared/ui/contractTypeSelect/ContractTypeSelect"
+import { ApplicationStatus } from "src/shared/user/applications"
 import { v4 } from "uuid"
 import { z } from "zod"
 import { locales } from "./lib/locales"
@@ -23,6 +24,8 @@ interface ContractEditModalProps {
 export const ContractDate = ({ application, onChange, className }: ContractEditModalProps) => {
     const intl = useIntl()
     const [opened, { close, toggle }] = useDisclosure(false)
+
+    const isApplicationCompleted = application.status === ApplicationStatus.DONE
 
     const initialContract: ContractDto = application.contract || {
         id: v4(),
@@ -88,7 +91,10 @@ export const ContractDate = ({ application, onChange, className }: ContractEditM
                     color={application.contract ? "blue" : "gray"}
                     onClick={toggle}
                     className={className}
-                    style={{ padding: 0 }}
+                    disabled={isApplicationCompleted}
+                    size="xs"
+                    h={28}
+                    px="sm"
                 >
                     {application.contract && <Text size="sm">{dayjs(contract.startDate).format("DD MMM YYYY")}</Text>}
                     {!application.contract && (
