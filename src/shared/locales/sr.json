@@ -1,5 +1,6 @@
 {
     "common": {
+        "filters": "Filteri",
         "buttons": {
             "login": "Prijavite se",
             "logout": "Odjava"
