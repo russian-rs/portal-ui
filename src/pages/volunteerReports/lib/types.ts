@@ -1,4 +1,4 @@
-import { PageRequest, UserInfoDto } from "@russian-rs/portal-api-axios"
+import { PageRequest, PageResponse, UserInfoDto } from "@russian-rs/portal-api-axios"
 
 export interface VolunteerReport {
     id: string
@@ -31,10 +31,5 @@ export interface VolunteerReportPageRequest {
 
 export interface VolunteerReportResponse {
     content: VolunteerReportData[]
-    page: {
-        totalElements: number
-        totalPages: number
-        pageNumber: number
-        pageSize: number
-    }
+    page: PageResponse
 }

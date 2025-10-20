@@ -329,6 +329,7 @@
             "total-hours": "Ukupno sati",
             "avg-per-week": "Prosek: {value} h/nedelji",
             "hours": "sati",
+            "pieces-short": "kom",
             "status-text-all-ok": "Svi izveštaji predati",
             "status-text-missed-last-week": "Nema izveštaja prošle nedelje",
             "status-text-missed-weeks": "Nema izveštaja {count} nedelja",

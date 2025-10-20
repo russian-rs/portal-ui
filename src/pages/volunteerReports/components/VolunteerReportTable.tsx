@@ -245,7 +245,7 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
                                 <Table.Td>
                                     <div className={classes.statsCell}>
                                         <Text size="sm" fw={500}>
-                                            {stats.totalReports} <FormattedMessage id={locales.reportsStats} />
+                                            {stats.totalReports} <FormattedMessage id={locales.piecesShort} />
                                         </Text>
                                         <Text size="xs" c="dimmed">
                                             <FormattedMessage id={locales.totalHours} />: {stats.totalHours}

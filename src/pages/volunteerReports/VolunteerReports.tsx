@@ -143,18 +143,6 @@ export const VolunteerReports = () => {
                     }}
                 />
 
-                <Paper p="md" withBorder>
-                    <Flex justify="space-between" align="center" wrap="wrap" gap="md">
-                        <Text size="sm" c="dimmed">
-                            <FormattedMessage id={locales.totalVolunteers} />: {volunteerData?.page.totalElements ?? 0}
-                        </Text>
-                        <Text size="sm" c="dimmed">
-                            <FormattedMessage id={locales.period} />: {getStartDate().format("DD.MM.YYYY")} -{" "}
-                            {dayjs().format("DD.MM.YYYY")}
-                        </Text>
-                    </Flex>
-                </Paper>
-
                 <Card withBorder p="lg">
                     <Flex justify="center" align="center" wrap="wrap" gap="md">
                         <Text size="lg" fw={600} mb="md">
@@ -204,6 +192,7 @@ export const VolunteerReports = () => {
                                     setSelectedVolunteers(next)
                                 }}
                                 selectedVolunteers={selectedVolunteers}
+                                totalVolunteers={volunteerData?.page.totalElements ?? 0}
                             />
                         )
                     })()}
