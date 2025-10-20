@@ -13,10 +13,18 @@
     flex-direction: column;
 }
 
+.headerRow {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    align-items: end;
+    gap: 1rem;
+    width: 100%;
+}
+
 .weekHeaders {
     display: grid;
     gap: 2px;
-    grid-column: 2 / -1;
+    grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
     margin-left: 0;
     margin-bottom: 0.5rem;
 }
@@ -70,6 +78,7 @@
     display: grid;
     gap: 2px;
     grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
+    justify-items: center;
 }
 
 .weekSquare {
@@ -121,9 +130,19 @@
         gap: 0.5rem;
     }
 
+    .headerRow {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .headerSpacer {
+        display: none;
+    }
+
     .weekHeaders {
         margin-left: 0;
-        grid-template-columns: repeat(auto-fit, minmax(16px, 1fr));
+        grid-template-columns: repeat(auto-fill, 16px);
+        justify-items: center;
     }
 
     .volunteerRow {
@@ -133,7 +152,7 @@
     }
 
     .weekSquares {
-        grid-template-columns: repeat(auto-fill, minmax(16px, 1fr));
+        grid-template-columns: repeat(auto-fill, 16px);
     }
 
     .weekSquare {

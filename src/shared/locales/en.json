@@ -329,6 +329,7 @@
             "total-hours": "Total hours",
             "avg-per-week": "Avg: {value} h/week",
             "hours": "hours",
+            "pieces-short": "pcs",
             "status-text-all-ok": "All reports submitted",
             "status-text-missed-last-week": "No reports last week",
             "status-text-missed-weeks": "No reports for {count} weeks",

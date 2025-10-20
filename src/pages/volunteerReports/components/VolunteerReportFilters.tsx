@@ -78,8 +78,7 @@ export const VolunteerReportFilters: React.FC<VolunteerReportFiltersProps> = ({
                     </Box>
                     <Box className={classes.filterItem}>
                         <Select
-                            label={intl.formatMessage({ id: locales.period })}
-                            placeholder={intl.formatMessage({ id: locales.period })}
+                            placeholder={intl.formatMessage({ id: locales.period3m })}
                             value={periodMonths}
                             onChange={(value) => onPeriodChange(value || "3")}
                             data={[

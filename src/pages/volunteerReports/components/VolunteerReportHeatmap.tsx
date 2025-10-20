@@ -12,6 +12,7 @@ interface VolunteerReportHeatmapProps {
     startDate: dayjs.Dayjs
     onVolunteerSelect: (volunteerId: string) => void
     selectedVolunteers: Set<string>
+    totalVolunteers: number
 }
 
 export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
@@ -19,6 +20,7 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
     startDate,
     onVolunteerSelect,
     selectedVolunteers,
+    totalVolunteers,
 }) => {
     const intl = useIntl()
     const endDate = dayjs().startOf("isoWeek")
@@ -210,6 +212,19 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
 
             <div className={classes.heatmapWrapper}>
                 <div className={classes.heatmapGrid}>
+                    {/* Header row with week numbers */}
+                    <div className={classes.headerRow}>
+                        <div className={classes.headerSpacer} />
+                        <div className={classes.weekHeaders}>
+                            {weeks.map((w) => (
+                                <div key={w.weekNumber} className={classes.weekHeader}>
+                                    <Text size="xs" c="dimmed">
+                                        {w.weekNumber}
+                                    </Text>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                     {volunteers.map((volunteer) => {
                         const weeksColors = weeks.map((_, idx) => getSquareColor(volunteer, idx))
                         const missedCount = weeksColors.filter((c) => c === "noReports").length
@@ -291,6 +306,14 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
             </div>
             <Flex justify="center" mt="lg">
                 <Group gap="lg">
+                    <Flex align="center" gap="xs">
+                        <Text size="sm" fw={500}>
+                            <FormattedMessage id={locales.totalVolunteers} />:
+                        </Text>
+                        <Text size="sm" c="dimmed">
+                            {totalVolunteers}
+                        </Text>
+                    </Flex>
                     <Flex align="center" gap="xs">
                         <Text size="sm" fw={500}>
                             <FormattedMessage id={locales.period} />:

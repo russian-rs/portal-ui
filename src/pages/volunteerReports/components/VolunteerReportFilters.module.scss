@@ -5,9 +5,11 @@
 
 .filterItem {
     min-width: 200px;
+    margin-top: -4px; /* чуть ближе к заголовку */
 
     @media (max-width: $mantine-breakpoint-md) {
         min-width: 100%;
+        margin-top: -2px;
     }
 }
 

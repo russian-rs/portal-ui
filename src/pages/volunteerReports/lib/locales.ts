@@ -37,6 +37,7 @@ export const locales = {
     totalHours: "pages.volunteer-reports.total-hours",
     avgPerWeek: "pages.volunteer-reports.avg-per-week",
     hours: "pages.volunteer-reports.hours",
+    piecesShort: "pages.volunteer-reports.pieces-short",
     statusAllOk: "pages.volunteer-reports.status-text-all-ok",
     statusMissedLastWeek: "pages.volunteer-reports.status-text-missed-last-week",
     statusMissedWeeks: "pages.volunteer-reports.status-text-missed-weeks",
