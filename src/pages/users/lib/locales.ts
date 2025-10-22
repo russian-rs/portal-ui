@@ -10,6 +10,7 @@ export const locales = {
     contractUntil: "pages.user-list.contract-until",
     fullName: "pages.user-list.full-name",
     email: "pages.user-list.email",
+    fullNameEmail: "pages.user-list.full-name-email",
     roles: "pages.user-list.roles",
     program: "pages.user-list.program",
     filterByProgram: "pages.user-list.filter-by-program",

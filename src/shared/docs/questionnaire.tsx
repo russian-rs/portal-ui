@@ -79,7 +79,7 @@ export default async function generateQuestionnairePdf(application: ApplicationD
     drawPx(currentDate, 96, 730)
 
     const pdfBytes = await pdf.save()
-    saveAs(new Blob([pdfBytes], { type: "application/pdf" }), `Upitnik_${fullName.replace(/\s+/g, "_")}.pdf`)
+    saveAs(new Blob([pdfBytes as BlobPart], { type: "application/pdf" }), `Upitnik_${fullName.replace(/\s+/g, "_")}.pdf`)
 }
 
 function must(value: string | null | undefined, name: string): string {

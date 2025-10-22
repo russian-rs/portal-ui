@@ -1,5 +1,6 @@
 {
     "common": {
+        "filters": "Фильтры",
         "buttons": {
             "login": "Войти",
             "logout": "Выйти"
@@ -444,10 +445,10 @@
             "title": "Заявки на вступление",
             "empty": "Заявок не найдено",
             "total": "Всего: {count}",
-            "created": "Создана",
-            "created-short": "Дата",
-            "type": "Тип",
-            "type-short": "Тип",
+            "created-and-type": "Создана, Тип",
+            "created-short-and-type-short": "Дата, Тип",
+            "name-and-email": "Имя Фамилия, E-mail",
+            "name-and-email-short": "Имя, Email",
             "name": "Имя Фамилия",
             "name-short": "Имя",
             "email": "E-mail",
@@ -458,6 +459,7 @@
             "contract-start-short": "Договор",
             "contract-required": "Для завершения необходимо указать даты контракта",
             "showCompleted": "Показать завершенные",
+            "add-note": "Добавить заметку",
             "menu": {
                 "view": "Посмотреть",
                 "contact": "Написать"
@@ -501,7 +503,8 @@
                 "deny-reason-modal": {
                     "title": "Причина отказа",
                     "description": "Пожалуйста, укажите причину отказа"
-                }
+                },
+                "notes": "Заметки"
             },
             "report": {
                 "contract-from": "Дата начала",
@@ -518,6 +521,59 @@
         },
         "reporting": {
             "title": "Руководство по сдаче отчётности"
+        },
+        "volunteers-reports": {
+            "title": "Отчеты по волонтерам"
+        },
+        "volunteers-mintrud": {
+            "title": "Отчет Минтруд по волонтерам"
+        },
+        "mintrud": {
+            "title": "Статистика (Минтруд)",
+            "year-label": "Год",
+            "summary": "Итоги",
+            "total-volunteers": "Всего волонтёров",
+            "total-hours": "Всего часов",
+            "program-stats": "По программам",
+            "program": "Программа",
+            "volunteers": "Волонтёры",
+            "hours": "Часы",
+            "other": "Другое",
+            "volunteer-stats": "Статистика по волонтёрам",
+            "gender": {
+                "female": "Женщины",
+                "male": "Мужчины"
+            },
+            "age": {
+                "15-18": "15–18",
+                "18-30": "18–30",
+                "30-40": "30–40",
+                "40-65": "40–65",
+                "65-plus": "65+"
+            },
+            "citizens": "Граждане",
+            "foreigners": "Иностранцы",
+            "final-users-stats": "Конечные пользователи волонтёрства",
+            "final-users": {
+                "cultural-assets": "Культурные ценности",
+                "natural-assets": "Природные объекты",
+                "public-areas": "Общественные пространства",
+                "other": "Другое"
+            },
+            "total": "Итого",
+            "empty": "Нет данных за выбранный год",
+            "statGroups": {
+                "SOCIJALNA_ZASTITA": "Социальная защита",
+                "MEDIJI_I_KOMUNIKACIJE": "СМИ и коммуникации",
+                "KULTURNA_DOBA": "Культурная эпоха",
+                "JAVNE_POVRSINE": "Общественные пространства",
+                "ZIVOTNA_SREDINA": "Окружающая среда"
+            },
+            "charts": {
+                "age": "Статистика по возрасту",
+                "gender": "Статистика по полу",
+                "citizenship": "Статистика по гражданству"
+            }
         }
     },
     "errors": {
@@ -540,7 +596,9 @@
             "volunteers": "Волонтеры",
             "all-volunteers": "Все волонтеры",
             "applications": "Новые заявки",
-            "statistics": "Статистика"
+            "statistics": "Статистика",
+            "reports": "Отчеты по волонтерам",
+            "mintrud-report": "Отчёт Минтруд"
         },
         "account-settings": "Настройки уч. записи",
         "support": "Написать в поддержку"

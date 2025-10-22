@@ -1,18 +1,19 @@
-import { Avatar, Flex, Table, Text, Card, Box } from "@mantine/core"
+import { Avatar, Badge, Box, Card, Flex, Table, Text } from "@mantine/core"
 import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
+import { IconNotes } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import React, { ReactNode, useState } from "react"
+import { ReactNode, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
 import { ApplicationMenu } from "src/pages/applications/menu/ApplicationMenu"
-import { ApplicationStatus } from "src/shared/user/applications"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { useScreenSize } from "src/shared/hooks/useDesktop"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
 import { getMantineColor } from "src/shared/ui/theme/CustomMantineTheme"
+import { ApplicationStatus } from "src/shared/user/applications"
 import classes from "./ApplicationRow.module.scss"
 
 interface ApplicationRowProps {
@@ -70,7 +71,16 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                                 </Text>
                             </Box>
                         </Flex>
-                        <ApplicationMenu applicationDto={application} />
+
+                        <Flex align="center" gap="xs">
+                            {application.notes && application.notes.length > 0 && (
+                                <Badge variant="light" color="blue" leftSection={<IconNotes size={12} />}>
+                                    {application.notes.length}
+                                </Badge>
+                            )}
+
+                            <ApplicationMenu applicationDto={application} />
+                        </Flex>
                     </Flex>
 
                     <Box className={classes.mobileInfo}>
@@ -110,6 +120,7 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                                     disabled={isUpdating}
                                     onChange={onStatusUpdate}
                                 />
+
                                 {application.status === ApplicationStatus.PAUSED && (application as any).comment && (
                                     <Text size="xs" c="dimmed" mt={4} style={{ whiteSpace: "pre-wrap" }}>
                                         {(application as any).comment}
@@ -126,11 +137,14 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
     return (
         <Table.Tr key={application.id}>
             <Table.Td>
-                <Text c="dimmed" size={isLargeDesktop ? "sm" : "xs"} className={classes.compactText}>
-                    {dayjs(application.created).format(isLargeDesktop ? "DD MMM YYYY" : "DD.MM.YY")}
-                </Text>
+                <Box>
+                    <Text c="dimmed" size={isLargeDesktop ? "sm" : "xs"} className={classes.compactText}>
+                        {dayjs(application.created).format(isLargeDesktop ? "DD MMM YYYY" : "DD.MM.YY")}
+                    </Text>
+
+                    {type(application.type, isLargeDesktop)}
+                </Box>
             </Table.Td>
-            <Table.Td>{type(application.type, isLargeDesktop)}</Table.Td>
             <Table.Td>
                 <Flex columnGap="sm" align="center" className={classes.compactFlex}>
                     <Avatar
@@ -140,40 +154,44 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                         className={classes.avatar}
                         onClick={() => navigate(`/application/${application.id}`)}
                     />
-                    <Text size={isLargeDesktop ? "sm" : "xs"} truncate="end" className={classes.compactText}>
-                        {application.name}
-                    </Text>
+
+                    <Flex direction="column" gap="0">
+                        <Text size={isLargeDesktop ? "sm" : "xs"} truncate="end" className={classes.compactText}>
+                            {application.name}
+                        </Text>
+
+                        <CopyText text={application.email} size={isLargeDesktop ? "sm" : "xs"} />
+                    </Flex>
                 </Flex>
-            </Table.Td>
-            <Table.Td>
-                <CopyText text={application.email} size={isLargeDesktop ? "sm" : "xs"} />
             </Table.Td>
             <Table.Td>
                 <ContractDate application={application} onChange={onContractChanged} />
             </Table.Td>
             <Table.Td className={classes.statusSelect}>
-                <ApplicationStatusSelect
-                    application={application}
-                    className={classes.statusSelect}
-                    disabled={isUpdating}
-                    onChange={onStatusUpdate}
-                    showInlineReason={false}
-                />
-            </Table.Td>
-            <Table.Td className={classes.pauseReasonCell}>
-                {application.status === ApplicationStatus.PAUSED && (application as any).comment ? (
-                    <Text
-                        size={isLargeDesktop ? "sm" : "xs"}
-                        c="dimmed"
-                        className={classes.pauseReasonText}
-                        title={(application as any).comment}
-                    >
-                        {(application as any).comment}
-                    </Text>
-                ) : null}
+                <div>
+                    <ApplicationStatusSelect
+                        application={application}
+                        className={classes.statusSelect}
+                        disabled={isUpdating}
+                        onChange={onStatusUpdate}
+                        showInlineReason={false}
+                    />
+
+                    {application.status === ApplicationStatus.PAUSED && (application as any).comment && (
+                        <Text size="xs" c="dimmed" mt={4} style={{ whiteSpace: "pre-wrap" }}>
+                            {(application as any).comment}
+                        </Text>
+                    )}
+                </div>
             </Table.Td>
             <Table.Td>
-                <Flex align="center">
+                <Flex align="center" justify="flex-end" gap="xs">
+                    {application.notes && application.notes.length > 0 && (
+                        <Badge variant="light" color="blue" leftSection={<IconNotes size={12} />}>
+                            {application.notes.length}
+                        </Badge>
+                    )}
+
                     <ApplicationMenu applicationDto={application} />
                 </Flex>
             </Table.Td>

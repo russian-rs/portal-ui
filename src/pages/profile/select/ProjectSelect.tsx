@@ -1,20 +1,20 @@
-import { Select, ActionIcon, Text, Group } from "@mantine/core"
-import { IconPlus, IconPencil } from "@tabler/icons-react"
+import { ActionIcon, Button, Group, Select, Text, useComputedColorScheme } from "@mantine/core"
+import { IconPencil, IconPlus } from "@tabler/icons-react"
 import { useState } from "react"
-import { useIntl } from "react-intl"
-import { getLocalizedName } from "src/shared/utils/getLocalName"
+import { FormattedMessage, useIntl } from "react-intl"
 import { useProjects } from "src/app/providers/ProjectsProvider"
-import { FormattedMessage } from "react-intl"
-import { useComputedColorScheme } from "@mantine/core"
+import { getLocalizedName } from "src/shared/utils/getLocalName"
 
 export function ProjectSelectInline({
     value,
     canEdit,
+    type = "default",
     onChange,
     locale,
 }: {
     value: string | null | undefined
     canEdit: boolean
+    type?: "default" | "button"
     onChange: (project: string) => void
     locale: string
 }) {
@@ -52,6 +52,47 @@ export function ProjectSelectInline({
                     onDropdownClose={() => setDropdownOpened(false)}
                     searchable
                 />
+            ) : type === "button" ? (
+                canEdit ? (
+                    <Button
+                        variant="transparent"
+                        color={projectObj ? "blue" : "gray"}
+                        rightSection={projectObj ? <IconPencil size={14} /> : <IconPlus size={14} />}
+                        onClick={() => {
+                            setIsEditing(true)
+                            setDropdownOpened(true)
+                        }}
+                        size="sm"
+                        fw={projectObj ? undefined : 500}
+                    >
+                        {projectObj ? (
+                            getLocalizedName(projectObj, locale)
+                        ) : (
+                            <FormattedMessage id="pages.profile.selectProject" />
+                        )}
+                    </Button>
+                ) : (
+                    <Text
+                        style={{
+                            whiteSpace: "nowrap",
+                        }}
+                        size="sm"
+                        c={
+                            projectObj
+                                ? undefined
+                                : colorScheme === "dark"
+                                  ? "var(--mantine-color-gray-light-color)"
+                                  : "dimmed"
+                        }
+                        fw={projectObj ? undefined : 500}
+                    >
+                        {projectObj ? (
+                            getLocalizedName(projectObj, locale)
+                        ) : (
+                            <FormattedMessage id="pages.profile.selectProject" />
+                        )}
+                    </Text>
+                )
             ) : (
                 <>
                     <Text
