@@ -1,5 +1,6 @@
 {
     "common": {
+        "filters": "Filteri",
         "buttons": {
             "login": "Prijavite se",
             "logout": "Odjava"
@@ -308,6 +309,7 @@
             "contract-from": "Datum početka",
             "contract-until": "Datum završetka",
             "email": "e-mail",
+            "full-name-email": "Ime Prezime, e-mail",
             "username": "Korisničko ime",
             "roles": "Uloge",
             "program": "Program",
@@ -437,10 +439,10 @@
             "title": "Prijave za članstvo",
             "empty": "Nijedna prijava nije pronađena",
             "total": "Ukupno: {count}",
-            "created": "Kreirano",
-            "created-short": "Datum",
-            "type": "Tip",
-            "type-short": "Tip",
+            "created-and-type": "Stvoren, Tip",
+            "created-short-and-type-short": "Datum, Tip",
+            "name-and-email": "Ime i Prezime, E-mail",
+            "name-and-email-short": "Ime, Email",
             "name": "Ime i Prezime",
             "name-short": "Ime",
             "email": "E-mail",
@@ -451,6 +453,7 @@
             "contract-start-short": "Ugovor",
             "contract-required": "Da biste završili, morate navesti datume ugovora",
             "showCompleted": "Prikaži završene",
+            "add-note": "Dodaj zapis",
             "menu": {
                 "view": "Pogledaj",
                 "contact": "Kontaktiraj"
@@ -493,7 +496,8 @@
                 "deny-reason-modal": {
                     "title": "Razlog odbijanja",
                     "description": "Molimo navedite razlog odbijanja"
-                }
+                },
+                "notes": "Zapisi"
             },
             "report": {
                 "contract-from": "Datum početka",
