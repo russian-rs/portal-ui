@@ -5,16 +5,13 @@ import dayjs from "dayjs"
 import { saveAs } from "file-saver"
 import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
 import { DEJAVU_SANS } from "src/shared/docs/fonts/DejaVuSans"
+import { notifications } from "@mantine/notifications"
+import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 
 
 type AppWithGender = ApplicationDto & { gender?: GenderEnumDto | null }
 
 export default async function generateQuestionnairePdf(application: ApplicationDto) {
-    // TODO temporary. Delete after api update with gender in ApplicationDto
-    const appWithMale: AppWithGender = {
-        ...application,
-        gender: GenderEnumDto.Female,
-    };
     const fullName = must(application.name, "Name")
     const birthDate = fmt(application.birthDate, "Birth date")
     const passport = must(application.passport, "Passport")
@@ -24,13 +21,13 @@ export default async function generateQuestionnairePdf(application: ApplicationD
     const telegram = must(application.telegram, "Telegram")
     const address = must(application.address, "Address")
     const city = application.address?.split(",")[1]?.trim() ?? "—"
-    const gender = (appWithMale as AppWithGender).gender ?? null
+    const gender = must(application.gender, "Gender") ?? null;
     const currentDate = dayjs().format("DD.MM.YYYY")
     const templateBytes = await fetch("/resources/template.pdf").then((r) => r.arrayBuffer())
     const pdf = await PDFDocument.load(templateBytes)
 
-    const GENDER_MALE_BOX   = { x:  134, y: 556 }
-    const GENDER_FEMALE_BOX = { x: 186, y: 556 }
+    const GENDER_MALE_BOX   = { x:  134, y: 558 }
+    const GENDER_FEMALE_BOX = { x: 186, y: 558 }
 
     pdf.registerFontkit(fontkit)
 
@@ -49,7 +46,7 @@ export default async function generateQuestionnairePdf(application: ApplicationD
 
     const px = (v: number) => v
     const fromTop = (yPx: number, fontSize = 10) => height - px(yPx) - fontSize
-    // x, y coordinates could be checked in adobe
+
     const drawPx = (text: string, xPx: number, yPx: number, font = mediumFont, size = 8) =>
         page.drawText(text, {
             x: px(xPx),
@@ -63,27 +60,32 @@ export default async function generateQuestionnairePdf(application: ApplicationD
 
 
     drawPx(fullName, 350, 285)
-    drawPx(passport, 109, 315)
-    drawPx(birthDate, 173, 335)
+    drawPx(passport, 109, 318)
+    drawPx(birthDate, 173, 339)
     drawPx(age, 155, 360)
     drawPx(city, 335, 380)
     drawPx(address, 62, 425)
-    drawPx(phone, 268, 445)
+    drawPx(phone, 268, 447)
     drawPx(email, 101, 468)
-    drawPx(telegram, 290, 468)
+    drawPx(telegram, 420, 468)
     if (gender === GenderEnumDto.Male) {
         drawMark(GENDER_MALE_BOX.x, GENDER_MALE_BOX.y)
     } else if (gender === GenderEnumDto.Female) {
         drawMark(GENDER_FEMALE_BOX.x, GENDER_FEMALE_BOX.y)
     }
-    drawPx(currentDate, 96, 730)
+    drawPx(currentDate, 96, 735)
 
     const pdfBytes = await pdf.save()
     saveAs(new Blob([pdfBytes as BlobPart], { type: "application/pdf" }), `Upitnik_${fullName.replace(/\s+/g, "_")}.pdf`)
 }
 
 function must(value: string | null | undefined, name: string): string {
-    if (!value) throw new Error(`${name} is empty`)
+    if (!value) {
+        notifications.show(
+            ErrorNotification(`${name} is empty`, "Please fill in all required fields before generating the PDF.")
+        )
+        throw new Error(`${name} is empty`)
+    }
     return value
 }
 
