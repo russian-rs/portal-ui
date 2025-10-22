@@ -1,4 +1,4 @@
-import { Checkbox, CloseButton, Flex, Input, Pagination, Table, Text, Skeleton, Card, Box } from "@mantine/core"
+import { Box, Card, Checkbox, CloseButton, Flex, Input, Pagination, Skeleton, Table, Text } from "@mantine/core"
 import { ApplicationsFilter, PageRequest } from "@russian-rs/portal-api-axios"
 import { IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
@@ -10,8 +10,8 @@ import { allowedRoles } from "src/pages/applications/lib/roles"
 import { ApplicationRow } from "src/pages/applications/row/ApplicationRow"
 import { CreateUser } from "src/pages/users/createUser/CreateUser"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
-import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { useDesktop, useScreenSize } from "src/shared/hooks/useDesktop"
+import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { hasPermission } from "src/shared/user/roles"
 import classes from "./Applications.module.scss"
@@ -221,16 +221,14 @@ export const Applications = () => {
                         <Table.Thead>
                             <Table.Tr>
                                 <Table.Th>
-                                    <FormattedMessage id={isLargeDesktop ? locales.created : locales.createdShort} />
+                                    <FormattedMessage
+                                        id={isLargeDesktop ? locales.createdAndType : locales.createdShortAndTypeShort}
+                                    />
                                 </Table.Th>
                                 <Table.Th>
-                                    <FormattedMessage id={isLargeDesktop ? locales.type : locales.typeShort} />
-                                </Table.Th>
-                                <Table.Th>
-                                    <FormattedMessage id={isLargeDesktop ? locales.name : locales.nameShort} />
-                                </Table.Th>
-                                <Table.Th>
-                                    <FormattedMessage id={isLargeDesktop ? locales.email : locales.emailShort} />
+                                    <FormattedMessage
+                                        id={isLargeDesktop ? locales.nameAndEmail : locales.nameAndEmailShort}
+                                    />
                                 </Table.Th>
                                 <Table.Th>
                                     <FormattedMessage
@@ -239,9 +237,6 @@ export const Applications = () => {
                                 </Table.Th>
                                 <Table.Th>
                                     <FormattedMessage id={isLargeDesktop ? locales.status : locales.statusShort} />
-                                </Table.Th>
-                                <Table.Th>
-                                    <FormattedMessage id={"pages.applications.view.pause-reason"} />
                                 </Table.Th>
                                 <Table.Th></Table.Th>
                             </Table.Tr>
@@ -271,24 +266,24 @@ export const Applications = () => {
                         </Text>
                     </Flex>
                 )}
-                {page.totalPages > 1 && (
-                    <Flex className={classes.paginationArea}>
-                        <Pagination
-                            className={classes.pagination}
-                            total={page.totalPages}
-                            value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
-                            disabled={isFetching}
-                            onChange={(newPage) => {
-                                const pageNumber = newPage - 1
-                                setPageRequest({ ...pageRequest, pageNumber })
-                            }}
-                        />
-                        <Text c="dimmed">
-                            <FormattedMessage id={locales.total} values={{ count: page.totalElements }} />
-                        </Text>
-                    </Flex>
-                )}
             </Flex>
+
+            {page.totalPages > 1 && (
+                <Flex className={classes.pagination}>
+                    <Pagination
+                        total={page.totalPages}
+                        value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
+                        disabled={isFetching}
+                        onChange={(newPage) => {
+                            const pageNumber = newPage - 1
+                            setPageRequest({ ...pageRequest, pageNumber })
+                        }}
+                    />
+                    <Text c="dimmed">
+                        <FormattedMessage id={locales.total} values={{ count: page.totalElements }} />
+                    </Text>
+                </Flex>
+            )}
         </Flex>
     )
 }

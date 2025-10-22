@@ -1,8 +1,20 @@
-import { Avatar, CloseButton, Flex, Input, Pagination, Table, Text, Button, Paper, Badge } from "@mantine/core"
+import {
+    Avatar,
+    Badge,
+    Button,
+    CloseButton,
+    Collapse,
+    Flex,
+    Input,
+    Pagination,
+    Paper,
+    Table,
+    Text,
+} from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
 import { ContractDto, PageRequest } from "@russian-rs/portal-api-axios"
-import { IconLock, IconUfo, IconPencil, IconPlus } from "@tabler/icons-react"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { IconLock, IconPencil, IconPlus, IconUfo, IconFilterEdit } from "@tabler/icons-react"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
@@ -15,17 +27,17 @@ import { UserApiService } from "src/shared/api/user/UserApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 
+import { notifications } from "@mantine/notifications"
+import { useIntl } from "react-intl"
+import { ContractDrawer } from "src/pages/profile/contract/ContractDrawer"
+import { ProgramSelectInline } from "src/pages/profile/select/ProgramSelect"
+import { ProjectSelectInline } from "src/pages/profile/select/ProjectSelect"
+import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
+import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
+import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { locales } from "./lib/locales"
 import classes from "./UserList.module.scss"
-import { ProgramSelectInline } from "src/pages/profile/select/ProgramSelect"
-import { ProjectSelectInline } from "src/pages/profile/select/ProjectSelect"
-import { useIntl } from "react-intl"
-import { notifications } from "@mantine/notifications"
-import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
-import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
-import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
-import { ContractDrawer } from "src/pages/profile/contract/ContractDrawer"
 
 export const UserList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -43,6 +55,7 @@ export const UserList = () => {
     const [selectedProject, setSelectedProject] = useState<string | null>(searchParams.get("project") || null)
 
     const isMobile = useMediaQuery("(max-width: 1360px)")
+    const [filtersOpened, setFiltersOpened] = useState(false)
 
     const [filter] = useState(defaultFilter)
     const [pageRequest, setPageRequest] = useState<PageRequest>({
@@ -327,10 +340,14 @@ export const UserList = () => {
                                 navigate(`/profile/${user.username}`)
                             }}
                         />
-                        <Text truncate="end">{user.fullName}</Text>
+                        <Flex direction="column">
+                            <Text truncate="end">{user.fullName}</Text>
+                            <Text size="sm" c="dimmed" truncate="end">
+                                {user.email}
+                            </Text>
+                        </Flex>
                     </Flex>
                 </Table.Td>
-                <Table.Td>{user.email}</Table.Td>
                 <Table.Td>
                     <Flex align="start" direction="column">
                         {user.groups.map((group) => (
@@ -342,6 +359,7 @@ export const UserList = () => {
                 </Table.Td>
                 <Table.Td>
                     <ProgramSelectInline
+                        type="button"
                         value={user.program?.code}
                         canEdit={canEditProgram()}
                         locale={intl.locale}
@@ -352,6 +370,7 @@ export const UserList = () => {
                 </Table.Td>
                 <Table.Td>
                     <ProjectSelectInline
+                        type="button"
                         value={user.project?.code}
                         canEdit={canEditProject(user.id)}
                         locale={intl.locale}
@@ -475,23 +494,67 @@ export const UserList = () => {
         <Flex direction="column">
             <CustomLoader visible={isFetching} className={classes.loader} />
             <Flex className={classes.root}>
-                <Flex className={classes.filters}>
-                    <Input
-                        placeholder={intl.formatMessage({ id: locales.search })}
-                        value={search}
-                        onChange={(event) => setSearch(event.currentTarget.value)}
-                        rightSectionPointerEvents="all"
-                        rightSection={
-                            <CloseButton
-                                aria-label="Clear input"
-                                onClick={() => setSearch("")}
-                                style={{ display: search ? undefined : "none" }}
-                            />
-                        }
-                    />
-                    <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
-                    <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
-                </Flex>
+                {isMobile ? (
+                    <Flex direction="column">
+                        <Button
+                            variant="light"
+                            size="sm"
+                            color="green"
+                            onClick={() => setFiltersOpened((v) => !v)}
+                            leftSection={<IconFilterEdit size={16} />}
+                        >
+                            <FormattedMessage id="common.filters" defaultMessage="Фильтры" />
+                            {(() => {
+                                let count = 0
+                                if ((debouncedSearch || "").trim()) count += 1
+                                if (selectedProgram !== null) count += 1
+                                if (selectedProject !== null) count += 1
+                                return count > 0 ? (
+                                    <Badge ml={8} size="sm" variant="light" color="blue">
+                                        {count}
+                                    </Badge>
+                                ) : null
+                            })()}
+                        </Button>
+                        <Collapse in={filtersOpened} style={{ marginTop: 8 }}>
+                            <Flex className={classes.filters}>
+                                <Input
+                                    placeholder={intl.formatMessage({ id: locales.search })}
+                                    value={search}
+                                    onChange={(event) => setSearch(event.currentTarget.value)}
+                                    rightSectionPointerEvents="all"
+                                    rightSection={
+                                        <CloseButton
+                                            aria-label="Clear input"
+                                            onClick={() => setSearch("")}
+                                            style={{ display: search ? undefined : "none" }}
+                                        />
+                                    }
+                                />
+                                <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
+                                <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
+                            </Flex>
+                        </Collapse>
+                    </Flex>
+                ) : (
+                    <Flex className={classes.filters}>
+                        <Input
+                            placeholder={intl.formatMessage({ id: locales.search })}
+                            value={search}
+                            onChange={(event) => setSearch(event.currentTarget.value)}
+                            rightSectionPointerEvents="all"
+                            rightSection={
+                                <CloseButton
+                                    aria-label="Clear input"
+                                    onClick={() => setSearch("")}
+                                    style={{ display: search ? undefined : "none" }}
+                                />
+                            }
+                        />
+                        <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
+                        <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
+                    </Flex>
+                )}
                 {isMobile ? (
                     <Flex direction="column" rowGap={8} className={classes.mobileList}>
                         {cards}
@@ -501,10 +564,7 @@ export const UserList = () => {
                         <Table.Thead>
                             <Table.Tr>
                                 <Table.Th className={classes.columnName}>
-                                    <FormattedMessage id={locales.fullName} />
-                                </Table.Th>
-                                <Table.Th className={classes.columnEmail}>
-                                    <FormattedMessage id={locales.email} />
+                                    <FormattedMessage id={locales.fullNameEmail} />
                                 </Table.Th>
                                 <Table.Th className={classes.columnRoles}>
                                     <FormattedMessage id={locales.roles} />
@@ -518,6 +578,7 @@ export const UserList = () => {
                                 <Table.Th className={classes.columnContractDue}>
                                     <FormattedMessage id={locales.contractDue} />
                                 </Table.Th>
+                                <Table.Th />
                             </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>{rows}</Table.Tbody>
@@ -531,23 +592,24 @@ export const UserList = () => {
                         </Text>
                     </Flex>
                 )}
-                {page.totalPages > 1 && (
-                    <Flex className={classes.pagination}>
-                        <Pagination
-                            total={page.totalPages}
-                            value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
-                            disabled={isFetching}
-                            onChange={(newPage) => {
-                                const pageNumber = newPage - 1
-                                setPageRequest({ ...pageRequest, pageNumber })
-                            }}
-                        />
-                        <Text c="dimmed">
-                            <FormattedMessage id={locales.total} values={{ total: page.totalElements }} />
-                        </Text>
-                    </Flex>
-                )}
             </Flex>
+            {page.totalPages > 1 && (
+                <Flex className={classes.pagination}>
+                    <Pagination
+                        total={page.totalPages}
+                        value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
+                        disabled={isFetching}
+                        onChange={(newPage) => {
+                            const pageNumber = newPage - 1
+                            setPageRequest({ ...pageRequest, pageNumber })
+                        }}
+                    />
+                    <Text c="dimmed">
+                        <FormattedMessage id={locales.total} values={{ total: page.totalElements }} />
+                    </Text>
+                </Flex>
+            )}
+
             {selectedUser && (
                 <ContractDrawer
                     opened={drawerOpened}
