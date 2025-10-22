@@ -8,9 +8,6 @@ import { DEJAVU_SANS } from "src/shared/docs/fonts/DejaVuSans"
 import { notifications } from "@mantine/notifications"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 
-
-type AppWithGender = ApplicationDto & { gender?: GenderEnumDto | null }
-
 export default async function generateQuestionnairePdf(application: ApplicationDto) {
     const fullName = must(application.name, "Name")
     const birthDate = fmt(application.birthDate, "Birth date")
