@@ -315,6 +315,7 @@
             "contract-from": "Дата начала",
             "contract-until": "Дата окончания",
             "email": "E-mail",
+            "full-name-email": "Имя, Фамилия, e-mail",
             "username": "Логин",
             "roles": "Роли",
             "program": "Программа",
