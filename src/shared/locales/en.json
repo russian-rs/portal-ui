@@ -514,6 +514,59 @@
         },
         "reporting": {
             "title": "Reporting Guidelines"
+        },
+        "volunteers-reports": {
+            "title": "Volunteers reports"
+        },
+        "volunteers-mintrud": {
+            "title": "Volunteers-Mintrud report"
+        },
+        "mintrud": {
+            "title": "Statistics (Ministry of Labour)",
+            "year-label": "Year",
+            "summary": "Summary",
+            "total-volunteers": "Total volunteers",
+            "total-hours": "Total hours",
+            "program-stats": "By programs",
+            "program": "Program",
+            "volunteers": "Volunteers",
+            "hours": "Hours",
+            "other": "Other",
+            "volunteer-stats": "Volunteer statistics",
+            "gender": {
+                "female": "Women",
+                "male": "Men"
+            },
+            "age": {
+                "15-18": "15–18",
+                "18-30": "18–30",
+                "30-40": "30–40",
+                "40-65": "40–65",
+                "65-plus": "65+"
+            },
+            "citizens": "Citizens",
+            "foreigners": "Foreigners",
+            "final-users-stats": "Final users of volunteering",
+            "final-users": {
+                "cultural-assets": "Cultural assets",
+                "natural-assets": "Natural assets",
+                "public-areas": "Public areas",
+                "other": "Other"
+            },
+            "total": "Total",
+            "empty": "No data for the selected year",
+            "statGroups": {
+                "SOCIJALNA_ZASTITA": "Social protection",
+                "MEDIJI_I_KOMUNIKACIJE": "Media and communications",
+                "KULTURNA_DOBA": "Cultural era",
+                "JAVNE_POVRSINE": "Public spaces",
+                "ZIVOTNA_SREDINA": "Environment"
+            },
+            "charts": {
+                "age": "Age distribution",
+                "gender": "Gender distribution",
+                "citizenship": "Citizenship status"
+            }
         }
     },
     "errors": {
@@ -536,7 +589,9 @@
             "volunteers": "Volunteers",
             "all-volunteers": "All volunteers",
             "applications": "Applications",
-            "statistics": "Statistics"
+            "statistics": "Statistics",
+            "reports": "Volunteers reports",
+            "mintrud-report": "Mintrud report"
         },
         "account-settings": "Account settings",
         "support": "Contact support"

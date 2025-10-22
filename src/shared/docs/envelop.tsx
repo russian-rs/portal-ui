@@ -81,7 +81,6 @@ export default async function generateEnvelopPdf(application: ApplicationDto) {
                 if (cur) lines.push(cur);
 
                 if (!fits(w)) {
-                    // break ultra-long "word"
                     let start = 0;
                     while (start < w.length) {
                         let end = start + 1;
@@ -168,7 +167,7 @@ export default async function generateEnvelopPdf(application: ApplicationDto) {
 
     const pdfBytes = await pdf.save();
     saveAs(
-        new Blob([pdfBytes], { type: "application/pdf" }),
+        new Blob([pdfBytes as BlobPart], { type: "application/pdf" }),
         `Koverat_${fullName.replace(/\s+/g, "_")}.pdf`
     );
 }
