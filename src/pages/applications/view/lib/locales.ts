@@ -6,6 +6,7 @@ export const locales = {
     contractStart: "pages.applications.view.contract-start",
     type: "pages.applications.view.type",
 
+    notes: "pages.applications.view.notes",
     refuseReason: "pages.applications.view.refuse-reason",
 
     name: "pages.applications.view.name",

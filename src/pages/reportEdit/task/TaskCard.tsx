@@ -16,7 +16,7 @@ import { FormValidationResult } from "@mantine/form/lib/types"
 import { FileInfoDto, TaskDto } from "@russian-rs/portal-api-axios"
 import { IconCalendar, IconChecklist, IconClock, IconLink, IconTrashX } from "@tabler/icons-react"
 import dayjs from "dayjs"
-import React, { createRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import { createRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { locales } from "src/pages/reportEdit/task/lib/locales"
 import { FileUploader, FileUploaderInterface } from "src/shared/ui/fileUploader/FileUploader"
@@ -183,6 +183,7 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                 maxFiles={15}
                 maxSize={5}
                 ref={fileUploaderRef}
+                files={uploadedFiles}
                 onFilesUploaded={(files) => setUploadedFiles(files)}
                 onFilesLoading={(files) => setLoadingFiles(files)}
             />

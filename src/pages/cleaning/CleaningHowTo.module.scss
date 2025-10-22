@@ -26,6 +26,20 @@
         border-radius: 8px;
     }
 
+    /* Ряд для абзацев, состоящих только из изображений */
+    :global(p.img-row) {
+        display: flex;
+        gap: 2%;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+
+    :global(p.img-row > img) {
+        width: 49%;
+        max-width: 49%;
+        margin: 0;
+    }
+
     :global(ul),
     :global(ol) {
         margin: 0 0 1rem 1.25rem;
@@ -50,5 +64,12 @@
 
     :global(p) {
         line-height: 1.6;
+    }
+
+    :global(blockquote) {
+        margin: 0.5rem 0 1rem;
+        padding-left: 1rem;
+        border-left: 6px solid #3b82f6;
+        color: #94a3b8;
     }
 }
