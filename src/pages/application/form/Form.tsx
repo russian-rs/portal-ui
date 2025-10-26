@@ -128,7 +128,9 @@ export const Form = () => {
         skills: z.string(fieldRequired).min(20, minMessage(20)).max(500, maxMessage(500)),
         goal: z.string(fieldRequired).min(100, minMessage(100)).max(1000, maxMessage(1000)),
         bio: z.string(fieldRequired).min(100, minMessage(100)).max(1000, maxMessage(1000)),
-        gender: z.string().optional(),
+        gender: z.nativeEnum(GenderEnumDto, {
+            required_error: intl.formatMessage({ id: locales.required }),
+        }),
     })
 
     const form = useForm({
@@ -398,8 +400,9 @@ export const Form = () => {
             />
             {residenceArea}
             <Radio.Group
+                withAsterisk
                 label={
-                    <Flex align="center" gap={6}>
+                    <Flex align="center" gap={6} style={{ display: "inline-flex" }}>
                         <FormattedMessage id={locales.gender} />
                         <Tooltip
                             label={<FormattedMessage id="pages.profile.props.gender.hint" />}
