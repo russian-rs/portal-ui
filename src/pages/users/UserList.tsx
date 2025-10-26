@@ -603,6 +603,7 @@ export const UserList = () => {
                             const pageNumber = newPage - 1
                             setPageRequest({ ...pageRequest, pageNumber })
                         }}
+                        siblings={isMobile ? 0 : 1}
                     />
                     <Text c="dimmed">
                         <FormattedMessage id={locales.total} values={{ total: page.totalElements }} />
