@@ -60,6 +60,10 @@ $table-width: 100%;
     @media (max-width: $mantine-breakpoint-md) {
         padding: 0.5rem;
     }
+
+    @media (max-width: $mantine-breakpoint-xs) {
+        column-gap: 0.5rem;
+    }
 }
 
 .emptyState {
