@@ -19,6 +19,14 @@
         "user-search": {
             "placeholder": "Name Surname"
         },
+        "city-select": {
+            "placeholder": "Select a city",
+            "search-placeholder": "Start typing city name",
+            "loading": "Loading...",
+            "search-min-length": "Enter at least 2 characters to search",
+            "not-found": "City not found",
+            "loading-error": "Error loading cities"
+        },
         "report-status": {
             "CREATED": "Created",
             "REJECTED": "Rejected",
@@ -149,6 +157,7 @@
             "documentTitle": "Profile",
             "props": {
                 "city": "City",
+                "postalCode": "Postal code",
                 "address": "Address",
                 "birthDate": "Birth date",
                 "phone": "Phone",
@@ -158,6 +167,7 @@
             "validation": {
                 "invalidPhone": "Invalid number",
                 "invalidTelegram": "Invalid format",
+                "invalidPostalCode": "Postal code must contain 5 digits",
                 "invalidBirthDate": "Invalid date format",
                 "tooYoung": "You must be at least 18 years old",
                 "invalidDate": "Invalid date format",
@@ -396,8 +406,11 @@
                 "in-serbia": "I am already in Serbia",
                 "out-serbia": "I am not in Serbia yet",
                 "enter-date": "Last date of entry into Serbia",
+                "city": "City",
+                "postal-code": "Postal code",
+                "postal-code-invalid": "Postal code must contain 5 digits",
                 "address": "Your address in Serbia for receiving documents",
-                "address-description": "In Serbian with a postal code. Example: 11197, Beograd (Novi Beograd), Ulica Jurija Gagarina 10, stan 4",
+                "address-description": "In Serbian language. Example – Ulica Jurija Gagarina 10, stan 4",
                 "phone": "Contact phone number",
                 "phone-description": "With code +381, without spaces",
                 "phone-invalid": "Invalid phone format",

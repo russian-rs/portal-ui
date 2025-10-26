@@ -28,6 +28,12 @@ export const mapValuesToRequest = (values: Record<string, any>, currentState: Ap
     if (values["enterDate"]) {
         request.enterDate = dayjs(values["enterDate"]).format(DEFAULT_DATE_FORMAT)
     }
+    if (values["city"]) {
+        request.city = values["city"]
+    }
+    if (values["postalCode"]) {
+        request.postalCode = values["postalCode"]
+    }
     if (values["address"]) {
         request.address = values["address"]
     }

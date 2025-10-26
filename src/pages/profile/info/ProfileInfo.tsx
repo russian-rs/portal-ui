@@ -1,37 +1,38 @@
 import { Button, Container, Drawer, Flex, Text, TextInput } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
+import { useForm, zodResolver } from "@mantine/form"
+import { useDisclosure } from "@mantine/hooks"
+import { notifications } from "@mantine/notifications"
 import { UserInfoDto, UserInfoUpdateRequest } from "@russian-rs/portal-api-axios"
 import {
     IconBrandTelegram,
-    IconPhone,
-    IconHome,
     IconBuildings,
-    IconGift,
-    IconMail,
     IconDeviceFloppy,
+    IconGift,
+    IconHome,
+    IconMail,
+    IconMapPin,
     IconPencil,
+    IconPhone,
 } from "@tabler/icons-react"
+import { useMutation } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useContext } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { UserContext } from "src/app/providers/UserContext"
 import commonClasses from "src/app/styles/private.module.scss"
 import { ProfileAvatar } from "src/pages/profile/avatar/ProfileAvatar"
-import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
-import { useForm, zodResolver } from "@mantine/form"
-import { useDisclosure } from "@mantine/hooks"
-import { notifications } from "@mantine/notifications"
-import { useMutation } from "@tanstack/react-query"
-import { z } from "zod"
-import classes from "./ProfileInfo.module.scss"
 import { locales } from "src/pages/users/lib/locales"
-import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
-import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { UserApiService } from "src/shared/api/user/UserApiService"
-import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { Locale } from "src/shared/constants/Locales"
+import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
+import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
+import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
+import { hasPermission, UserGroup } from "src/shared/user/roles"
+import { z } from "zod"
 import { ProgramSelectInline } from "../select/ProgramSelect"
 import { ProjectSelectInline } from "../select/ProjectSelect"
+import classes from "./ProfileInfo.module.scss"
 
 interface ProfileInfoProps {
     userInfo: UserInfoDto | undefined
@@ -48,6 +49,11 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         city: z
             .string()
             .max(100, intl.formatMessage({ id: locales.maxLetters }, { count: 100 }))
+            .optional()
+            .or(z.literal("")),
+        postalCode: z
+            .string()
+            .regex(/^\d{5}$/, intl.formatMessage({ id: "pages.profile.validation.invalidPostalCode" }))
             .optional()
             .or(z.literal("")),
         address: z
@@ -89,6 +95,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const form = useForm({
         initialValues: {
             city: userInfo?.city || "",
+            postalCode: userInfo?.postalCode || "",
             address: userInfo?.address || "",
             birthDate: userInfo?.birthDate || "",
             telegram: userInfo?.telegram || "",
@@ -108,6 +115,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
 
         const updateData: UserInfoUpdateRequest = {}
         if (formValues.city?.trim()) updateData.city = formValues.city.trim()
+        if (formValues.postalCode?.trim()) updateData.postalCode = formValues.postalCode.trim()
         if (formValues.address?.trim()) updateData.address = formValues.address.trim()
         if (formValues.birthDate?.trim()) updateData.birthDate = formValues.birthDate.trim()
         if (formValues.telegram?.trim()) updateData.telegram = formValues.telegram.trim()
@@ -272,6 +280,12 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                 className={classes.propertyBox}
             />
             <TextPropertyBox
+                name={"pages.profile.props.postalCode"}
+                value={userInfo?.postalCode}
+                icon={<IconMapPin size={18} />}
+                className={classes.propertyBox}
+            />
+            <TextPropertyBox
                 name={"pages.profile.props.address"}
                 value={userInfo?.address}
                 icon={<IconHome size={18} />}
@@ -328,6 +342,17 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                             leftSection={iconCity}
                             label={<FormattedMessage id="pages.profile.props.city" />}
                             {...form.getInputProps("city")}
+                        />
+                        <TextInput
+                            leftSection={<IconMapPin size={16} />}
+                            label={<FormattedMessage id="pages.profile.props.postalCode" />}
+                            {...form.getInputProps("postalCode")}
+                            maxLength={5}
+                            placeholder="11000"
+                            onChange={(event) => {
+                                const value = event.currentTarget.value.replace(/\D/g, "")
+                                form.setFieldValue("postalCode", value)
+                            }}
                         />
                         <TextInput
                             leftSection={iconHome}
