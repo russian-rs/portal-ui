@@ -20,7 +20,7 @@ import {
 } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate } from "react-router"
 import { defaultRequest } from "src/pages/application/form/lib/defaults"
@@ -30,6 +30,7 @@ import { PublicApplicationApiService } from "src/shared/api/applications/PublicA
 import { checkUserForApplication } from "src/shared/api/user/UserApiService"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { CaptchaSolver } from "src/shared/ui/captcha/CaptchaSolver"
+import { CitySelect } from "src/shared/ui/citySelect/CitySelect"
 import { z } from "zod"
 import classes from "./Form.module.scss"
 
@@ -82,6 +83,14 @@ export const Form = () => {
             .min(5, minMessage(3))
             .max(32, maxMessage(32)),
         enterDate: location == "IN" ? z.date(fieldRequired) : z.date().optional(),
+        city:
+            location == "IN"
+                ? z.string(fieldRequired).min(2, minMessage(2)).max(100, maxMessage(100))
+                : z.string().optional(),
+        postalCode:
+            location == "IN"
+                ? z.string(fieldRequired).regex(/^\d{5}$/, intl.formatMessage({ id: locales.postalCodeInvalid }))
+                : z.string().optional(),
         address:
             location == "IN"
                 ? z.string(fieldRequired).min(16, minMessage(16)).max(200, maxMessage(200))
@@ -204,6 +213,31 @@ export const Form = () => {
                 key={form.key("enterDate")}
                 {...form.getInputProps("enterDate")}
                 disabled={isFetching}
+            />
+            <CitySelect
+                label={intl.formatMessage({ id: locales.city })}
+                value={form.getInputProps("city").value}
+                error={form.errors.city ? String(form.errors.city) : undefined}
+                onChange={(cityName: string) => form.setFieldValue("city", cityName)}
+                withAsterisk
+                className={classes.input}
+                disabled={isFetching}
+            />
+            <TextInput
+                label={<FormattedMessage id={locales.postalCode} />}
+                radius={0}
+                className={classes.input}
+                withAsterisk
+                leftSection={<IconMap2 size={16} />}
+                error={form.errors.postalCode}
+                maxLength={5}
+                placeholder="11000"
+                {...form.getInputProps("postalCode")}
+                disabled={isFetching}
+                onChange={(event) => {
+                    const value = event.currentTarget.value.replace(/\D/g, "")
+                    form.setFieldValue("postalCode", value)
+                }}
             />
             <TextInput
                 label={<FormattedMessage id={locales.address} />}
