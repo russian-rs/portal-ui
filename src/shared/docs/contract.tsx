@@ -149,7 +149,7 @@ export default function generateContractPdf(application: ApplicationDto) {
     startY = startY + 5
 
     pdf.setFont("Montserrat-Medium", "normal")
-    const value6 = "2.1. Овај Уговор подразумева континуирано, ** дугорочно волонтирање. Рок на који се закључује**"
+    const value6 = "2.1. Овај Уговор подразумева континуирано, ** дугорочно волонтирање."
     value6.split("**").map((text1, i) => {
         pdf.setFont("Montserrat-Bold", "bold")
         if (i % 2 === 0) {
@@ -161,10 +161,6 @@ export default function generateContractPdf(application: ApplicationDto) {
 
     startX = 15
     startY = startY + 3
-
-    pdf.setFont("Montserrat-Bold", "bold")
-    pdf.text(`уговор је ${contractUntil.diff(contractFrom, "month")} мес.`, 15, startY)
-    startY = startY + 5
 
     const value7 =
         "2.2. Волонтирање ће се вршити од ** " +
@@ -341,7 +337,7 @@ export default function generateContractPdf(application: ApplicationDto) {
         "6.1. На сва питања која нису уређена овим уговором примењују се одредбе Закона и других важећих \n" +
             "правила у Републици Србији. \n\n" +
             "6.2. Уговорне стране сагласне су да сваки спор из овог уговора или у вези са овим уговором биће коначно \n" +
-            "решен арбитражом у складу са Правилима сталне арбитраже при Удружењу \n" +
+            "решен арбитражом у складу са правилником сталне арбитраже при Удружењу \n" +
             "\"Руска дијаспора у Србији\" у Новом Саду. \n\n" +
             "6.3. Овај Уговор ступа на снагу даном потписивања од стране овлашћених лица уговорних страна. \n\n" +
             "6.4. Овај уговор је сачињен у 2 (два) истоветна примерка, по један за сваку уговорну страну.",
