@@ -10,15 +10,15 @@ import {
     Textarea,
     TextInput,
 } from "@mantine/core"
-import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { FormValidationResult } from "@mantine/form/lib/types"
 import { FileInfoDto, TaskDto } from "@russian-rs/portal-api-axios"
-import { IconCalendar, IconChecklist, IconClock, IconLink, IconTrashX } from "@tabler/icons-react"
+import { IconChecklist, IconClock, IconLink, IconTrashX } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import { createRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { locales } from "src/pages/reportEdit/task/lib/locales"
+import { DayPicker } from "src/shared/ui/dayPicker/DayPicker"
 import { FileUploader, FileUploaderInterface } from "src/shared/ui/fileUploader/FileUploader"
 import { UserSearch } from "src/shared/ui/userSearch/UserSearch"
 import { z } from "zod"
@@ -157,20 +157,21 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                     leftSection={<IconClock size={18} />}
                     inputWrapperOrder={["label", "description", "error", "input"]}
                 />
-                <DateInput
-                    mt="auto"
-                    name="date"
-                    withAsterisk
-                    valueFormat="DD MMM YYYY"
-                    key={form.key("date")}
-                    {...form.getInputProps("date")}
-                    label={<FormattedMessage id={locales.taskDate} />}
-                    description={<FormattedMessage id={locales.taskDateDescription} />}
-                    minDate={dayjs(new Date()).subtract(21, "day").toDate()}
-                    maxDate={new Date()}
-                    leftSection={<IconCalendar size={18} />}
-                    inputWrapperOrder={["label", "description", "error", "input"]}
-                />
+                <Flex mt="auto">
+                    <DayPicker
+                        label={<FormattedMessage id={locales.taskDate} />}
+                        description={<FormattedMessage id={locales.taskDateDescription} />}
+                        withAsterisk
+                        error={form.errors.date}
+                        onChange={(date) => {
+                            form.setFieldValue("date", date)
+                        }}
+                        targetClassName={classes.dayPickerTarget}
+                        initialDate={editMode ? props.task.date : null}
+                        minDate={dayjs(new Date()).subtract(21, "day").toDate()}
+                        maxDate={new Date()}
+                    />
+                </Flex>
             </SimpleGrid>
             <UserSearch
                 form={form}
