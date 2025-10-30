@@ -28,6 +28,9 @@
             "label": "Неделя",
             "empty": "Не выбрано"
         },
+        "day-picker": {
+            "empty": "Не выбрано"
+        },
         "report-status-select": {
             "label": "Статус",
             "empty": "Не выбрано"
