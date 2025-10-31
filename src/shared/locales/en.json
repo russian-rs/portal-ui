@@ -20,12 +20,7 @@
             "placeholder": "Name Surname"
         },
         "city-select": {
-            "placeholder": "Select a city",
-            "search-placeholder": "Start typing city name",
-            "loading": "Loading...",
-            "search-min-length": "Enter at least 2 characters to search",
-            "not-found": "City not found",
-            "loading-error": "Error loading cities"
+            "placeholder": "City name in Serbian"
         },
         "report-status": {
             "CREATED": "Created",
@@ -407,6 +402,8 @@
                 "out-serbia": "I am not in Serbia yet",
                 "enter-date": "Last date of entry into Serbia",
                 "city": "City",
+                "city-description": "If your city is not in the list, then the nearest available one",
+                "select-city-list": "Select city from the list",
                 "postal-code": "Postal code",
                 "postal-code-invalid": "Postal code must contain 5 digits",
                 "address": "Your address in Serbia for receiving documents",

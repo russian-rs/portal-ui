@@ -20,12 +20,7 @@
             "placeholder": "Ime Prezime"
         },
         "city-select": {
-            "placeholder": "Izaberite grad",
-            "search-placeholder": "Počnite da kucate naziv grada",
-            "loading": "Učitavanje...",
-            "search-min-length": "Unesite najmanje 2 karaktera za pretragu",
-            "not-found": "Grad nije pronađen",
-            "loading-error": "Greška pri učitavanju gradova"
+            "placeholder": "Naziv grada na srpskom jeziku"
         },
         "report-status": {
             "CREATED": "Stvoren",
@@ -407,6 +402,8 @@
                 "out-serbia": "Još nisam u Srbiji",
                 "enter-date": "Datum poslednjeg ulaska u Srbiju",
                 "city": "Grad",
+                "city-description": "Ako vaš grad nije u listi, onda najbliži dostupan",
+                "select-city-list": "Izaberite grad iz liste",
                 "postal-code": "Poštanski broj",
                 "postal-code-invalid": "Poštanski broj mora sadržavati 5 cifara",
                 "address": "Vaša adresa u Srbiji za prijem dokumenata",

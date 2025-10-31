@@ -13,6 +13,7 @@ import {
     IconEPassport,
     IconLanguageHiragana,
     IconLogin2,
+    IconMailPin,
     IconMap2,
     IconPhone,
     IconSignature,
@@ -46,6 +47,7 @@ export const Form = () => {
     const [formError, setFormError] = useState<string | null>(null)
 
     const fieldRequired = { message: intl.formatMessage({ id: locales.required }) }
+    const selectCityList = { message: intl.formatMessage({ id: locales.selectCityList }) }
     const invalidSymbols = intl.formatMessage({ id: locales.invalidSymbols })
     const minMessage = (count: number) => intl.formatMessage({ id: locales.minLetters }, { count: count })
     const maxMessage = (count: number) => intl.formatMessage({ id: locales.maxLetters }, { count: count })
@@ -85,7 +87,7 @@ export const Form = () => {
         enterDate: location == "IN" ? z.date(fieldRequired) : z.date().optional(),
         city:
             location == "IN"
-                ? z.string(fieldRequired).min(2, minMessage(2)).max(100, maxMessage(100))
+                ? z.string(selectCityList).min(2, selectCityList).max(100, maxMessage(100))
                 : z.string().optional(),
         postalCode:
             location == "IN"
@@ -216,19 +218,19 @@ export const Form = () => {
             />
             <CitySelect
                 label={intl.formatMessage({ id: locales.city })}
-                value={form.getInputProps("city").value}
-                error={form.errors.city ? String(form.errors.city) : undefined}
-                onChange={(cityName: string) => form.setFieldValue("city", cityName)}
+                description={intl.formatMessage({ id: locales.cityDescription })}
+                error={form.errors.city}
                 withAsterisk
                 className={classes.input}
                 disabled={isFetching}
+                {...form.getInputProps("city")}
             />
             <TextInput
                 label={<FormattedMessage id={locales.postalCode} />}
                 radius={0}
                 className={classes.input}
                 withAsterisk
-                leftSection={<IconMap2 size={16} />}
+                leftSection={<IconMailPin size={16} />}
                 error={form.errors.postalCode}
                 maxLength={5}
                 placeholder="11000"
