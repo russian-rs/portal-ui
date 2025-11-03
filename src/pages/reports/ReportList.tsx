@@ -1,6 +1,6 @@
 import { Avatar, Button, Collapse, Flex, Pagination, Table, Text } from "@mantine/core"
 import { PageRequest, ReportDto, ReportFilter, UserInfoDto } from "@russian-rs/portal-api-axios"
-import { IconClock, IconFile, IconListCheck, IconUfo, IconFilterEdit } from "@tabler/icons-react"
+import { IconClock, IconFile, IconFilterEdit, IconListCheck, IconUfo, IconX } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
@@ -265,6 +265,16 @@ export const ReportList = () => {
         if (selectedProject !== null) count += 1
         return count
     }, [filter.login, filter.status, filter.dateFrom, filter.dateTo, selectedProgram, selectedProject])
+
+    const resetFilters = () => {
+        const resetFilter = defaultFilter(null)
+        setFilter(resetFilter)
+        setSelectedProgram(null)
+        setSelectedProject(null)
+        setPageRequest({ ...pageRequest, pageNumber: 0 })
+        setResetKey((prev) => prev + 1)
+        updateUrlParams(resetFilter, null, null, 0)
+    }
 
     const rows = reports.map((report) => {
         const creator = users[report.user!!] || defaultUser(report.user!!)
@@ -564,154 +574,187 @@ export const ReportList = () => {
                             )}
                         </Button>
                         <Collapse in={filtersOpened} style={{ marginTop: 8 }}>
-                            <Flex className={classes.filters}>
-                                <UserSearch
-                                    key={`user-search-${resetKey}`}
-                                    className={classes.userSearch}
-                                    description={<FormattedMessage id={locales.volunteer} />}
-                                    onUserChange={onUserSelected}
-                                    initialSearch={filter.login || ""}
-                                />
-                                <WeekPicker
-                                    key={`week-picker-${resetKey}`}
-                                    onChange={onWeekChange}
-                                    initialStartDate={filter.dateFrom}
-                                    initialEndDate={filter.dateTo}
-                                />
-                                <ReportStatusSelect
-                                    key={`status-select-${resetKey}`}
-                                    onChange={onStatusChange}
-                                    value={filter.status}
-                                />
-                                <Flex direction="column">
-                                    <Text size="xs" c="dimmed" mb={4}>
-                                        <FormattedMessage id={locales.programFilter} />
-                                    </Text>
-                                    <ProgramFilter
-                                        className={classes.programFilter}
-                                        value={selectedProgram}
-                                        onChange={(newProgram) => {
-                                            const programChanged = newProgram !== selectedProgram
-
-                                            setSelectedProgram(newProgram)
-                                            if (programChanged) {
-                                                setPageRequest({ ...pageRequest, pageNumber: 0 })
-
-                                                updateUrlParams(filter, newProgram, selectedProject, 0)
-                                            } else {
-                                                updateUrlParams(
-                                                    filter,
-                                                    newProgram,
-                                                    selectedProject,
-                                                    pageRequest.pageNumber || 0
-                                                )
-                                            }
-                                        }}
-                                        placeholder={intl.formatMessage({ id: locales.programFilterNotSelected })}
+                            <Flex direction="column" gap={8}>
+                                <Flex className={classes.filters}>
+                                    <UserSearch
+                                        key={`user-search-${resetKey}`}
+                                        className={classes.userSearch}
+                                        description={<FormattedMessage id={locales.volunteer} />}
+                                        onUserChange={onUserSelected}
+                                        initialSearch={filter.login || ""}
                                     />
-                                </Flex>
-                                <Flex direction="column">
-                                    <Text size="xs" c="dimmed" mb={4}>
-                                        <FormattedMessage id={locales.projectFilter} />
-                                    </Text>
-                                    <ProjectFilter
-                                        className={classes.programFilter}
-                                        value={selectedProject}
-                                        onChange={(newProject) => {
-                                            const projectChanged = newProject !== selectedProject
-
-                                            setSelectedProject(newProject)
-                                            if (projectChanged) {
-                                                setPageRequest({ ...pageRequest, pageNumber: 0 })
-                                                updateUrlParams(filter, selectedProgram, newProject, 0)
-                                            } else {
-                                                updateUrlParams(
-                                                    filter,
-                                                    selectedProgram,
-                                                    newProject,
-                                                    pageRequest.pageNumber || 0
-                                                )
-                                            }
-                                        }}
-                                        placeholder={intl.formatMessage({ id: locales.projectFilterNotSelected })}
+                                    <WeekPicker
+                                        key={`week-picker-${resetKey}`}
+                                        onChange={onWeekChange}
+                                        initialStartDate={filter.dateFrom}
+                                        initialEndDate={filter.dateTo}
                                     />
+                                    <ReportStatusSelect
+                                        key={`status-select-${resetKey}`}
+                                        onChange={onStatusChange}
+                                        value={filter.status}
+                                    />
+                                    <Flex direction="column">
+                                        <Text size="xs" c="dimmed" mb={4}>
+                                            <FormattedMessage id={locales.programFilter} />
+                                        </Text>
+                                        <ProgramFilter
+                                            className={classes.programFilter}
+                                            value={selectedProgram}
+                                            onChange={(newProgram) => {
+                                                const programChanged = newProgram !== selectedProgram
+
+                                                setSelectedProgram(newProgram)
+                                                if (programChanged) {
+                                                    setPageRequest({ ...pageRequest, pageNumber: 0 })
+
+                                                    updateUrlParams(filter, newProgram, selectedProject, 0)
+                                                } else {
+                                                    updateUrlParams(
+                                                        filter,
+                                                        newProgram,
+                                                        selectedProject,
+                                                        pageRequest.pageNumber || 0
+                                                    )
+                                                }
+                                            }}
+                                            placeholder={intl.formatMessage({ id: locales.programFilterNotSelected })}
+                                        />
+                                    </Flex>
+                                    <Flex direction="column">
+                                        <Text size="xs" c="dimmed" mb={4}>
+                                            <FormattedMessage id={locales.projectFilter} />
+                                        </Text>
+                                        <ProjectFilter
+                                            className={classes.programFilter}
+                                            value={selectedProject}
+                                            onChange={(newProject) => {
+                                                const projectChanged = newProject !== selectedProject
+
+                                                setSelectedProject(newProject)
+                                                if (projectChanged) {
+                                                    setPageRequest({ ...pageRequest, pageNumber: 0 })
+                                                    updateUrlParams(filter, selectedProgram, newProject, 0)
+                                                } else {
+                                                    updateUrlParams(
+                                                        filter,
+                                                        selectedProgram,
+                                                        newProject,
+                                                        pageRequest.pageNumber || 0
+                                                    )
+                                                }
+                                            }}
+                                            placeholder={intl.formatMessage({ id: locales.projectFilterNotSelected })}
+                                        />
+                                    </Flex>
                                 </Flex>
+                                {activeFiltersCount > 0 && (
+                                    <Flex justify="flex-end">
+                                        <Button
+                                            variant="light"
+                                            size="sm"
+                                            color="gray"
+                                            onClick={resetFilters}
+                                            leftSection={<IconX size={16} />}
+                                        >
+                                            <FormattedMessage
+                                                id="common.resetFilters"
+                                                defaultMessage="Сбросить фильтры"
+                                            />
+                                        </Button>
+                                    </Flex>
+                                )}
                             </Flex>
                         </Collapse>
                     </Flex>
                 ) : (
-                    <Flex className={classes.filters}>
-                        <UserSearch
-                            key={`user-search-${resetKey}`}
-                            className={classes.userSearch}
-                            description={<FormattedMessage id={locales.volunteer} />}
-                            onUserChange={onUserSelected}
-                            initialSearch={filter.login || ""}
-                        />
-                        <WeekPicker
-                            key={`week-picker-${resetKey}`}
-                            onChange={onWeekChange}
-                            initialStartDate={filter.dateFrom}
-                            initialEndDate={filter.dateTo}
-                        />
-                        <ReportStatusSelect
-                            key={`status-select-${resetKey}`}
-                            onChange={onStatusChange}
-                            value={filter.status}
-                        />
-                        <Flex direction="column">
-                            <Text size="xs" c="dimmed" mb={4}>
-                                <FormattedMessage id={locales.programFilter} />
-                            </Text>
-                            <ProgramFilter
-                                className={classes.programFilter}
-                                value={selectedProgram}
-                                onChange={(newProgram) => {
-                                    const programChanged = newProgram !== selectedProgram
-
-                                    setSelectedProgram(newProgram)
-                                    if (programChanged) {
-                                        setPageRequest({ ...pageRequest, pageNumber: 0 })
-
-                                        updateUrlParams(filter, newProgram, selectedProject, 0)
-                                    } else {
-                                        updateUrlParams(
-                                            filter,
-                                            newProgram,
-                                            selectedProject,
-                                            pageRequest.pageNumber || 0
-                                        )
-                                    }
-                                }}
-                                placeholder={intl.formatMessage({ id: locales.programFilterNotSelected })}
+                    <Flex direction="column" gap={8}>
+                        <Flex className={classes.filters}>
+                            <UserSearch
+                                key={`user-search-${resetKey}`}
+                                className={classes.userSearch}
+                                description={<FormattedMessage id={locales.volunteer} />}
+                                onUserChange={onUserSelected}
+                                initialSearch={filter.login || ""}
                             />
-                        </Flex>
-                        <Flex direction="column">
-                            <Text size="xs" c="dimmed" mb={4}>
-                                <FormattedMessage id={locales.projectFilter} />
-                            </Text>
-                            <ProjectFilter
-                                className={classes.programFilter}
-                                value={selectedProject}
-                                onChange={(newProject) => {
-                                    const projectChanged = newProject !== selectedProject
-
-                                    setSelectedProject(newProject)
-                                    if (projectChanged) {
-                                        setPageRequest({ ...pageRequest, pageNumber: 0 })
-                                        updateUrlParams(filter, selectedProgram, newProject, 0)
-                                    } else {
-                                        updateUrlParams(
-                                            filter,
-                                            selectedProgram,
-                                            newProject,
-                                            pageRequest.pageNumber || 0
-                                        )
-                                    }
-                                }}
-                                placeholder={intl.formatMessage({ id: locales.projectFilterNotSelected })}
+                            <WeekPicker
+                                key={`week-picker-${resetKey}`}
+                                onChange={onWeekChange}
+                                initialStartDate={filter.dateFrom}
+                                initialEndDate={filter.dateTo}
                             />
+                            <ReportStatusSelect
+                                key={`status-select-${resetKey}`}
+                                onChange={onStatusChange}
+                                value={filter.status}
+                            />
+                            <Flex direction="column">
+                                <Text size="xs" c="dimmed" mb={4}>
+                                    <FormattedMessage id={locales.programFilter} />
+                                </Text>
+                                <ProgramFilter
+                                    className={classes.programFilter}
+                                    value={selectedProgram}
+                                    onChange={(newProgram) => {
+                                        const programChanged = newProgram !== selectedProgram
+
+                                        setSelectedProgram(newProgram)
+                                        if (programChanged) {
+                                            setPageRequest({ ...pageRequest, pageNumber: 0 })
+
+                                            updateUrlParams(filter, newProgram, selectedProject, 0)
+                                        } else {
+                                            updateUrlParams(
+                                                filter,
+                                                newProgram,
+                                                selectedProject,
+                                                pageRequest.pageNumber || 0
+                                            )
+                                        }
+                                    }}
+                                    placeholder={intl.formatMessage({ id: locales.programFilterNotSelected })}
+                                />
+                            </Flex>
+                            <Flex direction="column">
+                                <Text size="xs" c="dimmed" mb={4}>
+                                    <FormattedMessage id={locales.projectFilter} />
+                                </Text>
+                                <ProjectFilter
+                                    className={classes.programFilter}
+                                    value={selectedProject}
+                                    onChange={(newProject) => {
+                                        const projectChanged = newProject !== selectedProject
+
+                                        setSelectedProject(newProject)
+                                        if (projectChanged) {
+                                            setPageRequest({ ...pageRequest, pageNumber: 0 })
+                                            updateUrlParams(filter, selectedProgram, newProject, 0)
+                                        } else {
+                                            updateUrlParams(
+                                                filter,
+                                                selectedProgram,
+                                                newProject,
+                                                pageRequest.pageNumber || 0
+                                            )
+                                        }
+                                    }}
+                                    placeholder={intl.formatMessage({ id: locales.projectFilterNotSelected })}
+                                />
+                            </Flex>
                         </Flex>
+                        {activeFiltersCount > 0 && (
+                            <Flex justify="flex-end">
+                                <Button
+                                    variant="light"
+                                    size="sm"
+                                    color="gray"
+                                    onClick={resetFilters}
+                                    leftSection={<IconX size={16} />}
+                                >
+                                    <FormattedMessage id="common.resetFilters" defaultMessage="Сбросить фильтры" />
+                                </Button>
+                            </Flex>
+                        )}
                     </Flex>
                 )}
                 {isMobile ? (
