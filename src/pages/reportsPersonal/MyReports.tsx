@@ -1,7 +1,7 @@
 import { Badge, Button, Flex, Pagination, Text } from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
 import { PageRequest, ReportFilter } from "@russian-rs/portal-api-axios"
-import { IconChevronRight, IconClockCheck, IconListCheck, IconPlus, IconUfo } from "@tabler/icons-react"
+import { IconChevronRight, IconClockCheck, IconListCheck, IconPlus, IconUfo, IconX } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
@@ -178,6 +178,20 @@ export const MyReports = () => {
         }
     }
 
+    const activeFiltersCount = React.useMemo(() => {
+        let count = 0
+        if (filter.status) count += 1
+        if (filter.dateFrom || filter.dateTo) count += 1
+        return count
+    }, [filter.status, filter.dateFrom, filter.dateTo])
+
+    const resetFilters = () => {
+        const resetFilter = { ...defaultFilter, login: filter.login }
+        setFilter(resetFilter)
+        setPageRequest({ ...pageRequest, pageNumber: 0 })
+        updateUrlParams(resetFilter, 0)
+    }
+
     const rows = response.content.map((report) => (
         <Flex
             key={report.id}
@@ -231,29 +245,44 @@ export const MyReports = () => {
                     </Flex>
                     <div ref={listStartRef} />
                     <Flex className={classes.content}>
-                        <Flex className={classes.filterArea}>
-                            <WeekPicker
-                                onChange={onWeekChange}
-                                className={classes.filterWeek}
-                                initialStartDate={filter.dateFrom}
-                                initialEndDate={filter.dateTo}
-                            />
-                            <ReportStatusSelect
-                                onChange={onStatusChange}
-                                className={classes.filterStatus}
-                                value={filter.status}
-                            />
-                            <Button
-                                className={classes.newReportButton}
-                                variant="light"
-                                size="sm"
-                                leftSection={<IconPlus size={16} />}
-                                onClick={() => navigate("/report/create")}
-                            >
-                                <Text size="sm">
-                                    <FormattedMessage id={locales.newReport} />
-                                </Text>
-                            </Button>
+                        <Flex direction="column" gap={8}>
+                            <Flex className={classes.filterArea}>
+                                <WeekPicker
+                                    onChange={onWeekChange}
+                                    className={classes.filterWeek}
+                                    initialStartDate={filter.dateFrom}
+                                    initialEndDate={filter.dateTo}
+                                />
+                                <ReportStatusSelect
+                                    onChange={onStatusChange}
+                                    className={classes.filterStatus}
+                                    value={filter.status}
+                                />
+                                <Button
+                                    className={classes.newReportButton}
+                                    variant="light"
+                                    size="sm"
+                                    leftSection={<IconPlus size={16} />}
+                                    onClick={() => navigate("/report/create")}
+                                >
+                                    <Text size="sm">
+                                        <FormattedMessage id={locales.newReport} />
+                                    </Text>
+                                </Button>
+                            </Flex>
+                            {activeFiltersCount > 0 && (
+                                <Flex justify="flex-end">
+                                    <Button
+                                        variant="light"
+                                        size="sm"
+                                        color="gray"
+                                        onClick={resetFilters}
+                                        leftSection={<IconX size={16} />}
+                                    >
+                                        <FormattedMessage id="common.resetFilters" defaultMessage="Сбросить фильтры" />
+                                    </Button>
+                                </Flex>
+                            )}
                         </Flex>
                         <Flex className={classes.reportContainer}>
                             {rows.length == 0 && (
