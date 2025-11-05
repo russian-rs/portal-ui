@@ -493,6 +493,8 @@
                 "goal": "Purpose of Participation in the Organization",
                 "bio": "Brief Biography",
                 "gender": "Gender",
+                "gender.male": "Male",
+                "gender.female": "Female",
                 "pause-reason": "Pause reason",
                 "contractDownload": "Download contract",
                 "questionnaireDownload": "Download questionnaire",

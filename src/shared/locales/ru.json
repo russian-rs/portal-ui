@@ -493,6 +493,8 @@
                 "goal": "Цель участия в организации",
                 "bio": "Краткая биография",
                 "gender": "Пол",
+                "gender.male": "Мужской",
+                "gender.female": "Женский",
                 "pause-reason": "Причина паузы",
                 "contractDownload": "Скачать договор",
                 "questionnaireDownload": "Скачать анкету",

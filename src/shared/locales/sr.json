@@ -493,6 +493,8 @@
                 "goal": "Cilj učestvovanja u organizaciji",
                 "bio": "Kratka biografija",
                 "gender": "Pol",
+                "gender.male": "Muški",
+                "gender.female": "Ženski",
                 "pause-reason": "Razlog pauze",
                 "contractDownload": "Preuzimanje ugovora",
                 "questionnaireDownload": "Preuzimanje upitnika",
