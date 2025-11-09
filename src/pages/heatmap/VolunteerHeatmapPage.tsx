@@ -16,9 +16,9 @@ import { VolunteerReportFilters } from "./components/VolunteerReportFilters"
 import { VolunteerReportHeatmap } from "./components/VolunteerReportHeatmap"
 import { VolunteerReportTable } from "./components/VolunteerReportTable"
 import { VolunteerEmailDrawer } from "./components/VolunteerEmailDrawer"
-import classes from "./VolunteerReports.module.scss"
+import classes from "./VolunteerHeatmapPage.module.scss"
 
-export const VolunteerReports = () => {
+export const VolunteerHeatmapPage = () => {
     const { user } = useContext(UserContext)
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
@@ -91,7 +91,7 @@ export const VolunteerReports = () => {
                 search: debouncedSearch,
                 program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram || undefined,
                 project: selectedProject === "NO_PROJECT" ? "" : selectedProject || undefined,
-                startDate: getStartDate().toISOString(),
+                startDate: getStartDate().format("YYYY-MM-DD"),
                 pageRequest,
             }),
         placeholderData: { content: [], page: defaultPageResponse },
@@ -100,7 +100,6 @@ export const VolunteerReports = () => {
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
-        // первый запрос выполнится при монтировании, далее не перезапрашиваем без изменения ключа
     })
 
     const [selectedVolunteers, setSelectedVolunteers] = useState<Set<string>>(new Set())
@@ -149,53 +148,18 @@ export const VolunteerReports = () => {
                             <FormattedMessage id={locales.heatmap} />
                         </Text>
                     </Flex>
-                    {(() => {
-                        const base = (volunteerData?.content ?? []) as VolunteerReportData[]
-                        let augmented = base
-                        if (import.meta.env.MODE !== "production") {
-                            const start = getStartDate().startOf("isoWeek")
-                            const end = dayjs().startOf("isoWeek")
-                            const totalWeeks = end.diff(start, "week") + 1
-                            const reports = Array.from({ length: Math.max(totalWeeks, 0) }).map((_, idx) => {
-                                const weekStart = start.clone().add(idx, "week").toISOString()
-                                return {
-                                    id: `demo-${idx}`,
-                                    week: weekStart,
-                                    hoursSpent: 12,
-                                    status: "APPROVED" as const,
-                                    createTime: weekStart,
-                                }
-                            })
-                            const demo: VolunteerReportData = {
-                                id: "demo_all_ok",
-                                fullName: "Demo Volunteer (All OK)",
-                                email: "demo@example.com",
-                                username: "demo_all_ok",
-                                avatar: null as any,
-                                program: undefined,
-                                project: undefined,
-                                contracts: [
-                                    { id: 1, startDate: start.toISOString(), endDate: end.toISOString() } as any,
-                                ],
-                                reports,
-                            }
-                            augmented = [...base, demo]
-                        }
-                        return (
-                            <VolunteerReportHeatmap
-                                volunteers={augmented}
-                                startDate={getStartDate()}
-                                onVolunteerSelect={(volunteerId: string) => {
-                                    const next = new Set(selectedVolunteers)
-                                    if (next.has(volunteerId)) next.delete(volunteerId)
-                                    else next.add(volunteerId)
-                                    setSelectedVolunteers(next)
-                                }}
-                                selectedVolunteers={selectedVolunteers}
-                                totalVolunteers={volunteerData?.page.totalElements ?? 0}
-                            />
-                        )
-                    })()}
+                    <VolunteerReportHeatmap
+                        volunteers={(volunteerData?.content ?? []) as VolunteerReportData[]}
+                        startDate={getStartDate()}
+                        onVolunteerSelect={(volunteerId: string) => {
+                            const next = new Set(selectedVolunteers)
+                            if (next.has(volunteerId)) next.delete(volunteerId)
+                            else next.add(volunteerId)
+                            setSelectedVolunteers(next)
+                        }}
+                        selectedVolunteers={selectedVolunteers}
+                        totalVolunteers={volunteerData?.page.totalElements ?? 0}
+                    />
                     <Flex justify="center" mt="md">
                         <Pagination
                             total={volunteerData?.page.totalPages ?? 1}
@@ -216,48 +180,13 @@ export const VolunteerReports = () => {
                             <FormattedMessage id={locales.sendMessage} />
                         </Button>
                     </Flex>
-                    {(() => {
-                        const base = (volunteerData?.content ?? []) as VolunteerReportData[]
-                        let augmented = base
-                        if (import.meta.env.MODE !== "production") {
-                            const start = getStartDate().startOf("isoWeek")
-                            const end = dayjs().startOf("isoWeek")
-                            const totalWeeks = end.diff(start, "week") + 1
-                            const reports = Array.from({ length: Math.max(totalWeeks, 0) }).map((_, idx) => {
-                                const weekStart = start.clone().add(idx, "week").toISOString()
-                                return {
-                                    id: `demo-${idx}`,
-                                    week: weekStart,
-                                    hoursSpent: 12,
-                                    status: "APPROVED" as const,
-                                    createTime: weekStart,
-                                }
-                            })
-                            const demo: VolunteerReportData = {
-                                id: "demo_all_ok",
-                                fullName: "Demo Volunteer (All OK)",
-                                email: "demo@example.com",
-                                username: "demo_all_ok",
-                                avatar: null as any,
-                                program: undefined,
-                                project: undefined,
-                                contracts: [
-                                    { id: 1, startDate: start.toISOString(), endDate: end.toISOString() } as any,
-                                ],
-                                reports,
-                            }
-                            augmented = [...base, demo]
-                        }
-                        return (
-                            <VolunteerReportTable
-                                volunteers={augmented}
-                                selectedVolunteers={selectedVolunteers}
-                                onVolunteerSelect={handleSelectVolunteer}
-                                startDate={getStartDate()}
-                                onVolunteerClick={(id: string) => console.log("open volunteer", id)}
-                            />
-                        )
-                    })()}
+                    <VolunteerReportTable
+                        volunteers={(volunteerData?.content ?? []) as VolunteerReportData[]}
+                        selectedVolunteers={selectedVolunteers}
+                        onVolunteerSelect={handleSelectVolunteer}
+                        startDate={getStartDate()}
+                        onVolunteerClick={(id: string) => console.log("open volunteer", id)}
+                    />
                     <Flex justify="center" mt="md">
                         <Pagination
                             total={volunteerData?.page.totalPages ?? 1}
@@ -279,4 +208,4 @@ export const VolunteerReports = () => {
     )
 }
 
-export default VolunteerReports
+export default VolunteerHeatmapPage

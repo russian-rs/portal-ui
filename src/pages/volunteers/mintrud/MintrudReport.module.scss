@@ -1,0 +1,43 @@
+$table-width: 100%;
+
+.root {
+    padding: 1rem 1rem 2rem 2rem;
+    flex-direction: column;
+    row-gap: 1rem;
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    overflow-x: auto;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        padding: 0.5rem;
+    }
+
+    @media (max-width: 1439px) and (min-width: 1024px) {
+        padding: 1rem 0.5rem 2rem 1rem;
+    }
+}
+
+.loader {
+    width: 100%;
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+}
+
+.title {
+    font-size: x-large;
+    font-weight: bolder;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        font-size: large;
+        text-align: center;
+    }
+}
+
+.chartTitle {
+    font-size: small;
+    font-weight: bolder;
+    text-align: center;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        font-size: x-small;
+        text-align: center;
+    }
+}

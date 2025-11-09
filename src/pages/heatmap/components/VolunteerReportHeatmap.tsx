@@ -78,6 +78,9 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
         }
 
         const totalHours = reportsForWeek.reduce((sum, report) => sum + report.hoursSpent, 0)
+        if (totalHours === 0) {
+            return isCurrentWeek ? "waiting" : "noReports"
+        }
         if (totalHours >= 10) return "fullReports"
         return "partialReports" // 1–9 часов
     }
