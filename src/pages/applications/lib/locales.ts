@@ -3,10 +3,8 @@ export const locales = {
     empty: "pages.applications.empty",
     total: "pages.applications.total",
 
-    created: "pages.applications.created",
-    createdShort: "pages.applications.created-short",
-    type: "pages.applications.type",
-    typeShort: "pages.applications.type-short",
+    createdAndType: "pages.applications.created-and-type",
+    createdShortAndTypeShort: "pages.applications.created-short-and-type-short",
     nameAndEmail: "pages.applications.name-and-email",
     nameAndEmailShort: "pages.applications.name-and-email-short",
     name: "pages.applications.name",

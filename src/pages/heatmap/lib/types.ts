@@ -4,8 +4,6 @@ export interface VolunteerReport {
     id: string
     week: string // Дата начала недели в ISO формате
     hoursSpent: number
-    status: "PENDING" | "APPROVED" | "REJECTED"
-    createTime: string
 }
 
 export type VolunteerReportData = {
@@ -19,6 +17,8 @@ export interface VolunteerReportFilter {
     program?: string
     project?: string
     startDate: string
+    onlyActive?: boolean
+    onlyInactive?: boolean
 }
 
 export interface VolunteerReportPageRequest {
@@ -27,6 +27,8 @@ export interface VolunteerReportPageRequest {
     project?: string
     startDate: string
     pageRequest: PageRequest
+    onlyActive?: boolean
+    onlyInactive?: boolean
 }
 
 export interface VolunteerReportResponse {
