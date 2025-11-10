@@ -1,8 +1,8 @@
-import { Button, Drawer, Flex, TextInput } from "@mantine/core"
+import { Button, Drawer, Flex, TextInput, Radio, Tooltip } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
-import { ApplicationDto } from "@russian-rs/portal-api-axios"
+import { ApplicationDto, GenderEnumDto } from "@russian-rs/portal-api-axios"
 import React from "react"
 import {
     IconAt,
@@ -13,6 +13,7 @@ import {
     IconLocation,
     IconPhone,
     IconSignature,
+    IconInfoCircle,
 } from "@tabler/icons-react"
 import { useMutation } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -36,6 +37,11 @@ export const ApplicationEditDrawer = ({
     onApplicationUpdate,
 }: ApplicationEditDrawerProps) => {
     const intl = useIntl()
+
+    // Типобезопасный доступ к дополнительному полю gender,
+    // которого пока нет в сгенерированном ApplicationDto
+    type ApplicationWithGender = { gender?: GenderEnumDto }
+    const appGender: string = (application as unknown as ApplicationWithGender).gender || ""
 
     const validationSchema = z.object({
         name: z
@@ -106,6 +112,7 @@ export const ApplicationEditDrawer = ({
             birthDate: application.birthDate || "",
             passport: application.passport || "",
             address: application.address || "",
+            gender: appGender,
         },
         validate: zodResolver(validationSchema),
     })
@@ -133,7 +140,8 @@ export const ApplicationEditDrawer = ({
             return
         }
 
-        const updateData: Partial<ApplicationDto> = {}
+        type UpdateApplicationPayload = Partial<ApplicationDto> & { gender?: GenderEnumDto }
+        const updateData: UpdateApplicationPayload = {}
 
         if (form.values.name?.trim()) updateData.name = form.values.name.trim()
         if (form.values.patronymic?.trim()) updateData.patronymic = form.values.patronymic.trim()
@@ -143,6 +151,7 @@ export const ApplicationEditDrawer = ({
         if (form.values.birthDate?.trim()) updateData.birthDate = form.values.birthDate.trim()
         if (form.values.passport?.trim()) updateData.passport = form.values.passport.trim()
         if (form.values.address?.trim()) updateData.address = form.values.address.trim()
+        if (form.values.gender?.trim()) updateData.gender = form.values.gender as GenderEnumDto
 
         updateApplication(updateData)
     }
@@ -159,6 +168,7 @@ export const ApplicationEditDrawer = ({
                 birthDate: application.birthDate || "",
                 passport: application.passport || "",
                 address: application.address || "",
+                gender: (application as unknown as ApplicationWithGender).gender || "",
             })
         }
     }, [opened, application])
@@ -226,6 +236,48 @@ export const ApplicationEditDrawer = ({
                         label={<FormattedMessage id="pages.applications.view.address" />}
                         {...form.getInputProps("address")}
                     />
+                    <Radio.Group
+                        label={
+                            <Flex align="center" gap={6}>
+                                <FormattedMessage id="pages.applications.view.gender" />
+                                <Tooltip
+                                    label={<FormattedMessage id="pages.profile.props.gender.hint" />}
+                                    multiline
+                                    withArrow
+                                    w={380}
+                                    events={{ hover: true, focus: true, touch: true }}
+                                    withinPortal
+                                >
+                                    <span
+                                        tabIndex={0}
+                                        role="button"
+                                        aria-label={String(
+                                            intl.formatMessage({ id: "pages.profile.props.gender.hint" })
+                                        )}
+                                        style={{ display: "inline-flex" }}
+                                        onMouseDown={(e) => e.preventDefault()}
+                                        onTouchStart={(e) => e.preventDefault()}
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <IconInfoCircle size={14} />
+                                    </span>
+                                </Tooltip>
+                            </Flex>
+                        }
+                        key={form.key("gender")}
+                        {...form.getInputProps("gender")}
+                    >
+                        <Flex gap={16} wrap="wrap">
+                            <Radio
+                                value={GenderEnumDto.Male}
+                                label={<FormattedMessage id="pages.profile.props.gender.male" />}
+                            />
+                            <Radio
+                                value={GenderEnumDto.Female}
+                                label={<FormattedMessage id="pages.profile.props.gender.female" />}
+                            />
+                        </Flex>
+                    </Radio.Group>
                     <Button type="submit" loading={isPending} rightSection={<IconDeviceFloppy size={14} />}>
                         <FormattedMessage id="pages.profile.buttons.save" />
                     </Button>

@@ -155,6 +155,11 @@
                 "postalCode": "Poštanski broj",
                 "address": "Adresa",
                 "birthDate": "Datum rođenja",
+                "gender": "Pol",
+                "gender.male": "Muški",
+                "gender.female": "Ženski",
+                "gender.hint": "Vaš pol se traži isključivo u okviru zakonskih zahteva za izradu izveštaja državnim organima. Molimo vas da navedete pol tačno onako kako je upisan u vašem pasošu.",
+                "gender.notSelected": "Nije navedeno",
                 "phone": "Telefon",
                 "email": "Email",
                 "telegram": "Telegram"
@@ -184,7 +189,8 @@
                     "telegram": "telegram",
                     "phone": "telefon",
                     "program": "program",
-                    "project": "projekat"
+                    "project": "projekat",
+                    "gender": "pol"
                 }
             },
             "buttons": {
@@ -430,7 +436,8 @@
                 "skills": "Koje veštine posedujete",
                 "skills-description": "Razvoj, grafički dizajn, psihologija, fotografija itd.",
                 "goal": "Koji je vaš cilj za članstvo u organizaciji?",
-                "bio": "Napišite kratku biografiju o sebi"
+                "bio": "Napišite kratku biografiju o sebi",
+                "gender": "Pol"
             },
             "view": {
                 "title": "Status vaše prijave za volontiranje",
@@ -497,6 +504,9 @@
                 "skills": "Veštine",
                 "goal": "Cilj učestvovanja u organizaciji",
                 "bio": "Kratka biografija",
+                "gender": "Pol",
+                "gender.male": "Muški",
+                "gender.female": "Ženski",
                 "pause-reason": "Razlog pauze",
                 "contractDownload": "Preuzimanje ugovora",
                 "questionnaireDownload": "Preuzimanje upitnika",
