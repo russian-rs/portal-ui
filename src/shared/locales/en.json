@@ -155,6 +155,11 @@
                 "postalCode": "Postal code",
                 "address": "Address",
                 "birthDate": "Birth date",
+                "gender": "Gender",
+                "gender.male": "Male",
+                "gender.female": "Female",
+                "gender.hint": "Your gender is requested solely to meet legal requirements for reporting to government authorities. Please indicate your gender exactly as in your passport.",
+                "gender.notSelected": "Not specified",
                 "phone": "Phone",
                 "email": "Email",
                 "telegram": "Telegram"
@@ -184,7 +189,8 @@
                     "telegram": "telegram",
                     "phone": "phone",
                     "program": "program",
-                    "project": "project"
+                    "project": "project",
+                    "gender": "gender"
                 }
             },
             "buttons": {
@@ -314,7 +320,7 @@
             "contract-from": "Start date",
             "contract-until": "End date",
             "email": "e-mail",
-            "full-name-email": "Name Surname, e-mail",
+            "full-name-email": "Full name, e-mail",
             "username": "Username",
             "roles": "Roles",
             "program": "Program",
@@ -430,7 +436,8 @@
                 "skills": "What skills do you have",
                 "skills-description": "Development, graphic design, psychology, photography, etc.",
                 "goal": "Why do you want to become a member of the organization?",
-                "bio": "Write a brief biography about yourself"
+                "bio": "Write a brief biography about yourself",
+                "gender": "Gender"
             },
             "view": {
                 "title": "The status of your volunteer application",
@@ -497,6 +504,9 @@
                 "skills": "Skills",
                 "goal": "Purpose of Participation in the Organization",
                 "bio": "Brief Biography",
+                "gender": "Gender",
+                "gender.male": "Male",
+                "gender.female": "Female",
                 "pause-reason": "Pause reason",
                 "contractDownload": "Download contract",
                 "questionnaireDownload": "Download questionnaire",

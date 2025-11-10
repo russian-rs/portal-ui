@@ -20,12 +20,7 @@
             "src/*": ["src/*"]
         },
         "types": ["vite/client"],
-        "typeRoots": [
-            "src/app/types",
-            "src/shared/typings",
-            "./node_modules/@types",
-            "./node_modules"
-        ]
+        "typeRoots": ["src/app/types", "src/shared/typings", "./node_modules/@types", "./node_modules"]
     },
     "files": [
         ".eslintrc.cjs",
