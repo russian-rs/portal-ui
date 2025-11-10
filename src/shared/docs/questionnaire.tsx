@@ -6,8 +6,8 @@ import { PDFDocument, rgb } from "pdf-lib"
 import { MONTSERRAT_BOLD_BOLD } from "src/shared/docs/fonts/Montserrat-Bold-bold"
 import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
 
-function getFullAddress(address: string, postalCode: string): string {
-    return [address, postalCode].join(", ")
+function getFullAddress(city: string, address: string, postalCode: string): string {
+    return [city, address, postalCode].join(", ")
 }
 
 export default async function generateQuestionnairePdf(application: ApplicationDto) {
@@ -18,7 +18,11 @@ export default async function generateQuestionnairePdf(application: ApplicationD
     const phone = must(application.phone, "Phone").replace(/^\+381\s*/, "")
     const email = must(application.email, "Email")
     const telegram = must(application.telegram, "Telegram")
-    const address = getFullAddress(must(application.address, "Address"), must(application.postalCode, "Postal code"))
+    const address = getFullAddress(
+        must(application.city, "City"),
+        must(application.address, "Address"),
+        must(application.postalCode, "Postal code")
+    )
     const city = application.city ?? "—"
     const currentDate = dayjs().format("DD.MM.YYYY")
 
