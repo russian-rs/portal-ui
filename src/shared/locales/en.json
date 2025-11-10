@@ -1,6 +1,7 @@
 {
     "common": {
         "filters": "Filters",
+        "reset-filters": "Reset filters",
         "buttons": {
             "login": "Login",
             "logout": "Logout"
@@ -439,6 +440,7 @@
             "title": "Applications for Admission",
             "empty": "No applications found",
             "total": "Total: {count}",
+            "search": "Search by name or email",
             "created-and-type": "Created, Type",
             "created-short-and-type-short": "Date, Type",
             "name-and-email": "First and Last Name, E-mail",
