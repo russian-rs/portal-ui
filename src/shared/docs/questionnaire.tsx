@@ -5,6 +5,9 @@ import { saveAs } from "file-saver"
 import { PDFDocument, rgb } from "pdf-lib"
 import { MONTSERRAT_BOLD_BOLD } from "src/shared/docs/fonts/Montserrat-Bold-bold"
 import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
+import { DEJAVU_SANS } from "src/shared/docs/fonts/DejaVuSans"
+import { notifications } from "@mantine/notifications"
+import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 
 function getFullAddress(city: string, address: string, postalCode: string): string {
     return [city, address, postalCode].join(", ")
@@ -25,17 +28,21 @@ export default async function generateQuestionnairePdf(application: ApplicationD
     )
     const city = application.city ?? "—"
     const currentDate = dayjs().format("DD.MM.YYYY")
-
     const templateBytes = await fetch("/resources/template.pdf").then((r) => r.arrayBuffer())
     const pdf = await PDFDocument.load(templateBytes)
+
+    const GENDER_MALE_BOX   = { x:  134, y: 558 }
+    const GENDER_FEMALE_BOX = { x: 186, y: 558 }
+
     pdf.registerFontkit(fontkit)
 
     const mediumFont = await pdf.embedFont(
         Uint8Array.from(atob(MONTSERRAT_MEDIUM_NORMAL), (c) => c.charCodeAt(0)),
         { subset: true }
     )
-    const boldFont = await pdf.embedFont(
-        Uint8Array.from(atob(MONTSERRAT_BOLD_BOLD), (c) => c.charCodeAt(0)),
+
+    const symbolFont = await pdf.embedFont(
+        Uint8Array.from(atob(DEJAVU_SANS), (c) => c.charCodeAt(0)),
         { subset: true }
     )
 
@@ -44,7 +51,7 @@ export default async function generateQuestionnairePdf(application: ApplicationD
 
     const px = (v: number) => v
     const fromTop = (yPx: number, fontSize = 10) => height - px(yPx) - fontSize
-    // x, y coordinates could be checked in adobe
+
     const drawPx = (text: string, xPx: number, yPx: number, font = mediumFont, size = 8) =>
         page.drawText(text, {
             x: px(xPx),
@@ -54,16 +61,24 @@ export default async function generateQuestionnairePdf(application: ApplicationD
             color: rgb(0, 0, 0),
         })
 
-    drawPx(fullName, 327, 277)
-    drawPx(passport, 109, 308)
-    drawPx(birthDate, 168, 328)
-    drawPx(age, 150, 350)
-    drawPx(city, 312, 372)
-    drawPx(address, 62, 415)
-    drawPx(phone, 263, 435)
-    drawPx(email, 101, 458)
-    drawPx(telegram, 290, 458)
-    drawPx(currentDate, 96, 720)
+    const drawMark = (x: number, y: number) => drawPx("✔", x, y, symbolFont, 9)
+
+
+    drawPx(fullName, 350, 285)
+    drawPx(passport, 109, 318)
+    drawPx(birthDate, 173, 339)
+    drawPx(age, 155, 360)
+    drawPx(city, 335, 380)
+    drawPx(address, 62, 425)
+    drawPx(phone, 268, 447)
+    drawPx(email, 101, 468)
+    drawPx(telegram, 420, 468)
+    if (gender === GenderEnumDto.Male) {
+        drawMark(GENDER_MALE_BOX.x, GENDER_MALE_BOX.y)
+    } else if (gender === GenderEnumDto.Female) {
+        drawMark(GENDER_FEMALE_BOX.x, GENDER_FEMALE_BOX.y)
+    }
+    drawPx(currentDate, 96, 735)
 
     const pdfBytes = await pdf.save()
     saveAs(
@@ -73,7 +88,12 @@ export default async function generateQuestionnairePdf(application: ApplicationD
 }
 
 function must(value: string | null | undefined, name: string): string {
-    if (!value) throw new Error(`${name} is empty`)
+    if (!value) {
+        notifications.show(
+            ErrorNotification(`${name} is empty`, "Please fill in all required fields before generating the PDF.")
+        )
+        throw new Error(`${name} is empty`)
+    }
     return value
 }
 

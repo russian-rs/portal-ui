@@ -71,4 +71,6 @@ export const locales = {
 
     goal: "pages.application.form.goal",
     bio: "pages.application.form.bio",
+
+    gender: "pages.application.form.gender",
 }

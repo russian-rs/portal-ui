@@ -19,6 +19,7 @@ import {
     IconPencil,
     IconPhone,
     IconWorld,
+    IconGenderBigender,
 } from "@tabler/icons-react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -186,6 +187,17 @@ export const ApplicationView = () => {
                                 name={locales.citizenship}
                                 value={application.citizenship}
                                 icon={<IconWorld size={14} />}
+                            />
+                        )}
+                        {application.gender && (
+                            <TextPropertyBox
+                                name={locales.gender}
+                                value={
+                                    <FormattedMessage
+                                        id={`pages.applications.view.gender.${application.gender.toLowerCase()}`}
+                                    />
+                                }
+                                icon={<IconGenderBigender size={14} />}
                             />
                         )}
                     </Flex>
