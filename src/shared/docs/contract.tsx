@@ -7,13 +7,21 @@ import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Mediu
 /**
  * Договор о волонтерстве
  */
+function getFullAddress(address: string, postalCode: string, city: string): string {
+    return [address, postalCode, city].join(", ")
+}
+
 export default function generateContractPdf(application: ApplicationDto) {
     const fullName = errorIfEmpty("Name", application.name)
     const birthDate = dayjs(errorIfEmpty("Birth date", application.birthDate)).format("DD.MM.YYYY")
     const passport = errorIfEmpty("Passport", application.passport)
     const phone = errorIfEmpty("Phone", application.phone)
     const email = errorIfEmpty("Email", application.email)
-    const address = errorIfEmpty("Address", application.address)
+    const address = getFullAddress(
+        errorIfEmpty("Address", application.address),
+        errorIfEmpty("Postal code", application.postalCode),
+        errorIfEmpty("City", application.city)
+    )
     const contractFrom = dayjs(errorIfEmpty("Contract start date", application.contract?.startDate))
     const contractUntil = dayjs(errorIfEmpty("Contract end date", application.contract?.endDate!!))
 
