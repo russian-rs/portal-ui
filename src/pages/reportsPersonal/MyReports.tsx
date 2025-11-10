@@ -1,7 +1,7 @@
 import { Badge, Button, Flex, Pagination, Text } from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
 import { PageRequest, ReportFilter } from "@russian-rs/portal-api-axios"
-import { IconChevronRight, IconClockCheck, IconListCheck, IconPlus, IconUfo, IconX } from "@tabler/icons-react"
+import { IconChevronRight, IconClockCheck, IconFilterOff, IconListCheck, IconPlus, IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
@@ -247,17 +247,32 @@ export const MyReports = () => {
                     <Flex className={classes.content}>
                         <Flex direction="column" gap={8}>
                             <Flex className={classes.filterArea}>
-                                <WeekPicker
-                                    onChange={onWeekChange}
-                                    className={classes.filterWeek}
-                                    initialStartDate={filter.dateFrom}
-                                    initialEndDate={filter.dateTo}
-                                />
-                                <ReportStatusSelect
-                                    onChange={onStatusChange}
-                                    className={classes.filterStatus}
-                                    value={filter.status}
-                                />
+                                <Flex direction="row" gap={8} wrap="wrap" align="flex-end">
+                                    <WeekPicker
+                                        onChange={onWeekChange}
+                                        className={classes.filterWeek}
+                                        initialStartDate={filter.dateFrom}
+                                        initialEndDate={filter.dateTo}
+                                    />
+                                    <ReportStatusSelect
+                                        onChange={onStatusChange}
+                                        className={classes.filterStatus}
+                                        value={filter.status}
+                                    />
+                                    {activeFiltersCount > 0 && (
+                                        <Button
+                                            variant="transparent"
+                                            size="sm"
+                                            leftSection={<IconFilterOff size={16} />}
+                                            onClick={resetFilters}
+                                        >
+                                            <Text size="sm">
+                                                <FormattedMessage id={locales.resetFilters} />
+                                            </Text>
+                                        </Button>
+                                    )}
+                                </Flex>
+
                                 <Button
                                     className={classes.newReportButton}
                                     variant="light"
@@ -270,19 +285,6 @@ export const MyReports = () => {
                                     </Text>
                                 </Button>
                             </Flex>
-                            {activeFiltersCount > 0 && (
-                                <Flex justify="flex-end">
-                                    <Button
-                                        variant="light"
-                                        size="sm"
-                                        color="gray"
-                                        onClick={resetFilters}
-                                        leftSection={<IconX size={16} />}
-                                    >
-                                        <FormattedMessage id="common.resetFilters" defaultMessage="Сбросить фильтры" />
-                                    </Button>
-                                </Flex>
-                            )}
                         </Flex>
                         <Flex className={classes.reportContainer}>
                             {rows.length == 0 && (

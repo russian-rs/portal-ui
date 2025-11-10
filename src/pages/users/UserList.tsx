@@ -13,7 +13,7 @@ import {
 } from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
 import { ContractDto, PageRequest } from "@russian-rs/portal-api-axios"
-import { IconLock, IconPencil, IconPlus, IconUfo, IconFilterEdit, IconX } from "@tabler/icons-react"
+import { IconFilterEdit, IconFilterOff, IconLock, IconPencil, IconPlus, IconUfo } from "@tabler/icons-react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
@@ -545,26 +545,25 @@ export const UserList = () => {
                                     />
                                     <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
                                     <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
-                                </Flex>
-                                {activeFiltersCountMemo > 0 && (
-                                    <Flex justify="flex-end">
+                                    {activeFiltersCountMemo > 0 && (
                                         <Button
-                                            variant="light"
+                                            variant="transparent"
                                             size="sm"
-                                            color="gray"
+                                            leftSection={<IconFilterOff size={16} />}
                                             onClick={resetFilters}
-                                            leftSection={<IconX size={16} />}
                                         >
-                                            <FormattedMessage id="common.resetFilters" defaultMessage="Сбросить фильтры" />
+                                            <Text size="sm">
+                                                <FormattedMessage id={locales.resetFilters} />
+                                            </Text>
                                         </Button>
-                                    </Flex>
-                                )}
+                                    )}
+                                </Flex>
                             </Flex>
                         </Collapse>
                     </Flex>
                 ) : (
                     <Flex direction="column" gap={8}>
-                        <Flex className={classes.filters}>
+                        <Flex className={classes.filters} wrap="wrap">
                             <Input
                                 placeholder={intl.formatMessage({ id: locales.search })}
                                 value={search}
@@ -580,20 +579,19 @@ export const UserList = () => {
                             />
                             <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
                             <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
-                        </Flex>
-                        {activeFiltersCountMemo > 0 && (
-                            <Flex justify="flex-end">
+                            {activeFiltersCountMemo > 0 && (
                                 <Button
-                                    variant="light"
+                                    variant="transparent"
                                     size="sm"
-                                    color="gray"
+                                    leftSection={<IconFilterOff size={16} />}
                                     onClick={resetFilters}
-                                    leftSection={<IconX size={16} />}
                                 >
-                                    <FormattedMessage id="common.resetFilters" defaultMessage="Сбросить фильтры" />
+                                    <Text size="sm">
+                                        <FormattedMessage id={locales.resetFilters} />
+                                    </Text>
                                 </Button>
-                            </Flex>
-                        )}
+                            )}
+                        </Flex>
                     </Flex>
                 )}
                 {isMobile ? (

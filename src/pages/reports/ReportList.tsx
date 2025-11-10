@@ -1,6 +1,6 @@
 import { Avatar, Button, Collapse, Flex, Pagination, Table, Text } from "@mantine/core"
 import { PageRequest, ReportDto, ReportFilter, UserInfoDto } from "@russian-rs/portal-api-axios"
-import { IconClock, IconFile, IconFilterEdit, IconListCheck, IconUfo, IconX } from "@tabler/icons-react"
+import { IconClock, IconFile, IconFilterEdit, IconFilterOff, IconListCheck, IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
@@ -647,29 +647,25 @@ export const ReportList = () => {
                                             placeholder={intl.formatMessage({ id: locales.projectFilterNotSelected })}
                                         />
                                     </Flex>
-                                </Flex>
-                                {activeFiltersCount > 0 && (
-                                    <Flex justify="flex-end">
+                                    {activeFiltersCount > 0 && (
                                         <Button
-                                            variant="light"
+                                            variant="transparent"
                                             size="sm"
-                                            color="gray"
+                                            leftSection={<IconFilterOff size={16} />}
                                             onClick={resetFilters}
-                                            leftSection={<IconX size={16} />}
                                         >
-                                            <FormattedMessage
-                                                id="common.resetFilters"
-                                                defaultMessage="Сбросить фильтры"
-                                            />
+                                            <Text size="sm">
+                                                <FormattedMessage id={locales.resetFilters} />
+                                            </Text>
                                         </Button>
-                                    </Flex>
-                                )}
+                                    )}
+                                </Flex>
                             </Flex>
                         </Collapse>
                     </Flex>
                 ) : (
                     <Flex direction="column" gap={8}>
-                        <Flex className={classes.filters}>
+                        <Flex className={classes.filters} wrap="wrap">
                             <UserSearch
                                 key={`user-search-${resetKey}`}
                                 className={classes.userSearch}
@@ -741,20 +737,19 @@ export const ReportList = () => {
                                     placeholder={intl.formatMessage({ id: locales.projectFilterNotSelected })}
                                 />
                             </Flex>
-                        </Flex>
-                        {activeFiltersCount > 0 && (
-                            <Flex justify="flex-end">
+                            {activeFiltersCount > 0 && (
                                 <Button
-                                    variant="light"
+                                    variant="transparent"
                                     size="sm"
-                                    color="gray"
+                                    leftSection={<IconFilterOff size={16} />}
                                     onClick={resetFilters}
-                                    leftSection={<IconX size={16} />}
                                 >
-                                    <FormattedMessage id="common.resetFilters" defaultMessage="Сбросить фильтры" />
+                                    <Text size="sm">
+                                        <FormattedMessage id={locales.resetFilters} />
+                                    </Text>
                                 </Button>
-                            </Flex>
-                        )}
+                            )}
+                        </Flex>
                     </Flex>
                 )}
                 {isMobile ? (

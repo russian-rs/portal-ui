@@ -1,9 +1,9 @@
 import { Box, Button, Card, Checkbox, CloseButton, Flex, Input, Pagination, Skeleton, Table, Text } from "@mantine/core"
 import { ApplicationsFilter, PageRequest } from "@russian-rs/portal-api-axios"
-import { IconUfo, IconX } from "@tabler/icons-react"
+import { IconFilterOff, IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import React, { useContext, useEffect, useState } from "react"
-import { FormattedMessage } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { allowedRoles } from "src/pages/applications/lib/roles"
@@ -50,6 +50,7 @@ export const Applications = () => {
     const { user } = useContext(UserContext)
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
+    const intl = useIntl()
 
     // Инициализация состояния из URL параметров
     const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "")
@@ -204,10 +205,10 @@ export const Applications = () => {
                 </Text>
                 <div ref={listStartRef} />
                 <Flex direction="column" gap={8}>
-                    <Flex columnGap="8" className={classes.controls}>
+                    <Flex columnGap="8" className={classes.controls} wrap="wrap">
                         <Flex align="center" columnGap="8" className={classes.searchGroup}>
                             <Input
-                                placeholder={"Поиск по имени или email"}
+                                placeholder={intl.formatMessage({ id: locales.search })}
                                 value={searchQuery}
                                 onChange={(event) => setSearchQuery(event.currentTarget.value)}
                                 rightSectionPointerEvents="all"
@@ -231,20 +232,19 @@ export const Applications = () => {
                             onChange={() => setFilter({ ...filter, showCompleted: !filter.showCompleted })}
                             size={isMobile ? "md" : "sm"}
                         />
-                    </Flex>
-                    {activeFiltersCount > 0 && (
-                        <Flex justify="flex-end">
+                        {activeFiltersCount > 0 && (
                             <Button
-                                variant="light"
+                                variant="transparent"
                                 size={isMobile ? "md" : "sm"}
-                                color="gray"
+                                leftSection={<IconFilterOff size={16} />}
                                 onClick={resetFilters}
-                                leftSection={<IconX size={16} />}
                             >
-                                <FormattedMessage id="common.resetFilters" defaultMessage="Сбросить фильтры" />
+                                <Text size="sm">
+                                    <FormattedMessage id={locales.resetFilters} />
+                                </Text>
                             </Button>
-                        </Flex>
-                    )}
+                        )}
+                    </Flex>
                 </Flex>
                 {shouldShowTable ? (
                     <Table stickyHeader highlightOnHover className={classes.table}>
