@@ -25,7 +25,7 @@ export default async function generateQuestionnairePdf(application: ApplicationD
         must(application.address, "Address"),
         must(application.postalCode, "Postal code")
     )
-    const city = application.city ?? "—"
+    const city = must(application.city, "City")
     const gender = must(application.gender, "Gender") ?? null
     const currentDate = dayjs().format("DD.MM.YYYY")
     const templateBytes = await fetch("/resources/template.pdf").then((r) => r.arrayBuffer())
