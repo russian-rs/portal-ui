@@ -75,7 +75,7 @@ export const DayPicker = (
                 <Flex direction="column" rowGap={4} className={props.targetClassName}>
                     <Flex direction="column">
                         {props.label && (
-                            <Text size="sm" c="gray">
+                            <Text size="sm">
                                 {props.label}
                                 {props.withAsterisk && (
                                     <Text component="span" c="red" ml={4}>
