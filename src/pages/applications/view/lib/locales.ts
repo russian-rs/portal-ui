@@ -21,6 +21,8 @@ export const locales = {
     inSerbia: "pages.applications.view.in-serbia",
     outSerbia: "pages.applications.view.out-serbia",
     enterDate: "pages.applications.view.enter",
+    city: "pages.applications.view.city",
+    postalCode: "pages.applications.view.postal-code",
     address: "pages.applications.view.address",
 
     residenceRequired: "pages.applications.view.residence-required",

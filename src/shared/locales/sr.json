@@ -485,6 +485,8 @@
                 "in-serbia": "Osoba je navela da je već u Srbiji i",
                 "out-serbia": "Osoba je navela da još nije u Srbiji i",
                 "enter": "Datum ulaska u Srbiju",
+                "city": "Grad",
+                "postal-code": "Poštanski broj",
                 "address": "Adresa u Srbiji",
                 "residence-required": "potrebna je boravišna dozvola",
                 "residence-not-required": "nije potrebna boravišna dozvola",

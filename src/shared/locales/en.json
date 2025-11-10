@@ -485,6 +485,8 @@
                 "in-serbia": "The person already in Serbia and",
                 "out-serbia": "The person not yet in Serbia and",
                 "enter": "Date of Entry into Serbia",
+                "city": "City",
+                "postal-code": "Postal code",
                 "address": "Address in Serbia",
                 "residence-required": "residence permit is required",
                 "residence-not-required": "residence permit is not required",

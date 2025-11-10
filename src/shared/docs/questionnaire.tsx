@@ -1,10 +1,14 @@
-import { ApplicationDto } from "@russian-rs/portal-api-axios"
-import { PDFDocument, rgb } from "pdf-lib"
 import fontkit from "@pdf-lib/fontkit"
+import { ApplicationDto } from "@russian-rs/portal-api-axios"
 import dayjs from "dayjs"
 import { saveAs } from "file-saver"
+import { PDFDocument, rgb } from "pdf-lib"
 import { MONTSERRAT_BOLD_BOLD } from "src/shared/docs/fonts/Montserrat-Bold-bold"
 import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
+
+function getFullAddress(address: string, postalCode: string): string {
+    return [address, postalCode].join(", ")
+}
 
 export default async function generateQuestionnairePdf(application: ApplicationDto) {
     const fullName = must(application.name, "Name")
@@ -14,8 +18,8 @@ export default async function generateQuestionnairePdf(application: ApplicationD
     const phone = must(application.phone, "Phone").replace(/^\+381\s*/, "")
     const email = must(application.email, "Email")
     const telegram = must(application.telegram, "Telegram")
-    const address = must(application.address, "Address")
-    const city = application.address?.split(",")[1]?.trim() ?? "—"
+    const address = getFullAddress(must(application.address, "Address"), must(application.postalCode, "Postal code"))
+    const city = application.city ?? "—"
     const currentDate = dayjs().format("DD.MM.YYYY")
 
     const templateBytes = await fetch("/resources/template.pdf").then((r) => r.arrayBuffer())
@@ -58,7 +62,10 @@ export default async function generateQuestionnairePdf(application: ApplicationD
     drawPx(currentDate, 96, 720)
 
     const pdfBytes = await pdf.save()
-    saveAs(new Blob([pdfBytes as BlobPart], { type: "application/pdf" }), `Upitnik_${fullName.replace(/\s+/g, "_")}.pdf`)
+    saveAs(
+        new Blob([pdfBytes as BlobPart], { type: "application/pdf" }),
+        `Upitnik_${fullName.replace(/\s+/g, "_")}.pdf`
+    )
 }
 
 function must(value: string | null | undefined, name: string): string {
