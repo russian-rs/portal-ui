@@ -1,15 +1,17 @@
-import { Button, Container, Drawer, Flex, Text, TextInput, Select, Tooltip } from "@mantine/core"
+import { Button, Container, Drawer, Flex, Select, Text, TextInput, Tooltip } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { useDisclosure } from "@mantine/hooks"
 import { notifications } from "@mantine/notifications"
-import { UserInfoDto, UserInfoUpdateRequest } from "@russian-rs/portal-api-axios"
+import { GenderEnumDto, UserInfoDto, UserInfoUpdateRequest } from "@russian-rs/portal-api-axios"
 import {
     IconBrandTelegram,
     IconBuildings,
     IconDeviceFloppy,
+    IconGenderMale,
     IconGift,
     IconHome,
+    IconInfoCircle,
     IconMail,
     IconMapPin,
     IconPencil,

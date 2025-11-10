@@ -1,12 +1,11 @@
+import { notifications } from "@mantine/notifications"
 import fontkit from "@pdf-lib/fontkit"
-import { ApplicationDto } from "@russian-rs/portal-api-axios"
+import { ApplicationDto, GenderEnumDto } from "@russian-rs/portal-api-axios"
 import dayjs from "dayjs"
 import { saveAs } from "file-saver"
 import { PDFDocument, rgb } from "pdf-lib"
-import { MONTSERRAT_BOLD_BOLD } from "src/shared/docs/fonts/Montserrat-Bold-bold"
-import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
 import { DEJAVU_SANS } from "src/shared/docs/fonts/DejaVuSans"
-import { notifications } from "@mantine/notifications"
+import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 
 function getFullAddress(city: string, address: string, postalCode: string): string {
@@ -27,11 +26,12 @@ export default async function generateQuestionnairePdf(application: ApplicationD
         must(application.postalCode, "Postal code")
     )
     const city = application.city ?? "—"
+    const gender = must(application.gender, "Gender") ?? null
     const currentDate = dayjs().format("DD.MM.YYYY")
     const templateBytes = await fetch("/resources/template.pdf").then((r) => r.arrayBuffer())
     const pdf = await PDFDocument.load(templateBytes)
 
-    const GENDER_MALE_BOX   = { x:  134, y: 558 }
+    const GENDER_MALE_BOX = { x: 134, y: 558 }
     const GENDER_FEMALE_BOX = { x: 186, y: 558 }
 
     pdf.registerFontkit(fontkit)
@@ -62,7 +62,6 @@ export default async function generateQuestionnairePdf(application: ApplicationD
         })
 
     const drawMark = (x: number, y: number) => drawPx("✔", x, y, symbolFont, 9)
-
 
     drawPx(fullName, 350, 285)
     drawPx(passport, 109, 318)
