@@ -65,6 +65,8 @@ export const Profile = () => {
                 missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.program" }))
             if (!userInfo.project?.code)
                 missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.project" }))
+            if (!userInfo.gender)
+                missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.gender" }))
 
             if (missingFields.length > 0) {
                 setShowProfileModal(true)
