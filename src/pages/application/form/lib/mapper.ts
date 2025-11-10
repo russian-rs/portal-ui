@@ -58,5 +58,8 @@ export const mapValuesToRequest = (values: Record<string, any>, currentState: Ap
     if (values["bio"]) {
         request.bio = values["bio"]
     }
+    if (values["gender"]) {
+        ;(request as any).gender = values["gender"]
+    }
     return request
 }

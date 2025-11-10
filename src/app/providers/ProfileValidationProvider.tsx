@@ -69,6 +69,10 @@ export const ProfileValidationProvider = ({ children }: { children?: ReactNode }
             missing.push(intl.formatMessage({ id: "pages.profile.validation.fields.project" }))
         }
 
+        if (!user.gender) {
+            missing.push(intl.formatMessage({ id: "pages.profile.validation.fields.gender" }))
+        }
+
         return {
             isProfileComplete: missing.length === 0,
             missingFields: missing,

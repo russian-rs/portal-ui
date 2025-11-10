@@ -1,4 +1,15 @@
-import { Button, Checkbox, Flex, Loader, SegmentedControl, Text, Textarea, TextInput } from "@mantine/core"
+import {
+    Button,
+    Checkbox,
+    Flex,
+    Loader,
+    SegmentedControl,
+    Text,
+    Textarea,
+    TextInput,
+    Radio,
+    Tooltip,
+} from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
@@ -19,6 +30,7 @@ import {
     IconSignature,
     IconWorld,
 } from "@tabler/icons-react"
+import { GenderEnumDto } from "@russian-rs/portal-api-axios"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useEffect, useState } from "react"
@@ -127,6 +139,9 @@ export const Form = () => {
         skills: z.string(fieldRequired).min(20, minMessage(20)).max(500, maxMessage(500)),
         goal: z.string(fieldRequired).min(100, minMessage(100)).max(1000, maxMessage(1000)),
         bio: z.string(fieldRequired).min(100, minMessage(100)).max(1000, maxMessage(1000)),
+        gender: z.nativeEnum(GenderEnumDto, {
+            required_error: intl.formatMessage({ id: locales.required }),
+        }),
     })
 
     const form = useForm({
@@ -154,6 +169,9 @@ export const Form = () => {
             form.setFieldValue("telegram", currentUser.telegram)
             form.setFieldValue("address", currentUser.address)
             form.setFieldValue("phone", currentUser.phone)
+            if (currentUser.gender) {
+                form.setFieldValue("gender", currentUser.gender)
+            }
         }
     }, [currentUser])
 
@@ -417,6 +435,48 @@ export const Form = () => {
                 disabled={isFetching}
             />
             {residenceArea}
+            <Radio.Group
+                withAsterisk
+                label={
+                    <Flex align="center" gap={6} style={{ display: "inline-flex" }}>
+                        <FormattedMessage id={locales.gender} />
+                        <Tooltip
+                            label={<FormattedMessage id="pages.profile.props.gender.hint" />}
+                            multiline
+                            withArrow
+                            w={380}
+                            events={{ hover: true, focus: true, touch: true }}
+                            withinPortal
+                        >
+                            <span
+                                tabIndex={0}
+                                role="button"
+                                aria-label={String(intl.formatMessage({ id: "pages.profile.props.gender.hint" }))}
+                                style={{ display: "inline-flex" }}
+                                onMouseDown={(e) => e.preventDefault()}
+                                onTouchStart={(e) => e.preventDefault()}
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <IconAlertCircle size={14} />
+                            </span>
+                        </Tooltip>
+                    </Flex>
+                }
+                className={classes.input}
+                key={form.key("gender")}
+                {...form.getInputProps("gender")}
+            >
+                <Flex gap={16} wrap="wrap">
+                    <Radio
+                        value={GenderEnumDto.Male}
+                        label={<FormattedMessage id="pages.profile.props.gender.male" />}
+                    />
+                    <Radio
+                        value={GenderEnumDto.Female}
+                        label={<FormattedMessage id="pages.profile.props.gender.female" />}
+                    />
+                </Flex>
+            </Radio.Group>
             <TextInput
                 label={<FormattedMessage id={locales.occupation} />}
                 radius={0}
