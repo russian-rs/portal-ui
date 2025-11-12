@@ -20,17 +20,17 @@ const PHONE_POS = { x: -15, y: 243, size: 8 as const }
 const ADDRESS_BOX: Rect = { x: 35, y: 210, w: 180, h: 70 }
 const ADDRESS_FONT = { max: 9, min: 6, lineGapRatio: 0.4 }
 
-function getFullAddress(city: string, address: string, postalCode: string): string {
-    return [city, address, postalCode].join(", ")
+function getFullAddress(address: string, postalCode: string, city: string): string {
+    return [address, postalCode, city].join(", ")
 }
 
 export default async function generateEnvelopPdf(application: ApplicationDto) {
     const fullName = assertNotNull(application.name, "Name")
     const phone = assertNotNull(application.phone, "Phone")
     const address = getFullAddress(
-        assertNotNull(application.city, "City"),
         assertNotNull(application.address, "Address"),
-        assertNotNull(application.postalCode, "Postal code")
+        assertNotNull(application.postalCode, "Postal code"),
+        assertNotNull(application.city, "City")
     )
 
     const templateBytes = await fetch("/resources/envelop.pdf").then((r) => r.arrayBuffer())
