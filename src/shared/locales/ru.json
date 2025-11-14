@@ -1,6 +1,7 @@
 {
     "common": {
         "filters": "Фильтры",
+        "reset-filters": "Сбросить фильтры",
         "buttons": {
             "login": "Войти",
             "logout": "Выйти"
@@ -446,6 +447,7 @@
             "title": "Заявки на вступление",
             "empty": "Заявок не найдено",
             "total": "Всего: {count}",
+            "search": "Поиск по имени или email",
             "created-and-type": "Создана, Тип",
             "created-short-and-type-short": "Дата, Тип",
             "name-and-email": "Имя Фамилия, E-mail",

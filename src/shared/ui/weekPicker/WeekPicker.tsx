@@ -18,12 +18,16 @@ export const WeekPicker = (props: WeekPickerProps) => {
     const [selectedWeek, setSelectedWeek] = useState<number | null>(null)
 
     useEffect(() => {
-        if (props.initialStartDate && props.initialEndDate) {
-            const startDate = dayjs(props.initialStartDate).toDate()
-            const endDate = dayjs(props.initialEndDate).toDate()
+        const startDate = dayjs(props.initialStartDate)
+        const endDate = dayjs(props.initialEndDate)
+        if (startDate.isValid() && endDate.isValid()) {
             const week = dayjs(startDate).isoWeek()
-            setValue([startDate, endDate])
+
+            setValue([startDate.toDate(), endDate.toDate()])
             setSelectedWeek(week)
+        } else {
+            setValue([null, null])
+            setSelectedWeek(null)
         }
     }, [props.initialStartDate, props.initialEndDate])
 
