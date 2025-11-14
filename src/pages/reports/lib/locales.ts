@@ -13,7 +13,7 @@ export const locales = {
     files: "pages.report-list.files",
     total: "pages.report-list.total",
     empty: "pages.report-list.empty",
-    reset: "pages.report-list.reset",
+    resetFilters: "common.reset-filters",
     programFilter: "pages.report-list.program-filter",
     programFilterNotSelected: "pages.report-list.program-filter-not-selected",
     projectFilter: "pages.report-list.project-filter",
