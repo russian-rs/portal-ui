@@ -8,8 +8,8 @@ import { DEJAVU_SANS } from "src/shared/docs/fonts/DejaVuSans"
 import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 
-function getFullAddress(address: string, postalCode: string, city: string): string {
-    return [address, postalCode, city].join(", ")
+function getFullAddress(postalCode: string, city: string, address: string): string {
+    return [postalCode, city, address].join(", ")
 }
 
 export default async function generateQuestionnairePdf(application: ApplicationDto) {
@@ -21,9 +21,9 @@ export default async function generateQuestionnairePdf(application: ApplicationD
     const email = must(application.email, "Email")
     const telegram = must(application.telegram, "Telegram")
     const address = getFullAddress(
-        must(application.address, "Address"),
         must(application.postalCode, "Postal code"),
-        must(application.city, "City")
+        must(application.city, "City"),
+        must(application.address, "Address")
     )
     const city = must(application.city, "City")
     const gender = must(application.gender, "Gender") ?? null
