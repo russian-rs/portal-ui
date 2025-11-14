@@ -29,6 +29,9 @@
             "label": "Nedelja",
             "empty": "Nije izabrano"
         },
+        "day-picker": {
+            "empty": "Nije izabrano"
+        },
         "report-status-select": {
             "label": "Status",
             "empty": "Nije izabrano"

@@ -29,6 +29,9 @@
             "label": "Week",
             "empty": "Not selected"
         },
+        "day-picker": {
+            "empty": "Not selected"
+        },
         "report-status-select": {
             "label": "Status",
             "empty": "Not selected"
