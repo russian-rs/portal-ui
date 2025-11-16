@@ -4,7 +4,7 @@ export const locales = {
     documentTitle: "pages.my-reports.title",
     total: "pages.my-reports.total",
     filters: "pages.my-reports.filters",
-    filtersReset: "pages.my-reports.reset-filter",
+    resetFilters: "common.reset-filters",
     newReport: "pages.my-reports.new-report",
     reportCreated: "pages.my-reports.report.created",
     reportStatus: "pages.my-reports.report.status",

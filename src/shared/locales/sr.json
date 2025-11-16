@@ -1,6 +1,7 @@
 {
     "common": {
         "filters": "Filteri",
+        "reset-filters": "Resetujte filtere",
         "buttons": {
             "login": "Prijavite se",
             "logout": "Odjava"
@@ -26,6 +27,9 @@
         },
         "week-picker": {
             "label": "Nedelja",
+            "empty": "Nije izabrano"
+        },
+        "day-picker": {
             "empty": "Nije izabrano"
         },
         "report-status-select": {
@@ -151,6 +155,11 @@
                 "city": "Grad",
                 "address": "Adresa",
                 "birthDate": "Datum rođenja",
+                "gender": "Pol",
+                "gender.male": "Muški",
+                "gender.female": "Ženski",
+                "gender.hint": "Vaš pol se traži isključivo u okviru zakonskih zahteva za izradu izveštaja državnim organima. Molimo vas da navedete pol tačno onako kako je upisan u vašem pasošu.",
+                "gender.notSelected": "Nije navedeno",
                 "phone": "Telefon",
                 "email": "Email",
                 "telegram": "Telegram"
@@ -179,7 +188,8 @@
                     "telegram": "telegram",
                     "phone": "telefon",
                     "program": "program",
-                    "project": "projekat"
+                    "project": "projekat",
+                    "gender": "pol"
                 }
             },
             "buttons": {
@@ -475,7 +485,8 @@
                 "skills": "Koje veštine posedujete",
                 "skills-description": "Razvoj, grafički dizajn, psihologija, fotografija itd.",
                 "goal": "Koji je vaš cilj za članstvo u organizaciji?",
-                "bio": "Napišite kratku biografiju o sebi"
+                "bio": "Napišite kratku biografiju o sebi",
+                "gender": "Pol"
             },
             "view": {
                 "title": "Status vaše prijave za volontiranje",
@@ -494,6 +505,7 @@
             "title": "Prijave za članstvo",
             "empty": "Nijedna prijava nije pronađena",
             "total": "Ukupno: {count}",
+            "search": "Pretraga po imenu ili e-mailu",
             "created-and-type": "Stvoren, Tip",
             "created-short-and-type-short": "Datum, Tip",
             "name-and-email": "Ime i Prezime, E-mail",
@@ -540,6 +552,9 @@
                 "skills": "Veštine",
                 "goal": "Cilj učestvovanja u organizaciji",
                 "bio": "Kratka biografija",
+                "gender": "Pol",
+                "gender.male": "Muški",
+                "gender.female": "Ženski",
                 "pause-reason": "Razlog pauze",
                 "contractDownload": "Preuzimanje ugovora",
                 "questionnaireDownload": "Preuzimanje upitnika",

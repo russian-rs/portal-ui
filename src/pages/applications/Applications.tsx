@@ -1,9 +1,9 @@
-import { Box, Card, Checkbox, CloseButton, Flex, Input, Pagination, Skeleton, Table, Text } from "@mantine/core"
+import { Box, Button, Card, Checkbox, CloseButton, Flex, Input, Pagination, Skeleton, Table, Text } from "@mantine/core"
 import { ApplicationsFilter, PageRequest } from "@russian-rs/portal-api-axios"
-import { IconUfo } from "@tabler/icons-react"
+import { IconFilterOff, IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import React, { useContext, useEffect, useState } from "react"
-import { FormattedMessage } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { allowedRoles } from "src/pages/applications/lib/roles"
@@ -50,6 +50,7 @@ export const Applications = () => {
     const { user } = useContext(UserContext)
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
+    const intl = useIntl()
 
     // Инициализация состояния из URL параметров
     const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "")
@@ -178,6 +179,21 @@ export const Applications = () => {
             ),
     })
 
+    const activeFiltersCount = React.useMemo(() => {
+        let count = 0
+        if (debouncedSearch.trim()) count += 1
+        if (filter.showCompleted) count += 1
+        return count
+    }, [debouncedSearch, filter.showCompleted])
+
+    const resetFilters = () => {
+        setSearchQuery("")
+        setDebouncedSearch("")
+        setFilter(defaultFilter)
+        setPageRequest({ ...pageRequest, pageNumber: 0 })
+        updateUrlParams("", false, 0)
+    }
+
     const rows = content.map((application) => <ApplicationRow key={application.id} applicationDto={application} />)
 
     return (
@@ -188,33 +204,47 @@ export const Applications = () => {
                     <FormattedMessage id={locales.title} />
                 </Text>
                 <div ref={listStartRef} />
-                <Flex columnGap="8" className={classes.controls}>
-                    <Flex align="center" columnGap="8" className={classes.searchGroup}>
-                        <Input
-                            placeholder={"Поиск по имени или email"}
-                            value={searchQuery}
-                            onChange={(event) => setSearchQuery(event.currentTarget.value)}
-                            rightSectionPointerEvents="all"
-                            size={!isDesktop ? "md" : "sm"}
-                            rightSection={
-                                <CloseButton
-                                    aria-label="Clear input"
-                                    onClick={() => setSearchQuery("")}
-                                    style={{ display: searchQuery ? undefined : "none" }}
-                                />
-                            }
-                            className={classes.searchInput}
+                <Flex direction="column" gap={8}>
+                    <Flex columnGap="8" className={classes.controls} wrap="wrap">
+                        <Flex align="center" columnGap="8" className={classes.searchGroup}>
+                            <Input
+                                placeholder={intl.formatMessage({ id: locales.search })}
+                                value={searchQuery}
+                                onChange={(event) => setSearchQuery(event.currentTarget.value)}
+                                rightSectionPointerEvents="all"
+                                size={!isDesktop ? "md" : "sm"}
+                                rightSection={
+                                    <CloseButton
+                                        aria-label="Clear input"
+                                        onClick={() => setSearchQuery("")}
+                                        style={{ display: searchQuery ? undefined : "none" }}
+                                    />
+                                }
+                                className={classes.searchInput}
+                            />
+                            <CreateUser />
+                        </Flex>
+                        <Checkbox
+                            variant="outline"
+                            labelPosition={isMobile ? "right" : "left"}
+                            label={<FormattedMessage id={locales.showCompleted} />}
+                            checked={filter.showCompleted}
+                            onChange={() => setFilter({ ...filter, showCompleted: !filter.showCompleted })}
+                            size={isMobile ? "md" : "sm"}
                         />
-                        <CreateUser />
+                        {activeFiltersCount > 0 && (
+                            <Button
+                                variant="transparent"
+                                size={isMobile ? "md" : "sm"}
+                                leftSection={<IconFilterOff size={16} />}
+                                onClick={resetFilters}
+                            >
+                                <Text size="sm">
+                                    <FormattedMessage id={locales.resetFilters} />
+                                </Text>
+                            </Button>
+                        )}
                     </Flex>
-                    <Checkbox
-                        variant="outline"
-                        labelPosition={isMobile ? "right" : "left"}
-                        label={<FormattedMessage id={locales.showCompleted} />}
-                        checked={filter.showCompleted}
-                        onChange={() => setFilter({ ...filter, showCompleted: !filter.showCompleted })}
-                        size={isMobile ? "md" : "sm"}
-                    />
                 </Flex>
                 {shouldShowTable ? (
                     <Table stickyHeader highlightOnHover className={classes.table}>
