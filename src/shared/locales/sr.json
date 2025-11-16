@@ -338,7 +338,7 @@
             "missed-weeks-badge": "Propušteno: {count}",
             "partial-weeks-badge": "Delimičnih: {count}",
             "total-hours": "Ukupno sati",
-            "avg-per-week": "Prosek: {value} h/nedelji",
+            "required-hours": "Norma za period",
             "hours": "sati",
             "pieces-short": "kom",
             "status-text-all-ok": "Svi izveštaji predati",

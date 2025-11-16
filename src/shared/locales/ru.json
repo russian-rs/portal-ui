@@ -338,7 +338,7 @@
             "missed-weeks-badge": "{count} пропущено",
             "partial-weeks-badge": "{count} частичных",
             "total-hours": "Всего часов",
-            "avg-per-week": "В среднем: {value} ч/неделю",
+            "required-hours": "Норма за период",
             "hours": "ч.",
             "pieces-short": "шт.",
             "status-text-all-ok": "Все отчеты сданы",

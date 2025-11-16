@@ -35,7 +35,7 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
         for (let i = 0; i < totalWeeks; i++) {
             weeks.push({
                 date: currentDate.clone(),
-                weekNumber: i + 1,
+                weekNumber: currentDate.isoWeek(),
             })
             currentDate = currentDate.add(1, "week")
         }
@@ -102,7 +102,7 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                     name: volunteer.fullName,
                     from: weekStart.format("DD.MM.YYYY"),
                     to: weekEnd.format("DD.MM.YYYY"),
-                    week: intl.formatMessage({ id: locales.tooltipWeek }, { num: weekIndex + 1 }),
+                    week: intl.formatMessage({ id: locales.tooltipWeek }, { num: weekStart.isoWeek() }),
                 }
             )
         }
@@ -119,7 +119,7 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                 hoursLabel: intl.formatMessage({ id: locales.hours }),
                 from: weekStart.format("DD.MM.YYYY"),
                 to: weekEnd.format("DD.MM.YYYY"),
-                week: intl.formatMessage({ id: locales.tooltipWeek }, { num: weekIndex + 1 }),
+                week: intl.formatMessage({ id: locales.tooltipWeek }, { num: weekStart.isoWeek() }),
             }
         )
     }
@@ -129,7 +129,7 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
         const color = getSquareColor(volunteer, weekIndex)
         const weekStart = startDate.clone().add(weekIndex, "week").startOf("isoWeek")
         const weekEnd = weekStart.clone().add(1, "week")
-        const weekLabel = intl.formatMessage({ id: locales.tooltipWeek }, { num: weekIndex + 1 })
+        const weekLabel = intl.formatMessage({ id: locales.tooltipWeek }, { num: weekStart.isoWeek() })
 
         if (color === "na") {
             return intl.formatMessage(
@@ -220,7 +220,10 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                         <div className={classes.headerSpacer} />
                         <div className={classes.weekHeaders}>
                             {weeks.map((w) => (
-                                <div key={w.weekNumber} className={classes.weekHeader}>
+                                <div
+                                    key={w.date.startOf("isoWeek").format("YYYY-MM-DD")}
+                                    className={classes.weekHeader}
+                                >
                                     <Text size="xs" c="dimmed">
                                         {w.weekNumber}
                                     </Text>
@@ -234,6 +237,26 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                         const partialCount = weeksColors.filter((c) => c === "partialReports").length
                         const allNA = weeksColors.length > 0 && weeksColors.every((c) => c === "na")
                         const isSelected = selectedVolunteers.has(volunteer.id)
+                        // Считаем часы: факт/норма за период
+                        const firstContractStart =
+                            volunteer.contracts && volunteer.contracts.length > 0
+                                ? volunteer.contracts
+                                      .map((c) => dayjs(c.startDate).startOf("isoWeek"))
+                                      .reduce((earliest, d) => (d.isBefore(earliest) ? d : earliest))
+                                : null
+                        const workedHours = volunteer.reports
+                            .filter((r) => {
+                                const d = dayjs(r.week)
+                                const startBoundary = startDate.startOf("isoWeek")
+                                const endBoundary = endDate.endOf("isoWeek")
+                                return d.isBetween(startBoundary, endBoundary, "day", "[]")
+                            })
+                            .reduce((sum, r) => sum + r.hoursSpent, 0)
+                        const effectiveWeeks = weeks.filter((w) => {
+                            if (!firstContractStart) return false
+                            return !w.date.isBefore(firstContractStart, "week")
+                        }).length
+                        const requiredHours = firstContractStart ? effectiveWeeks * 10 : 0
 
                         return (
                             <div key={volunteer.id} className={classes.volunteerRow}>
@@ -269,13 +292,7 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                                             py={2}
                                             styles={{ section: { marginRight: 0 } }}
                                         >
-                                            {allNA
-                                                ? "N/A"
-                                                : missedCount > 0
-                                                  ? String(missedCount)
-                                                  : partialCount > 0
-                                                    ? String(partialCount)
-                                                    : ""}
+                                            {allNA || !firstContractStart ? "N/A" : `${workedHours}/${requiredHours}`}
                                         </Badge>
                                     </div>
                                 </div>
