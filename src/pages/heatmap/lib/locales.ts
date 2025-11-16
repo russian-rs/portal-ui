@@ -35,7 +35,7 @@ export const locales = {
     missedWeeksBadge: "pages.volunteer-reports.missed-weeks-badge",
     partialWeeksBadge: "pages.volunteer-reports.partial-weeks-badge",
     totalHours: "pages.volunteer-reports.total-hours",
-    avgPerWeek: "pages.volunteer-reports.avg-per-week",
+    requiredHoursForPeriod: "pages.volunteer-reports.required-hours",
     hours: "pages.volunteer-reports.hours",
     piecesShort: "pages.volunteer-reports.pieces-short",
     statusAllOk: "pages.volunteer-reports.status-text-all-ok",

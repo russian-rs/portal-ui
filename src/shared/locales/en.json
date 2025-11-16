@@ -338,7 +338,7 @@
             "missed-weeks-badge": "{count} missed",
             "partial-weeks-badge": "{count} partial",
             "total-hours": "Total hours",
-            "avg-per-week": "Avg: {value} h/week",
+            "required-hours": "Required hours for period",
             "hours": "hours",
             "pieces-short": "pcs",
             "status-text-all-ok": "All reports submitted",

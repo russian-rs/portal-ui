@@ -128,6 +128,37 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
         return intl.formatMessage({ id: locales.statusAllOk })
     }
 
+    const getWorkedVsRequired = (volunteer: VolunteerReportData) => {
+        const endDate = dayjs().startOf("isoWeek")
+        const firstContractStart =
+            volunteer.contracts && volunteer.contracts.length > 0
+                ? volunteer.contracts
+                      .map((c) => dayjs(c.startDate).startOf("isoWeek"))
+                      .reduce((earliest, d) => (d.isBefore(earliest) ? d : earliest))
+                : null
+        if (!firstContractStart) return { text: "N/A", worked: 0, required: 0 }
+
+        // посчитать недели в периоде после старта первого контракта
+        const totalWeeks = endDate.diff(startDate.startOf("isoWeek"), "week") + 1
+        let effectiveWeeks = 0
+        for (let i = 0; i < totalWeeks; i++) {
+            const weekStart = startDate.clone().add(i, "week").startOf("isoWeek")
+            if (!weekStart.isBefore(firstContractStart, "week")) {
+                effectiveWeeks += 1
+            }
+        }
+        const required = effectiveWeeks * 10
+        const worked = volunteer.reports
+            .filter((r) => {
+                const d = dayjs(r.week)
+                const startBoundary = startDate.startOf("isoWeek")
+                const endBoundary = endDate.endOf("isoWeek")
+                return d.isBetween(startBoundary, endBoundary, "day", "[]")
+            })
+            .reduce((sum, r) => sum + r.hoursSpent, 0)
+        return { text: `${worked}/${required}`, worked, required }
+    }
+
     const getStatusIcon = (color: "green" | "yellow" | "red") => {
         switch (color) {
             case "green":
@@ -251,10 +282,7 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
                                             <FormattedMessage id={locales.totalHours} />: {stats.totalHours}
                                         </Text>
                                         <Text size="xs" c="dimmed">
-                                            <FormattedMessage
-                                                id={locales.avgPerWeek}
-                                                values={{ value: stats.averageHoursPerWeek }}
-                                            />
+                                            <FormattedMessage id={locales.requiredHoursForPeriod} />: {getWorkedVsRequired(volunteer).required}
                                         </Text>
                                     </div>
                                 </Table.Td>
@@ -287,7 +315,9 @@ export const VolunteerReportTable: React.FC<VolunteerReportTableProps> = ({
                                             size="md"
                                             radius="sm"
                                             leftSection={getStatusIcon(statusColor as "green" | "yellow" | "red")}
-                                        />
+                                        >
+                                            {getWorkedVsRequired(volunteer).text}
+                                        </Badge>
                                     </Tooltip>
                                 </Table.Td>
 
