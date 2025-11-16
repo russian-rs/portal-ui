@@ -39,14 +39,8 @@ module.exports = {
                         max: 10,
                     },
                 ],
-                "jest/prefer-expect-assertions": [
-                    "error",
-                    { onlyFunctionsWithAsyncKeyword: true },
-                ],
-                "jest/prefer-lowercase-title": [
-                    "error",
-                    { ignore: ["describe"] },
-                ],
+                "jest/prefer-expect-assertions": ["error", { onlyFunctionsWithAsyncKeyword: true }],
+                "jest/prefer-lowercase-title": ["error", { ignore: ["describe"] }],
                 "@typescript-eslint/no-non-null-assertion": "off",
             },
         },

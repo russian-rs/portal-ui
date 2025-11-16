@@ -2,7 +2,8 @@ export const locales = {
     title: "pages.applications.title",
     empty: "pages.applications.empty",
     total: "pages.applications.total",
-
+    resetFilters: "common.reset-filters",
+    search: "pages.applications.search",
     createdAndType: "pages.applications.created-and-type",
     createdShortAndTypeShort: "pages.applications.created-short-and-type-short",
     nameAndEmail: "pages.applications.name-and-email",
@@ -18,5 +19,4 @@ export const locales = {
     contractAdd: "pages.applications.contractAdd",
     showCompleted: "pages.applications.showCompleted",
     pauseReason: "pages.applications.view.pause-reason",
-    reset: "pages.report-list.reset",
 }

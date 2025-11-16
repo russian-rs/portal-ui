@@ -25,7 +25,7 @@ $table-min-width: 58rem;
 .filters {
     width: 100%;
     align-items: end;
-    column-gap: 1rem;
+    gap: 1rem;
 
     @media (max-width: 85rem) {
         flex-direction: column;
