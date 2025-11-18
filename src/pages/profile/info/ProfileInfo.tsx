@@ -24,11 +24,11 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { UserContext } from "src/app/providers/UserContext"
 import commonClasses from "src/app/styles/private.module.scss"
 import { ProfileAvatar } from "src/pages/profile/avatar/ProfileAvatar"
-import { locales } from "src/pages/users/lib/locales"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { Locale } from "src/shared/constants/Locales"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
+import { CitySelect } from "src/shared/ui/citySelect/CitySelect"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { z } from "zod"
@@ -50,7 +50,8 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const validationSchema = z.object({
         city: z
             .string()
-            .max(100, intl.formatMessage({ id: locales.maxLetters }, { count: 100 }))
+            .min(2, intl.formatMessage({ id: "pages.profile.validation.minLetters" }, { count: 2 }))
+            .max(100, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 100 }))
             .optional()
             .or(z.literal("")),
         postalCode: z
@@ -60,7 +61,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
             .or(z.literal("")),
         address: z
             .string()
-            .max(200, intl.formatMessage({ id: locales.maxLetters }, { count: 200 }))
+            .max(200, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 200 }))
             .optional()
             .or(z.literal("")),
         birthDate: z
@@ -84,7 +85,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         telegram: z
             .string()
             .regex(/^[a-zA-Z][a-zA-Z0-9_]*$/, intl.formatMessage({ id: "pages.profile.validation.invalidTelegram" }))
-            .max(32, intl.formatMessage({ id: locales.maxLetters }, { count: 32 }))
+            .max(32, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 32 }))
             .optional()
             .or(z.literal("")),
         phone: z
@@ -355,21 +356,15 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                     }}
                 >
                     <Flex direction="column" gap="md">
-                        <TextInput
-                            leftSection={iconCity}
+                        <CitySelect
                             label={<FormattedMessage id="pages.profile.props.city" />}
+                            withAsterisk
                             {...form.getInputProps("city")}
                         />
                         <TextInput
                             leftSection={<IconMapPin size={16} />}
                             label={<FormattedMessage id="pages.profile.props.postalCode" />}
                             {...form.getInputProps("postalCode")}
-                            maxLength={5}
-                            placeholder="11000"
-                            onChange={(event) => {
-                                const value = event.currentTarget.value.replace(/\D/g, "")
-                                form.setFieldValue("postalCode", value)
-                            }}
                         />
                         <TextInput
                             leftSection={iconHome}
