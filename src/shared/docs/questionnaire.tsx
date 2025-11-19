@@ -7,10 +7,7 @@ import { PDFDocument, rgb } from "pdf-lib"
 import { DEJAVU_SANS } from "src/shared/docs/fonts/DejaVuSans"
 import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
-
-function getFullAddress(postalCode: string, city: string, address: string): string {
-    return [postalCode, city, address].join(", ")
-}
+import { getFullAddress } from "src/shared/utils/getFullAddress"
 
 export default async function generateQuestionnairePdf(application: ApplicationDto) {
     const fullName = must(application.name, "Name")

@@ -184,6 +184,7 @@
                 "fields": {
                     "avatar": "fotografija profila",
                     "city": "grad",
+                    "postalCode": "poštanski broj",
                     "address": "adresa",
                     "birthDate": "datum rođenja",
                     "telegram": "telegram",
