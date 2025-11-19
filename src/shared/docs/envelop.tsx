@@ -5,6 +5,7 @@ import type { Rotation } from "pdf-lib"
 import { PDFDocument, PDFFont, degrees, rgb } from "pdf-lib"
 import { MONTSERRAT_BOLD_BOLD } from "src/shared/docs/fonts/Montserrat-Bold-bold"
 import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
+import { getFullAddress } from "src/shared/utils/getFullAddress"
 
 type Ori = 0 | 90 | 180 | 270
 interface Rect {
@@ -19,10 +20,6 @@ const NAME_POS = { x: 35, y: 180, size: 10 as const }
 const PHONE_POS = { x: -15, y: 243, size: 8 as const }
 const ADDRESS_BOX: Rect = { x: 35, y: 210, w: 180, h: 70 }
 const ADDRESS_FONT = { max: 9, min: 6, lineGapRatio: 0.4 }
-
-function getFullAddress(postalCode: string, city: string, address: string): string {
-    return [postalCode, city, address].join(", ")
-}
 
 export default async function generateEnvelopPdf(application: ApplicationDto) {
     const fullName = assertNotNull(application.name, "Name")

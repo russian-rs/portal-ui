@@ -184,6 +184,7 @@
                 "fields": {
                     "avatar": "фото профиля",
                     "city": "город",
+                    "postalCode": "почтовый индекс",
                     "address": "адрес",
                     "birthDate": "дата рождения",
                     "telegram": "telegram",

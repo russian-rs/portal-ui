@@ -3,13 +3,11 @@ import dayjs from "dayjs"
 import { jsPDF as JsPdf } from "jspdf"
 import { MONTSERRAT_BOLD_BOLD } from "src/shared/docs/fonts/Montserrat-Bold-bold"
 import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
+import { getFullAddress } from "src/shared/utils/getFullAddress"
 
 /**
  * Договор о волонтерстве
  */
-function getFullAddress(postalCode: string, city: string, address: string): string {
-    return [postalCode, city, address].join(", ")
-}
 
 export default function generateContractPdf(application: ApplicationDto) {
     const fullName = errorIfEmpty("Name", application.name)

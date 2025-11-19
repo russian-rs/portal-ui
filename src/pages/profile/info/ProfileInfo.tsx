@@ -31,6 +31,7 @@ import { SuccessNotification } from "src/shared/notifications/SuccessNotificatio
 import { CitySelect } from "src/shared/ui/citySelect/CitySelect"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
+import { getFullAddress } from "src/shared/utils/getFullAddress"
 import { z } from "zod"
 import { ProgramSelectInline } from "../select/ProgramSelect"
 import { ProjectSelectInline } from "../select/ProjectSelect"
@@ -282,20 +283,8 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
             />
             <Container className={commonClasses.divider} />
             <TextPropertyBox
-                name={"pages.profile.props.city"}
-                value={userInfo?.city}
-                icon={<IconBuildings size={18} />}
-                className={classes.propertyBox}
-            />
-            <TextPropertyBox
-                name={"pages.profile.props.postalCode"}
-                value={userInfo?.postalCode}
-                icon={<IconMapPin size={18} />}
-                className={classes.propertyBox}
-            />
-            <TextPropertyBox
                 name={"pages.profile.props.address"}
-                value={userInfo?.address}
+                value={getFullAddress(userInfo?.postalCode, userInfo?.city, userInfo?.address)}
                 icon={<IconHome size={18} />}
                 className={classes.propertyBox}
             />
