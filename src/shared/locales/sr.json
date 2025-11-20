@@ -215,6 +215,35 @@
                 "number": "Ugovor {number}",
                 "cannotDeleteLast": "Ne možete obrisati poslednji ugovor. Volonter mora imati bar jedan ugovor."
             },
+            "residencePermit": {
+                "no-permit": "Nema zapisa o boravku",
+                "title": "Boravišna dozvola",
+                "valid-until": "Važi do",
+                "nationality": "Državljanstvo",
+                "purpose-of-stay": "Svrha boravka",
+                "days-left": "Preostalo dana: {count}",
+                "button": "Dodaj boravak",
+                "add": "Upravljanje boravcima",
+                "save": "Sačuvaj",
+                "created": "Boravak uspešno sačuvan",
+                "createError": "Greška pri čuvanju boravka",
+                "number": "Boravak {number}",
+                "registrationNumber": "Registracioni broj",
+                "registrationNumber.description": "9-cifreni registracioni broj",
+                "identityNumber": "Identifikacioni broj (JMBG)",
+                "identityNumber.description": "13-cifreni JMBG/ID broj",
+                "issuingDate": "Datum izdavanja",
+                "issuingAuthority": "Organ koji izdaje",
+                "stateOfBirth": "Mesto rođenja",
+                "note": "Napomena",
+                "frontSidePhoto": "Fotografija prednje strane",
+                "backSidePhoto": "Fotografija zadnje strane",
+                "validation": {
+                    "registrationNumber": "Registracioni broj mora sadržati tačno 9 cifara",
+                    "identityNumber": "Identifikacioni broj mora sadržati tačno 13 cifara"
+                },
+                "required": "Obavezno"
+            },
             "selectProgram": "Izaberite program",
             "selectProject": "Izaberite projekat"
         },

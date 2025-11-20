@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router"
 import { ContractInfo } from "src/pages/profile/contract/ContractInfo"
 import { ProfileInfo } from "src/pages/profile/info/ProfileInfo"
+import { ResidencePermitInfo } from "src/pages/profile/residencePermit/ResidencePermitInfo"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
@@ -93,8 +94,15 @@ export const Profile = () => {
                         <ProfileInfo userInfo={userInfo} onUserInfoUpdate={handleUserInfoUpdate} />
                     </Skeleton>
                     <Skeleton visible={isFetching} radius="lg">
-                        <Flex direction="column">
+                        <Flex direction="column" gap="md">
                             {userInfo?.contracts && <ContractInfo userInfo={userInfo} contracts={userInfo.contracts} />}
+                            {userInfo && (
+                                <ResidencePermitInfo
+                                    userInfo={userInfo}
+                                    residencePermits={(userInfo as any).residencePermits || []}
+                                    onUpdate={handleUserInfoUpdate}
+                                />
+                            )}
                         </Flex>
                     </Skeleton>
                 </SimpleGrid>

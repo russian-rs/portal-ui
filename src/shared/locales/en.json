@@ -215,6 +215,35 @@
                 "number": "Contract {number}",
                 "cannotDeleteLast": "Cannot delete the last contract. A volunteer must have at least one contract."
             },
+            "residencePermit": {
+                "no-permit": "No residence permit records",
+                "title": "Residence Permit",
+                "valid-until": "Valid until",
+                "nationality": "Nationality",
+                "purpose-of-stay": "Purpose of stay",
+                "days-left": "Days left: {count}",
+                "button": "Add residence permit",
+                "add": "Manage Residence Permits",
+                "save": "Save",
+                "created": "Residence permit successfully saved",
+                "createError": "Error saving residence permit",
+                "number": "Residence Permit {number}",
+                "registrationNumber": "Registration number",
+                "registrationNumber.description": "9-digit registration number",
+                "identityNumber": "Identity number (JMBG)",
+                "identityNumber.description": "13-digit JMBG/ID number",
+                "issuingDate": "Issue date",
+                "issuingAuthority": "Issuing authority",
+                "stateOfBirth": "Place of birth",
+                "note": "Note",
+                "frontSidePhoto": "Front side photo",
+                "backSidePhoto": "Back side photo",
+                "validation": {
+                    "registrationNumber": "Registration number must contain exactly 9 digits",
+                    "identityNumber": "Identity number must contain exactly 13 digits"
+                },
+                "required": "Required"
+            },
             "selectProgram": "Select a program",
             "selectProject": "Select a project"
         },
