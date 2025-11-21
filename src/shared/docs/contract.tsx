@@ -3,19 +3,25 @@ import dayjs from "dayjs"
 import { jsPDF as JsPdf } from "jspdf"
 import { MONTSERRAT_BOLD_BOLD } from "src/shared/docs/fonts/Montserrat-Bold-bold"
 import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
+import { getFullAddress } from "src/shared/utils/getFullAddress"
 
 /**
  * Договор о волонтерстве
  */
+
 export default function generateContractPdf(application: ApplicationDto) {
     const fullName = errorIfEmpty("Name", application.name)
     const birthDate = dayjs(errorIfEmpty("Birth date", application.birthDate)).format("DD.MM.YYYY")
     const passport = errorIfEmpty("Passport", application.passport)
     const phone = errorIfEmpty("Phone", application.phone)
     const email = errorIfEmpty("Email", application.email)
-    const address = errorIfEmpty("Address", application.address)
+    const address = getFullAddress(
+        errorIfEmpty("Postal code", application.postalCode),
+        errorIfEmpty("City", application.city),
+        errorIfEmpty("Address", application.address)
+    )
     const contractFrom = dayjs(errorIfEmpty("Contract start date", application.contract?.startDate))
-    const contractUntil = dayjs(errorIfEmpty("Contract end date", application.contract?.endDate!!))
+    const contractUntil = dayjs(errorIfEmpty("Contract end date", application.contract?.endDate))
 
     let startX = 15
     let startY = 25
@@ -338,7 +344,7 @@ export default function generateContractPdf(application: ApplicationDto) {
             "правила у Републици Србији. \n\n" +
             "6.2. Уговорне стране сагласне су да сваки спор из овог уговора или у вези са овим уговором биће коначно \n" +
             "решен арбитражом у складу са правилником сталне арбитраже при Удружењу \n" +
-            "\"Руска дијаспора у Србији\" у Новом Саду. \n\n" +
+            '"Руска дијаспора у Србији" у Новом Саду. \n\n' +
             "6.3. Овај Уговор ступа на снагу даном потписивања од стране овлашћених лица уговорних страна. \n\n" +
             "6.4. Овај уговор је сачињен у 2 (два) истоветна примерка, по један за сваку уговорну страну.",
         15,
