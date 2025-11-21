@@ -30,8 +30,6 @@ import { defaultFilter, defaultPage, defaultPageResponse, defaultUser } from "./
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
 import classes from "./ReportList.module.scss"
-import { usePrograms } from "src/app/providers/ProgramsProvider"
-import { useProjects } from "src/app/providers/ProjectsProvider"
 
 export const ReportList = () => {
     setDocumentTitleByLocale(locales.title)
