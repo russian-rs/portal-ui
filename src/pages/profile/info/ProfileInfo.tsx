@@ -14,7 +14,7 @@ import {
     IconInfoCircle,
 } from "@tabler/icons-react"
 import dayjs from "dayjs"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { UserContext } from "src/app/providers/UserContext"
 import commonClasses from "src/app/styles/private.module.scss"
@@ -34,6 +34,7 @@ import { SuccessNotification } from "src/shared/notifications/SuccessNotificatio
 import { Locale } from "src/shared/constants/Locales"
 import { ProgramSelectInline } from "../select/ProgramSelect"
 import { ProjectSelectInline } from "../select/ProjectSelect"
+import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
 
 interface ProfileInfoProps {
     userInfo: UserInfoDto | undefined
@@ -232,6 +233,10 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const iconBirthday = <IconGift size={16} />
 
     const programValue = userInfo?.program?.code || null
+    const projectValue = userInfo?.project?.code || null
+
+    const [selectedProgram, setSelectedProgram] = useState<string | null>(programValue)
+    const [selectedProject, setSelectedProject] = useState<string | null>(projectValue)
 
     // Админы могут редактировать программы всем (включая себя)
     // Обычные пользователи могут установить программу только если у них ее еще нет
@@ -247,29 +252,89 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     // Разрешаем менять пол своему профилю и админам
     const canEditGender = isAdmin || isOwnProfile
 
-    const handleProgramChange = (value: string | null) => {
-        if (value) {
-            updateProgram(value)
+    // получаем отфильтрованные списки из hook
+    const {programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
+        selectedProgram,
+        selectedProject
+    )
+
+    const handleProgramChange = (program: string | null) => {
+        if (program) {
+            setSelectedProgram(program)
+            setSelectedProject(null)
+            updateProgram(program)
         }
     }
+
+    const handleProjectChange = (project: string | null) => {
+        if (project) {
+            setSelectedProject(project)
+            updateProject(project)
+        }
+    }
+
+    // синхронизируемся, если userInfo обновился с сервера
+    useEffect(() => {
+        setSelectedProgram(programValue)
+    }, [programValue])
+
+    useEffect(() => {
+        setSelectedProject(projectValue)
+    }, [projectValue])
+
+    // Если выбрали программу, а текущий проект к ней не относится очищаем проект
+    useEffect(() => {
+        if (!selectedProgram || !selectedProject) return
+
+        const program = programs.find(
+            (p) => p.code.toUpperCase() === selectedProgram
+        )
+        const allowedProjectCodes = program?.projectCodes ?? []
+
+        if (allowedProjectCodes.length > 0 && !allowedProjectCodes.includes(selectedProject)) {
+            setSelectedProject(null)
+        }
+    }, [selectedProgram, selectedProject, programs])
+
+    // при выборе проекта подставляем программу из проекта
+    useEffect(() => {
+        if (!selectedProject) return
+
+        const project = projects.find((p) => p.code === selectedProject)
+        if (!project) return
+
+        const owningProgramCode =
+            project.programCode ??
+            programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
+
+        if (!owningProgramCode) return
+
+        const normalizedProgram = owningProgramCode.toUpperCase()
+
+        if (selectedProgram === normalizedProgram) return
+
+        setSelectedProgram(normalizedProgram)
+
+        updateProgram(normalizedProgram)
+    }, [selectedProject, selectedProgram, projects, programs, updateProgram])
 
     return (
         <Flex direction="column" className={classes.infoContainer}>
             <ProfileAvatar link={userInfo?.avatar?.link} editable={currentUser?.username === userInfo?.username} />
             <Text className={classes.userName}>{userInfo?.fullName}</Text>
             <ProgramSelectInline
-                value={programValue}
+                value={selectedProgram ?? programValue}
                 canEdit={canEditProgram}
                 locale={locale}
                 onChange={handleProgramChange}
+                programsOverride={visiblePrograms}
             />
             <ProjectSelectInline
-                value={userInfo?.project?.code}
+                value={selectedProject ?? projectValue}
                 canEdit={canEditProject}
                 locale={locale}
-                onChange={(project) => {
-                    updateProject(project)
-                }}
+                onChange={handleProjectChange}
+                projectsOverride={visibleProjects}
             />
             <Container className={commonClasses.divider} />
             <TextPropertyBox

@@ -17,8 +17,7 @@ import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
 
 import { Badge, useComputedColorScheme } from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
-import { usePrograms } from "src/app/providers/ProgramsProvider"
-import { useProjects } from "src/app/providers/ProjectsProvider"
+import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
 import { getReportStatusColor } from "src/shared/report/status"
 import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
@@ -31,6 +30,8 @@ import { defaultFilter, defaultPage, defaultPageResponse, defaultUser } from "./
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
 import classes from "./ReportList.module.scss"
+import { usePrograms } from "src/app/providers/ProgramsProvider"
+import { useProjects } from "src/app/providers/ProjectsProvider"
 
 export const ReportList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -43,9 +44,6 @@ export const ReportList = () => {
 
     const isMobile = useMediaQuery("(max-width: 1360px)")
     const isTablet = useMediaQuery("(min-width: 1024px) and (max-width: 1439px)")
-
-    const programs = usePrograms()
-    const projects = useProjects()
     const colorScheme = useComputedColorScheme("light")
 
     const [resetKey, setResetKey] = useState(0)
@@ -64,6 +62,11 @@ export const ReportList = () => {
     const [logins, setLogins] = useState<string[]>([])
     const [selectedProgram, setSelectedProgram] = useState<string | null>(searchParams.get("program") || null)
     const [selectedProject, setSelectedProject] = useState<string | null>(searchParams.get("project") || null)
+
+    const { programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
+        selectedProgram,
+        selectedProject
+    )
 
     // Ref для скролла к началу списка
     const listStartRef = React.useRef<HTMLDivElement>(null)
@@ -173,6 +176,27 @@ export const ReportList = () => {
             }
         }
     }, [pageRequest.pageNumber, isMobile])
+
+    // Эффект, который подставляет проект - программу
+    useEffect(() => {
+        if (!selectedProject || selectedProject === "NO_PROJECT") return
+
+        const project = visibleProjects.find((p) => p.code === selectedProject)
+            ?? projects.find((p) => p.code === selectedProject)
+
+        if (!project) return
+
+        const owningProgramCode = project.programCode
+            ?? programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
+
+        if (!owningProgramCode) return
+
+        const normalizedProgramCode = owningProgramCode.toUpperCase()
+
+        if (selectedProgram !== normalizedProgramCode) {
+            setSelectedProgram(normalizedProgramCode)
+        }
+    }, [selectedProject, selectedProgram, projects, programs, visibleProjects])
 
     if (!hasPermission(user, allowedRoles)) {
         navigate("/unauthorized")
@@ -607,7 +631,6 @@ export const ReportList = () => {
                                                 setSelectedProgram(newProgram)
                                                 if (programChanged) {
                                                     setPageRequest({ ...pageRequest, pageNumber: 0 })
-
                                                     updateUrlParams(filter, newProgram, selectedProject, 0)
                                                 } else {
                                                     updateUrlParams(
@@ -619,6 +642,7 @@ export const ReportList = () => {
                                                 }
                                             }}
                                             placeholder={intl.formatMessage({ id: locales.programFilterNotSelected })}
+                                            programsOverride={visiblePrograms}
                                         />
                                     </Flex>
                                     <Flex direction="column">
@@ -645,6 +669,7 @@ export const ReportList = () => {
                                                 }
                                             }}
                                             placeholder={intl.formatMessage({ id: locales.projectFilterNotSelected })}
+                                            projectsOverride={visibleProjects}
                                         />
                                     </Flex>
                                     {activeFiltersCount > 0 && (
@@ -697,7 +722,6 @@ export const ReportList = () => {
                                         setSelectedProgram(newProgram)
                                         if (programChanged) {
                                             setPageRequest({ ...pageRequest, pageNumber: 0 })
-
                                             updateUrlParams(filter, newProgram, selectedProject, 0)
                                         } else {
                                             updateUrlParams(
@@ -709,6 +733,7 @@ export const ReportList = () => {
                                         }
                                     }}
                                     placeholder={intl.formatMessage({ id: locales.programFilterNotSelected })}
+                                    programsOverride={visiblePrograms}
                                 />
                             </Flex>
                             <Flex direction="column">
@@ -735,6 +760,7 @@ export const ReportList = () => {
                                         }
                                     }}
                                     placeholder={intl.formatMessage({ id: locales.projectFilterNotSelected })}
+                                    projectsOverride={visibleProjects}
                                 />
                             </Flex>
                             {activeFiltersCount > 0 && (
