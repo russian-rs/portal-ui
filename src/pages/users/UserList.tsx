@@ -25,6 +25,7 @@ import { allowedRoles } from "src/pages/users/lib/roles"
 import { UserMenu } from "src/pages/users/userMenu/UserMenu"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
+import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 
 import { notifications } from "@mantine/notifications"
@@ -53,6 +54,11 @@ export const UserList = () => {
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
     const [selectedProgram, setSelectedProgram] = useState<string | null>(searchParams.get("program") || null)
     const [selectedProject, setSelectedProject] = useState<string | null>(searchParams.get("project") || null)
+
+    const { programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
+        selectedProgram,
+        selectedProject
+    )
 
     const isMobile = useMediaQuery("(max-width: 1360px)")
     const [filtersOpened, setFiltersOpened] = useState(false)
@@ -287,6 +293,28 @@ export const UserList = () => {
             }
         }
     }, [pageRequest.pageNumber, isMobile])
+
+    // Эффект, который подставляет проект - программу
+    useEffect(() => {
+        if (!selectedProject || selectedProject === "NO_PROJECT") return
+
+        const project = visibleProjects.find((p) => p.code === selectedProject)
+
+            ?? projects.find((p) => p.code === selectedProject)
+
+        if (!project) return
+
+        const owningProgramCode = project.programCode
+            ?? programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
+
+        if (!owningProgramCode) return
+
+        const normalizedProgramCode = owningProgramCode.toUpperCase()
+
+        if (selectedProgram !== normalizedProgramCode) {
+            setSelectedProgram(normalizedProgramCode)
+        }
+    }, [selectedProject, selectedProgram, projects, programs, visibleProjects])
 
     if (!hasPermission(user, allowedRoles)) {
         navigate("/unauthorized")
@@ -543,8 +571,16 @@ export const UserList = () => {
                                             />
                                         }
                                     />
-                                    <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
-                                    <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
+                                    <ProgramFilter
+                                        value={selectedProgram}
+                                        onChange={setSelectedProgram}
+                                        programsOverride={visiblePrograms}
+                                    />
+                                    <ProjectFilter
+                                        value={selectedProject}
+                                        onChange={setSelectedProject}
+                                        projectsOverride={visibleProjects}
+                                    />
                                     {activeFiltersCountMemo > 0 && (
                                         <Button
                                             variant="transparent"
@@ -577,8 +613,16 @@ export const UserList = () => {
                                     />
                                 }
                             />
-                            <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
-                            <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
+                            <ProgramFilter
+                                value={selectedProgram}
+                                onChange={setSelectedProgram}
+                                programsOverride={visiblePrograms}
+                            />
+                            <ProjectFilter
+                                value={selectedProject}
+                                onChange={setSelectedProject}
+                                projectsOverride={visibleProjects}
+                            />
                             {activeFiltersCountMemo > 0 && (
                                 <Button
                                     variant="transparent"

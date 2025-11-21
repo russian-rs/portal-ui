@@ -4,6 +4,7 @@ import { useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { usePrograms } from "src/app/providers/ProgramsProvider"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
+import { ProgramDto } from "@russian-rs/portal-api-axios"
 
 export function ProgramSelectInline({
     value,
@@ -11,14 +12,17 @@ export function ProgramSelectInline({
     type = "default",
     onChange,
     locale,
+    programsOverride,
 }: {
     value: string | null | undefined
     canEdit: boolean
     type?: "default" | "button"
     onChange: (program: string) => void
     locale: string
+    programsOverride?: ProgramDto[]
 }) {
-    const programs = usePrograms()
+    const allPrograms = usePrograms()
+    const programs = programsOverride ?? allPrograms
     const intl = useIntl()
     const [isEditing, setIsEditing] = useState(false)
     const [isDropdownOpened, setDropdownOpened] = useState(false)
