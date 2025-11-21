@@ -1,19 +1,18 @@
 import { Accordion, Button, Drawer, Flex, Text, Group } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
+import { FileInfoDto, ResidencePermitDto } from "@russian-rs/portal-api-axios"
 import { IconPlus } from "@tabler/icons-react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { UserContext } from "src/app/providers/UserContext"
-import { updateResidencePermits, deleteResidencePermit } from "src/shared/api/user/UserApiService"
+import { UserApiService } from "src/shared/api/user/UserApiService"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { v4 as uuid } from "uuid"
 import { ResidencePermitForm } from "./ResidencePermitForm"
-import { ResidencePermitDto } from "./types/residencePermit"
-import { FileInfoDto } from "@russian-rs/portal-api-axios"
 
 interface ResidencePermitDrawerProps {
     opened: boolean
@@ -40,7 +39,7 @@ export const ResidencePermitDrawer = ({ opened, onClose, userId, residencePermit
 
     const { mutate: savePermits } = useMutation({
         mutationFn: async (updatedPermits: ResidencePermitDto[]) => {
-            return updateResidencePermits(userId, updatedPermits)
+            return UserApiService.updateResidencePermits(userId, updatedPermits)
         },
         onSuccess: () => {
             notifications.show(

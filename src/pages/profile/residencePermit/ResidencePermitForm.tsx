@@ -1,13 +1,12 @@
 import { Button, Flex, Group, Pill, SimpleGrid, Text, Textarea, TextInput } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
-import { FileInfoDto } from "@russian-rs/portal-api-axios"
+import { ResidencePermitDto } from "@russian-rs/portal-api-axios"
 import { IconCalendar, IconDeviceFloppy, IconId, IconTrash } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import { FormattedMessage, useIntl } from "react-intl"
 import { FileUploader } from "src/shared/ui/fileUploader/FileUploader"
 import { z } from "zod"
-import { ResidencePermitDto } from "./types/residencePermit"
 
 interface ResidencePermitFormProps {
     initialValues: ResidencePermitDto
