@@ -1,12 +1,13 @@
-import { ApplicationDto, GenderEnumDto } from "@russian-rs/portal-api-axios"
-import { PDFDocument, rgb } from "pdf-lib"
+import { notifications } from "@mantine/notifications"
 import fontkit from "@pdf-lib/fontkit"
+import { ApplicationDto, GenderEnumDto } from "@russian-rs/portal-api-axios"
 import dayjs from "dayjs"
 import { saveAs } from "file-saver"
-import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
+import { PDFDocument, rgb } from "pdf-lib"
 import { DEJAVU_SANS } from "src/shared/docs/fonts/DejaVuSans"
-import { notifications } from "@mantine/notifications"
+import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
+import { getFullAddress } from "src/shared/utils/getFullAddress"
 
 export default async function generateQuestionnairePdf(application: ApplicationDto) {
     const fullName = must(application.name, "Name")
@@ -16,14 +17,18 @@ export default async function generateQuestionnairePdf(application: ApplicationD
     const phone = must(application.phone, "Phone").replace(/^\+381\s*/, "")
     const email = must(application.email, "Email")
     const telegram = must(application.telegram, "Telegram")
-    const address = must(application.address, "Address")
-    const city = application.address?.split(",")[1]?.trim() ?? "—"
-    const gender = must(application.gender, "Gender") ?? null;
+    const address = getFullAddress(
+        must(application.postalCode, "Postal code"),
+        must(application.city, "City"),
+        must(application.address, "Address")
+    )
+    const city = must(application.city, "City")
+    const gender = must(application.gender, "Gender") ?? null
     const currentDate = dayjs().format("DD.MM.YYYY")
     const templateBytes = await fetch("/resources/template.pdf").then((r) => r.arrayBuffer())
     const pdf = await PDFDocument.load(templateBytes)
 
-    const GENDER_MALE_BOX   = { x:  134, y: 558 }
+    const GENDER_MALE_BOX = { x: 134, y: 558 }
     const GENDER_FEMALE_BOX = { x: 186, y: 558 }
 
     pdf.registerFontkit(fontkit)
@@ -55,7 +60,6 @@ export default async function generateQuestionnairePdf(application: ApplicationD
 
     const drawMark = (x: number, y: number) => drawPx("✔", x, y, symbolFont, 9)
 
-
     drawPx(fullName, 350, 285)
     drawPx(passport, 109, 318)
     drawPx(birthDate, 173, 339)
@@ -73,7 +77,10 @@ export default async function generateQuestionnairePdf(application: ApplicationD
     drawPx(currentDate, 96, 735)
 
     const pdfBytes = await pdf.save()
-    saveAs(new Blob([pdfBytes as BlobPart], { type: "application/pdf" }), `Upitnik_${fullName.replace(/\s+/g, "_")}.pdf`)
+    saveAs(
+        new Blob([pdfBytes as BlobPart], { type: "application/pdf" }),
+        `Upitnik_${fullName.replace(/\s+/g, "_")}.pdf`
+    )
 }
 
 function must(value: string | null | undefined, name: string): string {

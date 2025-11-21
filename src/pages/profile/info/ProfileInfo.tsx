@@ -1,39 +1,41 @@
-import { Button, Container, Drawer, Flex, Text, TextInput, Select, Tooltip } from "@mantine/core"
+import { Button, Container, Drawer, Flex, Select, Text, TextInput, Tooltip } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
-import { UserInfoDto, UserInfoUpdateRequest, GenderEnumDto } from "@russian-rs/portal-api-axios"
+import { useForm, zodResolver } from "@mantine/form"
+import { useDisclosure } from "@mantine/hooks"
+import { notifications } from "@mantine/notifications"
+import { GenderEnumDto, UserInfoDto, UserInfoUpdateRequest } from "@russian-rs/portal-api-axios"
 import {
     IconBrandTelegram,
-    IconPhone,
-    IconHome,
     IconBuildings,
-    IconGift,
-    IconMail,
     IconDeviceFloppy,
-    IconPencil,
     IconGenderMale,
+    IconGift,
+    IconHome,
     IconInfoCircle,
+    IconMail,
+    IconMapPin,
+    IconPencil,
+    IconPhone,
 } from "@tabler/icons-react"
+import { useMutation } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useContext } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { UserContext } from "src/app/providers/UserContext"
 import commonClasses from "src/app/styles/private.module.scss"
 import { ProfileAvatar } from "src/pages/profile/avatar/ProfileAvatar"
-import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
-import { useForm, zodResolver } from "@mantine/form"
-import { useDisclosure } from "@mantine/hooks"
-import { notifications } from "@mantine/notifications"
-import { useMutation } from "@tanstack/react-query"
-import { z } from "zod"
-import classes from "./ProfileInfo.module.scss"
-import { locales } from "src/pages/users/lib/locales"
-import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
-import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { UserApiService } from "src/shared/api/user/UserApiService"
-import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { Locale } from "src/shared/constants/Locales"
+import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
+import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
+import { CitySelect } from "src/shared/ui/citySelect/CitySelect"
+import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
+import { hasPermission, UserGroup } from "src/shared/user/roles"
+import { getFullAddress } from "src/shared/utils/getFullAddress"
+import { z } from "zod"
 import { ProgramSelectInline } from "../select/ProgramSelect"
 import { ProjectSelectInline } from "../select/ProjectSelect"
+import classes from "./ProfileInfo.module.scss"
 
 interface ProfileInfoProps {
     userInfo: UserInfoDto | undefined
@@ -49,12 +51,18 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const validationSchema = z.object({
         city: z
             .string()
-            .max(100, intl.formatMessage({ id: locales.maxLetters }, { count: 100 }))
+            .min(2, intl.formatMessage({ id: "pages.profile.validation.minLetters" }, { count: 2 }))
+            .max(100, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 100 }))
+            .optional()
+            .or(z.literal("")),
+        postalCode: z
+            .string()
+            .regex(/^\d{5}$/, intl.formatMessage({ id: "pages.profile.validation.invalidPostalCode" }))
             .optional()
             .or(z.literal("")),
         address: z
             .string()
-            .max(200, intl.formatMessage({ id: locales.maxLetters }, { count: 200 }))
+            .max(200, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 200 }))
             .optional()
             .or(z.literal("")),
         birthDate: z
@@ -78,7 +86,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         telegram: z
             .string()
             .regex(/^[a-zA-Z][a-zA-Z0-9_]*$/, intl.formatMessage({ id: "pages.profile.validation.invalidTelegram" }))
-            .max(32, intl.formatMessage({ id: locales.maxLetters }, { count: 32 }))
+            .max(32, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 32 }))
             .optional()
             .or(z.literal("")),
         phone: z
@@ -91,6 +99,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const form = useForm({
         initialValues: {
             city: userInfo?.city || "",
+            postalCode: userInfo?.postalCode || "",
             address: userInfo?.address || "",
             birthDate: userInfo?.birthDate || "",
             telegram: userInfo?.telegram || "",
@@ -111,6 +120,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
 
         const updateData: UserInfoUpdateRequest = {}
         if (formValues.city?.trim()) updateData.city = formValues.city.trim()
+        if (formValues.postalCode?.trim()) updateData.postalCode = formValues.postalCode.trim()
         if (formValues.address?.trim()) updateData.address = formValues.address.trim()
         if (formValues.birthDate?.trim()) updateData.birthDate = formValues.birthDate.trim()
         if (formValues.telegram?.trim()) updateData.telegram = formValues.telegram.trim()
@@ -273,14 +283,8 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
             />
             <Container className={commonClasses.divider} />
             <TextPropertyBox
-                name={"pages.profile.props.city"}
-                value={userInfo?.city}
-                icon={<IconBuildings size={18} />}
-                className={classes.propertyBox}
-            />
-            <TextPropertyBox
                 name={"pages.profile.props.address"}
-                value={userInfo?.address}
+                value={getFullAddress(userInfo?.postalCode, userInfo?.city, userInfo?.address)}
                 icon={<IconHome size={18} />}
                 className={classes.propertyBox}
             />
@@ -341,10 +345,15 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                     }}
                 >
                     <Flex direction="column" gap="md">
-                        <TextInput
-                            leftSection={iconCity}
+                        <CitySelect
                             label={<FormattedMessage id="pages.profile.props.city" />}
+                            withAsterisk
                             {...form.getInputProps("city")}
+                        />
+                        <TextInput
+                            leftSection={<IconMapPin size={16} />}
+                            label={<FormattedMessage id="pages.profile.props.postalCode" />}
+                            {...form.getInputProps("postalCode")}
                         />
                         <TextInput
                             leftSection={iconHome}

@@ -20,6 +20,9 @@
         "user-search": {
             "placeholder": "Имя Фамилия"
         },
+        "city-select": {
+            "placeholder": "Название города на сербском языке"
+        },
         "report-status": {
             "CREATED": "Создан",
             "REJECTED": "Отклонен",
@@ -153,6 +156,7 @@
             "documentTitle": "Профиль",
             "props": {
                 "city": "Город",
+                "postalCode": "Почтовый индекс",
                 "address": "Адрес",
                 "birthDate": "Дата рождения",
                 "gender": "Пол",
@@ -167,6 +171,7 @@
             "validation": {
                 "invalidPhone": "Неверный формат номера",
                 "invalidTelegram": "Неверный формат",
+                "invalidPostalCode": "Почтовый индекс должен содержать 5 цифр",
                 "invalidBirthDate": "Неверный формат даты",
                 "tooYoung": "Вы должны быть старше 18 лет.",
                 "invalidDate": "Неверный формат даты",
@@ -183,6 +188,7 @@
                 "fields": {
                     "avatar": "фото профиля",
                     "city": "город",
+                    "postalCode": "почтовый индекс",
                     "address": "адрес",
                     "birthDate": "дата рождения",
                     "telegram": "telegram",
@@ -406,8 +412,13 @@
                 "in-serbia": "Я уже в Сербии",
                 "out-serbia": "Я еще не в Сербии",
                 "enter-date": "Последняя дата въезда в Сербию",
+                "city": "Город",
+                "city-description": "Если вашего города нет в списке, то ближайший доступный",
+                "select-city-list": "Выберите город из списка",
+                "postal-code": "Почтовый индекс",
+                "postal-code-invalid": "Почтовый индекс должен содержать 5 цифр",
                 "address": "Ваш адрес в Сербии для получения документов",
-                "address-description": "На сербском с почтовым индексом. Пример – 11197, Beograd (Novi Beograd), Ulica Jurija Gagarina 10, stan 4",
+                "address-description": "На сербском языке. Пример – Ulica Jurija Gagarina 10, stan 4",
                 "phone": "Контактный телефон",
                 "phone-description": "С кодом +381 без пробелов",
                 "phone-invalid": "Некорректный формат телефона",
@@ -487,6 +498,8 @@
                 "in-serbia": "Человек отметил, что уже находится в Сербии и",
                 "out-serbia": "Человек отметил, что еще не в Сербии и",
                 "enter": "Дата въезда в Сербию",
+                "city": "Город",
+                "postal-code": "Почтовый индекс",
                 "address": "Адрес в Сербии",
                 "residence-required": "требуется ВНЖ",
                 "residence-not-required": "не требуется ВНЖ",
