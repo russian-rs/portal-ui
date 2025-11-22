@@ -1,26 +1,28 @@
-import { Button, Drawer, Flex, TextInput, Radio, Tooltip } from "@mantine/core"
+import { Button, Drawer, Flex, Radio, TextInput, Tooltip } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
 import { ApplicationDto, GenderEnumDto } from "@russian-rs/portal-api-axios"
-import React from "react"
 import {
     IconAt,
     IconBrandTelegram,
     IconCake,
     IconDeviceFloppy,
     IconEPassport,
+    IconInfoCircle,
     IconLocation,
+    IconMapPin,
     IconPhone,
     IconSignature,
-    IconInfoCircle,
 } from "@tabler/icons-react"
 import { useMutation } from "@tanstack/react-query"
 import dayjs from "dayjs"
+import React from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
+import { CitySelect } from "src/shared/ui/citySelect/CitySelect"
 import { z } from "zod"
 
 interface ApplicationEditDrawerProps {
@@ -95,6 +97,17 @@ export const ApplicationEditDrawer = ({
             .max(50, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 50 }))
             .optional()
             .or(z.literal("")),
+        city: z
+            .string()
+            .min(2, intl.formatMessage({ id: "pages.profile.validation.minLetters" }, { count: 2 }))
+            .max(100, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 100 }))
+            .optional()
+            .or(z.literal("")),
+        postalCode: z
+            .string()
+            .regex(/^\d{5}$/, intl.formatMessage({ id: "pages.profile.validation.invalidPostalCode" }))
+            .optional()
+            .or(z.literal("")),
         address: z
             .string()
             .max(200, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 200 }))
@@ -111,6 +124,8 @@ export const ApplicationEditDrawer = ({
             telegram: application.telegram || "",
             birthDate: application.birthDate || "",
             passport: application.passport || "",
+            city: application.city || "",
+            postalCode: application.postalCode || "",
             address: application.address || "",
             gender: appGender,
         },
@@ -150,6 +165,8 @@ export const ApplicationEditDrawer = ({
         if (form.values.telegram?.trim()) updateData.telegram = form.values.telegram.trim()
         if (form.values.birthDate?.trim()) updateData.birthDate = form.values.birthDate.trim()
         if (form.values.passport?.trim()) updateData.passport = form.values.passport.trim()
+        if (form.values.city?.trim()) updateData.city = form.values.city.trim()
+        if (form.values.postalCode?.trim()) updateData.postalCode = form.values.postalCode.trim()
         if (form.values.address?.trim()) updateData.address = form.values.address.trim()
         if (form.values.gender?.trim()) updateData.gender = form.values.gender as GenderEnumDto
 
@@ -167,6 +184,8 @@ export const ApplicationEditDrawer = ({
                 telegram: application.telegram || "",
                 birthDate: application.birthDate || "",
                 passport: application.passport || "",
+                city: application.city || "",
+                postalCode: application.postalCode || "",
                 address: application.address || "",
                 gender: (application as unknown as ApplicationWithGender).gender || "",
             })
@@ -230,6 +249,16 @@ export const ApplicationEditDrawer = ({
                         leftSection={<IconEPassport size={16} />}
                         label={<FormattedMessage id="pages.applications.view.passport" />}
                         {...form.getInputProps("passport")}
+                    />
+                    <CitySelect
+                        label={<FormattedMessage id="pages.applications.view.city" />}
+                        withAsterisk
+                        {...form.getInputProps("city")}
+                    />
+                    <TextInput
+                        leftSection={<IconMapPin size={16} />}
+                        label={<FormattedMessage id="pages.applications.view.postal-code" />}
+                        {...form.getInputProps("postalCode")}
                     />
                     <TextInput
                         leftSection={<IconLocation size={16} />}
