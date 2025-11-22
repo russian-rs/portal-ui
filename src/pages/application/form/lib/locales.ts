@@ -33,6 +33,11 @@ export const locales = {
 
     enterDate: "pages.application.form.enter-date",
 
+    city: "pages.application.form.city",
+    cityDescription: "pages.application.form.city-description",
+    selectCityList: "pages.application.form.select-city-list",
+    postalCode: "pages.application.form.postal-code",
+    postalCodeInvalid: "pages.application.form.postal-code-invalid",
     address: "pages.application.form.address",
     addressDescription: "pages.application.form.address-description",
 

@@ -1,9 +1,7 @@
-import { UserInfoDto } from "@russian-rs/portal-api-axios"
-import React, { createContext, ReactNode, useContext, useMemo, useEffect } from "react"
-import { UserContext } from "./UserContext"
+import React, { createContext, ReactNode, useContext, useEffect, useMemo } from "react"
 import { useIntl } from "react-intl"
-import { useNavigate, useLocation } from "react-router"
-import dayjs from "dayjs"
+import { useLocation, useNavigate } from "react-router"
+import { UserContext } from "./UserContext"
 
 interface ProfileValidationContextType {
     isProfileComplete: boolean
@@ -43,6 +41,10 @@ export const ProfileValidationProvider = ({ children }: { children?: ReactNode }
 
         if (!user.city?.trim()) {
             missing.push(intl.formatMessage({ id: "pages.profile.validation.fields.city" }))
+        }
+
+        if (!user.postalCode?.trim()) {
+            missing.push(intl.formatMessage({ id: "pages.profile.validation.fields.postalCode" }))
         }
 
         if (!user.address?.trim()) {

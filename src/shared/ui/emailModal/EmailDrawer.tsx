@@ -186,7 +186,7 @@ export const EmailDrawer = (props: EmailModalProps) => {
                 )}
                 <FileUploader
                     ref={fileUploaderRef}
-                    maxFiles={5}
+                    maxFiles={10}
                     maxSize={10}
                     onFilesUploaded={(files) => setUploadedFiles(files)}
                     onFilesLoading={(files) => setLoadingFiles(files)}

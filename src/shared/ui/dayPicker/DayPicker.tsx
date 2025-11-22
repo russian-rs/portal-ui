@@ -29,14 +29,20 @@ export const DayPicker = (
 
     useEffect(() => {
         if (props.initialDate) {
-            const date = dayjs(props.initialDate).toDate()
-            setValue(date)
+            const date = dayjs(props.initialDate)
+            if (date.isValid()) {
+                setValue(date.toDate())
+            }
         }
     }, [props.initialDate])
 
     useEffect(() => {
         if (props.value !== undefined) {
-            setValue(props.value)
+            if (props.value === null) {
+                setValue(null)
+            } else if (dayjs(props.value).isValid()) {
+                setValue(props.value)
+            }
         }
     }, [props.value])
 
