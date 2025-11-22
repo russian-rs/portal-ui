@@ -58,7 +58,7 @@ export const ResidencePermitDrawer = ({ opened, onClose, userId, residencePermit
 
     const { mutate: deletePermit } = useMutation({
         mutationFn: async (permitId: string) => {
-            return deleteResidencePermit(userId, permitId)
+            return UserApiService.deleteResidencePermit(userId, permitId)
         },
         onSuccess: (_, permitId) => {
             setLocalPermits((prev) => prev.filter((p) => p.id !== permitId))
