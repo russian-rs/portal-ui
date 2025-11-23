@@ -6,6 +6,7 @@ import {
     IconAt,
     IconBrandTelegram,
     IconBriefcaseOff,
+    IconBuildings,
     IconCake,
     IconClock,
     IconContract,
@@ -14,6 +15,7 @@ import {
     IconListCheck,
     IconLocation,
     IconMailFilled,
+    IconMapPin,
     IconPencil,
     IconPhone,
     IconWorld,
@@ -219,6 +221,20 @@ export const ApplicationView = () => {
                                     name={locales.enterDate}
                                     value={dayjs(application.enterDate).format("DD MMM YYYY")}
                                     icon={<IconArrowRight size={14} />}
+                                />
+                            )}
+                            {application.city && (
+                                <TextPropertyBox
+                                    name={locales.city}
+                                    value={application.city}
+                                    icon={<IconBuildings size={14} />}
+                                />
+                            )}
+                            {application.postalCode && (
+                                <TextPropertyBox
+                                    name={locales.postalCode}
+                                    value={application.postalCode}
+                                    icon={<IconMapPin size={14} />}
                                 />
                             )}
                             {application.address && (

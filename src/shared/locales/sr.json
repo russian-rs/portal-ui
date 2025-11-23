@@ -20,6 +20,9 @@
         "user-search": {
             "placeholder": "Ime Prezime"
         },
+        "city-select": {
+            "placeholder": "Naziv grada na srpskom jeziku"
+        },
         "report-status": {
             "CREATED": "Stvoren",
             "REJECTED": "Odbijen",
@@ -153,6 +156,7 @@
             "documentTitle": "Profil",
             "props": {
                 "city": "Grad",
+                "postalCode": "Poštanski broj",
                 "address": "Adresa",
                 "birthDate": "Datum rođenja",
                 "gender": "Pol",
@@ -167,6 +171,7 @@
             "validation": {
                 "invalidPhone": "Neispravan format broja telefona",
                 "invalidTelegram": "Neispravan format",
+                "invalidPostalCode": "Poštanski broj mora sadržavati 5 cifara",
                 "invalidBirthDate": "Neispravan format datuma",
                 "tooYoung": "Morate imati najmanje 18 godina",
                 "invalidDate": "Neispravan format datuma",
@@ -183,6 +188,7 @@
                 "fields": {
                     "avatar": "fotografija profila",
                     "city": "grad",
+                    "postalCode": "poštanski broj",
                     "address": "adresa",
                     "birthDate": "datum rođenja",
                     "telegram": "telegram",
@@ -461,8 +467,13 @@
                 "in-serbia": "Već sam u Srbiji",
                 "out-serbia": "Još nisam u Srbiji",
                 "enter-date": "Datum poslednjeg ulaska u Srbiju",
+                "city": "Grad",
+                "city-description": "Ako vaš grad nije u listi, onda najbliži dostupan",
+                "select-city-list": "Izaberite grad iz liste",
+                "postal-code": "Poštanski broj",
+                "postal-code-invalid": "Poštanski broj mora sadržavati 5 cifara",
                 "address": "Vaša adresa u Srbiji za prijem dokumenata",
-                "address-description": "Na srpskom jeziku sa poštanskim brojem. Primer: 11197, Beograd (Novi Beograd), Ulica Jurija Gagarina 10, stan 4",
+                "address-description": "Na srpskom jeziku. Primer – Ulica Jurija Gagarina 10, stan 4",
                 "phone": "Kontakt telefon",
                 "phone-description": "Sa kodom +381, bez razmaka",
                 "phone-invalid": "Neispravan format telefona",
@@ -542,6 +553,8 @@
                 "in-serbia": "Osoba je navela da je već u Srbiji i",
                 "out-serbia": "Osoba je navela da još nije u Srbiji i",
                 "enter": "Datum ulaska u Srbiju",
+                "city": "Grad",
+                "postal-code": "Poštanski broj",
                 "address": "Adresa u Srbiji",
                 "residence-required": "potrebna je boravišna dozvola",
                 "residence-not-required": "nije potrebna boravišna dozvola",
