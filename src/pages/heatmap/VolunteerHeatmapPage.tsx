@@ -1,4 +1,4 @@
-import { Card, Flex, Paper, Text, Button, Pagination } from "@mantine/core"
+import { Card, Flex, Paper, Text, Pagination, Button, Select } from "@mantine/core"
 import { IconMail } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -14,9 +14,8 @@ import { VolunteerReportApiService } from "./lib/VolunteerReportApiService"
 import { VolunteerReportData } from "./lib/types"
 import { VolunteerReportFilters } from "./components/VolunteerReportFilters"
 import { VolunteerReportHeatmap } from "./components/VolunteerReportHeatmap"
-import { VolunteerReportTable } from "./components/VolunteerReportTable"
-import { VolunteerEmailDrawer } from "./components/VolunteerEmailDrawer"
 import classes from "./VolunteerHeatmapPage.module.scss"
+import { VolunteerEmailDrawer } from "./components/VolunteerEmailDrawer"
 
 export const VolunteerHeatmapPage = () => {
     const { user } = useContext(UserContext)
@@ -143,10 +142,19 @@ export const VolunteerHeatmapPage = () => {
                 />
 
                 <Card withBorder p="lg">
-                    <Flex justify="center" align="center" wrap="wrap" gap="md">
-                        <Text size="lg" fw={600} mb="md">
-                            <FormattedMessage id={locales.heatmap} />
-                        </Text>
+                    <Flex justify="space-between" align="center" wrap="wrap" gap="md" mb="sm">
+                        <Flex justify="center" align="center" wrap="wrap" gap="md">
+                            <Text size="lg" fw={600}>
+                                <FormattedMessage id={locales.heatmap} />
+                            </Text>
+                        </Flex>
+                        <Button
+                            leftSection={<IconMail size={16} />}
+                            disabled={selectedVolunteers.size === 0}
+                            onClick={() => setEmailDrawerOpen(true)}
+                        >
+                            <FormattedMessage id={locales.sendMessage} />
+                        </Button>
                     </Flex>
                     <VolunteerReportHeatmap
                         volunteers={(volunteerData?.content ?? []) as VolunteerReportData[]}
@@ -160,34 +168,22 @@ export const VolunteerHeatmapPage = () => {
                         selectedVolunteers={selectedVolunteers}
                         totalVolunteers={volunteerData?.page.totalElements ?? 0}
                     />
-                    <Flex justify="center" mt="md">
-                        <Pagination
-                            total={volunteerData?.page.totalPages ?? 1}
-                            value={(pageRequest.pageNumber ?? 0) + 1}
-                            onChange={(page) => setPageRequest((pr) => ({ ...pr, pageNumber: page - 1 }))}
+                    <Flex justify="space-between" align="center" mt="md" gap="md" wrap="wrap">
+                        <Select
+                            label={undefined}
+                            aria-label="Per page"
+                            value={String(pageRequest.pageSize)}
+                            data={[
+                                { value: "10", label: "10" },
+                                { value: "25", label: "25" },
+                                { value: "50", label: "50" },
+                            ]}
+                            onChange={(value) => {
+                                if (!value) return
+                                setPageRequest((pr) => ({ ...pr, pageNumber: 0, pageSize: Number(value) }))
+                            }}
+                            w={100}
                         />
-                    </Flex>
-                </Card>
-
-                <Card withBorder p="lg">
-                    <Flex justify="space-between" align="center" mb="md">
-                        <div />
-                        <Button
-                            leftSection={<IconMail size={16} />}
-                            disabled={selectedVolunteers.size === 0}
-                            onClick={() => setEmailDrawerOpen(true)}
-                        >
-                            <FormattedMessage id={locales.sendMessage} />
-                        </Button>
-                    </Flex>
-                    <VolunteerReportTable
-                        volunteers={(volunteerData?.content ?? []) as VolunteerReportData[]}
-                        selectedVolunteers={selectedVolunteers}
-                        onVolunteerSelect={handleSelectVolunteer}
-                        startDate={getStartDate()}
-                        onVolunteerClick={(id: string) => console.log("open volunteer", id)}
-                    />
-                    <Flex justify="center" mt="md">
                         <Pagination
                             total={volunteerData?.page.totalPages ?? 1}
                             value={(pageRequest.pageNumber ?? 0) + 1}
@@ -203,6 +199,8 @@ export const VolunteerHeatmapPage = () => {
                         subject={intl.formatMessage({ id: "pages.volunteer-reports.email-subject" })}
                     />
                 </Card>
+
+                {/* Таблица отключена по требованиям: скрываем блок с таблицей и рассылкой */}
             </Flex>
         </div>
     )

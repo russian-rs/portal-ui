@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Group, Badge, Popover } from "@mantine/core"
+import { Box, Flex, Text, Group, Badge, Avatar, HoverCard, Checkbox } from "@mantine/core"
 import { IconCheck } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import React from "react"
@@ -6,6 +6,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { VolunteerReportData } from "../lib/types"
 import { locales } from "../lib/locales"
 import classes from "./VolunteerReportHeatmap.module.scss"
+import { getLocalizedName } from "src/shared/utils/getLocalName"
 
 interface VolunteerReportHeatmapProps {
     volunteers: VolunteerReportData[]
@@ -44,6 +45,100 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
     }
 
     const weeks = generateWeeks()
+
+    const getPeriodAggregates = (volunteer: VolunteerReportData) => {
+        const now = dayjs()
+        const totalWeeksLocal = Math.ceil(now.diff(startDate, "week", true))
+        const firstContractStart =
+            volunteer.contracts && volunteer.contracts.length > 0
+                ? volunteer.contracts
+                      .map((c) => dayjs(c.startDate).startOf("isoWeek"))
+                      .reduce((earliest, d) => (d.isBefore(earliest) ? d : earliest))
+                : null
+
+        if (!firstContractStart) {
+            return { missedCount: 0, partialCount: 0, hasContracts: false }
+        }
+
+        let missedCount = 0
+        let partialCount = 0
+
+        for (let i = 0; i < totalWeeksLocal; i++) {
+            const weekStart = startDate.clone().add(i, "week").startOf("isoWeek")
+            const isCurrentWeek = dayjs().isSame(weekStart, "isoWeek")
+
+            if (firstContractStart && weekStart.isBefore(firstContractStart, "week")) continue
+            if (isCurrentWeek) continue
+
+            const hours = volunteer.reports
+                .filter((r) => dayjs(r.week).isSame(weekStart, "isoWeek"))
+                .reduce((sum, r) => sum + r.hoursSpent, 0)
+
+            if (hours === 0) missedCount += 1
+            else if (hours < 10) partialCount += 1
+        }
+
+        return { missedCount, partialCount, hasContracts: true }
+    }
+
+    const getVolunteerStatusColor = (volunteer: VolunteerReportData) => {
+        const { missedCount, partialCount, hasContracts } = getPeriodAggregates(volunteer)
+        if (!hasContracts) return "gray"
+        if (missedCount > 0) return "red"
+        if (partialCount > 0) return "yellow"
+        return "green"
+    }
+
+    const getVolunteerStatusText = (volunteer: VolunteerReportData) => {
+        const { missedCount, partialCount, hasContracts } = getPeriodAggregates(volunteer)
+        if (!hasContracts) return "N/A"
+        if (missedCount > 0) return intl.formatMessage({ id: locales.statusMissedWeeks }, { count: missedCount })
+        if (partialCount > 0) return intl.formatMessage({ id: locales.statusPartialLastWeek })
+        return intl.formatMessage({ id: locales.statusAllOk })
+    }
+
+    const getWorkedVsRequired = (volunteer: VolunteerReportData) => {
+        const end = dayjs().startOf("isoWeek")
+        const firstContractStart =
+            volunteer.contracts && volunteer.contracts.length > 0
+                ? volunteer.contracts
+                      .map((c) => dayjs(c.startDate).startOf("isoWeek"))
+                      .reduce((earliest, d) => (d.isBefore(earliest) ? d : earliest))
+                : null
+        if (!firstContractStart) return { text: "N/A", worked: 0, required: 0 }
+
+        const totalWeeksLocal = end.diff(startDate.startOf("isoWeek"), "week") + 1
+        let effectiveWeeks = 0
+        for (let i = 0; i < totalWeeksLocal; i++) {
+            const weekStart = startDate.clone().add(i, "week").startOf("isoWeek")
+            if (!weekStart.isBefore(firstContractStart, "week")) effectiveWeeks += 1
+        }
+        const required = effectiveWeeks * 10
+        const worked = volunteer.reports
+            .filter((r) => {
+                const d = dayjs(r.week)
+                const startBoundary = startDate.startOf("isoWeek")
+                const endBoundary = end.endOf("isoWeek")
+                return d.isBetween(startBoundary, endBoundary, "day", "[]")
+            })
+            .reduce((sum, r) => sum + r.hoursSpent, 0)
+        return { text: `${worked}/${required}`, worked, required }
+    }
+
+    const getStatsForPopover = (volunteer: VolunteerReportData) => {
+        const totalReports = volunteer.reports.length
+        const totalHours = volunteer.reports.reduce((sum, report) => sum + report.hoursSpent, 0)
+        const lastReport =
+            volunteer.reports.length > 0
+                ? volunteer.reports.reduce((latest, report) =>
+                      dayjs(report.week).isAfter(dayjs(latest.week)) ? report : latest
+                  )
+                : null
+        const workedRequired = getWorkedVsRequired(volunteer)
+        const statusText = getVolunteerStatusText(volunteer)
+        const statusColor = getVolunteerStatusColor(volunteer)
+        return { totalReports, totalHours, lastReport, workedRequired, statusText, statusColor }
+    }
 
     // Получаем цвет для квадратика на основе количества часов за неделю и дат контрактов
     const getSquareColor = (volunteer: VolunteerReportData, weekIndex: number) => {
@@ -262,15 +357,106 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                             <div key={volunteer.id} className={classes.volunteerRow}>
                                 <div className={classes.volunteerInfo}>
                                     <div className={classes.volunteerHeader}>
-                                        <Text
-                                            size="sm"
-                                            fw={500}
-                                            className={`${classes.volunteerName} ${isSelected ? classes.selectedVolunteer : ""}`}
-                                            style={{ cursor: "pointer" }}
-                                            onClick={() => onVolunteerSelect(volunteer.id)}
-                                        >
-                                            {volunteer.fullName}
-                                        </Text>
+                                        <Flex align="center" gap="sm" style={{ minWidth: 0 }}>
+                                            <Checkbox
+                                                checked={isSelected}
+                                                onChange={() => onVolunteerSelect(volunteer.id)}
+                                            />
+                                            <HoverCard
+                                                shadow="md"
+                                                position="top"
+                                                withArrow
+                                                openDelay={0}
+                                                closeDelay={100}
+                                            >
+                                                <HoverCard.Target>
+                                                    <Flex
+                                                        align="center"
+                                                        gap="sm"
+                                                        style={{ minWidth: 0, cursor: "default" }}
+                                                    >
+                                                        <Avatar
+                                                            size={28}
+                                                            src={volunteer.avatar?.link}
+                                                            name={volunteer.fullName}
+                                                        />
+                                                        <div style={{ minWidth: 0 }}>
+                                                            <Text
+                                                                size="sm"
+                                                                fw={500}
+                                                                className={`${classes.volunteerName} ${isSelected ? classes.selectedVolunteer : ""}`}
+                                                                style={{ cursor: "pointer" }}
+                                                                onClick={() => onVolunteerSelect(volunteer.id)}
+                                                            >
+                                                                {volunteer.fullName}
+                                                            </Text>
+                                                            <Text
+                                                                size="xs"
+                                                                c="dimmed"
+                                                                className={classes.volunteerName}
+                                                            >
+                                                                {volunteer.program
+                                                                    ? getLocalizedName(volunteer.program, intl.locale)
+                                                                    : intl.formatMessage({ id: locales.noProgram })}
+                                                            </Text>
+                                                        </div>
+                                                    </Flex>
+                                                </HoverCard.Target>
+                                                <HoverCard.Dropdown
+                                                    style={{
+                                                        maxWidth: "min(86vw, 460px)",
+                                                        overflowWrap: "anywhere",
+                                                        wordBreak: "break-word",
+                                                    }}
+                                                >
+                                                    {(() => {
+                                                        const s = getStatsForPopover(volunteer)
+                                                        return (
+                                                            <div>
+                                                                <Text size="xs" fw={600} mb={4}>
+                                                                    <FormattedMessage id={locales.reportsStats} />
+                                                                </Text>
+                                                                <Text size="xs">
+                                                                    {s.totalReports}{" "}
+                                                                    <FormattedMessage id={locales.piecesShort} /> •{" "}
+                                                                    <FormattedMessage id={locales.totalHours} />:{" "}
+                                                                    {s.totalHours} •{" "}
+                                                                    <FormattedMessage
+                                                                        id={locales.requiredHoursForPeriod}
+                                                                    />
+                                                                    : {s.workedRequired.required}
+                                                                </Text>
+                                                                <Text size="xs" fw={600} mt="xs" mb={4}>
+                                                                    <FormattedMessage id={locales.lastReport} />
+                                                                </Text>
+                                                                {volunteer.contracts &&
+                                                                volunteer.contracts.length === 0 ? (
+                                                                    <Text size="xs" c="dimmed">
+                                                                        N/A
+                                                                    </Text>
+                                                                ) : s.lastReport ? (
+                                                                    <Text size="xs">
+                                                                        {dayjs(s.lastReport.week).format("DD.MM.YYYY")}{" "}
+                                                                        — {s.lastReport.hoursSpent}{" "}
+                                                                        <FormattedMessage id={locales.hours} />
+                                                                    </Text>
+                                                                ) : (
+                                                                    <Text size="xs" c="dimmed">
+                                                                        <FormattedMessage id={locales.noReports} />
+                                                                    </Text>
+                                                                )}
+                                                                <Text size="xs" fw={600} mt="xs" mb={4}>
+                                                                    <FormattedMessage id={locales.status} />
+                                                                </Text>
+                                                                <Badge size="xs" color={s.statusColor} variant="light">
+                                                                    {s.statusText} • {s.workedRequired.text}
+                                                                </Badge>
+                                                            </div>
+                                                        )
+                                                    })()}
+                                                </HoverCard.Dropdown>
+                                            </HoverCard>
+                                        </Flex>
                                         <Badge
                                             size="xs"
                                             variant="filled"
@@ -298,14 +484,22 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                                 </div>
                                 <div className={classes.weekSquares}>
                                     {weeks.map((_, weekIndex) => (
-                                        <Popover key={weekIndex} position="top" withArrow shadow="md" withinPortal>
-                                            <Popover.Target>
+                                        <HoverCard
+                                            key={weekIndex}
+                                            position="top"
+                                            withArrow
+                                            shadow="md"
+                                            openDelay={0}
+                                            closeDelay={100}
+                                            withinPortal
+                                        >
+                                            <HoverCard.Target>
                                                 <Box
                                                     className={`${classes.weekSquare} ${classes[getSquareColor(volunteer, weekIndex)]}`}
                                                     style={{ cursor: "pointer" }}
                                                 />
-                                            </Popover.Target>
-                                            <Popover.Dropdown
+                                            </HoverCard.Target>
+                                            <HoverCard.Dropdown
                                                 style={{
                                                     maxWidth: "min(86vw, 420px)",
                                                     overflowWrap: "anywhere",
@@ -315,8 +509,8 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                                                 <Text size="xs" style={{ whiteSpace: "normal", lineHeight: 1.35 }}>
                                                     {getSquareInfoLabel(volunteer, weekIndex)}
                                                 </Text>
-                                            </Popover.Dropdown>
-                                        </Popover>
+                                            </HoverCard.Dropdown>
+                                        </HoverCard>
                                     ))}
                                 </div>
                             </div>
