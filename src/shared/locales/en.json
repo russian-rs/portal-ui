@@ -20,6 +20,9 @@
         "user-search": {
             "placeholder": "Name Surname"
         },
+        "city-select": {
+            "placeholder": "City name in Serbian"
+        },
         "report-status": {
             "CREATED": "Created",
             "REJECTED": "Rejected",
@@ -153,6 +156,7 @@
             "documentTitle": "Profile",
             "props": {
                 "city": "City",
+                "postalCode": "Postal code",
                 "address": "Address",
                 "birthDate": "Birth date",
                 "gender": "Gender",
@@ -167,6 +171,7 @@
             "validation": {
                 "invalidPhone": "Invalid number",
                 "invalidTelegram": "Invalid format",
+                "invalidPostalCode": "Postal code must contain 5 digits",
                 "invalidBirthDate": "Invalid date format",
                 "tooYoung": "You must be at least 18 years old",
                 "invalidDate": "Invalid date format",
@@ -183,6 +188,7 @@
                 "fields": {
                     "avatar": "profile photo",
                     "city": "city",
+                    "postalCode": "postal code",
                     "address": "address",
                     "birthDate": "birth date",
                     "telegram": "telegram",
@@ -461,8 +467,13 @@
                 "in-serbia": "I am already in Serbia",
                 "out-serbia": "I am not in Serbia yet",
                 "enter-date": "Last date of entry into Serbia",
+                "city": "City",
+                "city-description": "If your city is not in the list, then the nearest available one",
+                "select-city-list": "Select city from the list",
+                "postal-code": "Postal code",
+                "postal-code-invalid": "Postal code must contain 5 digits",
                 "address": "Your address in Serbia for receiving documents",
-                "address-description": "In Serbian with a postal code. Example: 11197, Beograd (Novi Beograd), Ulica Jurija Gagarina 10, stan 4",
+                "address-description": "In Serbian language. Example – Ulica Jurija Gagarina 10, stan 4",
                 "phone": "Contact phone number",
                 "phone-description": "With code +381, without spaces",
                 "phone-invalid": "Invalid phone format",
@@ -542,6 +553,8 @@
                 "in-serbia": "The person already in Serbia and",
                 "out-serbia": "The person not yet in Serbia and",
                 "enter": "Date of Entry into Serbia",
+                "city": "City",
+                "postal-code": "Postal code",
                 "address": "Address in Serbia",
                 "residence-required": "residence permit is required",
                 "residence-not-required": "residence permit is not required",
