@@ -313,8 +313,7 @@
             "project-filter": "Project filter",
             "project-filter-not-selected": "Not selected"
         },
-        "volunteer-reports": {
-            "title": "Volunteer Reports Tracking",
+        "heat-map": {
             "description": "Monitoring volunteer activity and reporting",
             "filters": "Filters",
             "search": "Search by name or email",
@@ -322,7 +321,7 @@
             "project": "Project",
             "period": "Period",
             "reset": "Reset",
-            "heatmap": "Activity Heatmap",
+            "title": "Activity Heatmap",
             "reports-stats": "Reports Statistics",
             "last-report": "Last Report",
             "status": "Status",
@@ -337,8 +336,7 @@
             "hours": "hours",
             "pieces-short": "pcs",
             "status-text-all-ok": "All reports submitted",
-            "status-text-missed-weeks": "No reports for {count} weeks",
-            "status-text-partial-last-week": "Partial report last week",
+            "status-text-missed-weeks": "Missed {count} hours",
             "total-volunteers": "Total Volunteers",
             "total-weeks": "Total Weeks",
             "active-filters": "Active Filters",
@@ -348,12 +346,14 @@
                 "na": "{name}: N/A — no contract for {from} - {to} ({week})",
                 "waiting": "{name}: Pending — {from} - {to} ({week})",
                 "no-reports": "{name}: No reports for {from} - {to} ({week})",
-                "reports": "{name}: {count, plural, one {# report} other {# reports}}, {hours} {hoursLabel} for {from} - {to} ({week})",
+                "reports": "{name}: {hours} {hoursLabel} for {from} - {to} ({week})",
                 "week": "Week {num}"
             },
             "period-3m": "Last 3 months",
             "period-6m": "Last 6 months",
-            "period-ytd": "Year to date"
+            "period-ytd": "Year to date",
+            "profile": "Profile",
+            "reports": "Reports"
         },
         "user-list": {
             "title": "All volunteers",
@@ -654,7 +654,7 @@
             "summary": "Summary",
             "cleaning": "Report for \"Clean City\"",
             "reporting-guide": "Reporting Guidelines",
-            "volunteer-reports": "Volunteer Reports Tracking"
+            "heat-map": "Heat Map"
         },
         "volunteers": {
             "volunteers": "Volunteers",

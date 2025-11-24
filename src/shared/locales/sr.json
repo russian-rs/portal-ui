@@ -313,8 +313,7 @@
             "project-filter": "Filter projekata",
             "project-filter-not-selected": "Nije odabrano"
         },
-        "volunteer-reports": {
-            "title": "Praćenje izveštaja volontera",
+        "heat-map": {
             "description": "Monitoring aktivnosti volontera i njihovog izveštavanja",
             "filters": "Filteri",
             "search": "Pretraga po imenu ili emailu",
@@ -322,7 +321,7 @@
             "project": "Projekat",
             "period": "Period",
             "reset": "Resetuj",
-            "heatmap": "Toplinska mapa aktivnosti",
+            "title": "Toplinska mapa aktivnosti",
             "last-report": "Poslednji izveštaj",
             "status": "Status",
             "view-profile": "Pogledaj profil",
@@ -337,8 +336,7 @@
             "hours": "sati",
             "pieces-short": "kom",
             "status-text-all-ok": "Svi izveštaji predati",
-            "status-text-missed-weeks": "Nema izveštaja {count} nedelja",
-            "status-text-partial-last-week": "Delimičan izveštaj prošle nedelje",
+            "status-text-missed-weeks": "Nedostaje {count} sati",
             "total-volunteers": "Ukupno volontera",
             "total-weeks": "Ukupno nedelja",
             "active-filters": "Aktivni filteri",
@@ -348,12 +346,14 @@
                 "na": "{name}: N/A — nema ugovora za {from} - {to} ({week})",
                 "waiting": "{name}: Na čekanju — {from} - {to} ({week})",
                 "no-reports": "{name}: Nema izveštaja za {from} - {to} ({week})",
-                "reports": "{name}: {count, plural, one {# izveštaj} few {# izveštaja} other {# izveštaja}}, {hours} {hoursLabel} za {from} - {to} ({week})",
+                "reports": "{name}: {hours} {hoursLabel} za {from} - {to} ({week})",
                 "week": "Nedelja {num}"
             },
             "period-3m": "Poslednja 3 meseca",
             "period-6m": "Poslednjih 6 meseci",
-            "period-ytd": "Od početka godine"
+            "period-ytd": "Od početka godine",
+            "profile": "Profil",
+            "reports": "Izveštaji"
         },
         "user-list": {
             "title": "Svi volonteri",
@@ -654,7 +654,7 @@
             "summary": "Rezime",
             "cleaning": "Izveštaj \"Čisti grad\"",
             "reporting-guide": "Vodič za predaju izveštaja",
-            "volunteer-reports": "Praćenje izveštaja volontera"
+            "heat-map": "Toplotna karta"
         },
         "volunteers": {
             "volunteers": "Volonteri",
