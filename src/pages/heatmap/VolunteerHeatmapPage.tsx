@@ -102,7 +102,7 @@ export const VolunteerHeatmapPage = () => {
     })
 
     return (
-        <div className={classes.root}>
+        <Flex className={classes.root}>
             <Flex direction="column" gap="lg">
                 <Text size="xl" fw={700}>
                     <FormattedMessage id={locales.title} />
@@ -192,7 +192,7 @@ export const VolunteerHeatmapPage = () => {
                     />
                 </Card>
             </Flex>
-        </div>
+        </Flex>
     )
 }
 
