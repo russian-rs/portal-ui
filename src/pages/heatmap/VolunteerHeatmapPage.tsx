@@ -3,12 +3,13 @@ import { IconMail } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { FormattedMessage } from "react-intl"
 import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { ReportHeatMapApiService } from "src/shared/api/ReportHeatMapApiService"
+import { heatmapTemplates } from "src/shared/email/templates"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
-import { VolunteerEmailDrawer } from "./components/VolunteerEmailDrawer"
+import { EmailDrawer } from "src/shared/ui/emailModal/EmailDrawer"
 import { VolunteerReportFilters } from "./components/VolunteerReportFilters"
 import { VolunteerReportHeatmap } from "./components/VolunteerReportHeatmap"
 import { defaultPageResponse } from "./lib/defaults"
@@ -20,7 +21,6 @@ export const VolunteerHeatmapPage = () => {
     const { user } = useContext(UserContext)
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
-    const intl = useIntl()
 
     setDocumentTitleByLocale(locales.title)
 
@@ -179,16 +179,16 @@ export const VolunteerHeatmapPage = () => {
                             />
                         </Flex>
                     </Flex>
-                    <VolunteerEmailDrawer
+                    <EmailDrawer
                         opened={emailDrawerOpen}
                         close={() => setEmailDrawerOpen(false)}
+                        templates={heatmapTemplates}
                         recipients={(volunteerData?.content ?? [])
                             .filter((v) => selectedVolunteers.has(v.volunteerInfo.id))
                             .map((v) => ({
                                 name: v.volunteerInfo.fullName,
                                 email: v.volunteerInfo.email,
                             }))}
-                        subject={intl.formatMessage({ id: "pages.volunteer-reports.email-subject" })}
                     />
                 </Card>
             </Flex>
