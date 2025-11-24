@@ -7,6 +7,7 @@ import "react-day-picker/style.css"
 import { Notifications } from "@mantine/notifications"
 import { QueryClientProvider } from "@tanstack/react-query"
 import dayjs from "dayjs"
+import isBetween from "dayjs/plugin/isBetween"
 import isoWeek from "dayjs/plugin/isoWeek"
 import isoWeekInYear from "dayjs/plugin/isoWeeksInYear"
 import weekOfYear from "dayjs/plugin/weekOfYear"
@@ -27,6 +28,7 @@ export const Root = () => {
     dayjs.extend(weekOfYear)
     dayjs.extend(isoWeek)
     dayjs.extend(isoWeekInYear)
+    dayjs.extend(isBetween)
 
     return (
         <MantineProvider defaultColorScheme="auto" theme={theme}>
