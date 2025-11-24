@@ -341,7 +341,6 @@
             "total-weeks": "Всего недель",
             "active-filters": "Активные фильтры",
             "no-data": "Нет данных для отображения",
-            "email-subject": "Напоминание: не сдан еженедельный отчет",
             "tooltip": {
                 "na": "{name}: N/A — нет контракта за {from} - {to} ({week})",
                 "waiting": "{name}: Ожидание — {from} - {to} ({week})",

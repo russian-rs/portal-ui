@@ -341,7 +341,6 @@
             "total-weeks": "Total Weeks",
             "active-filters": "Active Filters",
             "no-data": "No data to display",
-            "email-subject": "Reminder: weekly report not submitted",
             "tooltip": {
                 "na": "{name}: N/A — no contract for {from} - {to} ({week})",
                 "waiting": "{name}: Pending — {from} - {to} ({week})",

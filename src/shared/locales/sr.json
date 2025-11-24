@@ -341,7 +341,6 @@
             "total-weeks": "Ukupno nedelja",
             "active-filters": "Aktivni filteri",
             "no-data": "Nema podataka za prikaz",
-            "email-subject": "Podsetnik: nedeljni izveštaj nije predat",
             "tooltip": {
                 "na": "{name}: N/A — nema ugovora za {from} - {to} ({week})",
                 "waiting": "{name}: Na čekanju — {from} - {to} ({week})",
