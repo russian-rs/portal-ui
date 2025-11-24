@@ -313,6 +313,48 @@
             "project-filter": "Фильтр проектов",
             "project-filter-not-selected": "Не выбрано"
         },
+        "volunteer-reports": {
+            "title": "Отслеживание отчетов волонтеров",
+            "description": "Мониторинг активности волонтеров и их отчетности",
+            "filters": "Фильтры",
+            "search": "Поиск по имени или email",
+            "program": "Программа",
+            "project": "Проект",
+            "period": "Период",
+            "reset": "Сбросить",
+            "heatmap": "Тепловая карта активности",
+            "reports-stats": "Статистика отчетов",
+            "last-report": "Последний отчет",
+            "status": "Статус",
+            "send-message": "Отправить письмо",
+            "no-reports": "Нет отчетов",
+            "partial-reports": "Частичные отчеты",
+            "full-reports": "Полные отчеты",
+            "pending": "Ожидание",
+            "legend": "Легенда",
+            "total-hours": "Всего часов",
+            "required-hours": "Норма за период",
+            "hours": "ч.",
+            "pieces-short": "шт.",
+            "status-text-all-ok": "Все отчеты сданы",
+            "status-text-missed-weeks": "Не сдавал отчеты {count} недель",
+            "status-text-partial-last-week": "Частичный отчет на прошлой неделе",
+            "total-volunteers": "Всего волонтеров",
+            "total-weeks": "Всего недель",
+            "active-filters": "Активные фильтры",
+            "no-data": "Нет данных для отображения",
+            "email-subject": "Напоминание: не сдан еженедельный отчет",
+            "tooltip": {
+                "na": "{name}: N/A — нет контракта за {from} - {to} ({week})",
+                "waiting": "{name}: Ожидание — {from} - {to} ({week})",
+                "no-reports": "{name}: Нет отчетов за {from} - {to} ({week})",
+                "reports": "{name}: {count, plural, one {# отчет} few {# отчета} many {# отчетов} other {# отчетов}}, {hours} {hoursLabel} за {from} - {to} ({week})",
+                "week": "Неделя {num}"
+            },
+            "period-3m": "Последние 3 месяца",
+            "period-6m": "Последние 6 месяцев",
+            "period-ytd": "С начала года"
+        },
         "user-list": {
             "title": "Все волонтеры",
             "total": "Всего: {total}",
@@ -611,7 +653,8 @@
             "all": "Все отчеты",
             "summary": "Сводка",
             "cleaning": "Отчет \"Чистый город\"",
-            "reporting-guide": "Руководство по сдаче отчётности"
+            "reporting-guide": "Руководство по сдаче отчётности",
+            "volunteer-reports": "Отслеживание отчетов волонтеров"
         },
         "volunteers": {
             "volunteers": "Волонтеры",

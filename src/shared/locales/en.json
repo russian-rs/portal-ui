@@ -313,6 +313,48 @@
             "project-filter": "Project filter",
             "project-filter-not-selected": "Not selected"
         },
+        "volunteer-reports": {
+            "title": "Volunteer Reports Tracking",
+            "description": "Monitoring volunteer activity and reporting",
+            "filters": "Filters",
+            "search": "Search by name or email",
+            "program": "Program",
+            "project": "Project",
+            "period": "Period",
+            "reset": "Reset",
+            "heatmap": "Activity Heatmap",
+            "reports-stats": "Reports Statistics",
+            "last-report": "Last Report",
+            "status": "Status",
+            "send-message": "Send Message",
+            "no-reports": "No Reports",
+            "partial-reports": "Partial Reports",
+            "full-reports": "Full Reports",
+            "pending": "Pending",
+            "legend": "Legend",
+            "total-hours": "Total hours",
+            "required-hours": "Required hours for period",
+            "hours": "hours",
+            "pieces-short": "pcs",
+            "status-text-all-ok": "All reports submitted",
+            "status-text-missed-weeks": "No reports for {count} weeks",
+            "status-text-partial-last-week": "Partial report last week",
+            "total-volunteers": "Total Volunteers",
+            "total-weeks": "Total Weeks",
+            "active-filters": "Active Filters",
+            "no-data": "No data to display",
+            "email-subject": "Reminder: weekly report not submitted",
+            "tooltip": {
+                "na": "{name}: N/A — no contract for {from} - {to} ({week})",
+                "waiting": "{name}: Pending — {from} - {to} ({week})",
+                "no-reports": "{name}: No reports for {from} - {to} ({week})",
+                "reports": "{name}: {count, plural, one {# report} other {# reports}}, {hours} {hoursLabel} for {from} - {to} ({week})",
+                "week": "Week {num}"
+            },
+            "period-3m": "Last 3 months",
+            "period-6m": "Last 6 months",
+            "period-ytd": "Year to date"
+        },
         "user-list": {
             "title": "All volunteers",
             "total": "Total: {total}",
@@ -611,7 +653,8 @@
             "all": "All reports",
             "summary": "Summary",
             "cleaning": "Report for \"Clean City\"",
-            "reporting-guide": "Reporting Guidelines"
+            "reporting-guide": "Reporting Guidelines",
+            "volunteer-reports": "Volunteer Reports Tracking"
         },
         "volunteers": {
             "volunteers": "Volunteers",

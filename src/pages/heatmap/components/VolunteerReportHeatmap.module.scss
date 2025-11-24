@@ -1,0 +1,175 @@
+.heatmapContainer {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.heatmapWrapper {
+    width: 100%;
+    min-width: 0;
+}
+
+.heatmapGrid {
+    display: flex;
+    flex-direction: column;
+}
+
+.headerRow {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    align-items: end;
+    gap: 1rem;
+    width: 100%;
+}
+
+.weekHeaders {
+    display: grid;
+    gap: 2px;
+    grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
+    margin-left: 0;
+    margin-bottom: 0.5rem;
+}
+
+.weekHeader {
+    display: grid;
+    grid-template-rows: auto auto;
+    align-items: end;
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--mantine-color-dimmed);
+}
+
+.volunteerRow {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+}
+
+.volunteerInfo {
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: 0.25rem;
+    overflow: hidden;
+}
+
+.volunteerHeader {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.volunteerName {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.selectedVolunteer {
+    color: var(--mantine-color-blue-6);
+    font-weight: 600;
+}
+
+.weekSquares {
+    display: grid;
+    gap: 2px;
+    grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
+    justify-items: center;
+}
+
+.weekSquare {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        transform: scale(1.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+}
+
+.noReports {
+    background-color: var(--mantine-color-red-6);
+}
+
+.partialReports {
+    background-color: var(--mantine-color-blue-3);
+}
+
+.fullReports {
+    background-color: var(--mantine-color-blue-9);
+}
+
+.na {
+    /* нет контракта */
+    background-color: var(--mantine-color-gray-6);
+    border: 1px solid var(--mantine-color-gray-5);
+}
+
+.waiting {
+    /* ожидание: текущая неделя без отчёта */
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+    border: 1px solid var(--mantine-color-gray-5);
+}
+
+.legendSquare {
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+}
+
+@media (max-width: $mantine-breakpoint-md) {
+    .heatmapGrid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .headerRow {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .headerSpacer {
+        display: none;
+    }
+
+    .weekHeaders {
+        margin-left: 0;
+        grid-template-columns: repeat(auto-fill, 16px);
+        justify-items: center;
+    }
+
+    .volunteerRow {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 0.75rem 0;
+    }
+
+    .weekSquares {
+        grid-template-columns: repeat(auto-fill, 16px);
+    }
+
+    .weekSquare {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1;
+    }
+}
+
+@media (max-width: $mantine-breakpoint-sm) {
+    .heatmapWrapper {
+        min-width: 0;
+    }
+}
+
+@media (max-width: $mantine-breakpoint-xs) {
+    .heatmapWrapper {
+        min-width: unset;
+    }
+}
