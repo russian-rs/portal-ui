@@ -106,31 +106,41 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
         const color = getSquareColor(volunteer, weekIndex)
         const weekInfo = volunteer.weeks.findLast((week) => week.week == weekIndex)!!
         const weekLabel = intl.formatMessage({ id: locales.tooltipWeek }, { num: weekIndex })
+        const params = {
+            name: volunteer.volunteerInfo.fullName,
+            from: dayjs(weekInfo.weekStart).format("DD.MM.YYYY"),
+            to: dayjs(weekInfo.weekEnd).format("DD.MM.YYYY"),
+            week: weekLabel,
+        }
 
         if (color === "na") {
-            return intl.formatMessage(
-                { id: locales.tooltipNA },
-                {
-                    name: volunteer.volunteerInfo.fullName,
-                    from: dayjs(weekInfo.weekStart).format("DD.MM.YYYY"),
-                    to: dayjs(weekInfo.weekEnd).format("DD.MM.YYYY"),
-                    week: weekLabel,
-                }
-            )
+            return intl.formatMessage({ id: locales.tooltipNA }, params)
         }
         if (color === "waiting") {
-            return intl.formatMessage(
-                { id: locales.tooltipWaiting },
-                {
-                    name: volunteer.volunteerInfo.fullName,
-                    from: dayjs(weekInfo.weekStart).format("DD.MM.YYYY"),
-                    to: dayjs(weekInfo.weekEnd).format("DD.MM.YYYY"),
-                    week: weekLabel,
-                }
-            )
+            return intl.formatMessage({ id: locales.tooltipWaiting }, params)
         }
 
         return getSquareTooltip(volunteer, weekIndex)
+    }
+
+    const getProgramDescription = (volunteer: VolunteerHeatMapItem): string => {
+        const program = volunteer.volunteerInfo.program
+            ? getLocalizedName(volunteer.volunteerInfo.program, intl.locale)
+            : null
+        const project = volunteer.volunteerInfo.project
+            ? getLocalizedName(volunteer.volunteerInfo.project, intl.locale)
+            : null
+        if (program && project) {
+            if (program == project) {
+                return program
+            } else {
+                return `${program} • ${project}`
+            }
+        }
+        if (program) {
+            return program
+        }
+        return ""
     }
 
     if (volunteers.length === 0) {
@@ -144,7 +154,7 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
     }
 
     return (
-        <div className={classes.heatmapContainer}>
+        <Flex className={classes.heatmapContainer}>
             <Flex justify="center" mb="lg">
                 <Group gap="xs">
                     <Flex align="center" gap="xs">
@@ -246,12 +256,7 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                                                                 c="dimmed"
                                                                 className={classes.volunteerName}
                                                             >
-                                                                {volunteer.volunteerInfo.program
-                                                                    ? getLocalizedName(
-                                                                          volunteer.volunteerInfo.program,
-                                                                          intl.locale
-                                                                      )
-                                                                    : intl.formatMessage({ id: locales.noProgram })}
+                                                                {getProgramDescription(volunteer)}
                                                             </Text>
                                                         </div>
                                                     </HoverCard.Target>
@@ -400,6 +405,6 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                     </Flex>
                 </Group>
             </Flex>
-        </div>
+        </Flex>
     )
 }
