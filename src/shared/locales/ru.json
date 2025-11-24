@@ -313,8 +313,7 @@
             "project-filter": "Фильтр проектов",
             "project-filter-not-selected": "Не выбрано"
         },
-        "volunteer-reports": {
-            "title": "Отслеживание отчетов волонтеров",
+        "heat-map": {
             "description": "Мониторинг активности волонтеров и их отчетности",
             "filters": "Фильтры",
             "search": "Поиск по имени или email",
@@ -322,7 +321,7 @@
             "project": "Проект",
             "period": "Период",
             "reset": "Сбросить",
-            "heatmap": "Тепловая карта активности",
+            "title": "Тепловая карта активности",
             "reports-stats": "Статистика отчетов",
             "last-report": "Последний отчет",
             "status": "Статус",
@@ -337,8 +336,7 @@
             "hours": "ч.",
             "pieces-short": "шт.",
             "status-text-all-ok": "Все отчеты сданы",
-            "status-text-missed-weeks": "Не сдавал отчеты {count} недель",
-            "status-text-partial-last-week": "Частичный отчет на прошлой неделе",
+            "status-text-missed-weeks": "Не хвататает {count} ч.",
             "total-volunteers": "Всего волонтеров",
             "total-weeks": "Всего недель",
             "active-filters": "Активные фильтры",
@@ -348,12 +346,14 @@
                 "na": "{name}: N/A — нет контракта за {from} - {to} ({week})",
                 "waiting": "{name}: Ожидание — {from} - {to} ({week})",
                 "no-reports": "{name}: Нет отчетов за {from} - {to} ({week})",
-                "reports": "{name}: {count, plural, one {# отчет} few {# отчета} many {# отчетов} other {# отчетов}}, {hours} {hoursLabel} за {from} - {to} ({week})",
+                "reports": "{name}: {hours} {hoursLabel} за {from} - {to} ({week})",
                 "week": "Неделя {num}"
             },
             "period-3m": "Последние 3 месяца",
             "period-6m": "Последние 6 месяцев",
-            "period-ytd": "С начала года"
+            "period-ytd": "С начала года",
+            "profile": "Профиль",
+            "reports": "Отчеты"
         },
         "user-list": {
             "title": "Все волонтеры",
@@ -654,7 +654,7 @@
             "summary": "Сводка",
             "cleaning": "Отчет \"Чистый город\"",
             "reporting-guide": "Руководство по сдаче отчётности",
-            "volunteer-reports": "Отслеживание отчетов волонтеров"
+            "heat-map": "Тепловая карта"
         },
         "volunteers": {
             "volunteers": "Волонтеры",
