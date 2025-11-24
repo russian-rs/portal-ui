@@ -104,17 +104,16 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
     // Формирует общий текст для окошка информации по квадратику, включая номер недели
     const getSquareInfoLabel = (volunteer: VolunteerHeatMapItem, weekIndex: number) => {
         const color = getSquareColor(volunteer, weekIndex)
-        const weekStart = startDate.clone().add(weekIndex, "week").startOf("isoWeek")
-        const weekEnd = weekStart.clone().add(1, "week")
-        const weekLabel = intl.formatMessage({ id: locales.tooltipWeek }, { num: weekStart.isoWeek() })
+        const weekInfo = volunteer.weeks.findLast((week) => week.week == weekIndex)!!
+        const weekLabel = intl.formatMessage({ id: locales.tooltipWeek }, { num: weekIndex })
 
         if (color === "na") {
             return intl.formatMessage(
                 { id: locales.tooltipNA },
                 {
                     name: volunteer.volunteerInfo.fullName,
-                    from: weekStart.format("DD.MM.YYYY"),
-                    to: weekEnd.format("DD.MM.YYYY"),
+                    from: dayjs(weekInfo.weekStart).format("DD.MM.YYYY"),
+                    to: dayjs(weekInfo.weekEnd).format("DD.MM.YYYY"),
                     week: weekLabel,
                 }
             )
@@ -124,8 +123,8 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                 { id: locales.tooltipWaiting },
                 {
                     name: volunteer.volunteerInfo.fullName,
-                    from: weekStart.format("DD.MM.YYYY"),
-                    to: weekEnd.format("DD.MM.YYYY"),
+                    from: dayjs(weekInfo.weekStart).format("DD.MM.YYYY"),
+                    to: dayjs(weekInfo.weekEnd).format("DD.MM.YYYY"),
                     week: weekLabel,
                 }
             )
@@ -198,10 +197,6 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                         </div>
                     </div>
                     {volunteers.map((volunteer) => {
-                        const weeksColors = weeks.map((week) => getSquareColor(volunteer, week.weekNumber))
-                        const missedCount = weeksColors.filter((c) => c === "noReports").length
-                        const partialCount = weeksColors.filter((c) => c === "partialReports").length
-                        const allNA = weeksColors.length > 0 && weeksColors.every((c) => c === "na")
                         const isSelected = selectedVolunteers.has(volunteer.volunteerInfo.id)
 
                         return (
@@ -325,15 +320,7 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                                         <Badge
                                             size="xs"
                                             variant="filled"
-                                            color={
-                                                allNA
-                                                    ? "gray"
-                                                    : missedCount > 0
-                                                      ? "red"
-                                                      : partialCount > 0
-                                                        ? "yellow"
-                                                        : "green"
-                                            }
+                                            color={getVolunteerStatusColor(volunteer)}
                                             leftSection={
                                                 getVolunteerStatusColor(volunteer) == "green" ? (
                                                     <IconCheck size={12} style={{ marginRight: 2, marginBottom: 1 }} />
@@ -343,7 +330,7 @@ export const VolunteerReportHeatmap: React.FC<VolunteerReportHeatmapProps> = ({
                                             py={2}
                                             styles={{ section: { marginRight: 0 } }}
                                         >
-                                            {allNA || volunteer.totalRequired == 0
+                                            {volunteer.totalRequired == 0
                                                 ? "N/A"
                                                 : `${volunteer.totalWorked}/${volunteer.totalRequired}`}
                                         </Badge>
