@@ -91,6 +91,21 @@
             "emptyContent": "Пустое тело письма",
             "success": "Сообщение успешно отправлено"
         },
+        "ticket-modal": {
+            "modalTitle": "Создать тикет",
+            "titleLabel": "Тема обращения",
+            "create": "Создать тикет",
+            "toUser": "Кому направить",
+            "toUserDescription": "Волонтер получит уведомление на почту и сможет отправить на него ответ",
+            "internalDescription": "Тикет будет заведен в системе <a href='https://help.russian.rs' target='_blank'>Help Desk</a>, волонтер получит уведомление, он сможет ответить на письмо и его ответ добавится в тикет. В зависимости от группы тикет будет назначен на нужного человека, который также будет иметь доступ ко всей информации.",
+            "publicDescription": "Тикет будет заведен в системе <a href='https://help.russian.rs' target='_blank'>Help Desk</a>. В зависимости от группы тикет будет доставлен нужным людям. Ответ или уточнении вы также получите на свою почту.",
+            "group": "Группа назначения",
+            "group-placeholder": "Выберите группу",
+            "group-description": "От этого зависит кто будет рассматривать обращение",
+            "success": "<a href=\"{link}\" target=\"_blank\">Тикет №{number}</a> успешно создан",
+            "error": "При создании тикета произошла ошибка, напишите на <a href='mailto:help@russian.rs'>help@russian.rs</a>",
+            "required": "Обязательно"
+        },
         "confirm-modal": {
             "confirmDefaultButton": "Подтвердить",
             "cancelDefaultButton": "Отмена",
@@ -352,7 +367,8 @@
             "period-6m": "Последние 6 месяцев",
             "period-ytd": "С начала года",
             "profile": "Профиль",
-            "reports": "Отчеты"
+            "reports": "Отчеты",
+            "ticket": "Создать тикет"
         },
         "user-list": {
             "title": "Все волонтеры",
@@ -660,7 +676,6 @@
             "all-volunteers": "Все волонтеры",
             "applications": "Новые заявки",
             "statistics": "Статистика",
-            "reports": "Отчеты по волонтерам",
             "mintrud-report": "Отчёт Минтруд"
         },
         "account-settings": "Настройки уч. записи",

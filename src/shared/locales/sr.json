@@ -91,6 +91,21 @@
             "emptyContent": "Prazno telo emaila",
             "success": "Poruka uspešno poslata"
         },
+        "ticket-modal": {
+            "modalTitle": "Kreirati tiket",
+            "titleLabel": "Tema obraćanja",
+            "create": "Kreirati tiket",
+            "toUser": "Komе poslati",
+            "toUserDescription": "Volonter će dobiti obaveštenje na email i moći će da odgovori na njega",
+            "internalDescription": "Tiket će biti kreiran u sistemu <a href='https://help.russian.rs' target='_blank'>Help Desk</a>, volonter će dobiti obaveštenje i moći će da odgovori na email, a njegov odgovor će biti dodat u tiket. U zavisnosti od grupe, tiket će biti dodeljen odgovarajućoj osobi, koja će takođe imati pristup svim informacijama.",
+            "publicDescription": "Tiket će biti kreiran u sistemu <a href='https://help.russian.rs' target='_blank'>Help Desk</a>. U zavisnosti od grupe, tiket će biti prosleđen odgovarajućim ljudima. Odgovor ili dodatno pojašnjenje takođe ćete dobiti na svoj email.",
+            "group": "Grupa za dodelu",
+            "group-placeholder": "Izaberite grupu",
+            "group-description": "Od ovoga zavisi ko će razmatrati obraćanje",
+            "success": "<a href=\"{link}\" target=\"_blank\">Tiket br. {number}</a> je uspešno kreiran",
+            "error": "Došlo je do greške prilikom kreiranja tiketa, pišite na <a href='mailto:help@russian.rs'>help@russian.rs</a>",
+            "required": "Obavezno"
+        },
         "confirm-modal": {
             "confirmDefaultButton": "Potvrdi",
             "cancelDefaultButton": "Otkaži",
@@ -352,7 +367,8 @@
             "period-6m": "Poslednjih 6 meseci",
             "period-ytd": "Od početka godine",
             "profile": "Profil",
-            "reports": "Izveštaji"
+            "reports": "Izveštaji",
+            "ticket": "Kreirajte tiket"
         },
         "user-list": {
             "title": "Svi volonteri",
@@ -660,7 +676,6 @@
             "all-volunteers": "Svi volonteri",
             "applications": "Aplikacije",
             "statistics": "Statistika",
-            "reports": "Izveštaji o volonterima",
             "mintrud-report": "izveštaj o volontiranju"
         },
         "account-settings": "Podešavanja naloga",
