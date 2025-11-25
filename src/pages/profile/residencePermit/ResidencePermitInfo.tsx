@@ -1,8 +1,8 @@
-import { Button, Flex, Text } from "@mantine/core"
+import { ActionIcon, Button, Flex, Text } from "@mantine/core"
 import { ResidencePermitDto, UserInfoDto } from "@russian-rs/portal-api-axios"
-import { IconId, IconPencil } from "@tabler/icons-react"
+import { IconChevronLeft, IconChevronRight, IconId, IconPencil } from "@tabler/icons-react"
 import dayjs from "dayjs"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { UserContext } from "src/app/providers/UserContext"
 import classes from "src/pages/profile/contract/ContractInfo.module.scss"
@@ -19,12 +19,31 @@ interface ResidencePermitInfoProps {
 export const ResidencePermitInfo = ({ userInfo, residencePermits, onUpdate }: ResidencePermitInfoProps) => {
     const { user: currentUser } = useContext(UserContext)
     const [drawerOpened, setDrawerOpened] = useState(false)
+    const [currentIndex, setCurrentIndex] = useState(0)
 
-    const activePermit = residencePermits.find((p) => dayjs(p.validUntil).isAfter(dayjs())) || residencePermits[0]
+    // При обновлении списка или загрузке находим актуальный ВНЖ
+    useEffect(() => {
+        if (residencePermits.length > 0) {
+            const activeIndex = residencePermits.findIndex((p) => dayjs(p.validUntil).isAfter(dayjs()))
+            setCurrentIndex(activeIndex !== -1 ? activeIndex : 0)
+        }
+    }, [residencePermits])
+
+    const hasPermits = residencePermits.length > 0
+    const currentPermit = hasPermits ? residencePermits[currentIndex] : null
+    const hasMultiple = residencePermits.length > 1
+
+    const handlePrev = () => {
+        setCurrentIndex((prev) => (prev === 0 ? residencePermits.length - 1 : prev - 1))
+    }
+
+    const handleNext = () => {
+        setCurrentIndex((prev) => (prev === residencePermits.length - 1 ? 0 : prev + 1))
+    }
 
     return (
         <Flex className={classes.root}>
-            {!activePermit ? (
+            {!currentPermit ? (
                 <>
                     <Text className={classes.title}>
                         <FormattedMessage id="pages.profile.residencePermit.no-permit" />
@@ -37,24 +56,49 @@ export const ResidencePermitInfo = ({ userInfo, residencePermits, onUpdate }: Re
                 </>
             ) : (
                 <>
-                    <Text className={classes.title}>
-                        <FormattedMessage id="pages.profile.residencePermit.title" />
-                    </Text>
+                    <Flex justify="space-between" align="center" style={{ width: "100%" }}>
+                        {hasMultiple && (
+                            <ActionIcon variant="transparent" color="gray" onClick={handlePrev}>
+                                <IconChevronLeft size={20} />
+                            </ActionIcon>
+                        )}
+                        <Text className={classes.title} style={{ textAlign: "center", flex: 1 }}>
+                            <FormattedMessage id="pages.profile.residencePermit.title" />
+                            {hasMultiple && (
+                                <span
+                                    style={{
+                                        fontSize: "0.8em",
+                                        fontWeight: "normal",
+                                        marginLeft: "8px",
+                                        opacity: 0.7,
+                                    }}
+                                >
+                                    {currentIndex + 1} / {residencePermits.length}
+                                </span>
+                            )}
+                        </Text>
+                        {hasMultiple && (
+                            <ActionIcon variant="transparent" color="gray" onClick={handleNext}>
+                                <IconChevronRight size={20} />
+                            </ActionIcon>
+                        )}
+                    </Flex>
+
                     <Flex className={classes.props}>
                         <TextPropertyBox
                             name="pages.profile.residencePermit.valid-until"
                             icon={<IconId size={14} />}
-                            value={dayjs(activePermit.validUntil).format("DD MMM YYYY")}
+                            value={dayjs(currentPermit.validUntil).format("DD MMM YYYY")}
                         />
                         <TextPropertyBox
                             name="pages.profile.residencePermit.purpose-of-stay"
-                            value={activePermit.purposeOfStay}
+                            value={currentPermit.purposeOfStay}
                         />
                     </Flex>
                     <Text className={classes.daysLeft}>
                         <FormattedMessage
                             id="pages.profile.residencePermit.days-left"
-                            values={{ count: dayjs(activePermit.validUntil).diff(new Date(), "day") }}
+                            values={{ count: dayjs(currentPermit.validUntil).diff(new Date(), "day") }}
                         />
                     </Text>
                     {hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER]) && (
@@ -75,7 +119,6 @@ export const ResidencePermitInfo = ({ userInfo, residencePermits, onUpdate }: Re
                 onClose={() => setDrawerOpened(false)}
                 onSuccess={onUpdate}
             />
-
         </Flex>
     )
 }
