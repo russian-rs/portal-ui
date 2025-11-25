@@ -23,7 +23,7 @@ import { locales } from "./lib/locales"
 interface EmailModalProps {
     opened: boolean
     close: () => void
-    recipients: [{ name: string; email: string }]
+    recipients: { name: string; email: string }[]
     templates?: EmailTemplate[] | undefined
     from?: string
 }
