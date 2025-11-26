@@ -306,6 +306,17 @@
                 "task-count": "Кол-во задач",
                 "time-spent": "Кол-во часов",
                 "week": "Неделя"
+            },
+            "heatmap": {
+                "description": "Активность по отчетам за текущий год (по неделям), учитываются только принятые.",
+                "tooltipReports": "{hours} {hoursLabel} за период {from}–{to} ({week})",
+                "hours": "ч",
+                "tooltipWeek": "неделя {num}",
+                "tooltipNA": "Нет требований по отчётам за период {from}–{to} ({week})",
+                "tooltipWaiting": "Ожидаются отчёты за период {from}–{to} ({week})",
+                "noReports": "Нет отчетов",
+                "partialReports": "Частичные",
+                "fullReports": "Полные"
             }
         },
         "report-list": {
