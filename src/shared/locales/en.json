@@ -306,6 +306,17 @@
                 "task-count": "Total tasks",
                 "time-spent": "Time spent",
                 "week": "Week"
+            },
+            "heatmap": {
+                "description": "Report activity for the current year (by weeks), only accepted reports are counted.",
+                "tooltipReports": "{hours} {hoursLabel} for the period {from}–{to} ({week})",
+                "hours": "h",
+                "tooltipWeek": "week {num}",
+                "tooltipNA": "No reporting requirements for the period {from}–{to} ({week})",
+                "tooltipWaiting": "Reports expected for the period {from}–{to} ({week})",
+                "noReports": "No reports",
+                "partialReports": "Partial",
+                "fullReports": "Full"
             }
         },
         "report-list": {

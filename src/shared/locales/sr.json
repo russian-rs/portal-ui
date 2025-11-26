@@ -306,6 +306,17 @@
                 "task-count": "Broj zadataka",
                 "time-spent": "Broj sati",
                 "week": "Nedelja"
+            },
+            "heatmap": {
+                "description": "Aktivnost izveštaja za tekuću godinu (po nedeljama), računaju se samo prihvaćeni.",
+                "tooltipReports": "{hours} {hoursLabel} za period {from}–{to} ({week})",
+                "hours": "h",
+                "tooltipWeek": "nedelja {num}",
+                "tooltipNA": "Nema zahteva za izveštaje za period {from}–{to} ({week})",
+                "tooltipWaiting": "Očekuju se izveštaji za period {from}–{to} ({week})",
+                "noReports": "Nema izveštaja",
+                "partialReports": "Delimični",
+                "fullReports": "Potpuni"
             }
         },
         "report-list": {
