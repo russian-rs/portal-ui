@@ -1,5 +1,6 @@
-import { Box, Flex, HoverCard, Loader, Text } from "@mantine/core"
+import { Alert, Box, Flex, HoverCard, Loader, Text } from "@mantine/core"
 import { VolunteerHeatMapItem } from "@russian-rs/portal-api-axios"
+import { IconAlertHexagon, IconChecks } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useMemo } from "react"
@@ -134,6 +135,20 @@ export const CurrentUserHeatmap: React.FC = () => {
         return getSquareTooltip(weekNumber)
     }
 
+    // 👉 итоговые часы
+    const required = volunteer.totalRequired ?? 0
+    const worked = volunteer.totalWorked ?? 0
+    const deficit = Math.max(required - worked, 0)
+
+    let summaryColor: string = "gray"
+    if (required === 0) {
+        summaryColor = "gray"
+    } else if (deficit > 0) {
+        summaryColor = "red"
+    } else {
+        summaryColor = "green"
+    }
+
     return (
         <Flex direction="column" gap="xs" className={classes.root}>
             <Text size="sm">
@@ -197,6 +212,24 @@ export const CurrentUserHeatmap: React.FC = () => {
                         </HoverCard.Dropdown>
                     </HoverCard>
                 ))}
+            </Flex>
+            <Flex mt="xs">
+                <Alert
+                    color={summaryColor}
+                    variant="light"
+                    className={classes.alert}
+                    classNames={{ title: classes.alertTitle }}
+                    title={
+                        required === 0 ? (
+                            <FormattedMessage id={locales.summaryRequiredZero} />
+                        ) : deficit > 0 ? (
+                            <FormattedMessage id={locales.summaryDeficit} values={{ worked, required, deficit }} />
+                        ) : (
+                            <FormattedMessage id={locales.summaryOk} values={{ worked, required }} />
+                        )
+                    }
+                    icon={deficit > 0 ? <IconAlertHexagon size={16} /> : <IconChecks size={16} />}
+                ></Alert>
             </Flex>
         </Flex>
     )

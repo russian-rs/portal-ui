@@ -316,7 +316,12 @@
                 "tooltipWaiting": "Ожидаются отчёты за период {from}–{to} ({week})",
                 "noReports": "Нет отчетов",
                 "partialReports": "Частичные",
-                "fullReports": "Полные"
+                "fullReports": "Полные",
+                "summary": {
+                    "requiredZero": "У вас нет требованйи по часам",
+                    "ok": "Отработано {worked} ч из {required} ожидаемых",
+                    "deficit": "Отработано {worked} ч из {required} ожидаемых (недостача {deficit} ч)"
+                }
             }
         },
         "report-list": {

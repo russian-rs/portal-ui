@@ -316,7 +316,12 @@
                 "tooltipWaiting": "Reports expected for the period {from}–{to} ({week})",
                 "noReports": "No reports",
                 "partialReports": "Partial",
-                "fullReports": "Full"
+                "fullReports": "Full",
+                "summary": {
+                    "requiredZero": "You have no hour requirements",
+                    "ok": "{worked} h completed out of {required} expected",
+                    "deficit": "{worked} h completed out of {required} expected (deficit {deficit} h)"
+                }
             }
         },
         "report-list": {
