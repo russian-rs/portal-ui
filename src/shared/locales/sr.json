@@ -316,7 +316,12 @@
                 "tooltipWaiting": "Očekuju se izveštaji za period {from}–{to} ({week})",
                 "noReports": "Nema izveštaja",
                 "partialReports": "Delimični",
-                "fullReports": "Potpuni"
+                "fullReports": "Potpuni",
+                "summary": {
+                    "requiredZero": "Nemate zahteva po časovima",
+                    "ok": "Odrađeno {worked} h od {required} očekivanih",
+                    "deficit": "Odrađeno {worked} h od {required} očekivanih (nedostatak {deficit} h)"
+                }
             }
         },
         "report-list": {
