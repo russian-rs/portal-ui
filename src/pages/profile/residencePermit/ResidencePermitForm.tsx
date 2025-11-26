@@ -74,12 +74,12 @@ export const ResidencePermitForm = ({
             <Flex direction="column" gap="sm">
                 <SimpleGrid cols={{ base: 1, sm: 2 }}>
                     <TextInput
-                        label={<FormattedMessage id="pages.profile.residencePermit.nationality" />}
+                        label={<><strong>Држављанство</strong>/Nationality</>}
                         withAsterisk
                         {...form.getInputProps("nationality")}
                     />
                     <TextInput
-                        label={<FormattedMessage id="pages.profile.residencePermit.purpose-of-stay" />}
+                        label={<><strong>Основ боравка</strong>/Purpose of stay</>}
                         withAsterisk
                         {...form.getInputProps("purposeOfStay")}
                     />
@@ -87,14 +87,14 @@ export const ResidencePermitForm = ({
 
                 <SimpleGrid cols={{ base: 1, sm: 2 }}>
                     <TextInput
-                        label={<FormattedMessage id="pages.profile.residencePermit.registrationNumber" />}
+                        label={<><strong>Рег.бр</strong>/Reg No</>}
                         description={<FormattedMessage id="pages.profile.residencePermit.registrationNumber.description" />}
                         leftSection={<IconId size={16} />}
                         withAsterisk
                         {...form.getInputProps("registrationNumber")}
                     />
                     <TextInput
-                        label={<FormattedMessage id="pages.profile.residencePermit.identityNumber" />}
+                        label={<><strong>Евиденцијски број</strong>/Identity number (JMBG)</>}
                         description={<FormattedMessage id="pages.profile.residencePermit.identityNumber.description" />}
                         leftSection={<IconId size={16} />}
                         withAsterisk
@@ -104,14 +104,14 @@ export const ResidencePermitForm = ({
 
                 <SimpleGrid cols={{ base: 1, sm: 2 }}>
                     <DateInput
-                        label={<FormattedMessage id="pages.profile.residencePermit.issuingDate" />}
+                        label={<><strong>Датум издавања</strong>/Issue date</>}
                         leftSection={<IconCalendar size={16} />}
                         valueFormat="DD MMMM YYYY"
                         withAsterisk
                         {...form.getInputProps("issuingDate")}
                     />
                     <DateInput
-                        label={<FormattedMessage id="pages.profile.residencePermit.valid-until" />}
+                        label={<><strong>Важи до</strong>/Valid until</>}
                         leftSection={<IconCalendar size={16} />}
                         valueFormat="DD MMMM YYYY"
                         withAsterisk
@@ -121,19 +121,19 @@ export const ResidencePermitForm = ({
 
                 <SimpleGrid cols={{ base: 1, sm: 2 }}>
                     <TextInput
-                        label={<FormattedMessage id="pages.profile.residencePermit.issuingAuthority" />}
+                        label={<><strong>Документ издаjе</strong>/Issuing authority</>}
                         withAsterisk
                         {...form.getInputProps("issuingAuthority")}
                     />
                     <TextInput
-                        label={<FormattedMessage id="pages.profile.residencePermit.stateOfBirth" />}
+                        label={<><strong>Држава рођења</strong>/State of birth</>}
                         withAsterisk
                         {...form.getInputProps("stateOfBirth")}
                     />
                 </SimpleGrid>
 
                 <Textarea
-                    label={<FormattedMessage id="pages.profile.residencePermit.note" />}
+                    label={<><strong>Напомена</strong>/Note</>}
                     {...form.getInputProps("note")}
                 />
 
