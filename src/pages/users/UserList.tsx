@@ -13,7 +13,7 @@ import {
 } from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
 import { ContractDto, PageRequest } from "@russian-rs/portal-api-axios"
-import { IconLock, IconPencil, IconPlus, IconUfo, IconFilterEdit } from "@tabler/icons-react"
+import { IconFilterEdit, IconFilterOff, IconLock, IconPencil, IconPlus, IconUfo } from "@tabler/icons-react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
@@ -488,6 +488,23 @@ export const UserList = () => {
         )
     })
 
+    const activeFiltersCountMemo = React.useMemo(() => {
+        let count = 0
+        if ((debouncedSearch || "").trim()) count += 1
+        if (selectedProgram !== null) count += 1
+        if (selectedProject !== null) count += 1
+        return count
+    }, [debouncedSearch, selectedProgram, selectedProject])
+
+    const resetFilters = () => {
+        setSearch("")
+        setDebouncedSearch("")
+        setSelectedProgram(null)
+        setSelectedProject(null)
+        setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
+        updateUrlParams("", null, null, 0)
+    }
+
     const selectedUser = selectedUserId ? content.find((u) => u.id === selectedUserId) : null
 
     return (
@@ -504,55 +521,77 @@ export const UserList = () => {
                             leftSection={<IconFilterEdit size={16} />}
                         >
                             <FormattedMessage id="common.filters" defaultMessage="Фильтры" />
-                            {(() => {
-                                let count = 0
-                                if ((debouncedSearch || "").trim()) count += 1
-                                if (selectedProgram !== null) count += 1
-                                if (selectedProject !== null) count += 1
-                                return count > 0 ? (
-                                    <Badge ml={8} size="sm" variant="light" color="blue">
-                                        {count}
-                                    </Badge>
-                                ) : null
-                            })()}
+                            {activeFiltersCountMemo > 0 && (
+                                <Badge ml={8} size="sm" variant="light" color="blue">
+                                    {activeFiltersCountMemo}
+                                </Badge>
+                            )}
                         </Button>
                         <Collapse in={filtersOpened} style={{ marginTop: 8 }}>
-                            <Flex className={classes.filters}>
-                                <Input
-                                    placeholder={intl.formatMessage({ id: locales.search })}
-                                    value={search}
-                                    onChange={(event) => setSearch(event.currentTarget.value)}
-                                    rightSectionPointerEvents="all"
-                                    rightSection={
-                                        <CloseButton
-                                            aria-label="Clear input"
-                                            onClick={() => setSearch("")}
-                                            style={{ display: search ? undefined : "none" }}
-                                        />
-                                    }
-                                />
-                                <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
-                                <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
+                            <Flex direction="column" gap={8}>
+                                <Flex className={classes.filters}>
+                                    <Input
+                                        placeholder={intl.formatMessage({ id: locales.search })}
+                                        value={search}
+                                        onChange={(event) => setSearch(event.currentTarget.value)}
+                                        rightSectionPointerEvents="all"
+                                        rightSection={
+                                            <CloseButton
+                                                aria-label="Clear input"
+                                                onClick={() => setSearch("")}
+                                                style={{ display: search ? undefined : "none" }}
+                                            />
+                                        }
+                                    />
+                                    <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
+                                    <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
+                                    {activeFiltersCountMemo > 0 && (
+                                        <Button
+                                            variant="transparent"
+                                            size="sm"
+                                            leftSection={<IconFilterOff size={16} />}
+                                            onClick={resetFilters}
+                                        >
+                                            <Text size="sm">
+                                                <FormattedMessage id={locales.resetFilters} />
+                                            </Text>
+                                        </Button>
+                                    )}
+                                </Flex>
                             </Flex>
                         </Collapse>
                     </Flex>
                 ) : (
-                    <Flex className={classes.filters}>
-                        <Input
-                            placeholder={intl.formatMessage({ id: locales.search })}
-                            value={search}
-                            onChange={(event) => setSearch(event.currentTarget.value)}
-                            rightSectionPointerEvents="all"
-                            rightSection={
-                                <CloseButton
-                                    aria-label="Clear input"
-                                    onClick={() => setSearch("")}
-                                    style={{ display: search ? undefined : "none" }}
-                                />
-                            }
-                        />
-                        <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
-                        <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
+                    <Flex direction="column" gap={8}>
+                        <Flex className={classes.filters} wrap="wrap">
+                            <Input
+                                placeholder={intl.formatMessage({ id: locales.search })}
+                                value={search}
+                                onChange={(event) => setSearch(event.currentTarget.value)}
+                                rightSectionPointerEvents="all"
+                                rightSection={
+                                    <CloseButton
+                                        aria-label="Clear input"
+                                        onClick={() => setSearch("")}
+                                        style={{ display: search ? undefined : "none" }}
+                                    />
+                                }
+                            />
+                            <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
+                            <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
+                            {activeFiltersCountMemo > 0 && (
+                                <Button
+                                    variant="transparent"
+                                    size="sm"
+                                    leftSection={<IconFilterOff size={16} />}
+                                    onClick={resetFilters}
+                                >
+                                    <Text size="sm">
+                                        <FormattedMessage id={locales.resetFilters} />
+                                    </Text>
+                                </Button>
+                            )}
+                        </Flex>
                     </Flex>
                 )}
                 {isMobile ? (

@@ -23,7 +23,7 @@ import { locales } from "./lib/locales"
 interface EmailModalProps {
     opened: boolean
     close: () => void
-    recipients: [{ name: string; email: string }]
+    recipients: { name: string; email: string }[]
     templates?: EmailTemplate[] | undefined
     from?: string
 }
@@ -186,7 +186,7 @@ export const EmailDrawer = (props: EmailModalProps) => {
                 )}
                 <FileUploader
                     ref={fileUploaderRef}
-                    maxFiles={5}
+                    maxFiles={10}
                     maxSize={10}
                     onFilesUploaded={(files) => setUploadedFiles(files)}
                     onFilesLoading={(files) => setLoadingFiles(files)}

@@ -1,0 +1,6 @@
+export const defaultPageResponse = {
+    totalElements: 0,
+    totalPages: 0,
+    pageNumber: 0,
+    pageSize: 25,
+}

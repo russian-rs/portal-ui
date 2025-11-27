@@ -29,6 +29,11 @@ export const Content: ItemGroupProps[] = [
                 link: "/reports",
                 roles: ["ADMIN_VOLUNTEER"],
             },
+            {
+                label: "navbar.reports.heat-map",
+                link: "/volunteers/heatmap",
+                roles: ["ADMIN_VOLUNTEER"],
+            },
         ],
     },
     {
@@ -47,7 +52,7 @@ export const Content: ItemGroupProps[] = [
                 roles: ["ADMIN_VOLUNTEER", "INTERVIEWER"],
             },
             {
-                label: "navbar.volunteers.reports",
+                label: "navbar.volunteers.statistics",
                 link: "/volunteers/reports",
                 roles: ["ADMIN_VOLUNTEER"],
             },

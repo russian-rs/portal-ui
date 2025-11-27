@@ -1,6 +1,7 @@
 {
     "common": {
         "filters": "Фильтры",
+        "reset-filters": "Сбросить фильтры",
         "buttons": {
             "login": "Войти",
             "logout": "Выйти"
@@ -19,6 +20,9 @@
         "user-search": {
             "placeholder": "Имя Фамилия"
         },
+        "city-select": {
+            "placeholder": "Название города на сербском языке"
+        },
         "report-status": {
             "CREATED": "Создан",
             "REJECTED": "Отклонен",
@@ -26,6 +30,9 @@
         },
         "week-picker": {
             "label": "Неделя",
+            "empty": "Не выбрано"
+        },
+        "day-picker": {
             "empty": "Не выбрано"
         },
         "report-status-select": {
@@ -83,6 +90,21 @@
             "emptySubject": "Тема письма обязательна",
             "emptyContent": "Пустое тело письма",
             "success": "Сообщение успешно отправлено"
+        },
+        "ticket-modal": {
+            "modalTitle": "Создать тикет",
+            "titleLabel": "Тема обращения",
+            "create": "Создать тикет",
+            "toUser": "Кому направить",
+            "toUserDescription": "Волонтер получит уведомление на почту и сможет отправить на него ответ",
+            "internalDescription": "Тикет будет заведен в системе <a href='https://help.russian.rs' target='_blank'>Help Desk</a>, волонтер получит уведомление, он сможет ответить на письмо и его ответ добавится в тикет. В зависимости от группы тикет будет назначен на нужного человека, который также будет иметь доступ ко всей информации.",
+            "publicDescription": "Тикет будет заведен в системе <a href='https://help.russian.rs' target='_blank'>Help Desk</a>. В зависимости от группы тикет будет доставлен нужным людям. Ответ или уточнении вы также получите на свою почту.",
+            "group": "Группа назначения",
+            "group-placeholder": "Выберите группу",
+            "group-description": "От этого зависит кто будет рассматривать обращение",
+            "success": "<a href=\"{link}\" target=\"_blank\">Тикет №{number}</a> успешно создан",
+            "error": "При создании тикета произошла ошибка, напишите на <a href='mailto:help@russian.rs'>help@russian.rs</a>",
+            "required": "Обязательно"
         },
         "confirm-modal": {
             "confirmDefaultButton": "Подтвердить",
@@ -149,6 +171,7 @@
             "documentTitle": "Профиль",
             "props": {
                 "city": "Город",
+                "postalCode": "Почтовый индекс",
                 "address": "Адрес",
                 "birthDate": "Дата рождения",
                 "gender": "Пол",
@@ -163,6 +186,7 @@
             "validation": {
                 "invalidPhone": "Неверный формат номера",
                 "invalidTelegram": "Неверный формат",
+                "invalidPostalCode": "Почтовый индекс должен содержать 5 цифр",
                 "invalidBirthDate": "Неверный формат даты",
                 "tooYoung": "Вы должны быть старше 18 лет.",
                 "invalidDate": "Неверный формат даты",
@@ -179,6 +203,7 @@
                 "fields": {
                     "avatar": "фото профиля",
                     "city": "город",
+                    "postalCode": "почтовый индекс",
                     "address": "адрес",
                     "birthDate": "дата рождения",
                     "telegram": "telegram",
@@ -304,6 +329,22 @@
                 "task-count": "Кол-во задач",
                 "time-spent": "Кол-во часов",
                 "week": "Неделя"
+            },
+            "heatmap": {
+                "description": "Активность по отчетам за текущий год (по неделям), учитываются только принятые.",
+                "tooltipReports": "{hours} {hoursLabel} за период {from}–{to} ({week})",
+                "hours": "ч",
+                "tooltipWeek": "неделя {num}",
+                "tooltipNA": "Нет требований по отчётам за период {from}–{to} ({week})",
+                "tooltipWaiting": "Ожидаются отчёты за период {from}–{to} ({week})",
+                "noReports": "Нет отчетов",
+                "partialReports": "Частичные",
+                "fullReports": "Полные",
+                "summary": {
+                    "requiredZero": "У вас нет требованйи по часам",
+                    "ok": "Отработано {worked} ч из {required} ожидаемых",
+                    "deficit": "Отработано {worked} ч из {required} ожидаемых (недостача {deficit} ч)"
+                }
             }
         },
         "report-list": {
@@ -325,6 +366,48 @@
             "program-filter-not-selected": "Не выбрано",
             "project-filter": "Фильтр проектов",
             "project-filter-not-selected": "Не выбрано"
+        },
+        "heat-map": {
+            "description": "Мониторинг активности волонтеров и их отчетности",
+            "filters": "Фильтры",
+            "search": "Поиск по имени или email",
+            "program": "Программа",
+            "project": "Проект",
+            "period": "Период",
+            "reset": "Сбросить",
+            "title": "Тепловая карта активности",
+            "reports-stats": "Статистика отчетов",
+            "last-report": "Последний отчет",
+            "status": "Статус",
+            "send-message": "Отправить письмо",
+            "no-reports": "Нет отчетов",
+            "partial-reports": "Частичные отчеты",
+            "full-reports": "Полные отчеты",
+            "pending": "Ожидание",
+            "legend": "Легенда",
+            "total-hours": "Всего часов",
+            "required-hours": "Норма за период",
+            "hours": "ч.",
+            "pieces-short": "шт.",
+            "status-text-all-ok": "Все отчеты сданы",
+            "status-text-missed-weeks": "Не хвататает {count} ч.",
+            "total-volunteers": "Всего волонтеров",
+            "total-weeks": "Всего недель",
+            "active-filters": "Активные фильтры",
+            "no-data": "Нет данных для отображения",
+            "tooltip": {
+                "na": "{name}: N/A — нет контракта за {from} - {to} ({week})",
+                "waiting": "{name}: Ожидание — {from} - {to} ({week})",
+                "no-reports": "{name}: Нет отчетов за {from} - {to} ({week})",
+                "reports": "{name}: {hours} {hoursLabel} за {from} - {to} ({week})",
+                "week": "Неделя {num}"
+            },
+            "period-3m": "Последние 3 месяца",
+            "period-6m": "Последние 6 месяцев",
+            "period-ytd": "С начала года",
+            "profile": "Профиль",
+            "reports": "Отчеты",
+            "ticket": "Создать тикет"
         },
         "user-list": {
             "title": "Все волонтеры",
@@ -425,8 +508,13 @@
                 "in-serbia": "Я уже в Сербии",
                 "out-serbia": "Я еще не в Сербии",
                 "enter-date": "Последняя дата въезда в Сербию",
+                "city": "Город",
+                "city-description": "Если вашего города нет в списке, то ближайший доступный",
+                "select-city-list": "Выберите город из списка",
+                "postal-code": "Почтовый индекс",
+                "postal-code-invalid": "Почтовый индекс должен содержать 5 цифр",
                 "address": "Ваш адрес в Сербии для получения документов",
-                "address-description": "На сербском с почтовым индексом. Пример – 11197, Beograd (Novi Beograd), Ulica Jurija Gagarina 10, stan 4",
+                "address-description": "На сербском языке. Пример – Ulica Jurija Gagarina 10, stan 4",
                 "phone": "Контактный телефон",
                 "phone-description": "С кодом +381 без пробелов",
                 "phone-invalid": "Некорректный формат телефона",
@@ -469,6 +557,7 @@
             "title": "Заявки на вступление",
             "empty": "Заявок не найдено",
             "total": "Всего: {count}",
+            "search": "Поиск по имени или email",
             "created-and-type": "Создана, Тип",
             "created-short-and-type-short": "Дата, Тип",
             "name-and-email": "Имя Фамилия, E-mail",
@@ -505,6 +594,8 @@
                 "in-serbia": "Человек отметил, что уже находится в Сербии и",
                 "out-serbia": "Человек отметил, что еще не в Сербии и",
                 "enter": "Дата въезда в Сербию",
+                "city": "Город",
+                "postal-code": "Почтовый индекс",
                 "address": "Адрес в Сербии",
                 "residence-required": "требуется ВНЖ",
                 "residence-not-required": "не требуется ВНЖ",
@@ -616,14 +707,14 @@
             "all": "Все отчеты",
             "summary": "Сводка",
             "cleaning": "Отчет \"Чистый город\"",
-            "reporting-guide": "Руководство по сдаче отчётности"
+            "reporting-guide": "Руководство по сдаче отчётности",
+            "heat-map": "Тепловая карта"
         },
         "volunteers": {
             "volunteers": "Волонтеры",
             "all-volunteers": "Все волонтеры",
             "applications": "Новые заявки",
             "statistics": "Статистика",
-            "reports": "Отчеты по волонтерам",
             "mintrud-report": "Отчёт Минтруд"
         },
         "account-settings": "Настройки уч. записи",

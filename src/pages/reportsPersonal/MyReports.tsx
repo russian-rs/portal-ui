@@ -1,13 +1,14 @@
 import { Badge, Button, Flex, Pagination, Text } from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
 import { PageRequest, ReportFilter } from "@russian-rs/portal-api-axios"
-import { IconChevronRight, IconClockCheck, IconListCheck, IconPlus, IconUfo } from "@tabler/icons-react"
+import { IconChevronRight, IconClockCheck, IconFilterOff, IconListCheck, IconPlus, IconUfo } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
+import { CurrentUserHeatmap } from "src/pages/reportsPersonal/heatmap/CurrentUserHeatmap"
 import { defaultFilter, defaultPage, defaultPageResponse, locales } from "src/pages/reportsPersonal/lib/constants"
 import { ReportApiService } from "src/shared/api/ReportApiService"
 import { DEFAULT_DATE_FORMAT } from "src/shared/datetime/formats"
@@ -178,6 +179,20 @@ export const MyReports = () => {
         }
     }
 
+    const activeFiltersCount = React.useMemo(() => {
+        let count = 0
+        if (filter.status) count += 1
+        if (filter.dateFrom || filter.dateTo) count += 1
+        return count
+    }, [filter.status, filter.dateFrom, filter.dateTo])
+
+    const resetFilters = () => {
+        const resetFilter = { ...defaultFilter, login: filter.login }
+        setFilter(resetFilter)
+        setPageRequest({ ...pageRequest, pageNumber: 0 })
+        updateUrlParams(resetFilter, 0)
+    }
+
     const rows = response.content.map((report) => (
         <Flex
             key={report.id}
@@ -231,29 +246,47 @@ export const MyReports = () => {
                     </Flex>
                     <div ref={listStartRef} />
                     <Flex className={classes.content}>
-                        <Flex className={classes.filterArea}>
-                            <WeekPicker
-                                onChange={onWeekChange}
-                                className={classes.filterWeek}
-                                initialStartDate={filter.dateFrom}
-                                initialEndDate={filter.dateTo}
-                            />
-                            <ReportStatusSelect
-                                onChange={onStatusChange}
-                                className={classes.filterStatus}
-                                value={filter.status}
-                            />
-                            <Button
-                                className={classes.newReportButton}
-                                variant="light"
-                                size="sm"
-                                leftSection={<IconPlus size={16} />}
-                                onClick={() => navigate("/report/create")}
-                            >
-                                <Text size="sm">
-                                    <FormattedMessage id={locales.newReport} />
-                                </Text>
-                            </Button>
+                        <CurrentUserHeatmap />
+                        <Flex direction="column" gap={8}>
+                            <Flex className={classes.filterArea}>
+                                <Flex direction="row" gap={8} wrap="wrap" align="flex-end">
+                                    <WeekPicker
+                                        onChange={onWeekChange}
+                                        className={classes.filterWeek}
+                                        initialStartDate={filter.dateFrom}
+                                        initialEndDate={filter.dateTo}
+                                    />
+                                    <ReportStatusSelect
+                                        onChange={onStatusChange}
+                                        className={classes.filterStatus}
+                                        value={filter.status}
+                                    />
+                                    {activeFiltersCount > 0 && (
+                                        <Button
+                                            variant="transparent"
+                                            size="sm"
+                                            leftSection={<IconFilterOff size={16} />}
+                                            onClick={resetFilters}
+                                        >
+                                            <Text size="sm">
+                                                <FormattedMessage id={locales.resetFilters} />
+                                            </Text>
+                                        </Button>
+                                    )}
+                                </Flex>
+
+                                <Button
+                                    className={classes.newReportButton}
+                                    variant="light"
+                                    size="sm"
+                                    leftSection={<IconPlus size={16} />}
+                                    onClick={() => navigate("/report/create")}
+                                >
+                                    <Text size="sm">
+                                        <FormattedMessage id={locales.newReport} />
+                                    </Text>
+                                </Button>
+                            </Flex>
                         </Flex>
                         <Flex className={classes.reportContainer}>
                             {rows.length == 0 && (
