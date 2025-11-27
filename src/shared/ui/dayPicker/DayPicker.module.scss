@@ -1,0 +1,36 @@
+.calendar {
+    margin-left: 1.5rem;
+}
+
+.dayContainer {
+    width: 100%;
+    text-align: center;
+}
+
+.weekNumber {
+    position: absolute;
+    margin-left: -1.5rem;
+    color: var(--mantine-color-blue-5);
+}
+
+.weekNumber:hover {
+    color: var(--mantine-color-orange-7);
+}
+
+.firstDay {
+    width: 100%;
+}
+
+.input {
+    width: 100%;
+}
+
+.text {
+    font-size: small;
+    column-gap: 0.5rem;
+    color: light-dark(black, var(--mantine-color-gray-4));
+}
+
+.placeholder {
+    color: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-3));
+}

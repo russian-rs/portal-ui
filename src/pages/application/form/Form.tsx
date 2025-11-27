@@ -24,6 +24,7 @@ import {
     IconEPassport,
     IconLanguageHiragana,
     IconLogin2,
+    IconMailPin,
     IconMap2,
     IconPhone,
     IconSignature,
@@ -32,7 +33,7 @@ import {
 import { GenderEnumDto } from "@russian-rs/portal-api-axios"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate } from "react-router"
 import { defaultRequest } from "src/pages/application/form/lib/defaults"
@@ -42,6 +43,7 @@ import { PublicApplicationApiService } from "src/shared/api/applications/PublicA
 import { checkUserForApplication } from "src/shared/api/user/UserApiService"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { CaptchaSolver } from "src/shared/ui/captcha/CaptchaSolver"
+import { CitySelect } from "src/shared/ui/citySelect/CitySelect"
 import { z } from "zod"
 import classes from "./Form.module.scss"
 
@@ -57,6 +59,7 @@ export const Form = () => {
     const [formError, setFormError] = useState<string | null>(null)
 
     const fieldRequired = { message: intl.formatMessage({ id: locales.required }) }
+    const selectCityList = { message: intl.formatMessage({ id: locales.selectCityList }) }
     const invalidSymbols = intl.formatMessage({ id: locales.invalidSymbols })
     const minMessage = (count: number) => intl.formatMessage({ id: locales.minLetters }, { count: count })
     const maxMessage = (count: number) => intl.formatMessage({ id: locales.maxLetters }, { count: count })
@@ -94,6 +97,14 @@ export const Form = () => {
             .min(5, minMessage(3))
             .max(32, maxMessage(32)),
         enterDate: location == "IN" ? z.date(fieldRequired) : z.date().optional(),
+        city:
+            location == "IN"
+                ? z.string(selectCityList).min(2, selectCityList).max(100, maxMessage(100))
+                : z.string().optional(),
+        postalCode:
+            location == "IN"
+                ? z.string(fieldRequired).regex(/^\d{5}$/, intl.formatMessage({ id: locales.postalCodeInvalid }))
+                : z.string().optional(),
         address:
             location == "IN"
                 ? z.string(fieldRequired).min(16, minMessage(16)).max(200, maxMessage(200))
@@ -222,6 +233,31 @@ export const Form = () => {
                 key={form.key("enterDate")}
                 {...form.getInputProps("enterDate")}
                 disabled={isFetching}
+            />
+            <CitySelect
+                label={intl.formatMessage({ id: locales.city })}
+                description={intl.formatMessage({ id: locales.cityDescription })}
+                error={form.errors.city}
+                withAsterisk
+                className={classes.input}
+                disabled={isFetching}
+                {...form.getInputProps("city")}
+            />
+            <TextInput
+                label={<FormattedMessage id={locales.postalCode} />}
+                radius={0}
+                className={classes.input}
+                withAsterisk
+                leftSection={<IconMailPin size={16} />}
+                error={form.errors.postalCode}
+                maxLength={5}
+                placeholder="11000"
+                {...form.getInputProps("postalCode")}
+                disabled={isFetching}
+                onChange={(event) => {
+                    const value = event.currentTarget.value.replace(/\D/g, "")
+                    form.setFieldValue("postalCode", value)
+                }}
             />
             <TextInput
                 label={<FormattedMessage id={locales.address} />}

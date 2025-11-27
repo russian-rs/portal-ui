@@ -1,6 +1,7 @@
 {
     "common": {
         "filters": "Filters",
+        "reset-filters": "Reset filters",
         "buttons": {
             "login": "Login",
             "logout": "Logout"
@@ -19,6 +20,9 @@
         "user-search": {
             "placeholder": "Name Surname"
         },
+        "city-select": {
+            "placeholder": "City name in Serbian"
+        },
         "report-status": {
             "CREATED": "Created",
             "REJECTED": "Rejected",
@@ -26,6 +30,9 @@
         },
         "week-picker": {
             "label": "Week",
+            "empty": "Not selected"
+        },
+        "day-picker": {
             "empty": "Not selected"
         },
         "report-status-select": {
@@ -83,6 +90,21 @@
             "emptySubject": "Subject is required",
             "emptyContent": "Empty email body",
             "success": "Message sent successfully"
+        },
+        "ticket-modal": {
+            "modalTitle": "Create Ticket",
+            "titleLabel": "Subject",
+            "create": "Create Ticket",
+            "toUser": "Send To",
+            "toUserDescription": "The volunteer will receive an email notification and will be able to reply to it",
+            "internalDescription": "The ticket will be created in the <a href='https://help.russian.rs' target='_blank'>Help Desk</a> system. The volunteer will receive a notification and will be able to reply to the email, and their reply will be added to the ticket. Depending on the group, the ticket will be assigned to the appropriate person, who will also have access to all information.",
+            "publicDescription": "The ticket will be created in the <a href='https://help.russian.rs' target='_blank'>Help Desk</a> system. Depending on the group, the ticket will be delivered to the right people. You will also receive any reply or clarification by email.",
+            "group": "Assignment Group",
+            "group-placeholder": "Select a group",
+            "group-description": "This determines who will review the request",
+            "success": "<a href=\"{link}\" target=\"_blank\">Ticket #{number}</a> has been successfully created",
+            "error": "An error occurred while creating the ticket, please write to <a href='mailto:help@russian.rs'>help@russian.rs</a>",
+            "required": "Required"
         },
         "confirm-modal": {
             "confirmDefaultButton": "Confirm",
@@ -149,6 +171,7 @@
             "documentTitle": "Profile",
             "props": {
                 "city": "City",
+                "postalCode": "Postal code",
                 "address": "Address",
                 "birthDate": "Birth date",
                 "gender": "Gender",
@@ -163,6 +186,7 @@
             "validation": {
                 "invalidPhone": "Invalid number",
                 "invalidTelegram": "Invalid format",
+                "invalidPostalCode": "Postal code must contain 5 digits",
                 "invalidBirthDate": "Invalid date format",
                 "tooYoung": "You must be at least 18 years old",
                 "invalidDate": "Invalid date format",
@@ -179,6 +203,7 @@
                 "fields": {
                     "avatar": "profile photo",
                     "city": "city",
+                    "postalCode": "postal code",
                     "address": "address",
                     "birthDate": "birth date",
                     "telegram": "telegram",
@@ -304,6 +329,22 @@
                 "task-count": "Total tasks",
                 "time-spent": "Time spent",
                 "week": "Week"
+            },
+            "heatmap": {
+                "description": "Report activity for the current year (by weeks), only accepted reports are counted.",
+                "tooltipReports": "{hours} {hoursLabel} for the period {from}–{to} ({week})",
+                "hours": "h",
+                "tooltipWeek": "week {num}",
+                "tooltipNA": "No reporting requirements for the period {from}–{to} ({week})",
+                "tooltipWaiting": "Reports expected for the period {from}–{to} ({week})",
+                "noReports": "No reports",
+                "partialReports": "Partial",
+                "fullReports": "Full",
+                "summary": {
+                    "requiredZero": "You have no hour requirements",
+                    "ok": "{worked} h completed out of {required} expected",
+                    "deficit": "{worked} h completed out of {required} expected (deficit {deficit} h)"
+                }
             }
         },
         "report-list": {
@@ -325,6 +366,48 @@
             "program-filter-not-selected": "Not selected",
             "project-filter": "Project filter",
             "project-filter-not-selected": "Not selected"
+        },
+        "heat-map": {
+            "description": "Monitoring volunteer activity and reporting",
+            "filters": "Filters",
+            "search": "Search by name or email",
+            "program": "Program",
+            "project": "Project",
+            "period": "Period",
+            "reset": "Reset",
+            "title": "Activity Heatmap",
+            "reports-stats": "Reports Statistics",
+            "last-report": "Last Report",
+            "status": "Status",
+            "send-message": "Send Message",
+            "no-reports": "No Reports",
+            "partial-reports": "Partial Reports",
+            "full-reports": "Full Reports",
+            "pending": "Pending",
+            "legend": "Legend",
+            "total-hours": "Total hours",
+            "required-hours": "Required hours for period",
+            "hours": "hours",
+            "pieces-short": "pcs",
+            "status-text-all-ok": "All reports submitted",
+            "status-text-missed-weeks": "Missed {count} hours",
+            "total-volunteers": "Total Volunteers",
+            "total-weeks": "Total Weeks",
+            "active-filters": "Active Filters",
+            "no-data": "No data to display",
+            "tooltip": {
+                "na": "{name}: N/A — no contract for {from} - {to} ({week})",
+                "waiting": "{name}: Pending — {from} - {to} ({week})",
+                "no-reports": "{name}: No reports for {from} - {to} ({week})",
+                "reports": "{name}: {hours} {hoursLabel} for {from} - {to} ({week})",
+                "week": "Week {num}"
+            },
+            "period-3m": "Last 3 months",
+            "period-6m": "Last 6 months",
+            "period-ytd": "Year to date",
+            "profile": "Profile",
+            "reports": "Reports",
+            "ticket": "Create ticket"
         },
         "user-list": {
             "title": "All volunteers",
@@ -425,8 +508,13 @@
                 "in-serbia": "I am already in Serbia",
                 "out-serbia": "I am not in Serbia yet",
                 "enter-date": "Last date of entry into Serbia",
+                "city": "City",
+                "city-description": "If your city is not in the list, then the nearest available one",
+                "select-city-list": "Select city from the list",
+                "postal-code": "Postal code",
+                "postal-code-invalid": "Postal code must contain 5 digits",
                 "address": "Your address in Serbia for receiving documents",
-                "address-description": "In Serbian with a postal code. Example: 11197, Beograd (Novi Beograd), Ulica Jurija Gagarina 10, stan 4",
+                "address-description": "In Serbian language. Example – Ulica Jurija Gagarina 10, stan 4",
                 "phone": "Contact phone number",
                 "phone-description": "With code +381, without spaces",
                 "phone-invalid": "Invalid phone format",
@@ -469,6 +557,7 @@
             "title": "Applications for Admission",
             "empty": "No applications found",
             "total": "Total: {count}",
+            "search": "Search by name or email",
             "created-and-type": "Created, Type",
             "created-short-and-type-short": "Date, Type",
             "name-and-email": "First and Last Name, E-mail",
@@ -505,6 +594,8 @@
                 "in-serbia": "The person already in Serbia and",
                 "out-serbia": "The person not yet in Serbia and",
                 "enter": "Date of Entry into Serbia",
+                "city": "City",
+                "postal-code": "Postal code",
                 "address": "Address in Serbia",
                 "residence-required": "residence permit is required",
                 "residence-not-required": "residence permit is not required",
@@ -616,14 +707,14 @@
             "all": "All reports",
             "summary": "Summary",
             "cleaning": "Report for \"Clean City\"",
-            "reporting-guide": "Reporting Guidelines"
+            "reporting-guide": "Reporting Guidelines",
+            "heat-map": "Heat Map"
         },
         "volunteers": {
             "volunteers": "Volunteers",
             "all-volunteers": "All volunteers",
             "applications": "Applications",
             "statistics": "Statistics",
-            "reports": "Volunteers reports",
             "mintrud-report": "Mintrud report"
         },
         "account-settings": "Account settings",

@@ -1,17 +1,16 @@
 import { Container, Flex, SimpleGrid, Skeleton } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
-import { useState, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
+import { useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
+import { useProfileValidation } from "src/app/providers/ProfileValidationProvider"
+import { UserContext } from "src/app/providers/UserContext"
 import { ContractInfo } from "src/pages/profile/contract/ContractInfo"
 import { ProfileInfo } from "src/pages/profile/info/ProfileInfo"
 import { ResidencePermitInfo } from "src/pages/profile/residencePermit/ResidencePermitInfo"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
-import { useProfileValidation } from "src/app/providers/ProfileValidationProvider"
-import { useContext } from "react"
-import { UserContext } from "src/app/providers/UserContext"
-import { useIntl } from "react-intl"
 import classes from "./Profile.module.scss"
 
 export const Profile = () => {
@@ -54,6 +53,8 @@ export const Profile = () => {
                 missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.avatar" }))
             if (!userInfo.city?.trim())
                 missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.city" }))
+            if (!userInfo.postalCode?.trim())
+                missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.postalCode" }))
             if (!userInfo.address?.trim())
                 missingFields.push(intl.formatMessage({ id: "pages.profile.validation.fields.address" }))
             if (!userInfo.birthDate)

@@ -36,15 +36,6 @@ $width: 40rem;
     align-items: center;
 }
 
-.newReportButton {
-    margin-top: auto;
-    margin-left: auto;
-
-    @media (max-width: $mantine-breakpoint-md) {
-        margin-left: 0;
-    }
-}
-
 .content {
     flex-direction: column;
     flex-wrap: wrap;
