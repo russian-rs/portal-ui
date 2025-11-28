@@ -87,8 +87,8 @@ export const ResidencePermitDrawer = ({ opened, onClose, userId, residencePermit
             issuingAuthority: "",
             stateOfBirth: "",
             note: "",
-            frontSidePhoto: null as unknown as FileInfoDto,
-            backSidePhoto: null as unknown as FileInfoDto,
+            frontSidePhoto: null,
+            backSidePhoto: null,
         }
         setLocalPermits([...localPermits, newPermit])
         setEditingId(newPermit.id)
