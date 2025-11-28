@@ -196,7 +196,7 @@ export const ResidencePermitForm = ({
                     </div>
                 </SimpleGrid>
 
-                <Group justify="flex-end" mt="md">
+                <Group justify="flex-end" mt="md" wrap="nowrap">
                     {canDelete && (
                         <Button variant="subtle" color="red" onClick={onDelete} leftSection={<IconTrash size={16} />}>
                             <FormattedMessage id="common.buttons.delete" defaultMessage="Delete" />
