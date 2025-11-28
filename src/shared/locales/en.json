@@ -4,7 +4,8 @@
         "reset-filters": "Reset filters",
         "buttons": {
             "login": "Login",
-            "logout": "Logout"
+            "logout": "Logout",
+            "delete": "Delete"
         },
         "file-uploader": {
             "title": "Drag files or click to choose",

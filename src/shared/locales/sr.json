@@ -4,7 +4,8 @@
         "reset-filters": "Resetujte filtere",
         "buttons": {
             "login": "Prijavite se",
-            "logout": "Odjava"
+            "logout": "Odjava",
+            "delete": "Obriši"
         },
         "file-uploader": {
             "title": "Prenesite datoteke ili kliknite da biste izabrali",

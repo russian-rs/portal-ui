@@ -4,7 +4,8 @@
         "reset-filters": "Сбросить фильтры",
         "buttons": {
             "login": "Войти",
-            "logout": "Выйти"
+            "logout": "Выйти",
+            "delete": "Удалить"
         },
         "file-uploader": {
             "title": "Перенесите файлы или нажмите для выбора",
