@@ -2,9 +2,7 @@ import { useMemo } from "react"
 import { ProgramDto, ProjectDto } from "@russian-rs/portal-api-axios"
 import { usePrograms } from "src/app/providers/ProgramsProvider"
 import { useProjects } from "src/app/providers/ProjectsProvider"
-
-const NO_PROGRAM = "NO_PROGRAM"
-const NO_PROJECT = "NO_PROJECT"
+import { NO_PROGRAM_CODE, NO_PROJECT_CODE } from "src/shared/constants/Shared"
 
 export function useProgramProjectFilter(
     selectedProgram: string | null,
@@ -14,9 +12,9 @@ export function useProgramProjectFilter(
     const projects = useProjects()
 
     const normalizedProgram =
-        selectedProgram && selectedProgram !== NO_PROGRAM ? selectedProgram : null
+        selectedProgram && selectedProgram !== NO_PROGRAM_CODE ? selectedProgram : null
     const normalizedProject =
-        selectedProject && selectedProject !== NO_PROJECT ? selectedProject : null
+        selectedProject && selectedProject !== NO_PROJECT_CODE ? selectedProject : null
 
     const { visiblePrograms, visibleProjects } = useMemo(() => {
         let visiblePrograms: ProgramDto[] = programs
