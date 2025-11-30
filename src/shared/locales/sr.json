@@ -40,19 +40,22 @@
             "empty": "Nije izabrano"
         },
         "roles": {
+            "VOLUNTEER": "Volonter",
+            "VOLUNTEER_CLEAN_CITY": "Volonter Čist grad",
             "ADMIN": "Admin",
-            "ADMIN_SSO": "Admin SSO",
             "ADMIN_VOLUNTEER": "Admin volontiranja",
-            "ADMIN_WP": "Admin WordPress",
-            "DEVELOPER": "Programer",
-            "INSIDE_VOLUNTEER": "Unutrašnji volonter",
-            "MAIN_VOLUNTEER": "Volonter osnovnog pr.",
+            "DEVELOPER": "Programer Portala",
+            "DEVELOPER_WP": "Programer projekta za diasporu",
             "GUIDES": "Autor vodiča",
             "LAWYERS": "Advokat",
             "MEDIA": "Autor",
             "TEACHER": "Učitelj",
-            "SEO_MANAGER": "SEO menadžer",
             "INTERVIEWER": "Intervjuer",
+            "ADMIN_WP": "Admin WordPress",
+            "ADMIN_SSO": "Admin SSO",
+            "SEO_MANAGER": "SEO menadžer",
+            "INSIDE_VOLUNTEER": "Unutrašnji volonter",
+            "MAIN_VOLUNTEER": "Volonter osnovnog pr.",
             "MEMBER": "Član organizacije"
         },
         "contract-type": {
