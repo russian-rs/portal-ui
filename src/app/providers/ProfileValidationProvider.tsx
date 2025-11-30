@@ -35,9 +35,9 @@ export const ProfileValidationProvider = ({ children }: { children?: ReactNode }
 
         const missing: string[] = []
 
-        if (!user.avatar?.link) {
-            missing.push(intl.formatMessage({ id: "pages.profile.validation.fields.avatar" }))
-        }
+        // if (!user.avatar?.link) {
+        //     missing.push(intl.formatMessage({ id: "pages.profile.validation.fields.avatar" }))
+        // }
 
         if (!user.city?.trim()) {
             missing.push(intl.formatMessage({ id: "pages.profile.validation.fields.city" }))

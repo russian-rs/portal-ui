@@ -14,7 +14,7 @@ import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { getSpentTimeFromReport } from "src/shared/report/timeSpent"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
-
+import { NO_PROGRAM_CODE, NO_PROJECT_CODE } from "src/shared/constants/Shared"
 import { Badge, useComputedColorScheme } from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
 import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
@@ -30,6 +30,7 @@ import { defaultFilter, defaultPage, defaultPageResponse, defaultUser } from "./
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
 import classes from "./ReportList.module.scss"
+import { useSyncProgramByProject } from "src/shared/hooks/useSyncProgramByProject"
 
 export const ReportList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -64,6 +65,14 @@ export const ReportList = () => {
     const { programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
         selectedProgram,
         selectedProject
+    )
+
+    useSyncProgramByProject(
+        selectedProject,
+        projects,
+        programs,
+        visibleProjects,
+        setSelectedProgram
     )
 
     // Ref для скролла к началу списка
@@ -175,27 +184,6 @@ export const ReportList = () => {
         }
     }, [pageRequest.pageNumber, isMobile])
 
-    // Эффект, который подставляет проект - программу
-    useEffect(() => {
-        if (!selectedProject || selectedProject === "NO_PROJECT") return
-
-        const project = visibleProjects.find((p) => p.code === selectedProject)
-            ?? projects.find((p) => p.code === selectedProject)
-
-        if (!project) return
-
-        const owningProgramCode = project.programCode
-            ?? programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
-
-        if (!owningProgramCode) return
-
-        const normalizedProgramCode = owningProgramCode.toUpperCase()
-
-        if (selectedProgram !== normalizedProgramCode) {
-            setSelectedProgram(normalizedProgramCode)
-        }
-    }, [selectedProject, selectedProgram, projects, programs, visibleProjects])
-
     if (!hasPermission(user, allowedRoles)) {
         navigate("/unauthorized")
     }
@@ -212,7 +200,7 @@ export const ReportList = () => {
             // Обрабатываем проекты: если выбран "NO_PROJECT", отправляем пустую строку
             let project: string | null = null
             if (selectedProject) {
-                if (selectedProject === "NO_PROJECT") {
+                if (selectedProject === NO_PROJECT_CODE) {
                     project = "" // Пустая строка для фильтра "без проекта"
                 } else {
                     project = selectedProject // Код проекта
@@ -222,7 +210,7 @@ export const ReportList = () => {
             const filterWithProgram = {
                 ...filter,
 
-                program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram,
+                program: selectedProgram === NO_PROGRAM_CODE ? "" : selectedProgram,
                 project,
             }
             return ReportApiService.getReports(pageRequest, filterWithProgram).then((response) => {
@@ -627,9 +615,17 @@ export const ReportList = () => {
                                                 const programChanged = newProgram !== selectedProgram
 
                                                 setSelectedProgram(newProgram)
+
                                                 if (programChanged) {
+                                                    setSelectedProject(null)
                                                     setPageRequest({ ...pageRequest, pageNumber: 0 })
-                                                    updateUrlParams(filter, newProgram, selectedProject, 0)
+
+                                                    updateUrlParams(
+                                                        filter,
+                                                        newProgram,
+                                                        null,
+                                                        0
+                                                    )
                                                 } else {
                                                     updateUrlParams(
                                                         filter,
@@ -718,9 +714,17 @@ export const ReportList = () => {
                                         const programChanged = newProgram !== selectedProgram
 
                                         setSelectedProgram(newProgram)
+
                                         if (programChanged) {
+                                            setSelectedProject(null)
                                             setPageRequest({ ...pageRequest, pageNumber: 0 })
-                                            updateUrlParams(filter, newProgram, selectedProject, 0)
+
+                                            updateUrlParams(
+                                                filter,
+                                                newProgram,
+                                                null,
+                                                0
+                                            )
                                         } else {
                                             updateUrlParams(
                                                 filter,

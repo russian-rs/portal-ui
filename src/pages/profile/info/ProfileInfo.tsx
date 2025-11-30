@@ -168,7 +168,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         },
     })
 
-    const { mutate: updateProgram } = useMutation({
+    const { mutateAsync: updateProgram } = useMutation({
         mutationFn: async (program: string) => {
             const response = await UserApiService.setProgram(userInfo.id, program)
             return response.data
@@ -202,7 +202,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         },
     })
 
-    const { mutate: updateProject } = useMutation({
+    const { mutateAsync: updateProject } = useMutation({
         mutationFn: async (project: string) => {
             const response = await UserApiService.setProject(userInfo.id, project)
             return response.data
@@ -247,6 +247,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
 
     const [selectedProgram, setSelectedProgram] = useState<string | null>(programValue)
     const [selectedProject, setSelectedProject] = useState<string | null>(projectValue)
+    const [isSyncing, setIsSyncing] = useState(false);
 
     // Админы могут редактировать программы всем (включая себя)
     // Обычные пользователи могут установить программу только если у них ее еще нет
@@ -263,25 +264,36 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const canEditGender = isAdmin || isOwnProfile
 
     // получаем отфильтрованные списки из hook
-    const {programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
+    const { programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
         selectedProgram,
         selectedProject
     )
 
-    const handleProgramChange = (program: string | null) => {
-        if (program) {
-            setSelectedProgram(program)
-            setSelectedProject(null)
-            updateProgram(program)
+    const handleProgramChange = async (programCode: string) => {
+
+        if (isSyncing) return
+
+        const program = programs.find(p => p.code === programCode)
+        const defaultProject =
+            program?.projectCodes?.map(c => projects.find(pr => pr.code === c)).find(Boolean) ?? null
+
+        setSelectedProgram(programCode)
+        setSelectedProject(defaultProject?.code ?? null)
+
+        await updateProgram(programCode)
+
+        if (defaultProject) {
+            await updateProject(defaultProject.code)
         }
     }
 
-    const handleProjectChange = (project: string | null) => {
-        if (project) {
-            setSelectedProject(project)
-            updateProject(project)
-        }
+    const handleProjectChange = async (projectCode: string) => {
+        if (isSyncing) return
+
+        setSelectedProject(projectCode)
+        await updateProject(projectCode)
     }
+
 
     // синхронизируемся, если userInfo обновился с сервера
     useEffect(() => {
@@ -296,13 +308,13 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     useEffect(() => {
         if (!selectedProgram || !selectedProject) return
 
-        const program = programs.find(
-            (p) => p.code.toUpperCase() === selectedProgram
-        )
-        const allowedProjectCodes = program?.projectCodes ?? []
+        const program = programs.find(p => p.code === selectedProgram)
+        const allowed = program?.projectCodes ?? []
 
-        if (allowedProjectCodes.length > 0 && !allowedProjectCodes.includes(selectedProject)) {
+        if (!allowed.includes(selectedProject)) {
+            setIsSyncing(true)
             setSelectedProject(null)
+            setIsSyncing(false)
         }
     }, [selectedProgram, selectedProject, programs])
 
@@ -310,37 +322,37 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     useEffect(() => {
         if (!selectedProject) return
 
-        const project = projects.find((p) => p.code === selectedProject)
+        const project = projects.find(p => p.code === selectedProject)
         if (!project) return
 
-        const owningProgramCode =
+        const owningProgram =
             project.programCode ??
-            programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
+            programs.find(pr => (pr.projectCodes ?? []).includes(project.code))?.code
 
-        if (!owningProgramCode) return
+        if (!owningProgram) return
 
-        const normalizedProgram = owningProgramCode.toUpperCase()
+        const normalized = owningProgram.toUpperCase()
 
-        if (selectedProgram === normalizedProgram) return
+        if (normalized === selectedProgram) return
 
-        setSelectedProgram(normalizedProgram)
-
-        updateProgram(normalizedProgram)
-    }, [selectedProject, selectedProgram, projects, programs, updateProgram])
+        setIsSyncing(true)
+        setSelectedProgram(normalized)
+        setIsSyncing(false)
+    }, [selectedProject, selectedProgram, projects, programs])
 
     return (
         <Flex direction="column" className={classes.infoContainer}>
             <ProfileAvatar link={userInfo?.avatar?.link} editable={currentUser?.username === userInfo?.username} />
             <Text className={classes.userName}>{userInfo?.fullName}</Text>
             <ProgramSelectInline
-                value={selectedProgram ?? programValue}
+                value={selectedProgram}
                 canEdit={canEditProgram}
                 locale={locale}
                 onChange={handleProgramChange}
                 programsOverride={visiblePrograms}
             />
             <ProjectSelectInline
-                value={selectedProject ?? projectValue}
+                value={selectedProject}
                 canEdit={canEditProject}
                 locale={locale}
                 onChange={handleProjectChange}

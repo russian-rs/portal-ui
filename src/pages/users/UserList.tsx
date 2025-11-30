@@ -27,7 +27,7 @@ import { UserApiService } from "src/shared/api/user/UserApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
-
+import { NO_PROGRAM_CODE, NO_PROJECT_CODE } from "src/shared/constants/Shared"
 import { notifications } from "@mantine/notifications"
 import { useIntl } from "react-intl"
 import { ContractDrawer } from "src/pages/profile/contract/ContractDrawer"
@@ -39,6 +39,7 @@ import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { locales } from "./lib/locales"
 import classes from "./UserList.module.scss"
+import { useSyncProgramByProject } from "src/shared/hooks/useSyncProgramByProject"
 
 export const UserList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -58,6 +59,14 @@ export const UserList = () => {
     const { programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
         selectedProgram,
         selectedProject
+    )
+
+    useSyncProgramByProject(
+        selectedProject,
+        projects,
+        programs,
+        visibleProjects,
+        setSelectedProgram
     )
 
     const isMobile = useMediaQuery("(max-width: 1360px)")
@@ -294,28 +303,6 @@ export const UserList = () => {
         }
     }, [pageRequest.pageNumber, isMobile])
 
-    // Эффект, который подставляет проект - программу
-    useEffect(() => {
-        if (!selectedProject || selectedProject === "NO_PROJECT") return
-
-        const project = visibleProjects.find((p) => p.code === selectedProject)
-
-            ?? projects.find((p) => p.code === selectedProject)
-
-        if (!project) return
-
-        const owningProgramCode = project.programCode
-            ?? programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
-
-        if (!owningProgramCode) return
-
-        const normalizedProgramCode = owningProgramCode.toUpperCase()
-
-        if (selectedProgram !== normalizedProgramCode) {
-            setSelectedProgram(normalizedProgramCode)
-        }
-    }, [selectedProject, selectedProgram, projects, programs, visibleProjects])
-
     if (!hasPermission(user, allowedRoles)) {
         navigate("/unauthorized")
     }
@@ -329,7 +316,7 @@ export const UserList = () => {
         queryFn: () => {
             let project: string | undefined = undefined
             if (selectedProject) {
-                if (selectedProject === "NO_PROJECT") {
+                if (selectedProject === NO_PROJECT_CODE) {
                     project = "" // Пустая строка для фильтра "без проекта"
                 } else {
                     project = selectedProject // Код проекта
@@ -337,7 +324,7 @@ export const UserList = () => {
             }
             const filterWithProgram = {
                 ...filter,
-                program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram,
+                program: selectedProgram === NO_PROGRAM_CODE ? "" : selectedProgram,
                 project,
             }
             return UserApiService.searchUsers(debouncedSearch, pageRequest, filterWithProgram).then((response) => {
@@ -573,7 +560,13 @@ export const UserList = () => {
                                     />
                                     <ProgramFilter
                                         value={selectedProgram}
-                                        onChange={setSelectedProgram}
+                                        onChange={(newProgram) => {
+                                            setSelectedProgram(newProgram)
+
+                                            if (newProgram !== selectedProgram) {
+                                                setSelectedProject(null)
+                                            }
+                                        }}
                                         programsOverride={visiblePrograms}
                                     />
                                     <ProjectFilter
@@ -615,9 +608,16 @@ export const UserList = () => {
                             />
                             <ProgramFilter
                                 value={selectedProgram}
-                                onChange={setSelectedProgram}
+                                onChange={(newProgram) => {
+                                    setSelectedProgram(newProgram)
+
+                                    if (newProgram !== selectedProgram) {
+                                        setSelectedProject(null)
+                                    }
+                                }}
                                 programsOverride={visiblePrograms}
                             />
+
                             <ProjectFilter
                                 value={selectedProject}
                                 onChange={setSelectedProject}
