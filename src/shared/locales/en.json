@@ -169,6 +169,7 @@
         },
         "profile": {
             "documentTitle": "Profile",
+            "deactivated": "Deactivated",
             "props": {
                 "city": "City",
                 "postalCode": "Postal code",
@@ -423,7 +424,8 @@
             "invalid-email": "Invalid e-mail",
             "invalid-name": "Invalid characters",
             "invalid-username": "Only latin letters and numbers, cannot start with a number",
-            "user-created-message": "User successfully created"
+            "user-created-message": "User successfully created",
+            "deactivated": "Deactivated"
         },
         "playgrounds": {
             "title": "Playgrounds report",

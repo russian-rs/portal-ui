@@ -100,3 +100,11 @@ $table-width: 100%;
     border-radius: 0.5rem;
     box-shadow: 0 0 0.3rem 0.1rem light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
 }
+
+.deactivatedRow {
+    background-color: light-dark(rgba(255, 182, 193, 0.2), rgba(139, 69, 85, 0.3));
+}
+
+.deactivatedCard {
+    background-color: light-dark(rgba(255, 182, 193, 0.2), rgba(139, 69, 85, 0.3));
+}

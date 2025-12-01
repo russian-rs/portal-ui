@@ -169,6 +169,7 @@
         },
         "profile": {
             "documentTitle": "Profil",
+            "deactivated": "Deaktiviran",
             "props": {
                 "city": "Grad",
                 "postalCode": "Poštanski broj",
@@ -423,7 +424,8 @@
             "invalid-email": "Neverni e-mail",
             "invalid-name": "Nevažeći znakovi",
             "invalid-username": "Samo latinična slova i brojevi, ne može početi sa brojem",
-            "user-created-message": "Korisnik je uspešno kreiran"
+            "user-created-message": "Korisnik je uspešno kreiran",
+            "deactivated": "Deaktiviran"
         },
         "playgrounds": {
             "title": "Izveštaj o igralištu",
