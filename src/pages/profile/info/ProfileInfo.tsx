@@ -247,7 +247,13 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
 
     const [selectedProgram, setSelectedProgram] = useState<string | null>(programValue)
     const [selectedProject, setSelectedProject] = useState<string | null>(projectValue)
-    const [isSyncing, setIsSyncing] = useState(false);
+    const [isSyncing, setIsSyncing] = useState(false)
+
+    // получаем отфильтрованные списки из hook
+    const { programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
+        selectedProgram,
+        selectedProject
+    )
 
     // Админы могут редактировать программы всем (включая себя)
     // Обычные пользователи могут установить программу только если у них ее еще нет
@@ -263,28 +269,13 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     // Разрешаем менять пол своему профилю и админам
     const canEditGender = isAdmin || isOwnProfile
 
-    // получаем отфильтрованные списки из hook
-    const { programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
-        selectedProgram,
-        selectedProject
-    )
-
     const handleProgramChange = async (programCode: string) => {
-
         if (isSyncing) return
 
-        const program = programs.find(p => p.code === programCode)
-        const defaultProject =
-            program?.projectCodes?.map(c => projects.find(pr => pr.code === c)).find(Boolean) ?? null
-
         setSelectedProgram(programCode)
-        setSelectedProject(defaultProject?.code ?? null)
+        setSelectedProject(null)
 
         await updateProgram(programCode)
-
-        if (defaultProject) {
-            await updateProject(defaultProject.code)
-        }
     }
 
     const handleProjectChange = async (projectCode: string) => {
@@ -293,16 +284,6 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         setSelectedProject(projectCode)
         await updateProject(projectCode)
     }
-
-
-    // синхронизируемся, если userInfo обновился с сервера
-    useEffect(() => {
-        setSelectedProgram(programValue)
-    }, [programValue])
-
-    useEffect(() => {
-        setSelectedProject(projectValue)
-    }, [projectValue])
 
     // Если выбрали программу, а текущий проект к ней не относится очищаем проект
     useEffect(() => {
@@ -322,12 +303,12 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     useEffect(() => {
         if (!selectedProject) return
 
-        const project = projects.find(p => p.code === selectedProject)
+        const project = projects.find((p) => p.code === selectedProject)
         if (!project) return
 
         const owningProgram =
             project.programCode ??
-            programs.find(pr => (pr.projectCodes ?? []).includes(project.code))?.code
+            programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
 
         if (!owningProgram) return
 
