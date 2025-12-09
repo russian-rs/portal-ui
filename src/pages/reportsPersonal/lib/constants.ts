@@ -12,6 +12,18 @@ export const locales = {
     reportTimeSpent: "pages.my-reports.report.time-spent",
     reportWeek: "pages.my-reports.report.week",
     emptyReports: "pages.my-reports.empty-reports",
+    heatmapDescription: "pages.my-reports.heatmap.description",
+    hours: "pages.my-reports.heatmap.hours",
+    tooltipReports: "pages.my-reports.heatmap.tooltipReports",
+    tooltipWeek: "pages.my-reports.heatmap.tooltipWeek",
+    tooltipNA: "pages.my-reports.heatmap.tooltipNA",
+    tooltipWaiting: "pages.my-reports.heatmap.tooltipWaiting",
+    noReports: "pages.my-reports.heatmap.noReports",
+    partialReports: "pages.my-reports.heatmap.partialReports",
+    fullReports: "pages.my-reports.heatmap.fullReports",
+    summaryRequiredZero: "pages.my-reports.heatmap.summary.requiredZero",
+    summaryOk: "pages.my-reports.heatmap.summary.ok",
+    summaryDeficit: "pages.my-reports.heatmap.summary.deficit",
 }
 
 export const defaultPage: PageRequest = {

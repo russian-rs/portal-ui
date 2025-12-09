@@ -91,6 +91,21 @@
             "emptyContent": "Пустое тело письма",
             "success": "Сообщение успешно отправлено"
         },
+        "ticket-modal": {
+            "modalTitle": "Создать тикет",
+            "titleLabel": "Тема обращения",
+            "create": "Создать тикет",
+            "toUser": "Кому направить",
+            "toUserDescription": "Волонтер получит уведомление на почту и сможет отправить на него ответ",
+            "internalDescription": "Тикет будет заведен в системе <a href='https://help.russian.rs' target='_blank'>Help Desk</a>, волонтер получит уведомление, он сможет ответить на письмо и его ответ добавится в тикет. В зависимости от группы тикет будет назначен на нужного человека, который также будет иметь доступ ко всей информации.",
+            "publicDescription": "Тикет будет заведен в системе <a href='https://help.russian.rs' target='_blank'>Help Desk</a>. В зависимости от группы тикет будет доставлен нужным людям. Ответ или уточнении вы также получите на свою почту.",
+            "group": "Группа назначения",
+            "group-placeholder": "Выберите группу",
+            "group-description": "От этого зависит кто будет рассматривать обращение",
+            "success": "<a href=\"{link}\" target=\"_blank\">Тикет №{number}</a> успешно создан",
+            "error": "При создании тикета произошла ошибка, напишите на <a href='mailto:help@russian.rs'>help@russian.rs</a>",
+            "required": "Обязательно"
+        },
         "confirm-modal": {
             "confirmDefaultButton": "Подтвердить",
             "cancelDefaultButton": "Отмена",
@@ -154,6 +169,7 @@
         },
         "profile": {
             "documentTitle": "Профиль",
+            "deactivated": "Деактивирован",
             "props": {
                 "city": "Город",
                 "postalCode": "Почтовый индекс",
@@ -291,6 +307,22 @@
                 "task-count": "Кол-во задач",
                 "time-spent": "Кол-во часов",
                 "week": "Неделя"
+            },
+            "heatmap": {
+                "description": "Активность по отчетам за текущий год (по неделям), учитываются только принятые.",
+                "tooltipReports": "{hours} {hoursLabel} за период {from}–{to} ({week})",
+                "hours": "ч",
+                "tooltipWeek": "неделя {num}",
+                "tooltipNA": "Нет требований по отчётам за период {from}–{to} ({week})",
+                "tooltipWaiting": "Ожидаются отчёты за период {from}–{to} ({week})",
+                "noReports": "Нет отчетов",
+                "partialReports": "Частичные",
+                "fullReports": "Полные",
+                "summary": {
+                    "requiredZero": "У вас нет требованйи по часам",
+                    "ok": "Отработано {worked} ч из {required} ожидаемых",
+                    "deficit": "Отработано {worked} ч из {required} ожидаемых (недостача {deficit} ч)"
+                }
             }
         },
         "report-list": {
@@ -352,7 +384,8 @@
             "period-6m": "Последние 6 месяцев",
             "period-ytd": "С начала года",
             "profile": "Профиль",
-            "reports": "Отчеты"
+            "reports": "Отчеты",
+            "ticket": "Создать тикет"
         },
         "user-list": {
             "title": "Все волонтеры",
@@ -391,7 +424,8 @@
             "invalid-email": "Неверный e-mail",
             "invalid-name": "Недопустимые символы",
             "invalid-username": "Только латинские буквы и цифры, не может начинаться с цифры",
-            "user-created-message": "Пользователь успешно создан"
+            "user-created-message": "Пользователь успешно создан",
+            "deactivated": "Деактивирован"
         },
         "playgrounds": {
             "title": "Отчет по площадке",
@@ -660,7 +694,6 @@
             "all-volunteers": "Все волонтеры",
             "applications": "Новые заявки",
             "statistics": "Статистика",
-            "reports": "Отчеты по волонтерам",
             "mintrud-report": "Отчёт Минтруд"
         },
         "account-settings": "Настройки уч. записи",

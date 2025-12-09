@@ -13,7 +13,7 @@ import {
 } from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
 import { ContractDto, PageRequest } from "@russian-rs/portal-api-axios"
-import { IconFilterEdit, IconFilterOff, IconLock, IconPencil, IconPlus, IconUfo } from "@tabler/icons-react"
+import { IconFilterEdit, IconFilterOff, IconPencil, IconPlus, IconUfo } from "@tabler/icons-react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
@@ -352,7 +352,7 @@ export const UserList = () => {
                   )
                 : undefined
         return (
-            <Table.Tr key={user.id}>
+            <Table.Tr key={user.id} className={!user.active ? classes.deactivatedRow : undefined}>
                 <Table.Td>
                     <Flex columnGap={16} align="center" className={classes.columnName}>
                         <Avatar
@@ -425,7 +425,11 @@ export const UserList = () => {
                 </Table.Td>
                 <Table.Td>
                     <Flex align="center" justify="end">
-                        {!user.active && <IconLock size={16} color="red" />}
+                        {!user.active && (
+                            <Badge color="red" radius="md" variant="light">
+                                <FormattedMessage id={locales.deactivated} />
+                            </Badge>
+                        )}
                         <UserMenu user={user} />
                     </Flex>
                 </Table.Td>
@@ -443,7 +447,12 @@ export const UserList = () => {
                   )
                 : undefined
         return (
-            <Paper key={user.id} shadow="xs" p="sm" className={classes.mobileCard}>
+            <Paper
+                key={user.id}
+                shadow="xs"
+                p="sm"
+                className={`${classes.mobileCard} ${!user.active ? classes.deactivatedCard : ""}`}
+            >
                 <Flex align="center" columnGap={12}>
                     <Avatar
                         size={44}
@@ -463,7 +472,11 @@ export const UserList = () => {
                             {user.email}
                         </Text>
                     </Flex>
-                    {!user.active && <IconLock size={16} color="red" />}
+                    {!user.active && (
+                        <Badge color="red" radius="md" variant="light">
+                            <FormattedMessage id={locales.deactivated} />
+                        </Badge>
+                    )}
                     <UserMenu user={user} />
                 </Flex>
                 <Flex mt="xs" gap={4} wrap="wrap">

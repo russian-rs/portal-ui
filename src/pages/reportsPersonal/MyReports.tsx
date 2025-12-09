@@ -8,6 +8,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
+import { CurrentUserHeatmap } from "src/pages/reportsPersonal/heatmap/CurrentUserHeatmap"
 import { defaultFilter, defaultPage, defaultPageResponse, locales } from "src/pages/reportsPersonal/lib/constants"
 import { ReportApiService } from "src/shared/api/ReportApiService"
 import { DEFAULT_DATE_FORMAT } from "src/shared/datetime/formats"
@@ -245,6 +246,7 @@ export const MyReports = () => {
                     </Flex>
                     <div ref={listStartRef} />
                     <Flex className={classes.content}>
+                        <CurrentUserHeatmap />
                         <Flex direction="column" gap={8}>
                             <Flex className={classes.filterArea}>
                                 <Flex direction="row" gap={8} wrap="wrap" align="flex-end">

@@ -1,4 +1,4 @@
-import { Button, Container, Drawer, Flex, Select, Text, TextInput, Tooltip } from "@mantine/core"
+import { Badge, Button, Container, Drawer, Flex, Select, Text, TextInput, Tooltip } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { useDisclosure } from "@mantine/hooks"
@@ -24,6 +24,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { UserContext } from "src/app/providers/UserContext"
 import commonClasses from "src/app/styles/private.module.scss"
 import { ProfileAvatar } from "src/pages/profile/avatar/ProfileAvatar"
+import { UserMenu } from "src/pages/users/userMenu/UserMenu"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { Locale } from "src/shared/constants/Locales"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
@@ -323,7 +324,19 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
 
     return (
         <Flex direction="column" className={classes.infoContainer}>
-            <ProfileAvatar link={userInfo?.avatar?.link} editable={currentUser?.username === userInfo?.username} />
+            <Flex justify="space-between">
+                <ProfileAvatar link={userInfo?.avatar?.link} editable={currentUser?.username === userInfo?.username} />
+
+                <Flex gap="xs">
+                    {!userInfo?.active && (
+                        <Badge color="red" radius="md" variant="light">
+                            <FormattedMessage id="pages.profile.deactivated" />
+                        </Badge>
+                    )}
+
+                    {userInfo?.id !== currentUser?.id && <UserMenu user={userInfo} type="profile" />}
+                </Flex>
+            </Flex>
             <Text className={classes.userName}>{userInfo?.fullName}</Text>
             <ProgramSelectInline
                 value={selectedProgram}
@@ -394,7 +407,6 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                     <FormattedMessage id={"pages.profile.buttons.edit"} />
                 </Button>
             )}
-
             <Drawer opened={opened} onClose={close} title={<FormattedMessage id="pages.profile.documentTitle" />}>
                 <form
                     onSubmit={(e) => {

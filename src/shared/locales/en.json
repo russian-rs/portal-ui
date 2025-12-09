@@ -91,6 +91,21 @@
             "emptyContent": "Empty email body",
             "success": "Message sent successfully"
         },
+        "ticket-modal": {
+            "modalTitle": "Create Ticket",
+            "titleLabel": "Subject",
+            "create": "Create Ticket",
+            "toUser": "Send To",
+            "toUserDescription": "The volunteer will receive an email notification and will be able to reply to it",
+            "internalDescription": "The ticket will be created in the <a href='https://help.russian.rs' target='_blank'>Help Desk</a> system. The volunteer will receive a notification and will be able to reply to the email, and their reply will be added to the ticket. Depending on the group, the ticket will be assigned to the appropriate person, who will also have access to all information.",
+            "publicDescription": "The ticket will be created in the <a href='https://help.russian.rs' target='_blank'>Help Desk</a> system. Depending on the group, the ticket will be delivered to the right people. You will also receive any reply or clarification by email.",
+            "group": "Assignment Group",
+            "group-placeholder": "Select a group",
+            "group-description": "This determines who will review the request",
+            "success": "<a href=\"{link}\" target=\"_blank\">Ticket #{number}</a> has been successfully created",
+            "error": "An error occurred while creating the ticket, please write to <a href='mailto:help@russian.rs'>help@russian.rs</a>",
+            "required": "Required"
+        },
         "confirm-modal": {
             "confirmDefaultButton": "Confirm",
             "cancelDefaultButton": "Cancel",
@@ -154,6 +169,7 @@
         },
         "profile": {
             "documentTitle": "Profile",
+            "deactivated": "Deactivated",
             "props": {
                 "city": "City",
                 "postalCode": "Postal code",
@@ -291,6 +307,22 @@
                 "task-count": "Total tasks",
                 "time-spent": "Time spent",
                 "week": "Week"
+            },
+            "heatmap": {
+                "description": "Report activity for the current year (by weeks), only accepted reports are counted.",
+                "tooltipReports": "{hours} {hoursLabel} for the period {from}–{to} ({week})",
+                "hours": "h",
+                "tooltipWeek": "week {num}",
+                "tooltipNA": "No reporting requirements for the period {from}–{to} ({week})",
+                "tooltipWaiting": "Reports expected for the period {from}–{to} ({week})",
+                "noReports": "No reports",
+                "partialReports": "Partial",
+                "fullReports": "Full",
+                "summary": {
+                    "requiredZero": "You have no hour requirements",
+                    "ok": "{worked} h completed out of {required} expected",
+                    "deficit": "{worked} h completed out of {required} expected (deficit {deficit} h)"
+                }
             }
         },
         "report-list": {
@@ -352,7 +384,8 @@
             "period-6m": "Last 6 months",
             "period-ytd": "Year to date",
             "profile": "Profile",
-            "reports": "Reports"
+            "reports": "Reports",
+            "ticket": "Create ticket"
         },
         "user-list": {
             "title": "All volunteers",
@@ -391,7 +424,8 @@
             "invalid-email": "Invalid e-mail",
             "invalid-name": "Invalid characters",
             "invalid-username": "Only latin letters and numbers, cannot start with a number",
-            "user-created-message": "User successfully created"
+            "user-created-message": "User successfully created",
+            "deactivated": "Deactivated"
         },
         "playgrounds": {
             "title": "Playgrounds report",
@@ -660,7 +694,6 @@
             "all-volunteers": "All volunteers",
             "applications": "Applications",
             "statistics": "Statistics",
-            "reports": "Volunteers reports",
             "mintrud-report": "Mintrud report"
         },
         "account-settings": "Account settings",

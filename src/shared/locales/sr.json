@@ -91,6 +91,21 @@
             "emptyContent": "Prazno telo emaila",
             "success": "Poruka uspešno poslata"
         },
+        "ticket-modal": {
+            "modalTitle": "Kreirati tiket",
+            "titleLabel": "Tema obraćanja",
+            "create": "Kreirati tiket",
+            "toUser": "Komе poslati",
+            "toUserDescription": "Volonter će dobiti obaveštenje na email i moći će da odgovori na njega",
+            "internalDescription": "Tiket će biti kreiran u sistemu <a href='https://help.russian.rs' target='_blank'>Help Desk</a>, volonter će dobiti obaveštenje i moći će da odgovori na email, a njegov odgovor će biti dodat u tiket. U zavisnosti od grupe, tiket će biti dodeljen odgovarajućoj osobi, koja će takođe imati pristup svim informacijama.",
+            "publicDescription": "Tiket će biti kreiran u sistemu <a href='https://help.russian.rs' target='_blank'>Help Desk</a>. U zavisnosti od grupe, tiket će biti prosleđen odgovarajućim ljudima. Odgovor ili dodatno pojašnjenje takođe ćete dobiti na svoj email.",
+            "group": "Grupa za dodelu",
+            "group-placeholder": "Izaberite grupu",
+            "group-description": "Od ovoga zavisi ko će razmatrati obraćanje",
+            "success": "<a href=\"{link}\" target=\"_blank\">Tiket br. {number}</a> je uspešno kreiran",
+            "error": "Došlo je do greške prilikom kreiranja tiketa, pišite na <a href='mailto:help@russian.rs'>help@russian.rs</a>",
+            "required": "Obavezno"
+        },
         "confirm-modal": {
             "confirmDefaultButton": "Potvrdi",
             "cancelDefaultButton": "Otkaži",
@@ -154,6 +169,7 @@
         },
         "profile": {
             "documentTitle": "Profil",
+            "deactivated": "Deaktiviran",
             "props": {
                 "city": "Grad",
                 "postalCode": "Poštanski broj",
@@ -291,6 +307,22 @@
                 "task-count": "Broj zadataka",
                 "time-spent": "Broj sati",
                 "week": "Nedelja"
+            },
+            "heatmap": {
+                "description": "Aktivnost izveštaja za tekuću godinu (po nedeljama), računaju se samo prihvaćeni.",
+                "tooltipReports": "{hours} {hoursLabel} za period {from}–{to} ({week})",
+                "hours": "h",
+                "tooltipWeek": "nedelja {num}",
+                "tooltipNA": "Nema zahteva za izveštaje za period {from}–{to} ({week})",
+                "tooltipWaiting": "Očekuju se izveštaji za period {from}–{to} ({week})",
+                "noReports": "Nema izveštaja",
+                "partialReports": "Delimični",
+                "fullReports": "Potpuni",
+                "summary": {
+                    "requiredZero": "Nemate zahteva po časovima",
+                    "ok": "Odrađeno {worked} h od {required} očekivanih",
+                    "deficit": "Odrađeno {worked} h od {required} očekivanih (nedostatak {deficit} h)"
+                }
             }
         },
         "report-list": {
@@ -352,7 +384,8 @@
             "period-6m": "Poslednjih 6 meseci",
             "period-ytd": "Od početka godine",
             "profile": "Profil",
-            "reports": "Izveštaji"
+            "reports": "Izveštaji",
+            "ticket": "Kreirajte tiket"
         },
         "user-list": {
             "title": "Svi volonteri",
@@ -391,7 +424,8 @@
             "invalid-email": "Neverni e-mail",
             "invalid-name": "Nevažeći znakovi",
             "invalid-username": "Samo latinična slova i brojevi, ne može početi sa brojem",
-            "user-created-message": "Korisnik je uspešno kreiran"
+            "user-created-message": "Korisnik je uspešno kreiran",
+            "deactivated": "Deaktiviran"
         },
         "playgrounds": {
             "title": "Izveštaj o igralištu",
@@ -660,7 +694,6 @@
             "all-volunteers": "Svi volonteri",
             "applications": "Aplikacije",
             "statistics": "Statistika",
-            "reports": "Izveštaji o volonterima",
             "mintrud-report": "izveštaj o volontiranju"
         },
         "account-settings": "Podešavanja naloga",
