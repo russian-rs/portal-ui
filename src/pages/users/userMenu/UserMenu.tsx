@@ -18,14 +18,15 @@ import { locales } from "../lib/locales"
 import classes from "./UserMenu.module.scss"
 
 interface UserMenuProps {
+    type?: "default" | "profile"
     user: UserInfoDto
 }
 
-export const UserMenu = ({ user }: UserMenuProps) => {
+export const UserMenu = ({ user, type = "default" }: UserMenuProps) => {
     const navigate = useNavigate()
 
     const [userDto, setUserDto] = useState(user)
-
+    const [menuOpened, setMenuOpened] = useState<boolean>(false)
     const [emailDrawerOpen, setEmailDrawerOpen] = useState<boolean>(false)
 
     const { isFetching: isActivating, refetch: activate } = useQuery({
@@ -47,7 +48,14 @@ export const UserMenu = ({ user }: UserMenuProps) => {
     })
 
     return (
-        <Menu shadow="md" width={200} closeOnItemClick={false}>
+        <Menu
+            opened={menuOpened}
+            onOpen={() => setMenuOpened(true)}
+            onClose={() => setMenuOpened(false)}
+            shadow="md"
+            width={200}
+            closeOnItemClick={false}
+        >
             <EmailDrawer
                 opened={emailDrawerOpen}
                 close={() => setEmailDrawerOpen(false)}
@@ -61,10 +69,21 @@ export const UserMenu = ({ user }: UserMenuProps) => {
                 <Menu.Label>
                     <FormattedMessage id={locales.menuCommon} />
                 </Menu.Label>
-                <Menu.Item leftSection={<IconEye size={14} />} onClick={() => navigate(`/profile/${userDto.username}`)}>
-                    <FormattedMessage id={locales.menuView} />
-                </Menu.Item>
-                <Menu.Item leftSection={<IconMessageCircle size={14} />} onClick={() => setEmailDrawerOpen(true)}>
+                {type === "default" && (
+                    <Menu.Item
+                        leftSection={<IconEye size={14} />}
+                        onClick={() => navigate(`/profile/${userDto.username}`)}
+                    >
+                        <FormattedMessage id={locales.menuView} />
+                    </Menu.Item>
+                )}
+                <Menu.Item
+                    leftSection={<IconMessageCircle size={14} />}
+                    onClick={() => {
+                        setMenuOpened(false)
+                        setEmailDrawerOpen(true)
+                    }}
+                >
                     <FormattedMessage id={locales.menuContact} />
                 </Menu.Item>
                 <Menu.Item

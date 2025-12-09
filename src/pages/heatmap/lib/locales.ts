@@ -38,4 +38,5 @@ export const locales = {
     periodYtd: "pages.heat-map.period-ytd",
     profile: "pages.heat-map.profile",
     reports: "pages.heat-map.reports",
+    ticket: "pages.heat-map.ticket",
 }

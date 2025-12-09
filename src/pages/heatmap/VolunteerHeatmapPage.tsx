@@ -2,7 +2,7 @@ import { Button, Card, Flex, Pagination, Select, Text } from "@mantine/core"
 import { IconMail } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
@@ -19,19 +19,24 @@ import classes from "./VolunteerHeatmapPage.module.scss"
 import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
 import { NO_PROGRAM_CODE, NO_PROJECT_CODE } from "src/shared/constants/Shared"
 
-export const VolunteerHeatmapPage = () => {
+export const VolunteerHeatmapPage: React.FC = () => {
     const { user } = useContext(UserContext)
     const [searchParams, setSearchParams] = useSearchParams()
     const navigate = useNavigate()
 
     setDocumentTitleByLocale(locales.title)
 
-    if (!hasAccess(user)) {
-        navigate("/unauthorized")
-    }
+    useEffect(() => {
+        if (!hasAccess(user)) {
+            navigate("/unauthorized", { replace: true })
+        }
+    }, [user, navigate])
+
+    // --- фильтры / состояние ---
 
     const [search, setSearch] = useState(searchParams.get("search") || "")
     const [debouncedSearch, setDebouncedSearch] = useState(search)
+
     const [selectedProgram, setSelectedProgram] = useState<string | null>(searchParams.get("program") || null)
     const [selectedProject, setSelectedProject] = useState<string | null>(searchParams.get("project") || null)
     const { programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
@@ -39,7 +44,8 @@ export const VolunteerHeatmapPage = () => {
         selectedProject
     )
     const [periodMonths, setPeriodMonths] = useState<string>(searchParams.get("period") || "3")
-    const [selectedVolunteers, setSelectedVolunteers] = useState<Set<number>>(new Set())
+
+    const [selectedVolunteers, setSelectedVolunteers] = useState<Set<number>>(() => new Set())
     const [emailDrawerOpen, setEmailDrawerOpen] = useState(false)
 
     const [pageRequest, setPageRequest] = useState({
@@ -87,29 +93,28 @@ export const VolunteerHeatmapPage = () => {
         }
     }
 
+    // --- дебаунс поиска ---
+
     useEffect(() => {
-        const id = setTimeout(() => {
-            const trimmed = search.trim()
-            setDebouncedSearch(trimmed)
-            if (trimmed !== debouncedSearch) {
-                setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
-            }
+        const trimmed = search.trim()
+        const id = window.setTimeout(() => {
+            setDebouncedSearch((prev) => {
+                // если строка реально изменилась — сбросить страницу
+                if (prev !== trimmed) {
+                    setPageRequest((prevPage) => ({ ...prevPage, pageNumber: 0 }))
+                }
+                return trimmed
+            })
         }, 400)
-        return () => clearTimeout(id)
+
+        return () => {
+            window.clearTimeout(id)
+        }
     }, [search])
 
-    useEffect(() => {
-        const params = new URLSearchParams()
-        if (debouncedSearch) params.set("search", debouncedSearch)
-        if (selectedProgram) params.set("program", selectedProgram)
-        if (selectedProject) params.set("project", selectedProject)
-        if (periodMonths) params.set("period", periodMonths)
-        if (pageRequest.pageNumber > 0) params.set("page", String(pageRequest.pageNumber + 1))
-        setSearchParams(params)
-        setSelectedVolunteers(new Set())
-    }, [debouncedSearch, selectedProgram, selectedProject, periodMonths, pageRequest.pageNumber])
+    // --- вычисление периода и стартовой даты ---
 
-    const getStartDate = () => {
+    const startDate = useMemo(() => {
         const now = dayjs()
         switch (periodMonths) {
             case "3":
@@ -121,7 +126,29 @@ export const VolunteerHeatmapPage = () => {
             default:
                 return now.subtract(3, "month").startOf("month")
         }
-    }
+    }, [periodMonths])
+
+    const startDateStr = useMemo(() => startDate.format("YYYY-MM-DD"), [startDate])
+
+    // --- синхронизация URL-параметров с состоянием ---
+
+    useEffect(() => {
+        const params = new URLSearchParams()
+
+        if (debouncedSearch) params.set("search", debouncedSearch)
+        if (selectedProgram) params.set("program", selectedProgram)
+        if (selectedProject) params.set("project", selectedProject)
+        if (periodMonths) params.set("period", periodMonths)
+        if (pageRequest.pageNumber > 0) {
+            params.set("page", String(pageRequest.pageNumber + 1))
+        }
+
+        setSearchParams(params, { replace: true })
+        // при смене фильтров / страницы сбрасываем выбранных волонтёров
+        setSelectedVolunteers(new Set())
+    }, [debouncedSearch, selectedProgram, selectedProject, periodMonths, pageRequest.pageNumber, setSearchParams])
+
+    // --- запрос данных ---
 
     const { data: volunteerData } = useQuery({
         queryKey: [
@@ -132,12 +159,13 @@ export const VolunteerHeatmapPage = () => {
             selectedProgram,
             selectedProject,
             periodMonths,
+            startDateStr,
         ],
         queryFn: () =>
             ReportHeatMapApiService.getVolunteerHeatMap(debouncedSearch, pageRequest, {
                 program: selectedProgram === NO_PROGRAM_CODE ? "" : selectedProgram || undefined,
                 project: selectedProject === NO_PROJECT_CODE ? "" : selectedProject || undefined,
-                startDate: getStartDate().format("YYYY-MM-DD"),
+                startDate: startDateStr,
             }).then((response) => response.data),
         placeholderData: { content: [], page: defaultPageResponse },
         staleTime: 5 * 60 * 1000,
@@ -146,6 +174,56 @@ export const VolunteerHeatmapPage = () => {
         refetchOnReconnect: false,
         refetchOnMount: false,
     })
+
+    // --- обработчики, мемоизированные чтобы не триггерить лишние рендеры ---
+
+    const handleVolunteerSelect = useCallback((volunteerId: number) => {
+        setSelectedVolunteers((prev) => {
+            const next = new Set(prev)
+            if (next.has(volunteerId)) {
+                next.delete(volunteerId)
+            } else {
+                next.add(volunteerId)
+            }
+            return next
+        })
+    }, [])
+
+    const handleResetFilters = useCallback(() => {
+        setSearch("")
+        setSelectedProgram(null)
+        setSelectedProject(null)
+        setPeriodMonths("3")
+        setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
+    }, [])
+
+    const handlePageSizeChange = useCallback((value: string | null) => {
+        if (!value) return
+        setPageRequest((pr) => ({
+            ...pr,
+            pageNumber: 0,
+            pageSize: Number(value),
+        }))
+    }, [])
+
+    const handlePageChange = useCallback((page: number) => {
+        setPageRequest((pr) => ({ ...pr, pageNumber: page - 1 }))
+    }, [])
+
+    const emailRecipients = useMemo(
+        () =>
+            (volunteerData?.content ?? [])
+                .filter((v) => selectedVolunteers.has(v.volunteerInfo.id))
+                .map((v) => ({
+                    name: v.volunteerInfo.fullName,
+                    email: v.volunteerInfo.email,
+                })),
+        [volunteerData?.content, selectedVolunteers]
+    )
+
+    const totalVolunteers = volunteerData?.page.totalElements ?? 0
+    const totalPages = volunteerData?.page.totalPages ?? 1
+    const currentPage = (pageRequest.pageNumber ?? 0) + 1
 
     return (
         <Flex className={classes.root}>
@@ -163,13 +241,7 @@ export const VolunteerHeatmapPage = () => {
                     onProjectChange={handleProjectChange}
                     periodMonths={periodMonths}
                     onPeriodChange={setPeriodMonths}
-                    onReset={() => {
-                        setSearch("")
-                        setSelectedProgram(null)
-                        setSelectedProject(null)
-                        setPeriodMonths("3")
-                        setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
-                    }}
+                    onReset={handleResetFilters}
                     programsOverride={visiblePrograms}
                     projectsOverride={visibleProjects}
                 />
@@ -177,19 +249,12 @@ export const VolunteerHeatmapPage = () => {
                 <Card withBorder p="lg">
                     <VolunteerReportHeatmap
                         volunteers={volunteerData?.content ?? []}
-                        startDate={getStartDate()}
-                        onVolunteerSelect={(volunteerId: number) => {
-                            const next = new Set(selectedVolunteers)
-                            if (next.has(volunteerId)) {
-                                next.delete(volunteerId)
-                            } else {
-                                next.add(volunteerId)
-                            }
-                            setSelectedVolunteers(next)
-                        }}
+                        startDate={startDate}
+                        onVolunteerSelect={handleVolunteerSelect}
                         selectedVolunteers={selectedVolunteers}
-                        totalVolunteers={volunteerData?.page.totalElements ?? 0}
+                        totalVolunteers={totalVolunteers}
                     />
+
                     <Flex justify="space-between" align="center" mt="md" gap="md" wrap="wrap">
                         <Flex justify="space-between" align="center" wrap="wrap" gap="md" mb="sm">
                             <Button
@@ -200,10 +265,10 @@ export const VolunteerHeatmapPage = () => {
                                 <FormattedMessage id={locales.sendMessage} />
                             </Button>
                         </Flex>
+
                         <Flex gap="md" align="center">
                             <Select
                                 size="sm"
-                                label={undefined}
                                 aria-label="Per page"
                                 value={String(pageRequest.pageSize)}
                                 data={[
@@ -214,29 +279,18 @@ export const VolunteerHeatmapPage = () => {
                                         label: "50",
                                     },
                                 ]}
-                                onChange={(value) => {
-                                    if (!value) return
-                                    setPageRequest((pr) => ({ ...pr, pageNumber: 0, pageSize: Number(value) }))
-                                }}
+                                onChange={handlePageSizeChange}
                                 w={100}
                             />
-                            <Pagination
-                                total={volunteerData?.page.totalPages ?? 1}
-                                value={(pageRequest.pageNumber ?? 0) + 1}
-                                onChange={(page) => setPageRequest((pr) => ({ ...pr, pageNumber: page - 1 }))}
-                            />
+                            <Pagination total={totalPages} value={currentPage} onChange={handlePageChange} />
                         </Flex>
                     </Flex>
+
                     <EmailDrawer
                         opened={emailDrawerOpen}
                         close={() => setEmailDrawerOpen(false)}
                         templates={heatmapTemplates}
-                        recipients={(volunteerData?.content ?? [])
-                            .filter((v) => selectedVolunteers.has(v.volunteerInfo.id))
-                            .map((v) => ({
-                                name: v.volunteerInfo.fullName,
-                                email: v.volunteerInfo.email,
-                            }))}
+                        recipients={emailRecipients}
                     />
                 </Card>
             </Flex>
