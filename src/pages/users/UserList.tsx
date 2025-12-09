@@ -39,7 +39,6 @@ import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { locales } from "./lib/locales"
 import classes from "./UserList.module.scss"
-import { useSyncProgramByProject } from "src/shared/hooks/useSyncProgramByProject"
 
 export const UserList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -61,13 +60,54 @@ export const UserList = () => {
         selectedProject
     )
 
-    useSyncProgramByProject(
-        selectedProject,
-        projects,
-        programs,
-        visibleProjects,
-        setSelectedProgram
-    )
+    const handleProgramChange = (newProgram: string | null) => {
+        const programChanged = newProgram !== selectedProgram
+
+        setSelectedProgram(newProgram)
+
+        let nextProject = selectedProject
+
+        if (programChanged) {
+            nextProject = null
+            setSelectedProject(null)
+
+            setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
+        }
+
+        const pageNumber = programChanged ? 0 : (pageRequest.pageNumber || 0)
+        updateUrlParams(debouncedSearch, newProgram, nextProject, pageNumber)
+    }
+
+    const handleProjectChange = (newProject: string | null) => {
+        const projectChanged = newProject !== selectedProject
+        let nextProgram = selectedProgram
+
+        if (newProject && newProject !== NO_PROJECT_CODE) {
+            const project =
+                visibleProjects.find((p) => p.code === newProject) ??
+                projects.find((p) => p.code === newProject)
+
+            if (project) {
+                const owningProgramCode =
+                    project.programCode ??
+                    programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
+
+                if (owningProgramCode) {
+                    nextProgram = owningProgramCode.toUpperCase()
+                }
+            }
+        }
+
+        setSelectedProject(newProject)
+        setSelectedProgram(nextProgram)
+
+        if (projectChanged) {
+            setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
+        }
+
+        const pageNumber = projectChanged ? 0 : (pageRequest.pageNumber || 0)
+        updateUrlParams(debouncedSearch, nextProgram, newProject, pageNumber)
+    }
 
     const isMobile = useMediaQuery("(max-width: 1360px)")
     const [filtersOpened, setFiltersOpened] = useState(false)
@@ -244,36 +284,6 @@ export const UserList = () => {
     useEffect(() => {
         updateUrlParams(debouncedSearch, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
     }, [debouncedSearch])
-
-    // Эффект для обновления URL при изменении программы
-    useEffect(() => {
-        updateUrlParams(debouncedSearch, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
-    }, [selectedProgram])
-
-    // Эффект для обновления URL при изменении проектов
-    useEffect(() => {
-        updateUrlParams(debouncedSearch, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
-    }, [selectedProject])
-
-    // Сбрасываем страницу только если программа действительно изменилась пользователем
-    const prevProgramRef = React.useRef<string | null>(selectedProgram)
-    useEffect(() => {
-        if (selectedProgram !== prevProgramRef.current) {
-            setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
-        }
-
-        prevProgramRef.current = selectedProgram
-    }, [selectedProgram])
-
-    // Сбрасываем страницу только если проекты действительно изменились пользователем
-    const prevProjectRef = React.useRef<string | null>(selectedProject)
-    useEffect(() => {
-        if (selectedProject !== prevProjectRef.current) {
-            setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
-        }
-
-        prevProjectRef.current = selectedProject
-    }, [selectedProject])
 
     // Эффект для обновления URL при изменении страницы
     useEffect(() => {
@@ -560,18 +570,12 @@ export const UserList = () => {
                                     />
                                     <ProgramFilter
                                         value={selectedProgram}
-                                        onChange={(newProgram) => {
-                                            setSelectedProgram(newProgram)
-
-                                            if (newProgram !== selectedProgram) {
-                                                setSelectedProject(null)
-                                            }
-                                        }}
+                                        onChange={handleProgramChange}
                                         programsOverride={visiblePrograms}
                                     />
                                     <ProjectFilter
                                         value={selectedProject}
-                                        onChange={setSelectedProject}
+                                        onChange={handleProjectChange}
                                         projectsOverride={visibleProjects}
                                     />
                                     {activeFiltersCountMemo > 0 && (
@@ -608,19 +612,13 @@ export const UserList = () => {
                             />
                             <ProgramFilter
                                 value={selectedProgram}
-                                onChange={(newProgram) => {
-                                    setSelectedProgram(newProgram)
-
-                                    if (newProgram !== selectedProgram) {
-                                        setSelectedProject(null)
-                                    }
-                                }}
+                                onChange={handleProgramChange}
                                 programsOverride={visiblePrograms}
                             />
 
                             <ProjectFilter
                                 value={selectedProject}
-                                onChange={setSelectedProject}
+                                onChange={handleProjectChange}
                                 projectsOverride={visibleProjects}
                             />
                             {activeFiltersCountMemo > 0 && (

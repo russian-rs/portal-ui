@@ -30,7 +30,6 @@ import { defaultFilter, defaultPage, defaultPageResponse, defaultUser } from "./
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
 import classes from "./ReportList.module.scss"
-import { useSyncProgramByProject } from "src/shared/hooks/useSyncProgramByProject"
 
 export const ReportList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -65,14 +64,6 @@ export const ReportList = () => {
     const { programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
         selectedProgram,
         selectedProject
-    )
-
-    useSyncProgramByProject(
-        selectedProject,
-        projects,
-        programs,
-        visibleProjects,
-        setSelectedProgram
     )
 
     // Ref для скролла к началу списка
@@ -159,6 +150,42 @@ export const ReportList = () => {
         }
 
         setSearchParams(params)
+    }
+
+    const handleProjectChange = (newProject: string | null) => {
+        const projectChanged = newProject !== selectedProject
+        let nextProgram = selectedProgram
+
+        if (newProject && newProject !== NO_PROJECT_CODE) {
+            const project =
+                visibleProjects.find((p) => p.code === newProject) ??
+                projects.find((p) => p.code === newProject)
+
+            if (project) {
+                const owningProgramCode =
+                    project.programCode ??
+                    programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
+
+                if (owningProgramCode) {
+                    nextProgram = owningProgramCode.toUpperCase()
+                }
+            }
+        }
+
+        setSelectedProject(newProject)
+        setSelectedProgram(nextProgram)
+
+        if (projectChanged) {
+            setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
+            updateUrlParams(filter, nextProgram, newProject, 0)
+        } else {
+            updateUrlParams(
+                filter,
+                nextProgram,
+                newProject,
+                pageRequest.pageNumber || 0
+            )
+        }
     }
 
     // Эффект для обновления размера страницы при изменении типа устройства
@@ -646,22 +673,7 @@ export const ReportList = () => {
                                         <ProjectFilter
                                             className={classes.programFilter}
                                             value={selectedProject}
-                                            onChange={(newProject) => {
-                                                const projectChanged = newProject !== selectedProject
-
-                                                setSelectedProject(newProject)
-                                                if (projectChanged) {
-                                                    setPageRequest({ ...pageRequest, pageNumber: 0 })
-                                                    updateUrlParams(filter, selectedProgram, newProject, 0)
-                                                } else {
-                                                    updateUrlParams(
-                                                        filter,
-                                                        selectedProgram,
-                                                        newProject,
-                                                        pageRequest.pageNumber || 0
-                                                    )
-                                                }
-                                            }}
+                                            onChange={handleProjectChange}
                                             placeholder={intl.formatMessage({ id: locales.projectFilterNotSelected })}
                                             projectsOverride={visibleProjects}
                                         />
@@ -745,22 +757,7 @@ export const ReportList = () => {
                                 <ProjectFilter
                                     className={classes.programFilter}
                                     value={selectedProject}
-                                    onChange={(newProject) => {
-                                        const projectChanged = newProject !== selectedProject
-
-                                        setSelectedProject(newProject)
-                                        if (projectChanged) {
-                                            setPageRequest({ ...pageRequest, pageNumber: 0 })
-                                            updateUrlParams(filter, selectedProgram, newProject, 0)
-                                        } else {
-                                            updateUrlParams(
-                                                filter,
-                                                selectedProgram,
-                                                newProject,
-                                                pageRequest.pageNumber || 0
-                                            )
-                                        }
-                                    }}
+                                    onChange={handleProjectChange}
                                     placeholder={intl.formatMessage({ id: locales.projectFilterNotSelected })}
                                     projectsOverride={visibleProjects}
                                 />
