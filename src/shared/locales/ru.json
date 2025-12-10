@@ -244,6 +244,7 @@
             "residencePermit": {
                 "no-permit": "Нет записей о ВНЖ",
                 "title": "Вид на жительство",
+                "issuingDate": "Дата выдачи",
                 "valid-until": "Действителен до",
                 "nationality": "Гражданство",
                 "purpose-of-stay": "Цель пребывания",

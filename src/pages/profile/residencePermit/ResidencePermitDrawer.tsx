@@ -1,7 +1,7 @@
-import { Accordion, Button, Drawer, Flex, Text, Group } from "@mantine/core"
+import { Accordion, Button, Drawer, Flex, Text, Group, Modal, Image } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
-import { FileInfoDto, ResidencePermitDto } from "@russian-rs/portal-api-axios"
-import { IconPlus } from "@tabler/icons-react"
+import { ResidencePermitDto } from "@russian-rs/portal-api-axios"
+import { IconEye, IconPlus } from "@tabler/icons-react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useContext, useEffect, useState } from "react"
@@ -22,11 +22,18 @@ interface ResidencePermitDrawerProps {
     onSuccess?: () => void
 }
 
-export const ResidencePermitDrawer = ({ opened, onClose, userId, residencePermits, onSuccess }: ResidencePermitDrawerProps) => {
+export const ResidencePermitDrawer = ({
+    opened,
+    onClose,
+    userId,
+    residencePermits,
+    onSuccess,
+}: ResidencePermitDrawerProps) => {
     const queryClient = useQueryClient()
     const { user: currentUser } = useContext(UserContext)
     const [localPermits, setLocalPermits] = useState<ResidencePermitDto[]>([])
     const [editingId, setEditingId] = useState<string | null>(null)
+    const [previewImage, setPreviewImage] = useState<string | null>(null)
 
     useEffect(() => {
         if (opened) {
@@ -50,9 +57,7 @@ export const ResidencePermitDrawer = ({ opened, onClose, userId, residencePermit
             onClose()
         },
         onError: () => {
-            notifications.show(
-                ErrorNotification(<FormattedMessage id="pages.profile.residencePermit.createError" />)
-            )
+            notifications.show(ErrorNotification(<FormattedMessage id="pages.profile.residencePermit.createError" />))
         },
     })
 
@@ -69,9 +74,7 @@ export const ResidencePermitDrawer = ({ opened, onClose, userId, residencePermit
             if (onSuccess) onSuccess()
         },
         onError: () => {
-            notifications.show(
-                ErrorNotification(<FormattedMessage id="pages.profile.residencePermit.createError" />)
-            )
+            notifications.show(ErrorNotification(<FormattedMessage id="pages.profile.residencePermit.createError" />))
         },
     })
 
@@ -103,12 +106,12 @@ export const ResidencePermitDrawer = ({ opened, onClose, userId, residencePermit
 
     const handleDelete = (id: string) => {
         if (isAdmin) {
-            const isNew = !residencePermits.find(p => p.id === id);
+            const isNew = !residencePermits.find((p) => p.id === id)
             if (isNew) {
-                setLocalPermits(localPermits.filter(p => p.id !== id));
-                setEditingId(null);
+                setLocalPermits(localPermits.filter((p) => p.id !== id))
+                setEditingId(null)
             } else {
-                deletePermit(id);
+                deletePermit(id)
             }
         }
     }
@@ -133,9 +136,9 @@ export const ResidencePermitDrawer = ({ opened, onClose, userId, residencePermit
                             canDelete={isAdmin}
                             isNew={!residencePermits.find((p) => p.id === permit.id)}
                             onCancel={() => {
-                                const isNew = !residencePermits.find(p => p.id === editingId)
+                                const isNew = !residencePermits.find((p) => p.id === editingId)
                                 if (isNew) {
-                                    setLocalPermits(localPermits.filter(p => p.id !== editingId))
+                                    setLocalPermits(localPermits.filter((p) => p.id !== editingId))
                                 }
                                 setEditingId(null)
                             }}
@@ -168,11 +171,54 @@ export const ResidencePermitDrawer = ({ opened, onClose, userId, residencePermit
                                     <Accordion.Panel>
                                         <Flex direction="column" gap="xs">
                                             <Text size="sm">
-                                                <b><FormattedMessage id="pages.profile.residencePermit.nationality" />:</b> {permit.nationality}
+                                                <b>
+                                                    <FormattedMessage id="pages.profile.residencePermit.registrationNumber.description" />
+                                                    :
+                                                </b>{" "}
+                                                {permit.registrationNumber}
                                             </Text>
                                             <Text size="sm">
-                                                <b><FormattedMessage id="pages.profile.residencePermit.purpose-of-stay" />:</b> {permit.purposeOfStay}
+                                                <b>
+                                                    <FormattedMessage id="pages.profile.residencePermit.issuingDate" />:
+                                                </b>{" "}
+                                                {permit.issuingDate
+                                                    ? dayjs(permit.issuingDate).format("DD.MM.YYYY")
+                                                    : ""}
                                             </Text>
+                                            <Text size="sm">
+                                                <b>
+                                                    <FormattedMessage id="pages.profile.residencePermit.valid-until" />:
+                                                </b>{" "}
+                                                {permit.validUntil ? dayjs(permit.validUntil).format("DD.MM.YYYY") : ""}
+                                            </Text>
+                                            <Flex gap="xs" mt="xs">
+                                                {permit.frontSidePhoto?.link && (
+                                                    <Button
+                                                        variant="subtle"
+                                                        size="xs"
+                                                        color="gray"
+                                                        leftSection={<IconEye size={16} />}
+                                                        onClick={() =>
+                                                            setPreviewImage(permit.frontSidePhoto?.link || null)
+                                                        }
+                                                    >
+                                                        <FormattedMessage id="pages.profile.residencePermit.frontSidePhoto" />
+                                                    </Button>
+                                                )}
+                                                {permit.backSidePhoto?.link && (
+                                                    <Button
+                                                        variant="subtle"
+                                                        size="xs"
+                                                        color="gray"
+                                                        leftSection={<IconEye size={16} />}
+                                                        onClick={() =>
+                                                            setPreviewImage(permit.backSidePhoto?.link || null)
+                                                        }
+                                                    >
+                                                        <FormattedMessage id="pages.profile.residencePermit.backSidePhoto" />
+                                                    </Button>
+                                                )}
+                                            </Flex>
                                             <Button
                                                 variant="light"
                                                 size="xs"
@@ -190,16 +236,15 @@ export const ResidencePermitDrawer = ({ opened, onClose, userId, residencePermit
                     )}
 
                     {isAdmin && (
-                        <Button
-                            leftSection={<IconPlus size={16} />}
-                            onClick={handleAdd}
-                            variant="outline"
-                        >
+                        <Button leftSection={<IconPlus size={16} />} onClick={handleAdd} variant="outline">
                             <FormattedMessage id="pages.profile.residencePermit.button" />
                         </Button>
                     )}
                 </Flex>
             )}
+            <Modal opened={!!previewImage} onClose={() => setPreviewImage(null)} size="auto" centered>
+                {previewImage && <Image src={previewImage} style={{ maxHeight: "80vh" }} />}
+            </Modal>
         </Drawer>
     )
 }
