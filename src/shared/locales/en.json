@@ -244,6 +244,7 @@
             "residencePermit": {
                 "no-permit": "No residence permit records",
                 "title": "Residence Permit",
+                "issuingDate": "Date of issue",
                 "valid-until": "Valid until",
                 "nationality": "Nationality",
                 "purpose-of-stay": "Purpose of stay",

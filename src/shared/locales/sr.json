@@ -244,6 +244,7 @@
             "residencePermit": {
                 "no-permit": "Nema zapisa o boravku",
                 "title": "Boravišna dozvola",
+                "issuingDate": "Datum izdavanja",
                 "valid-until": "Važi do",
                 "nationality": "Državljanstvo",
                 "purpose-of-stay": "Svrha boravka",
