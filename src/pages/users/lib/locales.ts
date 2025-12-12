@@ -37,4 +37,5 @@ export const locales = {
     invalidUsername: "pages.user-list.invalid-username",
     userCreatedMessage: "pages.user-list.user-created-message",
     resetFilters: "common.reset-filters",
+    deactivated: "pages.user-list.deactivated",
 }
