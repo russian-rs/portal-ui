@@ -616,6 +616,12 @@
         "reporting": {
             "title": "Vodič za predaju izveštaja"
         },
+        "support": {
+            "title": "Kontakt podrške",
+            "documentTitle": "Kontakt podrške",
+            "description": "Kreirajte tiket, izaberite grupu podrške ili kuratora i detaljno opišite svoje pitanje — odgovor će stići na e-mail naveden u profilu.",
+            "createButton": "Kreiraj tiket"
+        },
         "volunteers-reports": {
             "title": "Izveštaji o volonterima"
         },

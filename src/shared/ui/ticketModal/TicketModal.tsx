@@ -189,7 +189,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({
 
                     {fromUser && !toUser && (
                         <Alert variant="light" color="blue">
-                            {parse(intl.formatMessage({ id: locales.internalDescription }))}
+                            {parse(intl.formatMessage({ id: locales.publicDescription }))}
                         </Alert>
                     )}
 
@@ -252,7 +252,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({
                     </RichTextEditor>
 
                     {form.errors.body && (
-                        <Text size="xs" c="red" mt={4}>
+                        <Text size="xs" c="red.7" mt={4}>
                             {form.errors.body}
                         </Text>
                     )}
