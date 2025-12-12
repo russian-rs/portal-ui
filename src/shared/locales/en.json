@@ -616,6 +616,12 @@
         "reporting": {
             "title": "Reporting Guidelines"
         },
+        "support": {
+            "title": "Contact support",
+            "documentTitle": "Contact support",
+            "description": "Create a ticket, choose a support group or curator, and describe your question in detail — we will reply to the email from your profile.",
+            "createButton": "Create ticket"
+        },
         "volunteers-reports": {
             "title": "Volunteers reports"
         },
