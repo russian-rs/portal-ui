@@ -55,7 +55,7 @@ export const ReportPage = () => {
             }),
     })
 
-    const { data: users, isFetching: isFetchingUsers } = resolveUsers(logins)
+    const { data: users = {}, isFetching: isFetchingUsers } = resolveUsers(logins)
 
     if (isFetchingReport || isFetchingUsers) {
         return (
