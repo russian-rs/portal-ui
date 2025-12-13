@@ -57,7 +57,6 @@ export const ReportList = () => {
         dateFrom: searchParams.get("dateFrom") || null,
         dateTo: searchParams.get("dateTo") || null,
     })
-    const [logins, setLogins] = useState<string[]>([])
     const [selectedProgram, setSelectedProgram] = useState<string | null>(searchParams.get("program") || null)
     const [selectedProject, setSelectedProject] = useState<string | null>(searchParams.get("project") || null)
 
@@ -220,34 +219,32 @@ export const ReportList = () => {
         isFetching: isFetchingReports,
     } = useQuery({
         initialData: { content: [], page: defaultPageResponse },
-
         queryKey: ["searchReports", filter, pageRequest, selectedProgram, selectedProject],
-
         queryFn: () => {
-            // Обрабатываем проекты: если выбран "NO_PROJECT", отправляем пустую строку
             let project: string | null = null
             if (selectedProject) {
-                if (selectedProject === NO_PROJECT_CODE) {
-                    project = "" // Пустая строка для фильтра "без проекта"
-                } else {
-                    project = selectedProject // Код проекта
-                }
+                project = selectedProject === NO_PROJECT_CODE ? "" : selectedProject
             }
 
             const filterWithProgram = {
                 ...filter,
-
                 program: selectedProgram === NO_PROGRAM_CODE ? "" : selectedProgram,
                 project,
             }
-            return ReportApiService.getReports(pageRequest, filterWithProgram).then((response) => {
-                setLogins(response.data.content.map((it) => it.user).filter((it) => it != undefined))
-                return response.data
-            })
+
+            return ReportApiService.getReports(pageRequest, filterWithProgram).then((r) => r.data)
         },
     })
 
-    const { data: users } = resolveUsers(logins)
+    const logins = React.useMemo(() => {
+        const set = new Set<string>()
+        for (const r of reports) {
+            if (r.user) set.add(r.user)
+        }
+        return Array.from(set).sort()
+    }, [reports])
+
+    const { data: users = {} } = resolveUsers(logins)
 
     const onUserSelected = (selectedUser: UserInfoDto | null) => {
         const newFilter = { ...filter, login: selectedUser?.username || null }
