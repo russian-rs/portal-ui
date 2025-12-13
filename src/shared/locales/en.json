@@ -359,6 +359,7 @@
             "status": "Status",
             "send-message": "Send Message",
             "no-reports": "No Reports",
+            "na": "N/A",
             "partial-reports": "Partial Reports",
             "full-reports": "Full Reports",
             "pending": "Pending",

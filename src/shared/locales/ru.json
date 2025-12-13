@@ -359,6 +359,7 @@
             "status": "Статус",
             "send-message": "Отправить письмо",
             "no-reports": "Нет отчетов",
+            "na": "N/A",
             "partial-reports": "Частичные отчеты",
             "full-reports": "Полные отчеты",
             "pending": "Ожидание",
