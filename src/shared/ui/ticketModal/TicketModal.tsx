@@ -14,7 +14,7 @@ import Underline from "@tiptap/extension-underline"
 import { useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import parse from "html-react-parser"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { TicketApiService } from "src/shared/api/TicketApiService"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
@@ -30,8 +30,16 @@ interface TicketModalProps {
     close: () => void
     fromUser?: UserInfoDto
     toUser?: UserInfoDto
+    /** legacy props */
     title?: string
     body?: string
+    /** preferred props for pre-filling */
+    initialTitle?: string
+    initialBody?: string
+    initialGroup?: string
+    groupTarget?: "SUPPORT" | "CURATOR"
+    allowAttachments?: boolean
+    attachmentsRequired?: boolean
     templates?: TicketTemplate[]
 }
 
@@ -48,6 +56,12 @@ export const TicketModal: React.FC<TicketModalProps> = ({
     toUser,
     title,
     body,
+    initialTitle,
+    initialBody,
+    initialGroup,
+    groupTarget,
+    allowAttachments = true,
+    attachmentsRequired = false,
     templates,
 }) => {
     const intl = useIntl()
@@ -61,6 +75,35 @@ export const TicketModal: React.FC<TicketModalProps> = ({
         queryFn: () => TicketApiService.getTicketGroups().then((r) => r.data),
     })
 
+    const pickGroupByTarget = (
+        groups: string[] | undefined,
+        target: "SUPPORT" | "CURATOR" | undefined
+    ): string | null => {
+        if (!groups || groups.length === 0) return null
+        if (!target) return null
+
+        const norm = (s: string) => s.toLowerCase()
+        const hasAny = (s: string, parts: string[]) => parts.some((p) => norm(s).includes(p))
+
+        const supportNeedles = ["support", "help", "поддерж", "helpdesk", "it"]
+        const curatorNeedles = ["curator", "куратор", "координ", "volunteer", "волонт"]
+
+        const preferred = target === "SUPPORT" ? supportNeedles : curatorNeedles
+
+        // 1) exact match by common names
+        const exactCandidates =
+            target === "SUPPORT" ? ["support", "help", "поддержка"] : ["curator", "куратор", "координатор"]
+        const exact = groups.find((g) => exactCandidates.includes(norm(g)))
+        if (exact) return exact
+
+        // 2) fuzzy contains
+        const fuzzy = groups.find((g) => hasAny(g, preferred))
+        if (fuzzy) return fuzzy
+
+        // 3) fallback to first group
+        return groups[0]
+    }
+
     const requiredMessage = { message: intl.formatMessage({ id: locales.required }) }
 
     const validationSchema = z.object({
@@ -73,9 +116,9 @@ export const TicketModal: React.FC<TicketModalProps> = ({
         mode: "uncontrolled",
         validate: zodResolver(validationSchema),
         initialValues: {
-            title: title ?? "",
+            title: initialTitle ?? title ?? "",
             group: "",
-            body: body ?? "",
+            body: initialBody ?? body ?? "",
         },
     })
 
@@ -103,6 +146,32 @@ export const TicketModal: React.FC<TicketModalProps> = ({
         [creating]
     )
 
+    useEffect(() => {
+        if (!opened) return
+
+        // Reset group + files every time modal opens
+        form.setFieldValue("group", initialGroup ?? "")
+        setUploadedFiles([])
+        setLoadingFiles([])
+
+        const nextTitle = initialTitle ?? title ?? ""
+        const nextBody = initialBody ?? body ?? ""
+
+        form.setFieldValue("title", nextTitle)
+        form.setFieldValue("body", nextBody)
+        editor?.commands.setContent(nextBody || "")
+    }, [opened, initialTitle, initialBody, initialGroup, title, body, editor])
+
+    useEffect(() => {
+        if (!opened) return
+        if (form.getValues().group) return
+
+        const selected = initialGroup ?? pickGroupByTarget(ticketGroups, groupTarget)
+        if (!selected) return
+
+        form.setFieldValue("group", selected)
+    }, [opened, ticketGroups, groupTarget, initialGroup])
+
     const hasAttachments = uploadedFiles.length > 0 || loadingFiles.length > 0
 
     const handleTemplateClick = (template: TicketTemplate) => {
@@ -114,6 +183,16 @@ export const TicketModal: React.FC<TicketModalProps> = ({
     const handleSubmit = async (values: TicketFormValues) => {
         console.log(values)
         try {
+            if (attachmentsRequired && uploadedFiles.length === 0) {
+                notifications.show(
+                    ErrorNotification(
+                        <Text size="sm">{intl.formatMessage({ id: "common.ticket-modal.attachmentsRequired" })}</Text>,
+                        null
+                    )
+                )
+                return
+            }
+
             const createdTicket = await createTicket({
                 toUser: toUser?.username ?? null,
                 fromUser: fromUser?.username ?? null,
@@ -272,7 +351,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({
                         </Flex>
                     )}
 
-                    {fromUser && (
+                    {fromUser && allowAttachments && (
                         <FileUploader
                             ref={fileUploaderRef}
                             maxFiles={10}
