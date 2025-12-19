@@ -278,6 +278,8 @@ export const ReportList = () => {
 
     const rows = reports.map((report) => {
         const creator = users[report.user!!] || defaultUser(report.user!!)
+        const program = programs.find((p) => p.code === report.program)
+        const project = projects.find((p) => p.code === report.project)
         const createTime = dayjs(report.createTime).format("DD MMM YYYY HH:mm")
         const timeSpent = getSpentTimeFromReport(report, intl)
         const filesCount = getReportFilesCount(report)
@@ -313,35 +315,27 @@ export const ReportList = () => {
                 <Table.Td>
                     <Text
                         c={
-                            creator.program
+                            program
                                 ? undefined
                                 : colorScheme === "dark"
                                   ? "var(--mantine-color-gray-light-color)"
                                   : "dimmed"
                         }
                     >
-                        {creator.program ? (
-                            getLocalizedName(creator.program, intl.locale)
-                        ) : (
-                            <FormattedMessage id={locales.noProgram} />
-                        )}
+                        {program ? getLocalizedName(program, intl.locale) : <FormattedMessage id={locales.noProgram} />}
                     </Text>
                 </Table.Td>
                 <Table.Td>
                     <Text
                         c={
-                            creator.project
+                            project
                                 ? undefined
                                 : colorScheme === "dark"
                                   ? "var(--mantine-color-gray-light-color)"
                                   : "dimmed"
                         }
                     >
-                        {creator.project ? (
-                            getLocalizedName(creator.project, intl.locale)
-                        ) : (
-                            <FormattedMessage id={locales.noProject} />
-                        )}
+                        {project ? getLocalizedName(project, intl.locale) : <FormattedMessage id={locales.noProject} />}
                     </Text>
                 </Table.Td>
                 <Table.Td>
@@ -368,6 +362,8 @@ export const ReportList = () => {
 
     const cards = reports.map((report) => {
         const creator = users[report.user!!] || defaultUser(report.user!!)
+        const program = programs.find((p) => p.code === report.program)
+        const project = projects.find((p) => p.code === report.project)
         const createTime = dayjs(report.createTime).format("DD MMM YYYY")
         const timeSpent = getSpentTimeFromReport(report, intl)
         const filesCount = getReportFilesCount(report)
@@ -431,14 +427,14 @@ export const ReportList = () => {
                                 <TextPropertyBox
                                     name={locales.program}
                                     value={
-                                        creator.program ? (
-                                            getLocalizedName(creator.program, intl.locale)
+                                        program ? (
+                                            getLocalizedName(program, intl.locale)
                                         ) : (
                                             <FormattedMessage id={locales.noProgram} />
                                         )
                                     }
                                     valueColor={
-                                        creator.program
+                                        program
                                             ? undefined
                                             : colorScheme === "dark"
                                               ? "var(--mantine-color-gray-light-color)"
@@ -450,14 +446,14 @@ export const ReportList = () => {
                                 <TextPropertyBox
                                     name={locales.project}
                                     value={
-                                        creator.project ? (
-                                            getLocalizedName(creator.project, intl.locale)
+                                        project ? (
+                                            getLocalizedName(project, intl.locale)
                                         ) : (
                                             <FormattedMessage id={locales.noProject} />
                                         )
                                     }
                                     valueColor={
-                                        creator.project
+                                        project
                                             ? undefined
                                             : colorScheme === "dark"
                                               ? "var(--mantine-color-gray-light-color)"
@@ -513,15 +509,15 @@ export const ReportList = () => {
                             <Text
                                 size="sm"
                                 c={
-                                    creator.program
+                                    program
                                         ? undefined
                                         : colorScheme === "dark"
                                           ? "var(--mantine-color-gray-light-color)"
                                           : "dimmed"
                                 }
                             >
-                                {creator.program ? (
-                                    getLocalizedName(creator.program, intl.locale)
+                                {program ? (
+                                    getLocalizedName(program, intl.locale)
                                 ) : (
                                     <FormattedMessage id={locales.noProgram} />
                                 )}
@@ -529,15 +525,15 @@ export const ReportList = () => {
                             <Text
                                 size="sm"
                                 c={
-                                    creator.project
+                                    project
                                         ? undefined
                                         : colorScheme === "dark"
                                           ? "var(--mantine-color-gray-light-color)"
                                           : "dimmed"
                                 }
                             >
-                                {creator.project ? (
-                                    getLocalizedName(creator.project, intl.locale)
+                                {project ? (
+                                    getLocalizedName(project, intl.locale)
                                 ) : (
                                     <FormattedMessage id={locales.noProject} />
                                 )}
