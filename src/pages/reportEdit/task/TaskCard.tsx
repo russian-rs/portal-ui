@@ -61,6 +61,28 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
         customer: z.string().optional(),
     })
 
+    const fileUploaderRef = createRef<FileUploaderInterface>()
+    const [uploadedFiles, setUploadedFiles] = useState<FileInfoDto[]>([])
+    const [loadingFiles, setLoadingFiles] = useState<String[]>([])
+
+    const updateTaskTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+    const updateTask = () => {
+        if (editMode) return
+
+        const values = form.getValues()
+        props.onChange(props.task.id, {
+            id: props.task.id,
+            name: values.name || "",
+            description: values.description || "",
+            result: values.result || "",
+            timeSpent: values.timeSpent ? values.timeSpent * 60 : 0,
+            date: values.date ? dayjs(values.date).format("YYYY-MM-DD") : "",
+            customer: values.customer || null,
+            files: uploadedFiles,
+        })
+    }
+
     const form = useForm({
         mode: "uncontrolled",
         validate: zodResolver(validationSchema),
@@ -68,15 +90,19 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
             name: props.task.name,
             description: props.task.description,
             result: props.task.result ? props.task.result : "",
-            timeSpent: editMode ? props.task.timeSpent / 60 : null,
-            date: editMode ? dayjs(props.task.date).toDate() : null,
+            timeSpent: props.task.timeSpent ? props.task.timeSpent / 60 : null,
+            date: props.task.date ? dayjs(props.task.date).toDate() : null,
             customer: props.task.customer,
         },
-    })
+        onValuesChange: () => {
+            if (editMode) return
 
-    const fileUploaderRef = createRef<FileUploaderInterface>()
-    const [uploadedFiles, setUploadedFiles] = useState<FileInfoDto[]>([])
-    const [loadingFiles, setLoadingFiles] = useState<String[]>([])
+            if (updateTaskTimeoutRef.current) {
+                clearTimeout(updateTaskTimeoutRef.current)
+            }
+            updateTaskTimeoutRef.current = setTimeout(updateTask, 300)
+        },
+    })
 
     useImperativeHandle(ref, () => ({
         scrollIntoView: () => {
@@ -99,10 +125,19 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
     }))
 
     useEffect(() => {
-        if (editMode && props.task.files) {
+        if (props.task.files) {
             setUploadedFiles(props.task.files)
         }
     }, [])
+
+    useEffect(() => {
+        if (!editMode) {
+            if (updateTaskTimeoutRef.current) {
+                clearTimeout(updateTaskTimeoutRef.current)
+            }
+            updateTaskTimeoutRef.current = setTimeout(updateTask, 300)
+        }
+    }, [uploadedFiles, editMode])
 
     return (
         <Flex direction="column" className={classes.taskCard} ref={cardRef} key={props.task.id} rowGap={10}>
@@ -177,7 +212,7 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                 path="customer"
                 label={<FormattedMessage id={locales.customer} />}
                 description={<FormattedMessage id={locales.customerDescription} />}
-                initialSearch={editMode && props.task.customer ? props.task.customer : undefined}
+                initialSearch={props.task.customer ? props.task.customer : undefined}
             />
             <FileUploader
                 maxFiles={15}
