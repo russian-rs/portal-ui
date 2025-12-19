@@ -300,28 +300,6 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         }
     }, [selectedProgram, selectedProject, programs])
 
-    // при выборе проекта подставляем программу из проекта
-    useEffect(() => {
-        if (!selectedProject) return
-
-        const project = projects.find((p) => p.code === selectedProject)
-        if (!project) return
-
-        const owningProgram =
-            project.programCode ??
-            programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
-
-        if (!owningProgram) return
-
-        const normalized = owningProgram.toUpperCase()
-
-        if (normalized === selectedProgram) return
-
-        setIsSyncing(true)
-        setSelectedProgram(normalized)
-        setIsSyncing(false)
-    }, [selectedProject, selectedProgram, projects, programs])
-
     return (
         <Flex direction="column" className={classes.infoContainer}>
             <Flex justify="space-between">
