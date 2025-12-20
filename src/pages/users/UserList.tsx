@@ -39,6 +39,7 @@ import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { locales } from "./lib/locales"
 import classes from "./UserList.module.scss"
+import { UserRow } from "src/pages/users/userRow/UserRow"
 
 export const UserList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -343,99 +344,20 @@ export const UserList = () => {
         },
     })
 
-    const rows = content.map((user) => {
-        const lastContract =
-            Array.isArray(user.contracts) && user.contracts.length > 0
-                ? user.contracts.reduce(
-                      (max, c) => (new Date(c.endDate) > new Date(max.endDate) ? c : max),
-                      user.contracts[0]
-                  )
-                : undefined
-        return (
-            <Table.Tr key={user.id} className={!user.active ? classes.deactivatedRow : undefined}>
-                <Table.Td>
-                    <Flex columnGap={16} align="center" className={classes.columnName}>
-                        <Avatar
-                            size={36}
-                            src={user.avatar?.link}
-                            name={user.fullName}
-                            className={classes.avatar}
-                            onClick={() => {
-                                localStorage.setItem("userListState", window.location.search)
-                                navigate(`/profile/${user.username}`)
-                            }}
-                        />
-                        <Flex direction="column">
-                            <Text truncate="end">{user.fullName}</Text>
-                            <Text size="sm" c="dimmed" truncate="end">
-                                {user.email}
-                            </Text>
-                        </Flex>
-                    </Flex>
-                </Table.Td>
-                <Table.Td>
-                    <Flex align="start" direction="column">
-                        {user.groups.map((group) => (
-                            <Text key={group} className={classes.role} truncate="end">
-                                <FormattedMessage id={`common.roles.${group}`} />
-                            </Text>
-                        ))}
-                    </Flex>
-                </Table.Td>
-                <Table.Td>
-                    <ProgramSelectInline
-                        type="button"
-                        value={user.program?.code}
-                        canEdit={canEditProgram()}
-                        locale={intl.locale}
-                        onChange={(program) => {
-                            updateUserProgram({ userId: String(user.id), program })
-                        }}
-                    />
-                </Table.Td>
-                <Table.Td>
-                    <ProjectSelectInline
-                        type="button"
-                        value={user.project?.code}
-                        canEdit={canEditProject(user.id)}
-                        locale={intl.locale}
-                        onChange={(project) => {
-                            updateUserProject({ userId: String(user.id), project })
-                        }}
-                    />
-                </Table.Td>
-                <Table.Td>
-                    <Button
-                        variant="transparent"
-                        color={lastContract ? "blue" : "gray"}
-                        rightSection={lastContract ? <IconPencil size={14} /> : <IconPlus size={14} />}
-                        onClick={() => {
-                            setSelectedUserId(user.id)
-                            setDrawerOpened(true)
-                        }}
-                        size="compact-sm"
-                        fw={lastContract ? undefined : 500}
-                    >
-                        {lastContract ? (
-                            dayjs(lastContract.endDate).format("DD MMM YYYY")
-                        ) : (
-                            <FormattedMessage id="pages.profile.contract.button" />
-                        )}
-                    </Button>
-                </Table.Td>
-                <Table.Td>
-                    <Flex align="center" justify="end">
-                        {!user.active && (
-                            <Badge color="red" radius="md" variant="light">
-                                <FormattedMessage id={locales.deactivated} />
-                            </Badge>
-                        )}
-                        <UserMenu user={user} />
-                    </Flex>
-                </Table.Td>
-            </Table.Tr>
-        )
-    })
+    const rows = content.map((user) => (
+        <UserRow
+            key={user.id}
+            user={user}
+            canEditProgram={canEditProgram}
+            canEditProject={canEditProject}
+            updateUserProgram={updateUserProgram}
+            updateUserProject={updateUserProject}
+            intl={intl}
+            navigate={navigate}
+            setDrawerOpened={setDrawerOpened}
+            setSelectedUserId={setSelectedUserId}
+        />
+    ))
 
     // Карточки для мобильной версии
     const cards = content.map((user) => {

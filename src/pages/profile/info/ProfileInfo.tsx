@@ -242,19 +242,24 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const iconHome = <IconHome size={16} />
     const iconCity = <IconBuildings size={16} />
     const iconBirthday = <IconGift size={16} />
-
-    const programValue = userInfo?.program?.code || null
-    const projectValue = userInfo?.project?.code || null
+    const [isSyncing, setIsSyncing] = useState(false)
+    const programValue = userInfo?.program?.code ?? null
+    const projectValue = userInfo?.project?.code ?? null
 
     const [selectedProgram, setSelectedProgram] = useState<string | null>(programValue)
     const [selectedProject, setSelectedProject] = useState<string | null>(projectValue)
-    const [isSyncing, setIsSyncing] = useState(false)
 
-    // получаем отфильтрованные списки из hook
-    const { programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
-        selectedProgram,
-        selectedProject
-    )
+    useEffect(() => {
+        if (selectedProgram !== programValue) {
+            setSelectedProgram(programValue)
+        }
+        if (selectedProject !== projectValue) {
+            setSelectedProject(projectValue)
+        }
+    }, [programValue, projectValue])
+
+    const { programs, visiblePrograms, visibleProjects } =
+        useProgramProjectFilter(selectedProgram, selectedProject)
 
     // Админы могут редактировать программы всем (включая себя)
     // Обычные пользователи могут установить программу только если у них ее еще нет
@@ -273,24 +278,41 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const handleProgramChange = async (programCode: string) => {
         if (isSyncing) return
 
+        const prevProgram = selectedProgram
+        const prevProject = selectedProject
+
         setSelectedProgram(programCode)
         setSelectedProject(null)
-
-        await updateProgram(programCode)
+        try {
+            await updateProgram(programCode)
+        } catch {
+            setSelectedProgram(prevProgram)
+            setSelectedProject(prevProject)
+        }
     }
 
     const handleProjectChange = async (projectCode: string) => {
         if (isSyncing) return
 
+        const prevProject = selectedProject
+
         setSelectedProject(projectCode)
-        await updateProject(projectCode)
+        try {
+            await updateProject(projectCode)
+        } catch {
+            setSelectedProject(prevProject)
+        }
     }
 
     // Если выбрали программу, а текущий проект к ней не относится очищаем проект
     useEffect(() => {
         if (!selectedProgram || !selectedProject) return
 
-        const program = programs.find(p => p.code === selectedProgram)
+        const normalizedSelectedProgram = selectedProgram.toUpperCase()
+
+        const program = programs.find(
+            (p) => p.code.toUpperCase() === normalizedSelectedProgram
+        )
         const allowed = program?.projectCodes ?? []
 
         if (!allowed.includes(selectedProject)) {
