@@ -21,6 +21,7 @@ import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import TicketTemplate from "src/shared/ticket/TicketTemplate"
 import { FileUploader, FileUploaderInterface } from "src/shared/ui/fileUploader/FileUploader"
+import { TicketGroupTarget, pickTicketGroupByTarget } from "src/shared/ui/ticketModal/lib/groupTarget"
 import { locales } from "src/shared/ui/ticketModal/lib/locales"
 import classes from "src/shared/ui/ticketModal/TicketModal.module.scss"
 import { z } from "zod"
@@ -37,7 +38,7 @@ interface TicketModalProps {
     initialTitle?: string
     initialBody?: string
     initialGroup?: string
-    groupTarget?: "SUPPORT" | "CURATOR"
+    groupTarget?: TicketGroupTarget
     allowAttachments?: boolean
     attachmentsRequired?: boolean
     templates?: TicketTemplate[]
@@ -74,35 +75,6 @@ export const TicketModal: React.FC<TicketModalProps> = ({
         queryKey: ["ticketGroups"],
         queryFn: () => TicketApiService.getTicketGroups().then((r) => r.data),
     })
-
-    const pickGroupByTarget = (
-        groups: string[] | undefined,
-        target: "SUPPORT" | "CURATOR" | undefined
-    ): string | null => {
-        if (!groups || groups.length === 0) return null
-        if (!target) return null
-
-        const norm = (s: string) => s.toLowerCase()
-        const hasAny = (s: string, parts: string[]) => parts.some((p) => norm(s).includes(p))
-
-        const supportNeedles = ["support", "help", "поддерж", "helpdesk", "it"]
-        const curatorNeedles = ["curator", "куратор", "координ", "volunteer", "волонт"]
-
-        const preferred = target === "SUPPORT" ? supportNeedles : curatorNeedles
-
-        // 1) exact match by common names
-        const exactCandidates =
-            target === "SUPPORT" ? ["support", "help", "поддержка"] : ["curator", "куратор", "координатор"]
-        const exact = groups.find((g) => exactCandidates.includes(norm(g)))
-        if (exact) return exact
-
-        // 2) fuzzy contains
-        const fuzzy = groups.find((g) => hasAny(g, preferred))
-        if (fuzzy) return fuzzy
-
-        // 3) fallback to first group
-        return groups[0]
-    }
 
     const requiredMessage = { message: intl.formatMessage({ id: locales.required }) }
 
@@ -166,7 +138,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({
         if (!opened) return
         if (form.getValues().group) return
 
-        const selected = initialGroup ?? pickGroupByTarget(ticketGroups, groupTarget)
+        const selected = initialGroup ?? pickTicketGroupByTarget(ticketGroups, groupTarget)
         if (!selected) return
 
         form.setFieldValue("group", selected)

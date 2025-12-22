@@ -623,7 +623,7 @@
             "title": "Обращение в поддержку",
             "documentTitle": "Обращение в поддержку",
             "description": "Выберите тему запроса и заполните поля.",
-            "createButton": "Далее",
+            "createButton": "Создать тикет",
             "caseLabel": "Тема обращения",
             "casePlaceholder": "Выберите тему",
             "formTitle": "Детали запроса",

@@ -1,5 +1,6 @@
 import { CaseValues, SupportCaseConfig, TicketDraft } from "src/shared/dynamic-forms/types"
 import { buildDefinitionList, getValue } from "src/shared/dynamic-forms/utils/buildTicketBody"
+import { TicketGroupTarget } from "src/shared/ui/ticketModal/lib/groupTarget"
 
 function baseDraft(partial: Partial<TicketDraft>): TicketDraft {
     return {
@@ -7,7 +8,7 @@ function baseDraft(partial: Partial<TicketDraft>): TicketDraft {
         bodyHtml: partial.bodyHtml ?? "",
         allowAttachments: partial.allowAttachments ?? true,
         attachmentsRequired: partial.attachmentsRequired ?? false,
-        groupTarget: partial.groupTarget ?? "SUPPORT",
+        groupTarget: partial.groupTarget ?? TicketGroupTarget.SUPPORT,
     }
 }
 
@@ -16,7 +17,7 @@ export const supportCases: SupportCaseConfig[] = [
         id: "BUG",
         labelKey: "pages.support.cases.bug",
         defaultTitleKey: "pages.support.cases.bug.title",
-        groupTarget: "SUPPORT",
+        groupTarget: TicketGroupTarget.SUPPORT,
         allowAttachments: true,
         attachmentsRequired: false,
         fields: [
@@ -67,7 +68,7 @@ export const supportCases: SupportCaseConfig[] = [
                 bodyHtml: body,
                 allowAttachments: true,
                 attachmentsRequired: false,
-                groupTarget: "SUPPORT",
+                groupTarget: TicketGroupTarget.SUPPORT,
             })
         },
     },
@@ -75,7 +76,7 @@ export const supportCases: SupportCaseConfig[] = [
         id: "AUTH",
         labelKey: "pages.support.cases.auth",
         defaultTitleKey: "pages.support.cases.auth.title",
-        groupTarget: "SUPPORT",
+        groupTarget: TicketGroupTarget.SUPPORT,
         allowAttachments: true,
         attachmentsRequired: false,
         fields: [
@@ -119,7 +120,7 @@ export const supportCases: SupportCaseConfig[] = [
                 bodyHtml: body,
                 allowAttachments: true,
                 attachmentsRequired: false,
-                groupTarget: "SUPPORT",
+                groupTarget: TicketGroupTarget.SUPPORT,
             })
         },
     },
@@ -127,7 +128,7 @@ export const supportCases: SupportCaseConfig[] = [
         id: "ADDRESS_CHANGE",
         labelKey: "pages.support.cases.addressChange",
         defaultTitleKey: "pages.support.cases.addressChange.title",
-        groupTarget: "CURATOR",
+        groupTarget: TicketGroupTarget.CURATOR,
         allowAttachments: true,
         attachmentsRequired: true,
         fields: [
@@ -151,7 +152,7 @@ export const supportCases: SupportCaseConfig[] = [
                 bodyHtml: body,
                 allowAttachments: true,
                 attachmentsRequired: true,
-                groupTarget: "CURATOR",
+                groupTarget: TicketGroupTarget.CURATOR,
             })
         },
     },
@@ -159,7 +160,7 @@ export const supportCases: SupportCaseConfig[] = [
         id: "NAME_CHANGE",
         labelKey: "pages.support.cases.nameChange",
         defaultTitleKey: "pages.support.cases.nameChange.title",
-        groupTarget: "CURATOR",
+        groupTarget: TicketGroupTarget.CURATOR,
         allowAttachments: true,
         attachmentsRequired: true,
         fields: [
@@ -181,7 +182,7 @@ export const supportCases: SupportCaseConfig[] = [
                 bodyHtml: body,
                 allowAttachments: true,
                 attachmentsRequired: true,
-                groupTarget: "CURATOR",
+                groupTarget: TicketGroupTarget.CURATOR,
             })
         },
     },
@@ -189,8 +190,8 @@ export const supportCases: SupportCaseConfig[] = [
         id: "PROGRAM_CHANGE",
         labelKey: "pages.support.cases.programChange",
         defaultTitleKey: "pages.support.cases.programChange.title",
-        groupTarget: "CURATOR",
-        allowAttachments: false,
+        groupTarget: TicketGroupTarget.CURATOR,
+        allowAttachments: true,
         attachmentsRequired: false,
         fields: [
             {
@@ -265,9 +266,9 @@ export const supportCases: SupportCaseConfig[] = [
             return baseDraft({
                 title: t("pages.support.cases.programChange.title"),
                 bodyHtml: body,
-                allowAttachments: false,
+                allowAttachments: true,
                 attachmentsRequired: false,
-                groupTarget: "CURATOR",
+                groupTarget: TicketGroupTarget.CURATOR,
             })
         },
     },
@@ -275,7 +276,7 @@ export const supportCases: SupportCaseConfig[] = [
         id: "RESIDENCE_PERMIT",
         labelKey: "pages.support.cases.residencePermit",
         defaultTitleKey: "pages.support.cases.residencePermit.title",
-        groupTarget: "CURATOR",
+        groupTarget: TicketGroupTarget.CURATOR,
         allowAttachments: true,
         attachmentsRequired: false,
         fields: [
@@ -308,7 +309,7 @@ export const supportCases: SupportCaseConfig[] = [
                 bodyHtml: body,
                 allowAttachments: true,
                 attachmentsRequired: false,
-                groupTarget: "CURATOR",
+                groupTarget: TicketGroupTarget.CURATOR,
             })
         },
     },
@@ -316,7 +317,7 @@ export const supportCases: SupportCaseConfig[] = [
         id: "OTHER",
         labelKey: "pages.support.cases.other",
         defaultTitleKey: "pages.support.cases.other.title",
-        groupTarget: "CURATOR",
+        groupTarget: TicketGroupTarget.CURATOR,
         allowAttachments: true,
         attachmentsRequired: false,
         fields: [
@@ -336,7 +337,7 @@ export const supportCases: SupportCaseConfig[] = [
                 bodyHtml: body,
                 allowAttachments: true,
                 attachmentsRequired: false,
-                groupTarget: "CURATOR",
+                groupTarget: TicketGroupTarget.CURATOR,
             })
         },
     },
