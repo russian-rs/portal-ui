@@ -623,7 +623,7 @@
             "title": "Contact support",
             "documentTitle": "Contact support",
             "description": "Choose a request topic and fill in the fields.",
-            "createButton": "Next",
+            "createButton": "Create ticket",
             "caseLabel": "Request topic",
             "casePlaceholder": "Choose a topic",
             "formTitle": "Request details",

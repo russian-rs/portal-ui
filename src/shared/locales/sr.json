@@ -623,7 +623,7 @@
             "title": "Kontakt podrške",
             "documentTitle": "Kontakt podrške",
             "description": "Izaberite temu zahteva i popunite polja.",
-            "createButton": "Dalje",
+            "createButton": "Kreiraj tiket",
             "caseLabel": "Tema zahteva",
             "casePlaceholder": "Izaberite temu",
             "formTitle": "Detalji zahteva",

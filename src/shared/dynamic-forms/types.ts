@@ -37,14 +37,14 @@ export type TicketDraft = {
     bodyHtml: string
     allowAttachments: boolean
     attachmentsRequired: boolean
-    groupTarget: "SUPPORT" | "CURATOR"
+    groupTarget: import("src/shared/ui/ticketModal/lib/groupTarget").TicketGroupTarget
 }
 
 export type SupportCaseConfig = {
     id: CaseId
     labelKey: string
     defaultTitleKey: string
-    groupTarget: "SUPPORT" | "CURATOR"
+    groupTarget: import("src/shared/ui/ticketModal/lib/groupTarget").TicketGroupTarget
     fields: CaseField[]
     allowAttachments?: boolean
     attachmentsRequired?: boolean
