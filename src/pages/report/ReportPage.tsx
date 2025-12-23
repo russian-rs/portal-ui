@@ -4,9 +4,11 @@ import { ReportDto, UserInfoDto } from "@russian-rs/portal-api-axios"
 import { IconCalendar, IconCheck, IconClock, IconMail, IconPencil, IconTrash, IconX } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import { useContext, useState } from "react"
+import { useContext, useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
+import { usePrograms } from "src/app/providers/ProgramsProvider"
+import { useProjects } from "src/app/providers/ProjectsProvider"
 import { UserContext } from "src/app/providers/UserContext"
 import { locales } from "src/pages/report/lib/locales"
 import { ReportNote } from "src/pages/report/note/ReportNote"
@@ -21,6 +23,7 @@ import { EmailDrawer } from "src/shared/ui/emailModal/EmailDrawer"
 import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
+import { getLocalizedName } from "src/shared/utils/getLocalName"
 import classes from "./ReportPage.module.scss"
 
 export const ReportPage = () => {
@@ -31,6 +34,9 @@ export const ReportPage = () => {
     const navigate = useNavigate()
     const { user: currentUser } = useContext(UserContext)
     const [logins, setLogins] = useState<string[]>([])
+
+    const programs = usePrograms()
+    const projects = useProjects()
 
     const [statusChanging, setStatusChanging] = useState(false)
     const [comment, setComment] = useState("")
@@ -56,6 +62,9 @@ export const ReportPage = () => {
     })
 
     const { data: users, isFetching: isFetchingUsers } = resolveUsers(logins)
+
+    const program = useMemo(() => programs.find((p) => p.code === report.program), [programs, report.program])
+    const project = useMemo(() => projects.find((p) => p.code === report.project), [projects, report.project])
 
     if (isFetchingReport || isFetchingUsers) {
         return (
@@ -165,6 +174,18 @@ export const ReportPage = () => {
                     name={locales.timeSpentTotal}
                     value={getSpentTimeFromTasks(report.tasks, intl)}
                     icon={<IconClock size={16} />}
+                />
+                <TextPropertyBox
+                    name={locales.program}
+                    value={
+                        program ? getLocalizedName(program, intl.locale) : <FormattedMessage id={locales.noProgram} />
+                    }
+                />
+                <TextPropertyBox
+                    name={locales.project}
+                    value={
+                        project ? getLocalizedName(project, intl.locale) : <FormattedMessage id={locales.noProject} />
+                    }
                 />
             </Flex>
             {report.notes && report.notes.length > 0 && (
