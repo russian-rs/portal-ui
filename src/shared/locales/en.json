@@ -702,5 +702,9 @@
         },
         "account-settings": "Account settings",
         "support": "Contact support"
+    },
+    "error-boundary": {
+        "title": "Something went wrong",
+        "reload-button": "Reload page"
     }
 }

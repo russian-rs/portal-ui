@@ -702,5 +702,9 @@
         },
         "account-settings": "Podešavanja naloga",
         "support": "Kontaktirajte podršku"
+    },
+    "error-boundary": {
+        "title": "Nešto je pošlo po zlu",
+        "reload-button": "Preuzmi stranicu ponovo"
     }
 }

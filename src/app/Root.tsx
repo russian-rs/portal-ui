@@ -2,15 +2,16 @@ import { MantineProvider } from "@mantine/core"
 import "@mantine/core/styles.css"
 import "@mantine/dates/styles.css"
 import "@mantine/dropzone/styles.css"
-import "@mantine/tiptap/styles.css"
-import "react-day-picker/style.css"
 import { Notifications } from "@mantine/notifications"
+import "@mantine/tiptap/styles.css"
 import { QueryClientProvider } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import isBetween from "dayjs/plugin/isBetween"
 import isoWeek from "dayjs/plugin/isoWeek"
 import isoWeekInYear from "dayjs/plugin/isoWeeksInYear"
 import weekOfYear from "dayjs/plugin/weekOfYear"
+import "react-day-picker/style.css"
+import { ErrorBoundary } from "src/app/ErrorBoundary"
 import { LanguageContextProvider } from "src/app/providers/LocaleContext"
 import { UserContextProvider } from "src/app/providers/UserContext"
 import RootRouter from "src/app/router/RootRouter"
@@ -36,8 +37,10 @@ export const Root = () => {
                 <LanguageContextProvider>
                     <UserContextProvider>
                         <AppShell>
-                            <Notifications className={classes.notifications} />
-                            <RootRouter />
+                            <ErrorBoundary>
+                                <Notifications className={classes.notifications} />
+                                <RootRouter />
+                            </ErrorBoundary>
                         </AppShell>
                     </UserContextProvider>
                 </LanguageContextProvider>
