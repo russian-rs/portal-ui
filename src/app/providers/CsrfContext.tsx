@@ -9,7 +9,7 @@ export const CsrfContextProvider = ({ children }: { children?: ReactNode }) => {
     useEffect(() => {
         // GET request to /csrf triggers the server to set XSRF-TOKEN cookie
         // Using plain fetch to avoid RequestHttp interceptors that cause redirect loops
-        fetch("/csrf", { credentials: "include" })
+        fetch("/api/csrf", { credentials: "include" })
             .then(() => setToken(getCookie("XSRF-TOKEN")))
             .catch(() => {})
     }, [])
