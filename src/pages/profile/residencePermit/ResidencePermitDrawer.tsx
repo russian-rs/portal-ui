@@ -13,6 +13,7 @@ import { SuccessNotification } from "src/shared/notifications/SuccessNotificatio
 import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { v4 as uuid } from "uuid"
 import { ResidencePermitForm } from "./ResidencePermitForm"
+import { locales } from "./lib/locales"
 
 interface ResidencePermitDrawerProps {
     opened: boolean
@@ -43,21 +44,21 @@ export const ResidencePermitDrawer = ({
     }, [opened, residencePermits])
 
     const isAdmin = hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER])
+    const isOwner = currentUser?.id === userId
+    const canEdit = isAdmin || isOwner
 
     const { mutate: savePermits } = useMutation({
         mutationFn: async (updatedPermits: ResidencePermitDto[]) => {
             return UserApiService.updateResidencePermits(userId, updatedPermits)
         },
         onSuccess: () => {
-            notifications.show(
-                SuccessNotification(<FormattedMessage id="pages.profile.residencePermit.created" />, null)
-            )
+            notifications.show(SuccessNotification(<FormattedMessage id={locales.saved} />, null))
             queryClient.invalidateQueries({ queryKey: ["getInfo"] })
             if (onSuccess) onSuccess()
             onClose()
         },
         onError: () => {
-            notifications.show(ErrorNotification(<FormattedMessage id="pages.profile.residencePermit.createError" />))
+            notifications.show(ErrorNotification(<FormattedMessage id={locales.saveError} />))
         },
     })
 
@@ -67,14 +68,12 @@ export const ResidencePermitDrawer = ({
         },
         onSuccess: (_, permitId) => {
             setLocalPermits((prev) => prev.filter((p) => p.id !== permitId))
-            notifications.show(
-                SuccessNotification(<FormattedMessage id="pages.profile.residencePermit.created" />, null)
-            )
+            notifications.show(SuccessNotification(<FormattedMessage id={locales.saved} />, null))
             queryClient.invalidateQueries({ queryKey: ["getInfo"] })
             if (onSuccess) onSuccess()
         },
         onError: () => {
-            notifications.show(ErrorNotification(<FormattedMessage id="pages.profile.residencePermit.createError" />))
+            notifications.show(ErrorNotification(<FormattedMessage id={locales.saveError} />))
         },
     })
 
@@ -105,7 +104,7 @@ export const ResidencePermitDrawer = ({
     }
 
     const handleDelete = (id: string) => {
-        if (isAdmin) {
+        if (canEdit) {
             const isNew = !residencePermits.find((p) => p.id === id)
             if (isNew) {
                 setLocalPermits(localPermits.filter((p) => p.id !== id))
@@ -120,7 +119,7 @@ export const ResidencePermitDrawer = ({
         <Drawer
             opened={opened}
             onClose={onClose}
-            title={<FormattedMessage id="pages.profile.residencePermit.add" />}
+            title={<FormattedMessage id={locales.add} />}
             position="right"
             size="lg"
         >
@@ -133,7 +132,7 @@ export const ResidencePermitDrawer = ({
                             initialValues={permit}
                             onSubmit={handleUpdate}
                             onDelete={() => handleDelete(permit.id)}
-                            canDelete={isAdmin}
+                            canDelete={canEdit}
                             isNew={!residencePermits.find((p) => p.id === permit.id)}
                             onCancel={() => {
                                 const isNew = !residencePermits.find((p) => p.id === editingId)
@@ -149,7 +148,7 @@ export const ResidencePermitDrawer = ({
                 <Flex direction="column" gap="md">
                     {localPermits.length === 0 ? (
                         <Text c="dimmed" ta="center" py="xl">
-                            <FormattedMessage id="pages.profile.residencePermit.no-permit" />
+                            <FormattedMessage id={locales.noPermit} />
                         </Text>
                     ) : (
                         <Accordion variant="contained">
@@ -159,7 +158,7 @@ export const ResidencePermitDrawer = ({
                                         <Group justify="space-between">
                                             <Text fw={500}>
                                                 <FormattedMessage
-                                                    id="pages.profile.residencePermit.number"
+                                                    id={locales.number}
                                                     values={{ number: index + 1 }}
                                                 />
                                             </Text>
@@ -172,14 +171,14 @@ export const ResidencePermitDrawer = ({
                                         <Flex direction="column" gap="xs">
                                             <Text size="sm">
                                                 <b>
-                                                    <FormattedMessage id="pages.profile.residencePermit.registrationNumber.description" />
+                                                    <FormattedMessage id={locales.registrationNumberDescription} />
                                                     :
                                                 </b>{" "}
                                                 {permit.registrationNumber}
                                             </Text>
                                             <Text size="sm">
                                                 <b>
-                                                    <FormattedMessage id="pages.profile.residencePermit.issuingDate" />:
+                                                    <FormattedMessage id={locales.issuingDate} />:
                                                 </b>{" "}
                                                 {permit.issuingDate
                                                     ? dayjs(permit.issuingDate).format("DD.MM.YYYY")
@@ -235,7 +234,7 @@ export const ResidencePermitDrawer = ({
                         </Accordion>
                     )}
 
-                    {isAdmin && (
+                    {canEdit && (
                         <Button leftSection={<IconPlus size={16} />} onClick={handleAdd} variant="outline">
                             <FormattedMessage id="pages.profile.residencePermit.button" />
                         </Button>

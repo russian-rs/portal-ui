@@ -22,9 +22,19 @@ export const TextPropertyBox = ({
     if (!value) {
         return <Flex />
     }
+
+    const textAlign =
+        justify === "flex-end"
+            ? "right"
+            : justify === "center"
+              ? "center"
+              : justify === "flex-start"
+                ? "left"
+                : undefined
+
     return (
         <Flex direction="column" className={className}>
-            <Text c="dimmed" size="xs" ms={justify === "flex-end" ? "auto" : ""}>
+            <Text c="dimmed" size="xs" ta={textAlign} ms={justify === "flex-end" ? "auto" : ""}>
                 <FormattedMessage id={name} />
             </Text>
             {icon ? (
@@ -43,7 +53,7 @@ export const TextPropertyBox = ({
                     )}
                 </Flex>
             ) : (
-                <Text mt={4} ms={justify === "flex-end" ? "auto" : ""} size="sm" c={valueColor}>
+                <Text mt={4} ms={justify === "flex-end" ? "auto" : ""} size="sm" c={valueColor} ta={textAlign}>
                     {value}
                 </Text>
             )}

@@ -255,8 +255,8 @@
                 "created": "ВНЖ успешно сохранен",
                 "createError": "Ошибка при сохранении ВНЖ",
                 "number": "ВНЖ {number}",
-                "registrationNumber.description": "9-значный регистрационный номер",
-                "identityNumber.description": "13-значный JMBG/ID номер",
+                "registrationNumberDescription": "9-значный регистрационный номер",
+                "identityNumberDescription": "13-значный JMBG/ID номер",
                 "frontSidePhoto": "Фото лицевой стороны",
                 "backSidePhoto": "Фото задней стороны",
                 "validation": {

@@ -20,6 +20,7 @@ import { useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { FileUploader } from "src/shared/ui/fileUploader/FileUploader"
 import { z } from "zod"
+import { labels, locales } from "./lib/locales"
 
 interface ResidencePermitFormProps {
     initialValues: ResidencePermitDto
@@ -41,7 +42,7 @@ export const ResidencePermitForm = ({
     const intl = useIntl()
     const [previewImage, setPreviewImage] = useState<string | null>(null)
 
-    const requiredMessage = { message: intl.formatMessage({ id: "pages.profile.residencePermit.required" }) }
+    const requiredMessage = { message: intl.formatMessage({ id: locales.required }) }
 
     const validationSchema = z
         .object({
@@ -67,7 +68,7 @@ export const ResidencePermitForm = ({
             backSidePhoto: z.any().refine((file) => file !== null, requiredMessage),
         })
         .refine((data) => dayjs(data.validUntil).isAfter(dayjs(data.issuingDate)), {
-            message: intl.formatMessage({ id: "pages.profile.validation.endDateAfterStart" }),
+            message: intl.formatMessage({ id: locales.validationEndDateAfterStart }),
             path: ["validUntil"],
         })
 
@@ -97,113 +98,76 @@ export const ResidencePermitForm = ({
     return (
         <form onSubmit={form.onSubmit(handleSubmit)}>
             <Flex direction="column" gap="sm">
-                <SimpleGrid cols={{ base: 1, sm: 2 }}>
-                    <TextInput
-                        label={
-                            <>
-                                <strong>Држављанство</strong>/Nationality
-                            </>
-                        }
-                        withAsterisk
-                        {...form.getInputProps("nationality")}
-                    />
-                    <TextInput
-                        label={
-                            <>
-                                <strong>Основ боравка</strong>/Purpose of stay
-                            </>
-                        }
-                        withAsterisk
-                        {...form.getInputProps("purposeOfStay")}
-                    />
+                <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+                    {/* Левая колонка */}
+                    <Flex direction="column" gap="sm">
+                        <TextInput
+                            label={labels.nationality}
+                            withAsterisk
+                            {...form.getInputProps("nationality")}
+                        />
+
+                        <TextInput
+                            label={labels.regNo}
+                            description={<FormattedMessage id={locales.registrationNumberDescription} />}
+                            leftSection={<IconId size={16} />}
+                            withAsterisk
+                            {...form.getInputProps("registrationNumber")}
+                        />
+
+                        <DateInput
+                            label={labels.validUntil}
+                            leftSection={<IconCalendar size={16} />}
+                            valueFormat="DD MMMM YYYY"
+                            withAsterisk
+                            {...form.getInputProps("validUntil")}
+                        />
+
+                        <TextInput
+                            label={labels.purposeOfStay}
+                            withAsterisk
+                            {...form.getInputProps("purposeOfStay")}
+                        />
+
+                        <Textarea label={labels.note} {...form.getInputProps("note")} />
+                    </Flex>
+
+                    {/* Правая колонка */}
+                    <Flex direction="column" gap="sm">
+                        <TextInput
+                            label={labels.identityNumber}
+                            description={<FormattedMessage id={locales.identityNumberDescription} />}
+                            leftSection={<IconId size={16} />}
+                            withAsterisk
+                            {...form.getInputProps("identityNumber")}
+                        />
+
+                        <DateInput
+                            label={labels.issueDate}
+                            leftSection={<IconCalendar size={16} />}
+                            valueFormat="DD MMMM YYYY"
+                            withAsterisk
+                            {...form.getInputProps("issuingDate")}
+                        />
+
+                        <TextInput
+                            label={labels.issuingAuthority}
+                            withAsterisk
+                            {...form.getInputProps("issuingAuthority")}
+                        />
+
+                        <TextInput
+                            label={labels.stateOfBirth}
+                            withAsterisk
+                            {...form.getInputProps("stateOfBirth")}
+                        />
+                    </Flex>
                 </SimpleGrid>
 
-                <SimpleGrid cols={{ base: 1, sm: 2 }}>
-                    <TextInput
-                        label={
-                            <>
-                                <strong>Рег.бр</strong>/Reg No
-                            </>
-                        }
-                        description={
-                            <FormattedMessage id="pages.profile.residencePermit.registrationNumber.description" />
-                        }
-                        leftSection={<IconId size={16} />}
-                        withAsterisk
-                        {...form.getInputProps("registrationNumber")}
-                    />
-                    <TextInput
-                        label={
-                            <>
-                                <strong>Евиденцијски број</strong>/Identity number (JMBG)
-                            </>
-                        }
-                        description={<FormattedMessage id="pages.profile.residencePermit.identityNumber.description" />}
-                        leftSection={<IconId size={16} />}
-                        withAsterisk
-                        {...form.getInputProps("identityNumber")}
-                    />
-                </SimpleGrid>
-
-                <SimpleGrid cols={{ base: 1, sm: 2 }}>
-                    <DateInput
-                        label={
-                            <>
-                                <strong>Датум издавања</strong>/Issue date
-                            </>
-                        }
-                        leftSection={<IconCalendar size={16} />}
-                        valueFormat="DD MMMM YYYY"
-                        withAsterisk
-                        {...form.getInputProps("issuingDate")}
-                    />
-                    <DateInput
-                        label={
-                            <>
-                                <strong>Важи до</strong>/Valid until
-                            </>
-                        }
-                        leftSection={<IconCalendar size={16} />}
-                        valueFormat="DD MMMM YYYY"
-                        withAsterisk
-                        {...form.getInputProps("validUntil")}
-                    />
-                </SimpleGrid>
-
-                <SimpleGrid cols={{ base: 1, sm: 2 }}>
-                    <TextInput
-                        label={
-                            <>
-                                <strong>Документ издаjе</strong>/Issuing authority
-                            </>
-                        }
-                        withAsterisk
-                        {...form.getInputProps("issuingAuthority")}
-                    />
-                    <TextInput
-                        label={
-                            <>
-                                <strong>Држава рођења</strong>/State of birth
-                            </>
-                        }
-                        withAsterisk
-                        {...form.getInputProps("stateOfBirth")}
-                    />
-                </SimpleGrid>
-
-                <Textarea
-                    label={
-                        <>
-                            <strong>Напомена</strong>/Note
-                        </>
-                    }
-                    {...form.getInputProps("note")}
-                />
-
-                <SimpleGrid cols={{ base: 1, sm: 2 }}>
+                <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
                     <div>
                         <Text size="sm" fw={500} mb={4}>
-                            <FormattedMessage id="pages.profile.residencePermit.frontSidePhoto" />
+                            <FormattedMessage id={locales.frontSidePhoto} />
                             <span style={{ color: "var(--mantine-color-red-6)" }}> *</span>
                         </Text>
                         <FileUploader
@@ -240,9 +204,10 @@ export const ResidencePermitForm = ({
                             </Group>
                         )}
                     </div>
+
                     <div>
                         <Text size="sm" fw={500} mb={4}>
-                            <FormattedMessage id="pages.profile.residencePermit.backSidePhoto" />
+                            <FormattedMessage id={locales.backSidePhoto} />
                             <span style={{ color: "var(--mantine-color-red-6)" }}> *</span>
                         </Text>
                         <FileUploader
@@ -284,11 +249,11 @@ export const ResidencePermitForm = ({
                 <Group justify="flex-end" mt="md" wrap="nowrap">
                     {canDelete && (
                         <Button variant="subtle" color="red" onClick={onDelete} leftSection={<IconTrash size={16} />}>
-                            <FormattedMessage id="common.buttons.delete" defaultMessage="Delete" />
+                            <FormattedMessage id={locales.delete} />
                         </Button>
                     )}
                     <Button variant="default" onClick={onCancel}>
-                        <FormattedMessage id="pages.applications.report.cancel" />
+                        <FormattedMessage id={locales.cancel} />
                     </Button>
                     <Button type="submit" leftSection={<IconDeviceFloppy size={16} />}>
                         <FormattedMessage id="pages.profile.residencePermit.save" />

@@ -255,8 +255,8 @@
                 "created": "Residence permit successfully saved",
                 "createError": "Error saving residence permit",
                 "number": "Residence Permit {number}",
-                "registrationNumber.description": "9-digit registration number",
-                "identityNumber.description": "13-digit JMBG/ID number",
+                "registrationNumberDescription": "9-digit registration number",
+                "identityNumberDescription": "13-digit JMBG/ID number",
                 "frontSidePhoto": "Front side photo",
                 "backSidePhoto": "Back side photo",
                 "validation": {

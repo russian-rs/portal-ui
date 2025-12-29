@@ -9,6 +9,7 @@ import classes from "src/pages/profile/contract/ContractInfo.module.scss"
 import { ResidencePermitDrawer } from "src/pages/profile/residencePermit/ResidencePermitDrawer"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
+import { locales } from "./lib/locales"
 
 interface ResidencePermitInfoProps {
     userInfo: UserInfoDto
@@ -51,11 +52,11 @@ export const ResidencePermitInfo = ({ userInfo, residencePermits, onUpdate }: Re
             {!currentPermit ? (
                 <>
                     <Text className={classes.title}>
-                        <FormattedMessage id="pages.profile.residencePermit.no-permit" />
+                        <FormattedMessage id={locales.noPermit} />
                     </Text>
                     {canEdit && (
                         <Button variant="light" onClick={() => setDrawerOpened(true)}>
-                            <FormattedMessage id="pages.profile.residencePermit.button" />
+                            <FormattedMessage id={locales.button} />
                         </Button>
                     )}
                 </>
@@ -68,7 +69,7 @@ export const ResidencePermitInfo = ({ userInfo, residencePermits, onUpdate }: Re
                             </ActionIcon>
                         )}
                         <Text className={classes.title} style={{ textAlign: "center", flex: 1 }}>
-                            <FormattedMessage id="pages.profile.residencePermit.title" />
+                            <FormattedMessage id={locales.title} />
                             {hasMultiple && (
                                 <span
                                     style={{
@@ -91,7 +92,7 @@ export const ResidencePermitInfo = ({ userInfo, residencePermits, onUpdate }: Re
 
                     <Center>
                         <TextPropertyBox
-                            name="pages.profile.residencePermit.registrationNumber.description"
+                            name={locales.registrationNumberDescription}
                             icon={<IconId size={14} />}
                             value={currentPermit.registrationNumber}
                             justify="center"
@@ -100,15 +101,16 @@ export const ResidencePermitInfo = ({ userInfo, residencePermits, onUpdate }: Re
 
                     <SimpleGrid cols={2} w="100%" spacing="xl">
                         <TextPropertyBox
-                            name="pages.profile.residencePermit.issuingDate"
+                            name={locales.issuingDate}
                             icon={<IconCalendar size={14} />}
                             value={dayjs(currentPermit.issuingDate).format("DD MMM YYYY")}
+                            justify="center"
                         />
                         <TextPropertyBox
-                            name="pages.profile.residencePermit.valid-until"
+                            name={locales.validUntil}
                             icon={<IconCalendar size={14} />}
                             value={dayjs(currentPermit.validUntil).format("DD MMM YYYY")}
-                            justify="flex-end"
+                            justify="center"
                         />
                     </SimpleGrid>
 

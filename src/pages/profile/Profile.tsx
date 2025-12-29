@@ -1,4 +1,5 @@
 import { Container, Flex, SimpleGrid, Skeleton } from "@mantine/core"
+import { ResidencePermitDto, UserInfoDto } from "@russian-rs/portal-api-axios"
 import { useQuery } from "@tanstack/react-query"
 import { useContext, useEffect, useState } from "react"
 import { useIntl } from "react-intl"
@@ -100,7 +101,10 @@ export const Profile = () => {
                             {userInfo && (
                                 <ResidencePermitInfo
                                     userInfo={userInfo}
-                                    residencePermits={(userInfo as any).residencePermits || []}
+                                    residencePermits={
+                                        (userInfo as UserInfoDto & { residencePermits?: ResidencePermitDto[] })
+                                            .residencePermits || []
+                                    }
                                     onUpdate={handleUserInfoUpdate}
                                 />
                             )}
