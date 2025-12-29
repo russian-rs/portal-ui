@@ -255,8 +255,8 @@
                 "created": "Boravak uspešno sačuvan",
                 "createError": "Greška pri čuvanju boravka",
                 "number": "Boravak {number}",
-                "registrationNumber.description": "9-cifreni registracioni broj",
-                "identityNumber.description": "13-cifreni JMBG/ID broj",
+                "registrationNumberDescription": "9-cifreni registracioni broj",
+                "identityNumberDescription": "13-cifreni JMBG/ID broj",
                 "frontSidePhoto": "Fotografija prednje strane",
                 "backSidePhoto": "Fotografija zadnje strane",
                 "validation": {
