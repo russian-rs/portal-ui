@@ -14,13 +14,14 @@ import Underline from "@tiptap/extension-underline"
 import { useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import parse from "html-react-parser"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { TicketApiService } from "src/shared/api/TicketApiService"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import TicketTemplate from "src/shared/ticket/TicketTemplate"
 import { FileUploader, FileUploaderInterface } from "src/shared/ui/fileUploader/FileUploader"
+import { TicketGroupTarget, pickTicketGroupByTarget } from "src/shared/ui/ticketModal/lib/groupTarget"
 import { locales } from "src/shared/ui/ticketModal/lib/locales"
 import classes from "src/shared/ui/ticketModal/TicketModal.module.scss"
 import { z } from "zod"
@@ -30,8 +31,16 @@ interface TicketModalProps {
     close: () => void
     fromUser?: UserInfoDto
     toUser?: UserInfoDto
+    /** legacy props */
     title?: string
     body?: string
+    /** preferred props for pre-filling */
+    initialTitle?: string
+    initialBody?: string
+    initialGroup?: string
+    groupTarget?: TicketGroupTarget
+    allowAttachments?: boolean
+    attachmentsRequired?: boolean
     templates?: TicketTemplate[]
 }
 
@@ -48,6 +57,12 @@ export const TicketModal: React.FC<TicketModalProps> = ({
     toUser,
     title,
     body,
+    initialTitle,
+    initialBody,
+    initialGroup,
+    groupTarget,
+    allowAttachments = true,
+    attachmentsRequired = false,
     templates,
 }) => {
     const intl = useIntl()
@@ -73,9 +88,9 @@ export const TicketModal: React.FC<TicketModalProps> = ({
         mode: "uncontrolled",
         validate: zodResolver(validationSchema),
         initialValues: {
-            title: title ?? "",
+            title: initialTitle ?? title ?? "",
             group: "",
-            body: body ?? "",
+            body: initialBody ?? body ?? "",
         },
     })
 
@@ -103,6 +118,32 @@ export const TicketModal: React.FC<TicketModalProps> = ({
         [creating]
     )
 
+    useEffect(() => {
+        if (!opened) return
+
+        // Reset group + files every time modal opens
+        form.setFieldValue("group", initialGroup ?? "")
+        setUploadedFiles([])
+        setLoadingFiles([])
+
+        const nextTitle = initialTitle ?? title ?? ""
+        const nextBody = initialBody ?? body ?? ""
+
+        form.setFieldValue("title", nextTitle)
+        form.setFieldValue("body", nextBody)
+        editor?.commands.setContent(nextBody || "")
+    }, [opened, initialTitle, initialBody, initialGroup, title, body, editor])
+
+    useEffect(() => {
+        if (!opened) return
+        if (form.getValues().group) return
+
+        const selected = initialGroup ?? pickTicketGroupByTarget(ticketGroups, groupTarget)
+        if (!selected) return
+
+        form.setFieldValue("group", selected)
+    }, [opened, ticketGroups, groupTarget, initialGroup])
+
     const hasAttachments = uploadedFiles.length > 0 || loadingFiles.length > 0
 
     const handleTemplateClick = (template: TicketTemplate) => {
@@ -114,6 +155,16 @@ export const TicketModal: React.FC<TicketModalProps> = ({
     const handleSubmit = async (values: TicketFormValues) => {
         console.log(values)
         try {
+            if (attachmentsRequired && uploadedFiles.length === 0) {
+                notifications.show(
+                    ErrorNotification(
+                        <Text size="sm">{intl.formatMessage({ id: "common.ticket-modal.attachmentsRequired" })}</Text>,
+                        null
+                    )
+                )
+                return
+            }
+
             const createdTicket = await createTicket({
                 toUser: toUser?.username ?? null,
                 fromUser: fromUser?.username ?? null,
@@ -189,7 +240,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({
 
                     {fromUser && !toUser && (
                         <Alert variant="light" color="blue">
-                            {parse(intl.formatMessage({ id: locales.internalDescription }))}
+                            {parse(intl.formatMessage({ id: locales.publicDescription }))}
                         </Alert>
                     )}
 
@@ -252,7 +303,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({
                     </RichTextEditor>
 
                     {form.errors.body && (
-                        <Text size="xs" c="red" mt={4}>
+                        <Text size="xs" c="red.7" mt={4}>
                             {form.errors.body}
                         </Text>
                     )}
@@ -272,7 +323,7 @@ export const TicketModal: React.FC<TicketModalProps> = ({
                         </Flex>
                     )}
 
-                    {fromUser && (
+                    {fromUser && allowAttachments && (
                         <FileUploader
                             ref={fileUploaderRef}
                             maxFiles={10}
