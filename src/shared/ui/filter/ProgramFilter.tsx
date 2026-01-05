@@ -4,16 +4,19 @@ import { usePrograms } from "src/app/providers/ProgramsProvider"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { locales } from "./lib/locales"
 import { useState, useRef } from "react"
+import { ProgramDto } from "@russian-rs/portal-api-axios"
 
 interface ProgramFilterProps {
     value: string | null
     onChange: (program: string | null) => void
     className?: string
     placeholder?: string
+    programsOverride?: ProgramDto[]
 }
 
-export function ProgramFilter({ value, onChange, className, placeholder }: ProgramFilterProps) {
-    const programs = usePrograms()
+export function ProgramFilter({ value, onChange, className, placeholder, programsOverride }: ProgramFilterProps) {
+    const allPrograms = usePrograms()
+    const programs = programsOverride ?? allPrograms
     const intl = useIntl()
     const [search, setSearch] = useState("")
     const selectRef = useRef<HTMLInputElement>(null)

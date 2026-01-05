@@ -70,7 +70,7 @@ export const ApplicationView = () => {
     setDocumentTitleByString(application.name)
 
     const noteLogins = application.notes?.map((note) => note.createdBy).filter(Boolean) || []
-    const { data: users } = resolveUsers(noteLogins)
+    const { data: users = {} } = resolveUsers(noteLogins)
 
     const { isFetching: isLoading, refetch: refetchApplication } = useQuery({
         queryKey: ["getApplication", id],

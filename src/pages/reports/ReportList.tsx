@@ -14,11 +14,10 @@ import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { getSpentTimeFromReport } from "src/shared/report/timeSpent"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
-
+import { NO_PROGRAM_CODE, NO_PROJECT_CODE } from "src/shared/constants/Shared"
 import { Badge, useComputedColorScheme } from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
-import { usePrograms } from "src/app/providers/ProgramsProvider"
-import { useProjects } from "src/app/providers/ProjectsProvider"
+import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
 import { getReportStatusColor } from "src/shared/report/status"
 import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
 import { PropertyBox } from "src/shared/ui/propertyBox/PropertyBox"
@@ -43,9 +42,6 @@ export const ReportList = () => {
 
     const isMobile = useMediaQuery("(max-width: 1360px)")
     const isTablet = useMediaQuery("(min-width: 1024px) and (max-width: 1439px)")
-
-    const programs = usePrograms()
-    const projects = useProjects()
     const colorScheme = useComputedColorScheme("light")
 
     const [resetKey, setResetKey] = useState(0)
@@ -61,9 +57,13 @@ export const ReportList = () => {
         dateFrom: searchParams.get("dateFrom") || null,
         dateTo: searchParams.get("dateTo") || null,
     })
-    const [logins, setLogins] = useState<string[]>([])
     const [selectedProgram, setSelectedProgram] = useState<string | null>(searchParams.get("program") || null)
     const [selectedProject, setSelectedProject] = useState<string | null>(searchParams.get("project") || null)
+
+    const { programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
+        selectedProgram,
+        selectedProject
+    )
 
     // Ref для скролла к началу списка
     const listStartRef = React.useRef<HTMLDivElement>(null)
@@ -151,6 +151,42 @@ export const ReportList = () => {
         setSearchParams(params)
     }
 
+    const handleProjectChange = (newProject: string | null) => {
+        const projectChanged = newProject !== selectedProject
+        let nextProgram = selectedProgram
+
+        if (newProject && newProject !== NO_PROJECT_CODE) {
+            const project =
+                visibleProjects.find((p) => p.code === newProject) ??
+                projects.find((p) => p.code === newProject)
+
+            if (project) {
+                const owningProgramCode =
+                    project.programCode ??
+                    programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
+
+                if (owningProgramCode) {
+                    nextProgram = owningProgramCode.toUpperCase()
+                }
+            }
+        }
+
+        setSelectedProject(newProject)
+        setSelectedProgram(nextProgram)
+
+        if (projectChanged) {
+            setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
+            updateUrlParams(filter, nextProgram, newProject, 0)
+        } else {
+            updateUrlParams(
+                filter,
+                nextProgram,
+                newProject,
+                pageRequest.pageNumber || 0
+            )
+        }
+    }
+
     // Эффект для обновления размера страницы при изменении типа устройства
     useEffect(() => {
         const newPageSize = isMobile ? 10 : 25
@@ -183,34 +219,32 @@ export const ReportList = () => {
         isFetching: isFetchingReports,
     } = useQuery({
         initialData: { content: [], page: defaultPageResponse },
-
         queryKey: ["searchReports", filter, pageRequest, selectedProgram, selectedProject],
-
         queryFn: () => {
-            // Обрабатываем проекты: если выбран "NO_PROJECT", отправляем пустую строку
             let project: string | null = null
             if (selectedProject) {
-                if (selectedProject === "NO_PROJECT") {
-                    project = "" // Пустая строка для фильтра "без проекта"
-                } else {
-                    project = selectedProject // Код проекта
-                }
+                project = selectedProject === NO_PROJECT_CODE ? "" : selectedProject
             }
 
             const filterWithProgram = {
                 ...filter,
-
-                program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram,
+                program: selectedProgram === NO_PROGRAM_CODE ? "" : selectedProgram,
                 project,
             }
-            return ReportApiService.getReports(pageRequest, filterWithProgram).then((response) => {
-                setLogins(response.data.content.map((it) => it.user).filter((it) => it != undefined))
-                return response.data
-            })
+
+            return ReportApiService.getReports(pageRequest, filterWithProgram).then((r) => r.data)
         },
     })
 
-    const { data: users } = resolveUsers(logins)
+    const logins = React.useMemo(() => {
+        const set = new Set<string>()
+        for (const r of reports) {
+            if (r.user) set.add(r.user)
+        }
+        return Array.from(set).sort()
+    }, [reports])
+
+    const { data: users = {} } = resolveUsers(logins)
 
     const onUserSelected = (selectedUser: UserInfoDto | null) => {
         const newFilter = { ...filter, login: selectedUser?.username || null }
@@ -601,10 +635,17 @@ export const ReportList = () => {
                                                 const programChanged = newProgram !== selectedProgram
 
                                                 setSelectedProgram(newProgram)
+
                                                 if (programChanged) {
+                                                    setSelectedProject(null)
                                                     setPageRequest({ ...pageRequest, pageNumber: 0 })
 
-                                                    updateUrlParams(filter, newProgram, selectedProject, 0)
+                                                    updateUrlParams(
+                                                        filter,
+                                                        newProgram,
+                                                        null,
+                                                        0
+                                                    )
                                                 } else {
                                                     updateUrlParams(
                                                         filter,
@@ -615,6 +656,7 @@ export const ReportList = () => {
                                                 }
                                             }}
                                             placeholder={intl.formatMessage({ id: locales.programFilterNotSelected })}
+                                            programsOverride={visiblePrograms}
                                         />
                                     </Flex>
                                     <Flex direction="column">
@@ -624,23 +666,9 @@ export const ReportList = () => {
                                         <ProjectFilter
                                             className={classes.programFilter}
                                             value={selectedProject}
-                                            onChange={(newProject) => {
-                                                const projectChanged = newProject !== selectedProject
-
-                                                setSelectedProject(newProject)
-                                                if (projectChanged) {
-                                                    setPageRequest({ ...pageRequest, pageNumber: 0 })
-                                                    updateUrlParams(filter, selectedProgram, newProject, 0)
-                                                } else {
-                                                    updateUrlParams(
-                                                        filter,
-                                                        selectedProgram,
-                                                        newProject,
-                                                        pageRequest.pageNumber || 0
-                                                    )
-                                                }
-                                            }}
+                                            onChange={handleProjectChange}
                                             placeholder={intl.formatMessage({ id: locales.projectFilterNotSelected })}
+                                            projectsOverride={visibleProjects}
                                         />
                                     </Flex>
                                     {activeFiltersCount > 0 && (
@@ -691,10 +719,17 @@ export const ReportList = () => {
                                         const programChanged = newProgram !== selectedProgram
 
                                         setSelectedProgram(newProgram)
+
                                         if (programChanged) {
+                                            setSelectedProject(null)
                                             setPageRequest({ ...pageRequest, pageNumber: 0 })
 
-                                            updateUrlParams(filter, newProgram, selectedProject, 0)
+                                            updateUrlParams(
+                                                filter,
+                                                newProgram,
+                                                null,
+                                                0
+                                            )
                                         } else {
                                             updateUrlParams(
                                                 filter,
@@ -705,6 +740,7 @@ export const ReportList = () => {
                                         }
                                     }}
                                     placeholder={intl.formatMessage({ id: locales.programFilterNotSelected })}
+                                    programsOverride={visiblePrograms}
                                 />
                             </Flex>
                             <Flex direction="column">
@@ -714,23 +750,9 @@ export const ReportList = () => {
                                 <ProjectFilter
                                     className={classes.programFilter}
                                     value={selectedProject}
-                                    onChange={(newProject) => {
-                                        const projectChanged = newProject !== selectedProject
-
-                                        setSelectedProject(newProject)
-                                        if (projectChanged) {
-                                            setPageRequest({ ...pageRequest, pageNumber: 0 })
-                                            updateUrlParams(filter, selectedProgram, newProject, 0)
-                                        } else {
-                                            updateUrlParams(
-                                                filter,
-                                                selectedProgram,
-                                                newProject,
-                                                pageRequest.pageNumber || 0
-                                            )
-                                        }
-                                    }}
+                                    onChange={handleProjectChange}
                                     placeholder={intl.formatMessage({ id: locales.projectFilterNotSelected })}
+                                    projectsOverride={visibleProjects}
                                 />
                             </Flex>
                             {activeFiltersCount > 0 && (

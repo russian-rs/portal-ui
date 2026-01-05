@@ -5,6 +5,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
 import { locales } from "../lib/locales"
 import classes from "./VolunteerReportFilters.module.scss"
+import { ProgramDto, ProjectDto } from "@russian-rs/portal-api-axios"
 
 interface VolunteerReportFiltersProps {
     search: string
@@ -15,7 +16,9 @@ interface VolunteerReportFiltersProps {
     onProjectChange: (value: string | null) => void
     periodMonths: string
     onPeriodChange: (value: string) => void
-    onReset: () => void
+    onReset: () => void,
+    programsOverride?: ProgramDto[],
+    projectsOverride?: ProjectDto[]
 }
 
 export const VolunteerReportFilters: React.FC<VolunteerReportFiltersProps> = ({
@@ -28,6 +31,8 @@ export const VolunteerReportFilters: React.FC<VolunteerReportFiltersProps> = ({
     periodMonths,
     onPeriodChange,
     onReset,
+    programsOverride,
+    projectsOverride
 }) => {
     const intl = useIntl()
     const hasActiveFilters = search || selectedProgram || selectedProject || periodMonths !== "3"
@@ -67,6 +72,7 @@ export const VolunteerReportFilters: React.FC<VolunteerReportFiltersProps> = ({
                             value={selectedProgram}
                             onChange={onProgramChange}
                             placeholder={intl.formatMessage({ id: locales.program })}
+                            programsOverride={programsOverride}
                         />
                     </Box>
                     <Box className={classes.filterItem}>
@@ -74,6 +80,7 @@ export const VolunteerReportFilters: React.FC<VolunteerReportFiltersProps> = ({
                             value={selectedProject}
                             onChange={onProjectChange}
                             placeholder={intl.formatMessage({ id: locales.project })}
+                            projectsOverride={projectsOverride}
                         />
                     </Box>
                     <Box className={classes.filterItem}>

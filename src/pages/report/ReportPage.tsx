@@ -61,7 +61,7 @@ export const ReportPage = () => {
             }),
     })
 
-    const { data: users, isFetching: isFetchingUsers } = resolveUsers(logins)
+    const { data: users = {}, isFetching: isFetchingUsers } = resolveUsers(logins)
 
     const program = useMemo(() => programs.find((p) => p.code === report.program), [programs, report.program])
     const project = useMemo(() => projects.find((p) => p.code === report.project), [projects, report.project])
