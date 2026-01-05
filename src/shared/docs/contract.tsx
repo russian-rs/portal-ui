@@ -35,7 +35,7 @@ export default function generateContractPdf(application: ApplicationDto) {
 
     // Layout constants
     const MARGIN_X = 15
-    const MARGIN_TOP = 20
+    const MARGIN_TOP = 15
     const MARGIN_BOTTOM = 20
 
     const pageWidth = pdf.internal.pageSize.getWidth()
@@ -43,10 +43,10 @@ export default function generateContractPdf(application: ApplicationDto) {
     const contentWidth = pageWidth - MARGIN_X * 2
 
     // Typography
-    const TITLE_PT = 14
-    const HEADING_PT = 12
-    const BODY_PT = 11
-    const SMALL_PT = 9
+    const TITLE_PT = 11
+    const HEADING_PT = 9
+    const BODY_PT = 8
+    const SMALL_PT = 7
 
     let y = MARGIN_TOP
     const ptToMm = (pt: number) => pt * 0.352778
@@ -197,12 +197,12 @@ export default function generateContractPdf(application: ApplicationDto) {
     }
 
     // Contract
-    writeCentered("УГОВОР О ВОЛОНТИРАЊУ", TITLE_PT, 4)
+    writeCentered("УГОВОР О ВОЛОНТИРАЊУ", TITLE_PT, 3)
 
     setBody()
     writeLeftRight(dayjs().format("DD.MM.YYYY"), "град Нови Сад", BODY_PT, 3)
 
-    writeWrapped("На основу Закona о волонтирању („Службени гласник РС“, бр. 36/2010), уговорне стране:", BODY_PT, 2)
+    writeWrapped("На основу Закoнa о волонтирању („Службени гласник РС“, бр. 36/2010), уговорне стране:", BODY_PT, 2)
 
     writeInlineBold(`**${fullName}** рођен **${birthDate}**, адреса **${address}**, Србиjа,`, BODY_PT, 1)
     writeInlineBold(`пасош **${passport}**, (у даљем тексту: Волонтер) и`, BODY_PT, 2)
@@ -243,7 +243,7 @@ export default function generateContractPdf(application: ApplicationDto) {
             "слободне и креативне активности;",
         ],
         BODY_PT,
-        3
+        1
     )
 
     writeHeading("ЧЛАН 2. РОК ТРАЈАЊА УГОВОРА")
@@ -363,10 +363,10 @@ export default function generateContractPdf(application: ApplicationDto) {
 
 6.4. Овај уговор је сачињен у 2 (два) истоветна примерка, по један за сваку уговорну страну.`,
         BODY_PT,
-        4
+        2
     )
 
-    ensureSpace(80)
+    ensureSpace(25)
 
     pdf.setFontSize(SMALL_PT)
     setBody()
@@ -407,11 +407,15 @@ export default function generateContractPdf(application: ApplicationDto) {
         yLeft += 1
     }
 
-    const lineTop = y
-    const lineBottom = Math.max(yLeft, y + 55)
-    pdf.line(dividerX, lineTop, dividerX, lineBottom)
-
     let yRight = y
+
+    const lineTop = y
+    const leftBottom = yLeft
+
+    const rightBottom = yRight
+
+    const lineBottom = Math.max(leftBottom, rightBottom)
+    pdf.line(dividerX, lineTop, dividerX, lineBottom)
     pdf.setFontSize(BODY_PT)
     writeInlineBoldAt(
         pdf,
