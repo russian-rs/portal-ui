@@ -23,7 +23,7 @@
         "typeRoots": ["src/app/types", "src/shared/typings", "./node_modules/@types", "./node_modules"]
     },
     "files": [
-        ".eslintrc.cjs",
+        "eslint.config.js",
         "vite.config.mts",
         "node_modules/file-saver/src/FileSaver.js",
         "node_modules/file-saver/src/FileSaver.js"

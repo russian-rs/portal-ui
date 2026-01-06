@@ -9,7 +9,7 @@ on:
             - "tsconfig.json"
             - "tsconfig.build.json"
             - "vite.config.mts"
-            - ".eslintrc.cjs"
+            - "eslint.config.js"
             - ".github/workflows/check.yml"
 jobs:
     check:

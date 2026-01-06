@@ -1,6 +1,0 @@
-**/node_modules
-**/dist
-cypress
-src/**/*.test.ts
-src/**/*.test.tsx
-src/stories
