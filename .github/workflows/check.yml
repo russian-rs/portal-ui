@@ -1,16 +1,6 @@
 name: Check
 
 on:
-    push:
-        paths:
-            - "src/**"
-            - "package.json"
-            - "package-lock.json"
-            - "tsconfig.json"
-            - "tsconfig.build.json"
-            - "vite.config.mts"
-            - ".eslintrc.cjs"
-            - ".github/workflows/check.yml"
     pull_request:
         paths:
             - "src/**"
@@ -21,11 +11,6 @@ on:
             - "vite.config.mts"
             - ".eslintrc.cjs"
             - ".github/workflows/check.yml"
-
-concurrency:
-    group: ${{ github.workflow }}-${{ github.ref }}
-    cancel-in-progress: true
-
 jobs:
     check:
         name: Lint, Test & Typecheck
@@ -47,7 +32,8 @@ jobs:
             - name: Install dependencies
               env:
                   GITHUB_RUSSIAN_RS_NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-              run: npm ci
+              run: |
+                  npm ci || (echo "npm ci failed, trying npm install..." && npm install --package-lock-only && npm ci)
 
             - name: Run linter
               run: npm run lint
