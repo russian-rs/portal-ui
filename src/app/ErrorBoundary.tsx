@@ -1,6 +1,8 @@
 import { Button, Center, Container, Flex, Text, Title } from "@mantine/core"
+import parse from "html-react-parser"
 import { Component, ReactNode } from "react"
-import { FormattedMessage } from "react-intl"
+import { FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl"
+import { CopyText } from "src/shared/ui/copyText/CopyText"
 
 interface Props {
     children: ReactNode
@@ -11,8 +13,8 @@ interface State {
     error?: Error
 }
 
-export class ErrorBoundary extends Component<Props, State> {
-    constructor(props: Props) {
+class ErrorBoundaryBase extends Component<Props & WrappedComponentProps, State> {
+    constructor(props: Props & WrappedComponentProps) {
         super(props)
         this.state = { hasError: false }
     }
@@ -42,8 +44,13 @@ export class ErrorBoundary extends Component<Props, State> {
                             <Title>
                                 <FormattedMessage id="error-boundary.title" />
                             </Title>
-                            {/* REVIEW: Don't show the error message to the user if not needed */}
-                            <Text>{this.state.error?.message}</Text>
+                            <Flex direction="column" gap="xs" justify="center" align="center">
+                                <Text size="sm">
+                                    {parse(this.props.intl.formatMessage({ id: "error-boundary.description" }))}
+                                </Text>
+
+                                <CopyText style={{ color: "red" }} text={this.state.error?.message ?? "-"} />
+                            </Flex>
                             <Button onClick={() => window.location.reload()}>
                                 <FormattedMessage id="error-boundary.reload-button" />
                             </Button>
@@ -56,3 +63,5 @@ export class ErrorBoundary extends Component<Props, State> {
         return this.props.children
     }
 }
+
+export const ErrorBoundary = injectIntl(ErrorBoundaryBase)
