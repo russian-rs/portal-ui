@@ -14,7 +14,6 @@ import type { ProgramStatItem, Statistics } from "@russian-rs/portal-api-axios";
 import classes from "./MintrudReport.module.scss"
 import { FinalUsersChart, VolunteersCharts } from "./MintrudCharts"
 import { IconListCheck } from "@tabler/icons-react"
-import generateQuestionnairePdf from "src/shared/docs/questionnaire"
 import generateMintrudReport from "src/shared/docs/mintrud-report"
 
 export default function MintrudReport() {
