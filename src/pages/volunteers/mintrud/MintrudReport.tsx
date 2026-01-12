@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState, useEffect } from "react";
-import { Flex, Text, Table, NumberInput, Card, Group } from "@mantine/core";
+import { Flex, Text, Table, NumberInput, Card, Group, Button } from "@mantine/core";
 import { useIntl, FormattedMessage } from "react-intl";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams, useNavigate } from "react-router";
@@ -13,6 +13,9 @@ import { StatisticsApiService } from "src/shared/api/StatisticsApiService";
 import type { ProgramStatItem, Statistics } from "@russian-rs/portal-api-axios";
 import classes from "./MintrudReport.module.scss"
 import { FinalUsersChart, VolunteersCharts } from "./MintrudCharts"
+import { IconListCheck } from "@tabler/icons-react"
+import generateQuestionnairePdf from "src/shared/docs/questionnaire"
+import generateMintrudReport from "src/shared/docs/mintrud-report"
 
 export default function MintrudReport() {
     setDocumentTitleByLocale(locales.titleMintrud);
@@ -75,6 +78,14 @@ export default function MintrudReport() {
         (stats.programStatistics?.total?.totalTimeSpent ?? 0) === 0 &&
         (stats.finalUsersStatistics?.totalCount ?? 0) === 0;
 
+    const totalNonOther = useMemo(() => {
+        return programItems
+            .filter(p => p.code && p.code !== "OTHER")
+            .reduce((sum, p) => sum + (p.data.count ?? 0), 0);
+    }, [programItems]);
+
+    const otherDisplayValue = (stats?.finalUsersStatistics?.totalCount ?? 0) - totalNonOther;
+
     return (
         <Flex direction="column">
             <CustomLoader visible={isFetching} className={classes.loader} />
@@ -135,7 +146,9 @@ export default function MintrudReport() {
                         {programItems.map((item) => (
                             <Table.Tr key={String(item.code ?? "OTHER")}>
                                 <Table.Td>{programName(item.code)}</Table.Td>
-                                <Table.Td ta="right">{fmtInt(item.data.count)}</Table.Td>
+                                <Table.Td ta="right">
+                                    {(!item.code || item.code === "OTHER") ? fmtInt(otherDisplayValue) : fmtInt(item.data.count)}
+                                </Table.Td>
                                 <Table.Td ta="right">{fmtHours(item.data.totalTimeSpent)}</Table.Td>
                             </Table.Tr>
                         ))}
@@ -143,7 +156,7 @@ export default function MintrudReport() {
                     <Table.Tfoot>
                         <Table.Tr>
                             <Table.Th><FormattedMessage id={locales.total} /></Table.Th>
-                            <Table.Th ta="right">{fmtInt(stats?.programStatistics?.total?.count)}</Table.Th>
+                            <Table.Th ta="right">{fmtInt(stats?.finalUsersStatistics?.totalCount)}</Table.Th>
                             <Table.Th ta="right">{fmtHours(stats?.programStatistics?.total?.totalTimeSpent)}</Table.Th>
                         </Table.Tr>
                     </Table.Tfoot>
@@ -160,6 +173,19 @@ export default function MintrudReport() {
                     <FormattedMessage id={locales.finalUsersStats} />
                 </Text>
                 <FinalUsersChart stats={stats} />
+
+                {/* Кнопка генерации PDF */}
+                <Button
+                    variant="gradient"
+                    gradient={{ from: "#00FF95", to: "#5AB08C" }}
+                    rightSection={<IconListCheck size={15} />}
+                    disabled={stats == null}
+                    onClick={() => {
+                        generateMintrudReport(stats)
+                    }}
+                >
+                Generate Report
+                </Button>
 
                 {/* Пусто */}
                 {isEmptyData && (
