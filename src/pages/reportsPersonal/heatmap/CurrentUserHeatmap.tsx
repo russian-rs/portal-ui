@@ -6,12 +6,14 @@ import dayjs from "dayjs"
 import React, { useMemo } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { ReportHeatMapApiService } from "src/shared/api/ReportHeatMapApiService"
+import { START_YEAR } from "src/shared/constants/Shared"
 import { locales } from "../lib/constants"
 import classes from "./CurrentUserHeatmap.module.scss"
 
 interface WeekInfo {
     weekNumber: number
     date: dayjs.Dayjs
+    weekEnd: string
 }
 
 type VolunteerWeek = VolunteerHeatMapItem["weeks"][number]
@@ -19,13 +21,64 @@ type VolunteerWeek = VolunteerHeatMapItem["weeks"][number]
 export const CurrentUserHeatmap: React.FC = () => {
     const intl = useIntl()
     const currentYear = dayjs().year()
+    const years = useMemo(() => {
+        const yearsList: number[] = []
+        for (let year = START_YEAR; year <= currentYear; year++) {
+            yearsList.push(year)
+        }
+        return yearsList
+    }, [currentYear])
 
     const { data, isLoading, isError } = useQuery({
-        queryKey: ["currentUserHeatmap", currentYear],
-        queryFn: () =>
-            ReportHeatMapApiService.getCurrentUserHeatMap(currentYear).then(
-                (response) => response.data as VolunteerHeatMapItem
-            ),
+        queryKey: ["currentUserHeatmap", years],
+        queryFn: async () => {
+            // Получаем данные за все годы параллельно
+            const results = await Promise.all(
+                years.map((year) =>
+                    ReportHeatMapApiService.getCurrentUserHeatMap(year)
+                        .then((response) => response.data as VolunteerHeatMapItem)
+                        .catch(() => null)
+                )
+            )
+
+            // Фильтруем успешные результаты
+            const validResults = results.filter((r): r is VolunteerHeatMapItem => r !== null)
+            if (validResults.length === 0) return null
+
+            // Берем volunteerInfo из первого результата
+            const volunteerInfo = validResults[0].volunteerInfo
+
+            // Объединяем недели: используем дату конца недели как уникальный ключ
+            // чтобы недели из разных годов не перезаписывали друг друга
+            const weeksMap = new Map<string, VolunteerWeek>()
+            for (const result of validResults) {
+                for (const week of result.weeks) {
+                    const weekKey = week.weekEnd // Используем дату конца как уникальный ключ
+                    const existing = weeksMap.get(weekKey)
+                    if (existing) {
+                        // Если неделя с такой же датой уже есть, суммируем часы
+                        weeksMap.set(weekKey, {
+                            ...week,
+                            hoursWorked: (existing.hoursWorked ?? 0) + (week.hoursWorked ?? 0),
+                            hoursRequired: (existing.hoursRequired ?? 0) + (week.hoursRequired ?? 0),
+                        })
+                    } else {
+                        weeksMap.set(weekKey, week)
+                    }
+                }
+            }
+
+            // Суммируем общие часы
+            const totalRequired = validResults.reduce((sum, r) => sum + (r.totalRequired ?? 0), 0)
+            const totalWorked = validResults.reduce((sum, r) => sum + (r.totalWorked ?? 0), 0)
+
+            return {
+                volunteerInfo,
+                weeks: Array.from(weeksMap.values()),
+                totalRequired,
+                totalWorked,
+            } as VolunteerHeatMapItem
+        },
         staleTime: 5 * 60 * 1000,
         gcTime: 10 * 60 * 1000,
         refetchOnWindowFocus: false,
@@ -36,11 +89,13 @@ export const CurrentUserHeatmap: React.FC = () => {
     const volunteer = data ?? null
 
     const weekByNumber = useMemo(() => {
-        const map = new Map<number, VolunteerWeek>()
+        // Используем дату конца недели как ключ, чтобы избежать конфликтов
+        // между неделями с одинаковым номером из разных годов
+        const map = new Map<string, VolunteerWeek>()
         if (!volunteer) return map
 
         for (const w of volunteer.weeks) {
-            map.set(w.week, w)
+            map.set(w.weekEnd, w)
         }
         return map
     }, [volunteer])
@@ -48,20 +103,16 @@ export const CurrentUserHeatmap: React.FC = () => {
     const weeks: WeekInfo[] = useMemo(() => {
         if (!volunteer) return []
 
-        const uniqueWeeks: WeekInfo[] = []
-        const seen = new Set<number>()
+        // Создаем массив всех недель, отсортированных по дате конца
+        const allWeeks: WeekInfo[] = volunteer.weeks.map((w) => ({
+            weekNumber: w.week,
+            date: dayjs(w.weekEnd),
+            weekEnd: w.weekEnd, // Сохраняем дату конца для использования как ключа
+        }))
 
-        for (const w of volunteer.weeks) {
-            if (seen.has(w.week)) continue
-            seen.add(w.week)
-            uniqueWeeks.push({
-                weekNumber: w.week,
-                date: dayjs(w.weekStart),
-            })
-        }
-
-        uniqueWeeks.sort((a, b) => a.weekNumber - b.weekNumber)
-        return uniqueWeeks
+        // Сортируем по дате конца недели
+        allWeeks.sort((a, b) => dayjs(a.weekEnd).diff(dayjs(b.weekEnd), "week"))
+        return allWeeks
     }, [volunteer])
 
     if (isLoading) {
@@ -82,11 +133,12 @@ export const CurrentUserHeatmap: React.FC = () => {
         )
     }
 
-    const getSquareColor = (weekNumber: number) => {
-        const weekInfo = weekByNumber.get(weekNumber)
+    const getSquareColor = (weekStart: string, weekNumber: number) => {
+        const weekInfo = weekByNumber.get(weekStart)
         if (!weekInfo) return "na"
 
-        const isCurrentWeek = dayjs().isoWeek() === weekNumber
+        const weekDate = dayjs(weekStart)
+        const isCurrentWeek = dayjs().isoWeek() === weekNumber && dayjs().year() === weekDate.year()
 
         if (weekInfo.hoursRequired === 0) return "na"
         if (isCurrentWeek) return "waiting"
@@ -95,8 +147,8 @@ export const CurrentUserHeatmap: React.FC = () => {
         return "fullReports"
     }
 
-    const getSquareTooltip = (weekNumber: number) => {
-        const weekInfo = weekByNumber.get(weekNumber)
+    const getSquareTooltip = (weekStart: string, weekNumber: number) => {
+        const weekInfo = weekByNumber.get(weekStart)
         if (!weekInfo) return ""
 
         return intl.formatMessage(
@@ -112,11 +164,11 @@ export const CurrentUserHeatmap: React.FC = () => {
         )
     }
 
-    const getSquareInfoLabel = (weekNumber: number) => {
-        const weekInfo = weekByNumber.get(weekNumber)
+    const getSquareInfoLabel = (weekStart: string, weekNumber: number) => {
+        const weekInfo = weekByNumber.get(weekStart)
         if (!weekInfo) return ""
 
-        const color = getSquareColor(weekNumber)
+        const color = getSquareColor(weekStart, weekNumber)
         const weekLabel = intl.formatMessage({ id: locales.tooltipWeek }, { num: weekNumber })
         const params = {
             name: volunteer.volunteerInfo.fullName,
@@ -132,7 +184,7 @@ export const CurrentUserHeatmap: React.FC = () => {
             return intl.formatMessage({ id: locales.tooltipWaiting }, params)
         }
 
-        return getSquareTooltip(weekNumber)
+        return getSquareTooltip(weekStart, weekNumber)
     }
 
     // 👉 итоговые часы
@@ -184,7 +236,7 @@ export const CurrentUserHeatmap: React.FC = () => {
             <Flex gap={4} wrap="wrap" className={classes.weeksRow}>
                 {weeks.map((week) => (
                     <HoverCard
-                        key={week.weekNumber}
+                        key={week.weekEnd}
                         position="top"
                         withArrow
                         shadow="md"
@@ -193,7 +245,9 @@ export const CurrentUserHeatmap: React.FC = () => {
                         withinPortal
                     >
                         <HoverCard.Target>
-                            <Box className={`${classes.weekSquare} ${classes[getSquareColor(week.weekNumber)]}`}>
+                            <Box
+                                className={`${classes.weekSquare} ${classes[getSquareColor(week.weekEnd, week.weekNumber)]}`}
+                            >
                                 <Text size="xs" fw={500} className={classes.weekNumber}>
                                     {week.weekNumber}
                                 </Text>
@@ -207,7 +261,7 @@ export const CurrentUserHeatmap: React.FC = () => {
                             }}
                         >
                             <Text size="xs" style={{ whiteSpace: "normal", lineHeight: 1.35 }}>
-                                {getSquareInfoLabel(week.weekNumber)}
+                                {getSquareInfoLabel(week.weekEnd, week.weekNumber)}
                             </Text>
                         </HoverCard.Dropdown>
                     </HoverCard>
