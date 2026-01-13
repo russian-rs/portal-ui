@@ -11,6 +11,7 @@ import isBetween from "dayjs/plugin/isBetween"
 import isoWeek from "dayjs/plugin/isoWeek"
 import isoWeekInYear from "dayjs/plugin/isoWeeksInYear"
 import weekOfYear from "dayjs/plugin/weekOfYear"
+import { CsrfContextProvider } from "src/app/providers/CsrfContext"
 import { LanguageContextProvider } from "src/app/providers/LocaleContext"
 import { UserContextProvider } from "src/app/providers/UserContext"
 import RootRouter from "src/app/router/RootRouter"
@@ -33,14 +34,16 @@ export const Root = () => {
     return (
         <MantineProvider defaultColorScheme="auto" theme={theme}>
             <QueryClientProvider client={queryClient}>
-                <LanguageContextProvider>
-                    <UserContextProvider>
-                        <AppShell>
-                            <Notifications className={classes.notifications} />
-                            <RootRouter />
-                        </AppShell>
-                    </UserContextProvider>
-                </LanguageContextProvider>
+                <CsrfContextProvider>
+                    <LanguageContextProvider>
+                        <UserContextProvider>
+                            <AppShell>
+                                <Notifications className={classes.notifications} />
+                                <RootRouter />
+                            </AppShell>
+                        </UserContextProvider>
+                    </LanguageContextProvider>
+                </CsrfContextProvider>
             </QueryClientProvider>
         </MantineProvider>
     )
