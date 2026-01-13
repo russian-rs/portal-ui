@@ -77,6 +77,10 @@ export default function MintrudReport() {
         (stats.programStatistics?.total?.totalTimeSpent ?? 0) === 0 &&
         (stats.finalUsersStatistics?.totalCount ?? 0) === 0;
 
+    /*
+     backend function counts only active users (ones who make reports)
+     thus otherDisplayValue is calculated as totalNonOther users - total users
+     */
     const totalNonOther = useMemo(() => {
         return programItems
             .filter(p => p.code && p.code !== "OTHER")
@@ -176,14 +180,13 @@ export default function MintrudReport() {
                 {/* Кнопка генерации PDF */}
                 <Button
                     variant="gradient"
-                    gradient={{ from: "#00FF95", to: "#5AB08C" }}
                     rightSection={<IconListCheck size={15} />}
                     disabled={stats == null}
                     onClick={() => {
-                        generateMintrudReport(stats)
+                        generateMintrudReport(stats, otherDisplayValue)
                     }}
                 >
-                Generate Report
+                    <FormattedMessage id={locales.generateReport} />
                 </Button>
 
                 {/* Пусто */}

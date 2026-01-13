@@ -44,4 +44,6 @@ export const locales = {
         JAVNE_POVRSINE: "pages.mintrud.statGroups.JAVNE_POVRSINE",
         ZIVOTNA_SREDINA: "pages.mintrud.statGroups.ZIVOTNA_SREDINA",
     },
+
+    generateReport: "pages.mintrud.generate-report",
 };

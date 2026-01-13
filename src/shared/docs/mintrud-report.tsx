@@ -1,29 +1,28 @@
-import { PDFDocument, PDFFont, PDFForm } from 'pdf-lib'
+import { PDFDocument, PDFFont, PDFForm, TextAlignment } from "pdf-lib"
 import { saveAs } from 'file-saver'
 import fontkit from '@pdf-lib/fontkit'
 import { Statistics } from '@russian-rs/portal-api-axios'
-
+import {FIELDS} from "src/shared/constants/Mintrud-fields"
 import { MONTSERRAT_BOLD_BOLD } from 'src/shared/docs/fonts/Montserrat-Bold-bold'
 import { MONTSERRAT_MEDIUM_NORMAL } from 'src/shared/docs/fonts/Montserrat-Medium-normal'
 
+const FONT_SIZE = {
+    xs: 5,
+    sm: 7,
+    md: 10,
+    lg: 12,
+}
+
 /**
- * Generate Mintrud report PDF (Unicode safe)
+ * Generate Mintrud report PDF
  */
 export default async function generateMintrudReport(
-    stats: Statistics | undefined
+    stats: Statistics | undefined,
+    otherDisplayValue: number
 ) {
     if (!stats) {
         throw new Error('Statistics are required to generate Mintrud report')
     }
-
-    const FIELDS = {
-        REPORT_YEAR: 'topmostSubform[0].Page1[0].TextField1[0]',
-        ORGANIZATION_NAME: 'topmostSubform[0].Page1[0].TextField1[1]',
-        ADDRESS: 'topmostSubform[0].Page1[0].TextField1[2]',
-        PHONE: 'topmostSubform[0].Page1[0].TextField1[3]',
-        REGISTRY_NUMBER: 'topmostSubform[0].Page1[0].TextField1[4]',
-        REGISTRY_DATE: 'topmostSubform[0].Page1[0].TextField1[5]',
-    } as const
 
     // Load template
     const templateBytes = await fetch('/resources/mintrudreport.pdf')
@@ -31,33 +30,326 @@ export default async function generateMintrudReport(
 
     const pdfDoc = await PDFDocument.load(templateBytes)
 
-    // Required for Unicode fonts
     pdfDoc.registerFontkit(fontkit)
 
     const form = pdfDoc.getForm()
 
-    // Load fonts (Unicode, subset)
+    // Load fonts
     const { bold, regular } = await loadFonts(pdfDoc)
 
+
     // ---- Fill fields ----
+
+    // ---- PAGE 1 ----
 
     setText(
         form,
         FIELDS.REPORT_YEAR,
         String(stats.year ?? ''),
-        regular,
-        12
+        bold,
+        false,
+        true
     )
 
     setText(
         form,
         FIELDS.ORGANIZATION_NAME,
         'Удружене грађана «РУСКА ДИЈАСПОРА У СРБИJИ»',
-        bold,
-        10
+        bold
     )
 
-    // ---- finalize ----
+    setText(
+        form,
+        FIELDS.ADDRESS,
+        'Нови Сад Шарпланинска,54',
+        bold
+    )
+
+    setText(
+        form,
+        FIELDS.PHONE,
+        '062 154-78-93',
+        bold
+    )
+
+    setText(
+        form,
+        FIELDS.REGISTRY_NUMBER,
+        '10/2023',
+        bold
+    )
+
+    setText(
+        form,
+        FIELDS.REGISTRY_DATE,
+        '08052023',
+        bold
+    )
+
+    setCheckBox(form, FIELDS.ASSOCIATION_CHECK)
+
+    setText(
+        form,
+        FIELDS.PROGRAMS_MEDIA_AND_COMMUNICATIONS_NUMBER,
+        '  1',
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.PROGRAMS_ENVIRONMENTAL_PROTECTION_NUMBER,
+        '  1',
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.PROGRAMS_SOCIAL_PROTECTION_NUMBER,
+        '  1',
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.PROGRAMS_OTHER_NUMBER,
+        '  1',
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.PROGRAMS_MEDIA_AND_COMMUNICATIONS_VOLUNTEERS,
+        String(getProgramStatsByCode(stats, 'MEDIJI_I_KOMUNIKACIJE').count),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.PROGRAMS_MEDIA_AND_COMMUNICATIONS_TIME,
+        String(getProgramStatsByCode(stats, 'MEDIJI_I_KOMUNIKACIJE').totalTimeSpent),
+        regular,
+        true
+    )
+
+    setText(
+        form,
+        FIELDS.PROGRAMS_ENVIRONMENTAL_PROTECTION_VOLUNTEERS,
+        String(getProgramStatsByCode(stats, 'ZIVOTNA_SREDINA').count),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.PROGRAMS_ENVIRONMENTAL_PROTECTION_TIME,
+        String(getProgramStatsByCode(stats, 'ZIVOTNA_SREDINA').totalTimeSpent),
+        regular,
+        true
+    )
+
+    setText(
+        form,
+        FIELDS.PROGRAMS_SOCIAL_PROTECTION_VOLUNTEERS,
+        String(getProgramStatsByCode(stats, 'SOCIJALNA_ZASTITA').count),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.PROGRAMS_SOCIAL_PROTECTION_TIME,
+        String(getProgramStatsByCode(stats, 'SOCIJALNA_ZASTITA').totalTimeSpent),
+        regular,
+        true
+    )
+
+    setText(
+        form,
+        FIELDS.PROGRAMS_OTHER_VOLUNTEERS,
+        otherDisplayValue.toString(),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.PROGRAMS_OTHER_TIME,
+        String(getProgramStatsByCode(stats, null).totalTimeSpent),
+        regular,
+        true
+    )
+
+    setText(
+        form,
+        FIELDS.PROGRAMS_VOLUNTEERS,
+        String(stats.finalUsersStatistics?.totalCount ?? ''),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.PROGRAMS_TIME,
+        String(stats.programStatistics?.total.totalTimeSpent ?? ''),
+        regular,
+        true
+    )
+
+    // ---- PAGE 2 ----
+
+    setText(
+        form,
+        FIELDS.VOLUNTEERS_FEMALE_COUNT,
+        String(stats.volunteerStatistics?.femaleCount ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.VOLUNTEERS_MALE_COUNT,
+        String(stats.volunteerStatistics?.maleCount ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.VOLUNTEERS_15_18,
+        String(stats.volunteerStatistics?.age15to18Count ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.VOLUNTEERS_18_30,
+        String(stats.volunteerStatistics?.age18to30Count ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.VOLUNTEERS_30_40,
+        String(stats.volunteerStatistics?.age30to40Count ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.VOLUNTEERS_40_65,
+        String(stats.volunteerStatistics?.age40to65Count ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.VOLUNTEERS_65_PLUS,
+        String(stats.volunteerStatistics?.age65AndAboveCount ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.VOLUNTEERS_CITIZENS,
+        String(stats.volunteerStatistics?.citizensCount ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.VOLUNTEERS_FOREIGNERS,
+        String(stats.volunteerStatistics?.foreignersCount ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.VOLUNTEERS_TOTAL,
+        String(stats.finalUsersStatistics?.totalCount ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.FINAL_USERS_CULTURE_NUMBER,
+        '1',
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.FINAL_USERS_CULTURE_COUNT,
+        String(stats.finalUsersStatistics?.culturalAssetsCount ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.FINAL_USERS_NATURAL_NUMBER,
+        '1',
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.FINAL_USERS_NATURAL_COUNT,
+        String(stats.finalUsersStatistics?.naturalAssetsCount ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.FINAL_USERS_PUBLIC_NUMBER,
+        '1',
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.FINAL_USERS_PUBLIC_COUNT,
+        String(stats.finalUsersStatistics?.publicAreasCount ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.FINAL_USERS_OTHER_NUMBER,
+        '1',
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.FINAL_USERS_OTHER_COUNT,
+        String(stats.finalUsersStatistics?.otherCount ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.FINAL_USERS_TOTAL_NUMBER,
+        '4',
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.FINAL_USERS_TOTAL_COUNT,
+        String(stats.finalUsersStatistics?.totalCount ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.TOTAL_USERS,
+        String(stats.finalUsersStatistics?.totalCount ?? '0'),
+        regular
+    )
+
+    setText(
+        form,
+        FIELDS.RESPONSIBLE_FULL_NAME,
+        'Леонид Стеценко',
+        regular
+    )
+
+
+
+    // ---- generation ----
     form.flatten()
 
     const pdfBytes = await pdfDoc.save()
@@ -98,16 +390,58 @@ function setText(
     fieldName: string,
     value: string,
     font: PDFFont,
-    fontSize = 12
+    flexibleText = false,
+    title = false,
 ) {
     const field = form.getTextField(fieldName)
 
-    // 1. set text
     field.setText(value)
 
-    // 2. set font size (официальный API)
-    field.setFontSize(fontSize)
+    let fontSize = FONT_SIZE.md
 
-    // 3. regenerate appearance with Unicode font
+    if (value) {
+        if (title) {
+            fontSize = FONT_SIZE.lg
+        } else if (flexibleText) {
+            const length = value.length
+
+            if (length > 4) {
+                fontSize = FONT_SIZE.xs
+            } else if (length > 2) {
+                fontSize = FONT_SIZE.sm
+            }
+        }
+    }
+
+    field.setAlignment(TextAlignment.Center)
+    field.setFontSize(fontSize)
     field.updateAppearances(font)
 }
+
+
+function setCheckBox(
+    form: PDFForm,
+    fieldName: string,
+) {
+    const checkBox = form.getCheckBox(fieldName)
+    checkBox.check()
+}
+
+type ProgramStatsResult = {
+    count: number
+    totalTimeSpent: number
+}
+
+function getProgramStatsByCode(
+    stats: Statistics,
+    code: string | null
+): ProgramStatsResult {
+    const item = stats.programStatistics?.items
+        ?.find(i => i.code === code)
+
+    return {
+        count: item?.data?.count ?? 0,
+        totalTimeSpent: item?.data?.totalTimeSpent ?? 0,
+    }
+}
+
