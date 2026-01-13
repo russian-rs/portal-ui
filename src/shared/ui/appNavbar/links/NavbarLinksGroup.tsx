@@ -12,6 +12,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, items, link, ro
     const hasChildren = Array.isArray(items)
     const { user } = useContext(UserContext)
     const [opened, setOpened] = useState(initiallyOpened || false)
+    const isExternal = link?.startsWith("http://") || link?.startsWith("https://")
 
     const children = (hasChildren ? items : [])
         ?.filter((item) => hasPermission(user, item.roles, item.hideFrom))
@@ -28,34 +29,48 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, items, link, ro
             )
         })
 
+    const controlContent = (
+        <Group justify="space-between" gap={0}>
+            <Box style={{ display: "flex", alignItems: "center" }}>
+                <ThemeIcon variant="light" size={30}>
+                    <Icon style={{ width: rem(18), height: rem(18) }} />
+                </ThemeIcon>
+                <Box ml="md">
+                    <FormattedMessage id={label} />
+                </Box>
+            </Box>
+            {hasChildren && (
+                <IconChevronRight
+                    className={classes.chevron}
+                    style={{
+                        transform: opened ? "rotate(-90deg)" : "none",
+                    }}
+                />
+            )}
+        </Group>
+    )
+
     return (
         <>
-            <UnstyledButton
-                onClick={() => setOpened((o) => !o)}
-                className={classes.control}
-                component={link ? "a" : "button"}
-                href={link ? link : ""}
-                target={link?.startsWith("http") ? "_blank" : undefined}
-            >
-                <Group justify="space-between" gap={0}>
-                    <Box style={{ display: "flex", alignItems: "center" }}>
-                        <ThemeIcon variant="light" size={30}>
-                            <Icon style={{ width: rem(18), height: rem(18) }} />
-                        </ThemeIcon>
-                        <Box ml="md">
-                            <FormattedMessage id={label} />
-                        </Box>
-                    </Box>
-                    {hasChildren && (
-                        <IconChevronRight
-                            className={classes.chevron}
-                            style={{
-                                transform: opened ? "rotate(-90deg)" : "none",
-                            }}
-                        />
-                    )}
-                </Group>
-            </UnstyledButton>
+            {hasChildren || !link ? (
+                <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control} component="button">
+                    {controlContent}
+                </UnstyledButton>
+            ) : isExternal ? (
+                <UnstyledButton
+                    className={classes.control}
+                    component="a"
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {controlContent}
+                </UnstyledButton>
+            ) : (
+                <UnstyledButton className={classes.control} component={Link} to={link}>
+                    {controlContent}
+                </UnstyledButton>
+            )}
             {hasChildren ? <Collapse in={opened}>{children}</Collapse> : null}
         </>
     )

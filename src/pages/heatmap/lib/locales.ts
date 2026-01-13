@@ -12,6 +12,7 @@ export const locales = {
     status: "pages.heat-map.status",
     sendMessage: "pages.heat-map.send-message",
     noReports: "pages.heat-map.no-reports",
+    na: "pages.heat-map.na",
     partialReports: "pages.heat-map.partial-reports",
     fullReports: "pages.heat-map.full-reports",
     pending: "pages.heat-map.pending",

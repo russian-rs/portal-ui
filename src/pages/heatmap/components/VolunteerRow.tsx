@@ -6,6 +6,7 @@ import React, { useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { getTicketBody } from "src/pages/heatmap/lib/ticket"
 import TicketModal from "src/shared/ui/ticketModal/TicketModal"
+import { TicketGroupTarget } from "src/shared/ui/ticketModal/lib/groupTarget"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { locales } from "../lib/locales"
 import classes from "./VolunteerReportHeatmap.module.scss"
@@ -137,6 +138,7 @@ const VolunteerRowComponent: React.FC<VolunteerRowProps> = ({
                 toUser={volunteer.volunteerInfo}
                 title="Запрос информации по отчётным часам"
                 body={ticketBodyHtml}
+                groupTarget={TicketGroupTarget.CURATOR} // по умолчанию назначаем на куратора
             />
 
             <div className={classes.volunteerInfo}>

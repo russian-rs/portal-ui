@@ -104,6 +104,7 @@
             "group-description": "От этого зависит кто будет рассматривать обращение",
             "success": "<a href=\"{link}\" target=\"_blank\">Тикет №{number}</a> успешно создан",
             "error": "При создании тикета произошла ошибка, напишите на <a href='mailto:help@russian.rs'>help@russian.rs</a>",
+            "attachmentsRequired": "Для этого обращения нужно приложить файл(ы).",
             "required": "Обязательно"
         },
         "confirm-modal": {
@@ -363,6 +364,7 @@
             "status": "Статус",
             "send-message": "Отправить письмо",
             "no-reports": "Нет отчетов",
+            "na": "N/A",
             "partial-reports": "Частичные отчеты",
             "full-reports": "Полные отчеты",
             "pending": "Ожидание",
@@ -621,6 +623,66 @@
         },
         "reporting": {
             "title": "Руководство по сдаче отчётности"
+        },
+        "support": {
+            "title": "Обращение в поддержку",
+            "documentTitle": "Обращение в поддержку",
+            "description": "Выберите тему запроса и заполните поля.",
+            "createButton": "Создать тикет",
+            "caseLabel": "Тема обращения",
+            "casePlaceholder": "Выберите тему",
+            "formTitle": "Детали запроса",
+            "attachmentsRequiredHint": "Для данного запроса потребуется приложить файл(ы).",
+            "cases": {
+                "bug": "Ошибка на сайте",
+                "bug.title": "Ошибка на сайте",
+                "auth": "Проблема с доступом/авторизацией",
+                "auth.title": "Проблема с доступом/авторизацией",
+                "addressChange": "Смена адреса проживания",
+                "addressChange.title": "Запрос куратору: смена адреса проживания",
+                "nameChange": "Смена ФИО",
+                "nameChange.title": "Запрос куратору: смена ФИО",
+                "programChange": "Смена программы/проекта",
+                "programChange.title": "Запрос куратору: смена программы/проекта",
+                "residencePermit": "ВНЖ: вопрос/продление",
+                "residencePermit.title": "ВНЖ: вопрос/запрос",
+                "other": "Другое",
+                "other.title": "Другое обращение"
+            },
+            "fields": {
+                "page": "Страница/раздел",
+                "steps": "Шаги воспроизведения",
+                "expected": "Ожидаемое поведение",
+                "actual": "Фактическое поведение",
+                "environment": "Окружение (браузер/ОС)",
+                "loginOrEmail": "Логин или Email",
+                "problem": "Описание проблемы",
+                "when": "Когда проявляется",
+                "oldAddress": "Старый адрес",
+                "newAddress": "Новый адрес",
+                "effectiveDate": "Дата изменения",
+                "reason": "Комментарий/причина",
+                "oldName": "Старое ФИО",
+                "newName": "Новое ФИО",
+                "programOrProject": "Программа или проект",
+                "programOrProject.options.PROGRAM": "Программа",
+                "programOrProject.options.PROJECT": "Проект",
+                "currentProgram": "Текущая программа",
+                "desiredProgram": "Желаемая программа",
+                "currentProject": "Текущий проект",
+                "desiredProject": "Желаемый проект",
+                "permitCase": "Тип запроса",
+                "permitCase.options.EXTEND": "Продление",
+                "permitCase.options.QUESTION": "Вопрос/уточнение",
+                "city": "Город",
+                "desiredDate": "Желаемая дата",
+                "question": "Вопрос",
+                "topic": "Тема",
+                "message": "Сообщение"
+            },
+            "body": {
+                "case": "Кейс"
+            }
         },
         "volunteers-reports": {
             "title": "Отчеты по волонтерам"

@@ -16,6 +16,8 @@ import { defaultPageResponse } from "./lib/defaults"
 import { locales } from "./lib/locales"
 import { hasAccess } from "./lib/roles"
 import classes from "./VolunteerHeatmapPage.module.scss"
+import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
+import { NO_PROGRAM_CODE, NO_PROJECT_CODE } from "src/shared/constants/Shared"
 
 export const VolunteerHeatmapPage: React.FC = () => {
     const { user } = useContext(UserContext)
@@ -37,6 +39,10 @@ export const VolunteerHeatmapPage: React.FC = () => {
 
     const [selectedProgram, setSelectedProgram] = useState<string | null>(searchParams.get("program") || null)
     const [selectedProject, setSelectedProject] = useState<string | null>(searchParams.get("project") || null)
+    const { programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
+        selectedProgram,
+        selectedProject
+    )
     const [periodMonths, setPeriodMonths] = useState<string>(searchParams.get("period") || "3")
 
     const [selectedVolunteers, setSelectedVolunteers] = useState<Set<number>>(() => new Set())
@@ -46,6 +52,46 @@ export const VolunteerHeatmapPage: React.FC = () => {
         pageNumber: Math.max(0, parseInt(searchParams.get("page") || "1") - 1),
         pageSize: 10,
     })
+
+    const handleProgramChange = (newProgram: string | null) => {
+        const programChanged = newProgram !== selectedProgram
+
+        setSelectedProgram(newProgram)
+
+        if (programChanged) {
+            setSelectedProject(null)
+            setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
+        }
+    }
+
+    const handleProjectChange = (newProject: string | null) => {
+        const projectChanged = newProject !== selectedProject
+
+        let nextProgram = selectedProgram
+
+        if (newProject && newProject !== NO_PROJECT_CODE) {
+            const project =
+                visibleProjects.find((p) => p.code === newProject) ??
+                projects.find((p) => p.code === newProject)
+
+            if (project) {
+                const owningProgramCode =
+                    project.programCode ??
+                    programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
+
+                if (owningProgramCode) {
+                    nextProgram = owningProgramCode.toUpperCase()
+                }
+            }
+        }
+
+        setSelectedProject(newProject)
+        setSelectedProgram(nextProgram)
+
+        if (projectChanged) {
+            setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
+        }
+    }
 
     // --- дебаунс поиска ---
 
@@ -117,8 +163,8 @@ export const VolunteerHeatmapPage: React.FC = () => {
         ],
         queryFn: () =>
             ReportHeatMapApiService.getVolunteerHeatMap(debouncedSearch, pageRequest, {
-                program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram || undefined,
-                project: selectedProject === "NO_PROJECT" ? "" : selectedProject || undefined,
+                program: selectedProgram === NO_PROGRAM_CODE ? "" : selectedProgram || undefined,
+                project: selectedProject === NO_PROJECT_CODE ? "" : selectedProject || undefined,
                 startDate: startDateStr,
             }).then((response) => response.data),
         placeholderData: { content: [], page: defaultPageResponse },
@@ -190,12 +236,14 @@ export const VolunteerHeatmapPage: React.FC = () => {
                     search={search}
                     onSearchChange={setSearch}
                     selectedProgram={selectedProgram}
-                    onProgramChange={setSelectedProgram}
+                    onProgramChange={handleProgramChange}
                     selectedProject={selectedProject}
-                    onProjectChange={setSelectedProject}
+                    onProjectChange={handleProjectChange}
                     periodMonths={periodMonths}
                     onPeriodChange={setPeriodMonths}
                     onReset={handleResetFilters}
+                    programsOverride={visiblePrograms}
+                    projectsOverride={visibleProjects}
                 />
 
                 <Card withBorder p="lg">
