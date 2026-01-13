@@ -35,17 +35,17 @@ export const Root = () => {
     return (
         <MantineProvider defaultColorScheme="auto" theme={theme}>
             <QueryClientProvider client={queryClient}>
-              <CsrfContextProvider>
-                <LanguageContextProvider>
-                    <UserContextProvider>
-                        <AppShell>
-                            <ErrorBoundary>
-                                <Notifications className={classes.notifications} />
-                                <RootRouter />
-                            </ErrorBoundary>
-                        </AppShell>
-                    </UserContextProvider>
-                </LanguageContextProvider>
+                <CsrfContextProvider>
+                    <LanguageContextProvider>
+                        <UserContextProvider>
+                            <AppShell>
+                                <ErrorBoundary>
+                                    <Notifications className={classes.notifications} />
+                                    <RootRouter />
+                                </ErrorBoundary>
+                            </AppShell>
+                        </UserContextProvider>
+                    </LanguageContextProvider>
                 </CsrfContextProvider>
             </QueryClientProvider>
         </MantineProvider>
