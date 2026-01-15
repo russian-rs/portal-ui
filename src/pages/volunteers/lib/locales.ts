@@ -46,4 +46,4 @@ export const locales = {
     },
 
     generateReport: "pages.mintrud.generate-report",
-};
+}
