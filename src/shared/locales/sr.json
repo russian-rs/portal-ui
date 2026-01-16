@@ -694,6 +694,7 @@
             "title": "Statistika (Ministarstvo rada)",
             "year-label": "Godina",
             "summary": "Rezime",
+            "generate-report": "Generiši izveštaj",
             "total-volunteers": "Ukupno volontera",
             "total-hours": "Ukupno sati",
             "program-stats": "Po programima",
