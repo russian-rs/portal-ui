@@ -195,7 +195,7 @@ export default function MintrudReport() {
                 <Button
                     variant="gradient"
                     rightSection={<IconListCheck size={15} />}
-                    disabled={stats == null}
+                    disabled={stats == null || isFetching}
                     onClick={() => {
                         generateMintrudReport(stats, otherDisplayValue)
                     }}
