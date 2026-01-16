@@ -694,6 +694,7 @@
             "title": "Статистика (Минтруд)",
             "year-label": "Год",
             "summary": "Итоги",
+            "generate-report": "Сформировать отчёт",
             "total-volunteers": "Всего волонтёров",
             "total-hours": "Всего часов",
             "program-stats": "По программам",

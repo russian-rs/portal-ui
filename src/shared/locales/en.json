@@ -694,6 +694,7 @@
             "title": "Statistics (Ministry of Labour)",
             "year-label": "Year",
             "summary": "Summary",
+            "generate-report": "Generate report",
             "total-volunteers": "Total volunteers",
             "total-hours": "Total hours",
             "program-stats": "By programs",
