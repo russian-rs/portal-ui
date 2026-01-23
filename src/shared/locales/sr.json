@@ -323,6 +323,7 @@
                 "noReports": "Nema izveštaja",
                 "partialReports": "Delimični",
                 "fullReports": "Potpuni",
+                "yearLabel": "{year} godina",
                 "summary": {
                     "requiredZero": "Nemate zahteva po časovima",
                     "ok": "Odrađeno {worked} h od {required} očekivanih",

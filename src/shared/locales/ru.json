@@ -323,6 +323,7 @@
                 "noReports": "Нет отчетов",
                 "partialReports": "Частичные",
                 "fullReports": "Полные",
+                "yearLabel": "{year} год",
                 "summary": {
                     "requiredZero": "У вас нет требованйи по часам",
                     "ok": "Отработано {worked} ч из {required} ожидаемых",

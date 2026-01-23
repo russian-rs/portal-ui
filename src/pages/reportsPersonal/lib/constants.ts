@@ -24,6 +24,7 @@ export const locales = {
     summaryRequiredZero: "pages.my-reports.heatmap.summary.requiredZero",
     summaryOk: "pages.my-reports.heatmap.summary.ok",
     summaryDeficit: "pages.my-reports.heatmap.summary.deficit",
+    yearLabel: "pages.my-reports.heatmap.yearLabel",
 }
 
 export const defaultPage: PageRequest = {

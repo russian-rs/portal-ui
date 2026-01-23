@@ -323,6 +323,7 @@
                 "noReports": "No reports",
                 "partialReports": "Partial",
                 "fullReports": "Full",
+                "yearLabel": "{year} year",
                 "summary": {
                     "requiredZero": "You have no hour requirements",
                     "ok": "{worked} h completed out of {required} expected",

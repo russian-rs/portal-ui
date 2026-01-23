@@ -1,4 +1,4 @@
-import { Alert, Box, Flex, HoverCard, Loader, Text } from "@mantine/core"
+import { Accordion, Alert, Box, Flex, HoverCard, Loader, Text } from "@mantine/core"
 import { VolunteerHeatMapItem } from "@russian-rs/portal-api-axios"
 import { IconAlertHexagon, IconChecks } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
@@ -21,6 +21,8 @@ type VolunteerWeek = VolunteerHeatMapItem["weeks"][number]
 export const CurrentUserHeatmap: React.FC = () => {
     const intl = useIntl()
     const currentYear = dayjs().year()
+    const currentWeek = dayjs().isoWeek()
+    const currentDate = dayjs()
     const years = useMemo(() => {
         const yearsList: number[] = []
         for (let year = START_YEAR; year <= currentYear; year++) {
@@ -32,7 +34,6 @@ export const CurrentUserHeatmap: React.FC = () => {
     const { data, isLoading, isError } = useQuery({
         queryKey: ["currentUserHeatmap", years],
         queryFn: async () => {
-            // Получаем данные за все годы параллельно
             const results = await Promise.all(
                 years.map((year) =>
                     ReportHeatMapApiService.getCurrentUserHeatMap(year)
@@ -41,22 +42,17 @@ export const CurrentUserHeatmap: React.FC = () => {
                 )
             )
 
-            // Фильтруем успешные результаты
             const validResults = results.filter((r): r is VolunteerHeatMapItem => r !== null)
             if (validResults.length === 0) return null
 
-            // Берем volunteerInfo из первого результата
             const volunteerInfo = validResults[0].volunteerInfo
 
-            // Объединяем недели: используем дату конца недели как уникальный ключ
-            // чтобы недели из разных годов не перезаписывали друг друга
             const weeksMap = new Map<string, VolunteerWeek>()
             for (const result of validResults) {
                 for (const week of result.weeks) {
-                    const weekKey = week.weekEnd // Используем дату конца как уникальный ключ
+                    const weekKey = week.weekEnd
                     const existing = weeksMap.get(weekKey)
                     if (existing) {
-                        // Если неделя с такой же датой уже есть, суммируем часы
                         weeksMap.set(weekKey, {
                             ...week,
                             hoursWorked: (existing.hoursWorked ?? 0) + (week.hoursWorked ?? 0),
@@ -68,7 +64,6 @@ export const CurrentUserHeatmap: React.FC = () => {
                 }
             }
 
-            // Суммируем общие часы
             const totalRequired = validResults.reduce((sum, r) => sum + (r.totalRequired ?? 0), 0)
             const totalWorked = validResults.reduce((sum, r) => sum + (r.totalWorked ?? 0), 0)
 
@@ -100,19 +95,62 @@ export const CurrentUserHeatmap: React.FC = () => {
         return map
     }, [volunteer])
 
-    const weeks: WeekInfo[] = useMemo(() => {
+    const currentYearWeeks: WeekInfo[] = useMemo(() => {
         if (!volunteer) return []
 
-        // Создаем массив всех недель, отсортированных по дате конца
-        const allWeeks: WeekInfo[] = volunteer.weeks.map((w) => ({
+        const weeks = volunteer.weeks.filter((w) => {
+            const weekYear = dayjs(w.weekEnd).year()
+            return weekYear === currentYear
+        })
+
+        const allWeeks: WeekInfo[] = weeks.map((w) => ({
             weekNumber: w.week,
             date: dayjs(w.weekEnd),
-            weekEnd: w.weekEnd, // Сохраняем дату конца для использования как ключа
+            weekEnd: w.weekEnd,
         }))
 
-        // Сортируем по дате конца недели
         allWeeks.sort((a, b) => dayjs(a.weekEnd).diff(dayjs(b.weekEnd), "week"))
         return allWeeks
+    }, [volunteer, currentYear])
+
+    const pastYearsWeeksByYear = useMemo(() => {
+        if (!volunteer) return new Map<number, WeekInfo[]>()
+
+        const weeksByYear = new Map<number, WeekInfo[]>()
+        
+        volunteer.weeks.forEach((w) => {
+            const weekYear = dayjs(w.weekEnd).year()
+            if (weekYear < currentYear) {
+                if (!weeksByYear.has(weekYear)) {
+                    weeksByYear.set(weekYear, [])
+                }
+                weeksByYear.get(weekYear)!.push({
+                    weekNumber: w.week,
+                    date: dayjs(w.weekEnd),
+                    weekEnd: w.weekEnd,
+                })
+            }
+        })
+
+        weeksByYear.forEach((weeks, year) => {
+            weeks.sort((a, b) => dayjs(a.weekEnd).diff(dayjs(b.weekEnd), "week"))
+        })
+
+        return weeksByYear
+    }, [volunteer, currentYear])
+
+    const pastYears = useMemo(() => {
+        const years = Array.from(pastYearsWeeksByYear.keys()).sort((a, b) => b - a)
+        return years.reverse()
+    }, [pastYearsWeeksByYear])
+
+    const { required, worked } = useMemo(() => {
+        if (!volunteer) return { required: 0, worked: 0 }
+        
+        const totalRequired = volunteer.totalRequired ?? 0
+        const totalWorked = volunteer.totalWorked ?? 0
+        
+        return { required: totalRequired, worked: totalWorked }
     }, [volunteer])
 
     if (isLoading) {
@@ -133,12 +171,13 @@ export const CurrentUserHeatmap: React.FC = () => {
         )
     }
 
-    const getSquareColor = (weekStart: string, weekNumber: number) => {
-        const weekInfo = weekByNumber.get(weekStart)
+    const getSquareColor = (weekEnd: string, weekNumber: number) => {
+        const weekInfo = weekByNumber.get(weekEnd)
         if (!weekInfo) return "na"
 
-        const weekDate = dayjs(weekStart)
-        const isCurrentWeek = dayjs().isoWeek() === weekNumber && dayjs().year() === weekDate.year()
+        const weekDate = dayjs(weekEnd).endOf("isoWeek")
+        const weekYear = weekDate.year()
+        const isCurrentWeek = currentWeek === weekNumber && currentYear === weekYear
 
         if (weekInfo.hoursRequired === 0) return "na"
         if (isCurrentWeek) return "waiting"
@@ -147,8 +186,8 @@ export const CurrentUserHeatmap: React.FC = () => {
         return "fullReports"
     }
 
-    const getSquareTooltip = (weekStart: string, weekNumber: number) => {
-        const weekInfo = weekByNumber.get(weekStart)
+    const getSquareTooltip = (weekEnd: string, weekNumber: number) => {
+        const weekInfo = weekByNumber.get(weekEnd)
         if (!weekInfo) return ""
 
         return intl.formatMessage(
@@ -164,11 +203,11 @@ export const CurrentUserHeatmap: React.FC = () => {
         )
     }
 
-    const getSquareInfoLabel = (weekStart: string, weekNumber: number) => {
-        const weekInfo = weekByNumber.get(weekStart)
+    const getSquareInfoLabel = (weekEnd: string, weekNumber: number) => {
+        const weekInfo = weekByNumber.get(weekEnd)
         if (!weekInfo) return ""
 
-        const color = getSquareColor(weekStart, weekNumber)
+        const color = getSquareColor(weekEnd, weekNumber)
         const weekLabel = intl.formatMessage({ id: locales.tooltipWeek }, { num: weekNumber })
         const params = {
             name: volunteer.volunteerInfo.fullName,
@@ -184,12 +223,9 @@ export const CurrentUserHeatmap: React.FC = () => {
             return intl.formatMessage({ id: locales.tooltipWaiting }, params)
         }
 
-        return getSquareTooltip(weekStart, weekNumber)
+        return getSquareTooltip(weekEnd, weekNumber)
     }
-
-    // 👉 итоговые часы
-    const required = volunteer.totalRequired ?? 0
-    const worked = volunteer.totalWorked ?? 0
+    
     const deficit = Math.max(required - worked, 0)
 
     let summaryColor: string = "gray"
@@ -233,8 +269,60 @@ export const CurrentUserHeatmap: React.FC = () => {
                     <Text size="xs">N/A</Text>
                 </Flex>
             </Flex>
+            {pastYears.length > 0 && (
+                <Accordion mt="md">
+                    {pastYears.reverse().map((year) => {
+                        const yearWeeks = pastYearsWeeksByYear.get(year) || []
+                        return (
+                            <Accordion.Item key={year} value={year.toString()}>
+                                <Accordion.Control>
+                                    <Text size="sm" fw={500}>
+                                        <FormattedMessage id={locales.yearLabel} values={{ year }} />
+                                    </Text>
+                                </Accordion.Control>
+                                <Accordion.Panel>
+                                    <Flex gap={4} wrap="wrap" className={classes.weeksRow}>
+                                        {yearWeeks.map((week) => (
+                                            <HoverCard
+                                                key={week.weekEnd}
+                                                position="top"
+                                                withArrow
+                                                shadow="md"
+                                                openDelay={0}
+                                                closeDelay={100}
+                                                withinPortal
+                                            >
+                                                <HoverCard.Target>
+                                                    <Box
+                                                        className={`${classes.weekSquare} ${classes[getSquareColor(week.weekEnd, week.weekNumber)]}`}
+                                                    >
+                                                        <Text size="xs" fw={500} className={classes.weekNumber}>
+                                                            {week.weekNumber}
+                                                        </Text>
+                                                    </Box>
+                                                </HoverCard.Target>
+                                                <HoverCard.Dropdown
+                                                    style={{
+                                                        maxWidth: "min(86vw, 420px)",
+                                                        overflowWrap: "anywhere",
+                                                        wordBreak: "break-word",
+                                                    }}
+                                                >
+                                                    <Text size="xs" style={{ whiteSpace: "normal", lineHeight: 1.35 }}>
+                                                        {getSquareInfoLabel(week.weekEnd, week.weekNumber)}
+                                                    </Text>
+                                                </HoverCard.Dropdown>
+                                            </HoverCard>
+                                        ))}
+                                    </Flex>
+                                </Accordion.Panel>
+                            </Accordion.Item>
+                        )
+                    })}
+                </Accordion>
+            )}
             <Flex gap={4} wrap="wrap" className={classes.weeksRow}>
-                {weeks.map((week) => (
+                {currentYearWeeks.map((week) => (
                     <HoverCard
                         key={week.weekEnd}
                         position="top"
@@ -267,6 +355,7 @@ export const CurrentUserHeatmap: React.FC = () => {
                     </HoverCard>
                 ))}
             </Flex>
+           
             <Flex mt="xs">
                 <Alert
                     color={summaryColor}
