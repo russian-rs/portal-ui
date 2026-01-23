@@ -140,8 +140,7 @@ export const CurrentUserHeatmap: React.FC = () => {
     }, [volunteer, currentYear])
 
     const pastYears = useMemo(() => {
-        const years = Array.from(pastYearsWeeksByYear.keys()).sort((a, b) => b - a)
-        return years.reverse()
+        return Array.from(pastYearsWeeksByYear.keys()).sort((a, b) => a - b)
     }, [pastYearsWeeksByYear])
 
     const { required, worked } = useMemo(() => {
@@ -271,7 +270,7 @@ export const CurrentUserHeatmap: React.FC = () => {
             </Flex>
             {pastYears.length > 0 && (
                 <Accordion mt="md">
-                    {pastYears.reverse().map((year) => {
+                    {pastYears.map((year) => {
                         const yearWeeks = pastYearsWeeksByYear.get(year) || []
                         return (
                             <Accordion.Item key={year} value={year.toString()}>
