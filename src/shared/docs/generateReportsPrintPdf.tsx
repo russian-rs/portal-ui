@@ -1,4 +1,4 @@
-import jsPDF, { jsPDF as JsPdf } from "jspdf"
+import { jsPDF as JsPdf } from "jspdf"
 import { ReportDto, UserInfoDto } from "@russian-rs/portal-api-axios"
 import { MONTSERRAT_BOLD_BOLD } from "src/shared/docs/fonts/Montserrat-Bold-bold"
 import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
@@ -43,9 +43,7 @@ export const generateReportsPdf = (
 
     // Typography
     const TITLE_PT = 11
-    const HEADING_PT = 9
     const BODY_PT = 8
-    const SMALL_PT = 7
 
     let y = MARGIN_TOP
     const ptToMm = (pt: number) => pt * 0.352778
@@ -82,31 +80,6 @@ export const generateReportsPdf = (
         setBold()
         pdf.text(left, MARGIN_X, y)
         y += lineHeightMm(pt) + gapAfterMm
-    }
-
-    const writeList = (items: string[], pt: number, gapAfterMm = 2) => {
-        pdf.setFontSize(pt)
-        const bulletX = MARGIN_X
-        const textX = MARGIN_X + 4
-        const bulletWidth = contentWidth - 4
-
-        for (const item of items) {
-            const lines = pdf.splitTextToSize(item, bulletWidth)
-            const need = lines.length * lineHeightMm(pt) + gapAfterMm
-            ensureSpace(need)
-
-            setBody()
-            pdf.text("-", bulletX, y)
-            pdf.text(lines[0], textX, y)
-            y += lineHeightMm(pt)
-
-            for (let i = 1; i < lines.length; i++) {
-                pdf.text(lines[i], textX, y)
-                y += lineHeightMm(pt)
-            }
-
-            y += gapAfterMm
-        }
     }
 
     const writeInlineBold = (markdown: string, pt: number, gapAfterMm = 2) => {
