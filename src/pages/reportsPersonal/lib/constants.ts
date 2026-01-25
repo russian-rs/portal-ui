@@ -24,6 +24,13 @@ export const locales = {
     summaryRequiredZero: "pages.my-reports.heatmap.summary.requiredZero",
     summaryOk: "pages.my-reports.heatmap.summary.ok",
     summaryDeficit: "pages.my-reports.heatmap.summary.deficit",
+    generatePDF: "pages.my-reports.pdf.generate-pdf",
+    printPDF: "pages.my-reports.pdf.print-pdf",
+    pdfPeriodStart: "pages.my-reports.pdf.period-start",
+    pdfPeriodEnd: "pages.my-reports.pdf.period-end",
+    invalidDateRange: "pages.my-reports.pdf.invalid-date-range",
+    noReportsFound: "pages.my-reports.pdf.noReportsFound",
+    somethingWentWrong: "pages.notFound.title",
 }
 
 export const defaultPage: PageRequest = {

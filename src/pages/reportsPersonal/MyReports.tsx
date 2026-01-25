@@ -21,6 +21,7 @@ import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
 import { WeekPicker } from "src/shared/ui/weekPicker/WeekPicker"
 import classes from "./MyReports.module.scss"
+import { UserReportPrinter } from "src/pages/reportsPersonal/reportPDFPrinter/UserReportPrinter"
 
 export const MyReports = () => {
     setDocumentTitleByLocale(locales.documentTitle)
@@ -288,6 +289,7 @@ export const MyReports = () => {
                                 </Button>
                             </Flex>
                         </Flex>
+                        <UserReportPrinter />
                         <Flex className={classes.reportContainer}>
                             {rows.length == 0 && (
                                 <Flex className={classes.emptyState}>

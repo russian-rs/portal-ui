@@ -306,6 +306,14 @@
             "reset-filter": "Reset filters",
             "empty-reports": "Nothing found",
             "new-report": "New report",
+            "pdf": {
+                "generate-pdf": "Generate PDF",
+                "print-pdf": "Print PDF",
+                "period-start": "Start of period",
+                "period-end": "End of period",
+                "invalid-date-range": "Invalid time range",
+                "noReportsFound": "No reports found"
+            },
             "report": {
                 "created": "Created",
                 "status": "Status",
