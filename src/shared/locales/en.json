@@ -312,7 +312,8 @@
                 "period-start": "Start of period",
                 "period-end": "End of period",
                 "invalid-date-range": "Invalid time range",
-                "noReportsFound": "No reports found"
+                "noReportsFound": "No reports found",
+                "pdfTestNotice": "This is a test function. Automatic translation into Serbian is not provided."
             },
             "report": {
                 "created": "Created",

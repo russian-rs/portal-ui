@@ -1,8 +1,8 @@
 import React, { useContext, useMemo, useState } from "react"
-import { Button, Flex, Modal } from "@mantine/core"
+import { Alert, Button, Flex, Modal } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useDisclosure } from "@mantine/hooks"
-import { IconCalendar } from "@tabler/icons-react"
+import { IconCalendar, IconInfoCircle } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import { useMutation } from "@tanstack/react-query"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -81,6 +81,13 @@ export const UserReportPrinter: React.FC = () => {
         <>
             <Modal opened={opened} onClose={close} title={<FormattedMessage id={locales.printPDF} />}>
                 <Flex direction="column" gap={12}>
+                    <Alert icon={<IconInfoCircle size={16} />} color="red" variant="light">
+                        <FormattedMessage
+                            id={locales.pdfTestNotice}
+                            defaultMessage="This is a test function. Automatic translation into Serbian is not provided."
+                        />
+                    </Alert>
+
                     <DateInput
                         value={fromDate}
                         onChange={setFromDate}

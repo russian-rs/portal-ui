@@ -31,6 +31,7 @@ export const locales = {
     invalidDateRange: "pages.my-reports.pdf.invalid-date-range",
     noReportsFound: "pages.my-reports.pdf.noReportsFound",
     somethingWentWrong: "pages.notFound.title",
+    pdfTestNotice: "pages.my-reports.pdf.pdfTestNotice",
 }
 
 export const defaultPage: PageRequest = {
