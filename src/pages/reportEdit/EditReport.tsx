@@ -4,7 +4,7 @@ import { TaskDto } from "@russian-rs/portal-api-axios"
 import { IconChevronRight, IconDeviceFloppy, IconPlus } from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useLocation, useNavigate, useParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
@@ -13,6 +13,7 @@ import { defaultTask } from "src/pages/reportEdit/lib/defaults"
 import { TaskCard, TaskCardInterface } from "src/pages/reportEdit/task/TaskCard"
 import { ReportApiService } from "src/shared/api/ReportApiService"
 import { setDocumentTitleByLocale, setDocumentTitleByString } from "src/shared/hooks/useDocumentTitle"
+import { useReportDraft } from "src/shared/hooks/useReportDraft"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { ReportStatus } from "src/shared/report/status"
 import { allTasksInOneWeek } from "src/shared/report/tasks"
@@ -29,19 +30,15 @@ export const EditReport = () => {
     const intl = useIntl()
 
     const { user: currentUser } = useContext(UserContext)
-    const [editMode, setEditMode] = useState<boolean>(false)
+    const editMode = useMemo(() => location.pathname.includes("edit"), [location])
 
-    const [tasks, setTasks] = useState<TaskDto[]>([defaultTask])
+    const { tasks, setTasks, saveDraft, clearDraft } = useReportDraft(editMode)
     const taskRefs = useRef<{ [key: string]: React.RefObject<TaskCardInterface> }>({})
 
     const navigate = useNavigate()
     const [isSending, setIsSending] = useState(false)
 
     const [confirmModalOpened, setConfirmModalOpened] = useState(false)
-
-    useEffect(() => {
-        setEditMode(location.pathname.includes("edit"))
-    }, [location])
 
     const { data: report, isFetching: isFetchingReport } = useQuery({
         queryKey: ["getReport", id],
@@ -54,7 +51,7 @@ export const EditReport = () => {
     })
 
     const handleTaskChange = (id: string, updatedTask: TaskDto) => {
-        setTasks((prevTasks) => prevTasks.map((task) => (task.id === id ? updatedTask : task)))
+        saveDraft(tasks.map((task) => (task.id === id ? updatedTask : task)))
     }
 
     const handleTaskAdd = () => {
@@ -152,6 +149,7 @@ export const EditReport = () => {
         const response = editMode ? ReportApiService.updateReport(reportDto) : ReportApiService.createReport(reportDto)
         response
             .then((r) => {
+                clearDraft()
                 navigate(`/report/${r.data.id}`)
             })
             .catch((_) => {

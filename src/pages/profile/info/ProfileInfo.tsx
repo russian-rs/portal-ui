@@ -1,4 +1,4 @@
-import { Button, Container, Drawer, Flex, Select, Text, TextInput, Tooltip } from "@mantine/core"
+import { Badge, Button, Container, Drawer, Flex, Select, Text, TextInput, Tooltip } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { useDisclosure } from "@mantine/hooks"
@@ -19,11 +19,12 @@ import {
 } from "@tabler/icons-react"
 import { useMutation } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { UserContext } from "src/app/providers/UserContext"
 import commonClasses from "src/app/styles/private.module.scss"
 import { ProfileAvatar } from "src/pages/profile/avatar/ProfileAvatar"
+import { UserMenu } from "src/pages/users/userMenu/UserMenu"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { Locale } from "src/shared/constants/Locales"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
@@ -35,6 +36,7 @@ import { getFullAddress } from "src/shared/utils/getFullAddress"
 import { z } from "zod"
 import { ProgramSelectInline } from "../select/ProgramSelect"
 import { ProjectSelectInline } from "../select/ProjectSelect"
+import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
 import classes from "./ProfileInfo.module.scss"
 
 interface ProfileInfoProps {
@@ -167,7 +169,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         },
     })
 
-    const { mutate: updateProgram } = useMutation({
+    const { mutateAsync: updateProgram } = useMutation({
         mutationFn: async (program: string) => {
             const response = await UserApiService.setProgram(userInfo.id, program)
             return response.data
@@ -201,7 +203,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         },
     })
 
-    const { mutate: updateProject } = useMutation({
+    const { mutateAsync: updateProject } = useMutation({
         mutationFn: async (project: string) => {
             const response = await UserApiService.setProject(userInfo.id, project)
             return response.data
@@ -240,8 +242,24 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const iconHome = <IconHome size={16} />
     const iconCity = <IconBuildings size={16} />
     const iconBirthday = <IconGift size={16} />
+    const [isSyncing, setIsSyncing] = useState(false)
+    const programValue = userInfo?.program?.code ?? null
+    const projectValue = userInfo?.project?.code ?? null
 
-    const programValue = userInfo?.program?.code || null
+    const [selectedProgram, setSelectedProgram] = useState<string | null>(programValue)
+    const [selectedProject, setSelectedProject] = useState<string | null>(projectValue)
+
+    useEffect(() => {
+        if (selectedProgram !== programValue) {
+            setSelectedProgram(programValue)
+        }
+        if (selectedProject !== projectValue) {
+            setSelectedProject(projectValue)
+        }
+    }, [programValue, projectValue])
+
+    const { programs, visiblePrograms, visibleProjects } =
+        useProgramProjectFilter(selectedProgram, selectedProject)
 
     // Админы могут редактировать программы всем (включая себя)
     // Обычные пользователи могут установить программу только если у них ее еще нет
@@ -257,29 +275,82 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     // Разрешаем менять пол своему профилю и админам
     const canEditGender = isAdmin || isOwnProfile
 
-    const handleProgramChange = (value: string | null) => {
-        if (value) {
-            updateProgram(value)
+    const handleProgramChange = async (programCode: string) => {
+        if (isSyncing) return
+
+        const prevProgram = selectedProgram
+        const prevProject = selectedProject
+
+        setSelectedProgram(programCode)
+        setSelectedProject(null)
+        try {
+            await updateProgram(programCode)
+        } catch {
+            setSelectedProgram(prevProgram)
+            setSelectedProject(prevProject)
         }
     }
 
+    const handleProjectChange = async (projectCode: string) => {
+        if (isSyncing) return
+
+        const prevProject = selectedProject
+
+        setSelectedProject(projectCode)
+        try {
+            await updateProject(projectCode)
+        } catch {
+            setSelectedProject(prevProject)
+        }
+    }
+
+    // Если выбрали программу, а текущий проект к ней не относится очищаем проект
+    useEffect(() => {
+        if (!selectedProgram || !selectedProject) return
+
+        const normalizedSelectedProgram = selectedProgram.toUpperCase()
+
+        const program = programs.find(
+            (p) => p.code.toUpperCase() === normalizedSelectedProgram
+        )
+        const allowed = program?.projectCodes ?? []
+
+        if (!allowed.includes(selectedProject)) {
+            setIsSyncing(true)
+            setSelectedProject(null)
+            setIsSyncing(false)
+        }
+    }, [selectedProgram, selectedProject, programs])
+
     return (
         <Flex direction="column" className={classes.infoContainer}>
-            <ProfileAvatar link={userInfo?.avatar?.link} editable={currentUser?.username === userInfo?.username} />
+            <Flex justify="space-between">
+                <ProfileAvatar link={userInfo?.avatar?.link} editable={currentUser?.username === userInfo?.username} />
+
+                <Flex gap="xs">
+                    {!userInfo?.active && (
+                        <Badge color="red" radius="md" variant="light">
+                            <FormattedMessage id="pages.profile.deactivated" />
+                        </Badge>
+                    )}
+
+                    {userInfo?.id !== currentUser?.id && <UserMenu user={userInfo} type="profile" />}
+                </Flex>
+            </Flex>
             <Text className={classes.userName}>{userInfo?.fullName}</Text>
             <ProgramSelectInline
-                value={programValue}
+                value={selectedProgram}
                 canEdit={canEditProgram}
                 locale={locale}
                 onChange={handleProgramChange}
+                programsOverride={visiblePrograms}
             />
             <ProjectSelectInline
-                value={userInfo?.project?.code}
+                value={selectedProject}
                 canEdit={canEditProject}
                 locale={locale}
-                onChange={(project) => {
-                    updateProject(project)
-                }}
+                onChange={handleProjectChange}
+                projectsOverride={visibleProjects}
             />
             <Container className={commonClasses.divider} />
             <TextPropertyBox
@@ -336,7 +407,6 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                     <FormattedMessage id={"pages.profile.buttons.edit"} />
                 </Button>
             )}
-
             <Drawer opened={opened} onClose={close} title={<FormattedMessage id="pages.profile.documentTitle" />}>
                 <form
                     onSubmit={(e) => {

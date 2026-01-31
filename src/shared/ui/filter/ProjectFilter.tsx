@@ -3,16 +3,19 @@ import { useIntl } from "react-intl"
 import { useProjects } from "src/app/providers/ProjectsProvider"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { locales } from "./lib/locales"
+import { ProjectDto } from "@russian-rs/portal-api-axios"
 
 interface ProjectFilterProps {
     value: string | null
     onChange: (project: string | null) => void
     className?: string
     placeholder?: string
+    projectsOverride?: ProjectDto[]
 }
 
-export function ProjectFilter({ value, onChange, className, placeholder }: ProjectFilterProps) {
-    const projects = useProjects()
+export function ProjectFilter({ value, onChange, className, placeholder, projectsOverride }: ProjectFilterProps) {
+    const allProjects = useProjects()
+    const projects = projectsOverride ?? allProjects
     const intl = useIntl()
 
     const projectOptions = [

@@ -67,6 +67,6 @@ export const Content: ItemGroupProps[] = [
     {
         label: "navbar.support",
         icon: IconLifebuoy,
-        link: "https://docs.google.com/forms/d/e/1FAIpQLSf3Zqvd4ZTqZeAd_JI5OtRHy8bUqn_2jiDEEXdnqQZdZISpSA/viewform",
+        link: "/support",
     },
 ]

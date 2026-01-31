@@ -105,6 +105,7 @@
             "group-description": "This determines who will review the request",
             "success": "<a href=\"{link}\" target=\"_blank\">Ticket #{number}</a> has been successfully created",
             "error": "An error occurred while creating the ticket, please write to <a href='mailto:help@russian.rs'>help@russian.rs</a>",
+            "attachmentsRequired": "This request requires attaching file(s).",
             "required": "Required"
         },
         "confirm-modal": {
@@ -170,6 +171,7 @@
         },
         "profile": {
             "documentTitle": "Profile",
+            "deactivated": "Deactivated",
             "props": {
                 "city": "City",
                 "postalCode": "Postal code",
@@ -274,6 +276,10 @@
             "creator": "Volunteer",
             "creation-date": "Date of report completion",
             "time-spent-total": "Total amount of time",
+            "program": "Program",
+            "no-program": "No program",
+            "project": "Project",
+            "no-project": "No project",
             "time-spent-hours": "{h} h",
             "time-spent-minutes": "{m} min",
             "task-date": "Completion date",
@@ -383,6 +389,7 @@
             "status": "Status",
             "send-message": "Send Message",
             "no-reports": "No Reports",
+            "na": "N/A",
             "partial-reports": "Partial Reports",
             "full-reports": "Full Reports",
             "pending": "Pending",
@@ -448,7 +455,8 @@
             "invalid-email": "Invalid e-mail",
             "invalid-name": "Invalid characters",
             "invalid-username": "Only latin letters and numbers, cannot start with a number",
-            "user-created-message": "User successfully created"
+            "user-created-message": "User successfully created",
+            "deactivated": "Deactivated"
         },
         "playgrounds": {
             "title": "Playgrounds report",
@@ -641,6 +649,66 @@
         "reporting": {
             "title": "Reporting Guidelines"
         },
+        "support": {
+            "title": "Contact support",
+            "documentTitle": "Contact support",
+            "description": "Choose a request topic and fill in the fields.",
+            "createButton": "Create ticket",
+            "caseLabel": "Request topic",
+            "casePlaceholder": "Choose a topic",
+            "formTitle": "Request details",
+            "attachmentsRequiredHint": "This request requires attaching file(s).",
+            "cases": {
+                "bug": "Website bug",
+                "bug.title": "Website bug",
+                "auth": "Access/auth issue",
+                "auth.title": "Access/auth issue",
+                "addressChange": "Address change",
+                "addressChange.title": "Curator request: address change",
+                "nameChange": "Name change",
+                "nameChange.title": "Curator request: name change",
+                "programChange": "Program/project change",
+                "programChange.title": "Curator request: program/project change",
+                "residencePermit": "Residence permit: question/extension",
+                "residencePermit.title": "Residence permit: request",
+                "other": "Other",
+                "other.title": "Other request"
+            },
+            "fields": {
+                "page": "Page/section",
+                "steps": "Steps to reproduce",
+                "expected": "Expected behavior",
+                "actual": "Actual behavior",
+                "environment": "Environment (browser/OS)",
+                "loginOrEmail": "Login or email",
+                "problem": "Problem description",
+                "when": "When it happens",
+                "oldAddress": "Old address",
+                "newAddress": "New address",
+                "effectiveDate": "Effective date",
+                "reason": "Comment/reason",
+                "oldName": "Old full name",
+                "newName": "New full name",
+                "programOrProject": "Program or project",
+                "programOrProject.options.PROGRAM": "Program",
+                "programOrProject.options.PROJECT": "Project",
+                "currentProgram": "Current program",
+                "desiredProgram": "Desired program",
+                "currentProject": "Current project",
+                "desiredProject": "Desired project",
+                "permitCase": "Request type",
+                "permitCase.options.EXTEND": "Extension",
+                "permitCase.options.QUESTION": "Question/clarification",
+                "city": "City",
+                "desiredDate": "Desired date",
+                "question": "Question",
+                "topic": "Topic",
+                "message": "Message"
+            },
+            "body": {
+                "case": "Case"
+            }
+        },
         "volunteers-reports": {
             "title": "Volunteers reports"
         },
@@ -651,6 +719,7 @@
             "title": "Statistics (Ministry of Labour)",
             "year-label": "Year",
             "summary": "Summary",
+            "generate-report": "Generate report",
             "total-volunteers": "Total volunteers",
             "total-hours": "Total hours",
             "program-stats": "By programs",

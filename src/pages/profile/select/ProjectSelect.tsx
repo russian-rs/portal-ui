@@ -4,6 +4,7 @@ import { useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useProjects } from "src/app/providers/ProjectsProvider"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
+import { ProjectDto } from "@russian-rs/portal-api-axios"
 
 export function ProjectSelectInline({
     value,
@@ -11,14 +12,17 @@ export function ProjectSelectInline({
     type = "default",
     onChange,
     locale,
+    projectsOverride,
 }: {
     value: string | null | undefined
     canEdit: boolean
     type?: "default" | "button"
     onChange: (project: string) => void
     locale: string
+    projectsOverride?: ProjectDto[]
 }) {
-    const projects = useProjects()
+    const allProjects = useProjects()
+    const projects = projectsOverride ?? allProjects
     const intl = useIntl()
     const [isEditing, setIsEditing] = useState(false)
     const [isDropdownOpened, setDropdownOpened] = useState(false)

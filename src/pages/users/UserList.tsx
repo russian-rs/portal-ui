@@ -13,7 +13,7 @@ import {
 } from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
 import { ContractDto, PageRequest } from "@russian-rs/portal-api-axios"
-import { IconFilterEdit, IconFilterOff, IconLock, IconPencil, IconPlus, IconUfo } from "@tabler/icons-react"
+import { IconFilterEdit, IconFilterOff, IconPencil, IconPlus, IconUfo } from "@tabler/icons-react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React, { useContext, useEffect, useState } from "react"
@@ -25,8 +25,9 @@ import { allowedRoles } from "src/pages/users/lib/roles"
 import { UserMenu } from "src/pages/users/userMenu/UserMenu"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
+import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
-
+import { NO_PROGRAM_CODE, NO_PROJECT_CODE } from "src/shared/constants/Shared"
 import { notifications } from "@mantine/notifications"
 import { useIntl } from "react-intl"
 import { ContractDrawer } from "src/pages/profile/contract/ContractDrawer"
@@ -38,6 +39,7 @@ import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { locales } from "./lib/locales"
 import classes from "./UserList.module.scss"
+import { UserRow } from "src/pages/users/userRow/UserRow"
 
 export const UserList = () => {
     setDocumentTitleByLocale(locales.title)
@@ -53,6 +55,60 @@ export const UserList = () => {
     const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
     const [selectedProgram, setSelectedProgram] = useState<string | null>(searchParams.get("program") || null)
     const [selectedProject, setSelectedProject] = useState<string | null>(searchParams.get("project") || null)
+
+    const { programs, projects, visiblePrograms, visibleProjects } = useProgramProjectFilter(
+        selectedProgram,
+        selectedProject
+    )
+
+    const handleProgramChange = (newProgram: string | null) => {
+        const programChanged = newProgram !== selectedProgram
+
+        setSelectedProgram(newProgram)
+
+        let nextProject = selectedProject
+
+        if (programChanged) {
+            nextProject = null
+            setSelectedProject(null)
+
+            setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
+        }
+
+        const pageNumber = programChanged ? 0 : (pageRequest.pageNumber || 0)
+        updateUrlParams(debouncedSearch, newProgram, nextProject, pageNumber)
+    }
+
+    const handleProjectChange = (newProject: string | null) => {
+        const projectChanged = newProject !== selectedProject
+        let nextProgram = selectedProgram
+
+        if (newProject && newProject !== NO_PROJECT_CODE) {
+            const project =
+                visibleProjects.find((p) => p.code === newProject) ??
+                projects.find((p) => p.code === newProject)
+
+            if (project) {
+                const owningProgramCode =
+                    project.programCode ??
+                    programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
+
+                if (owningProgramCode) {
+                    nextProgram = owningProgramCode.toUpperCase()
+                }
+            }
+        }
+
+        setSelectedProject(newProject)
+        setSelectedProgram(nextProgram)
+
+        if (projectChanged) {
+            setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
+        }
+
+        const pageNumber = projectChanged ? 0 : (pageRequest.pageNumber || 0)
+        updateUrlParams(debouncedSearch, nextProgram, newProject, pageNumber)
+    }
 
     const isMobile = useMediaQuery("(max-width: 1360px)")
     const [filtersOpened, setFiltersOpened] = useState(false)
@@ -230,36 +286,6 @@ export const UserList = () => {
         updateUrlParams(debouncedSearch, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
     }, [debouncedSearch])
 
-    // Эффект для обновления URL при изменении программы
-    useEffect(() => {
-        updateUrlParams(debouncedSearch, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
-    }, [selectedProgram])
-
-    // Эффект для обновления URL при изменении проектов
-    useEffect(() => {
-        updateUrlParams(debouncedSearch, selectedProgram, selectedProject, pageRequest.pageNumber || 0)
-    }, [selectedProject])
-
-    // Сбрасываем страницу только если программа действительно изменилась пользователем
-    const prevProgramRef = React.useRef<string | null>(selectedProgram)
-    useEffect(() => {
-        if (selectedProgram !== prevProgramRef.current) {
-            setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
-        }
-
-        prevProgramRef.current = selectedProgram
-    }, [selectedProgram])
-
-    // Сбрасываем страницу только если проекты действительно изменились пользователем
-    const prevProjectRef = React.useRef<string | null>(selectedProject)
-    useEffect(() => {
-        if (selectedProject !== prevProjectRef.current) {
-            setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
-        }
-
-        prevProjectRef.current = selectedProject
-    }, [selectedProject])
-
     // Эффект для обновления URL при изменении страницы
     useEffect(() => {
         const pageNumber = pageRequest.pageNumber || 0
@@ -301,7 +327,7 @@ export const UserList = () => {
         queryFn: () => {
             let project: string | undefined = undefined
             if (selectedProject) {
-                if (selectedProject === "NO_PROJECT") {
+                if (selectedProject === NO_PROJECT_CODE) {
                     project = "" // Пустая строка для фильтра "без проекта"
                 } else {
                     project = selectedProject // Код проекта
@@ -309,7 +335,7 @@ export const UserList = () => {
             }
             const filterWithProgram = {
                 ...filter,
-                program: selectedProgram === "NO_PROGRAM" ? "" : selectedProgram,
+                program: selectedProgram === NO_PROGRAM_CODE ? "" : selectedProgram,
                 project,
             }
             return UserApiService.searchUsers(debouncedSearch, pageRequest, filterWithProgram).then((response) => {
@@ -318,95 +344,20 @@ export const UserList = () => {
         },
     })
 
-    const rows = content.map((user) => {
-        const lastContract =
-            Array.isArray(user.contracts) && user.contracts.length > 0
-                ? user.contracts.reduce(
-                      (max, c) => (new Date(c.endDate) > new Date(max.endDate) ? c : max),
-                      user.contracts[0]
-                  )
-                : undefined
-        return (
-            <Table.Tr key={user.id}>
-                <Table.Td>
-                    <Flex columnGap={16} align="center" className={classes.columnName}>
-                        <Avatar
-                            size={36}
-                            src={user.avatar?.link}
-                            name={user.fullName}
-                            className={classes.avatar}
-                            onClick={() => {
-                                localStorage.setItem("userListState", window.location.search)
-                                navigate(`/profile/${user.username}`)
-                            }}
-                        />
-                        <Flex direction="column">
-                            <Text truncate="end">{user.fullName}</Text>
-                            <Text size="sm" c="dimmed" truncate="end">
-                                {user.email}
-                            </Text>
-                        </Flex>
-                    </Flex>
-                </Table.Td>
-                <Table.Td>
-                    <Flex align="start" direction="column">
-                        {user.groups.map((group) => (
-                            <Text key={group} className={classes.role} truncate="end">
-                                <FormattedMessage id={`common.roles.${group}`} />
-                            </Text>
-                        ))}
-                    </Flex>
-                </Table.Td>
-                <Table.Td>
-                    <ProgramSelectInline
-                        type="button"
-                        value={user.program?.code}
-                        canEdit={canEditProgram()}
-                        locale={intl.locale}
-                        onChange={(program) => {
-                            updateUserProgram({ userId: String(user.id), program })
-                        }}
-                    />
-                </Table.Td>
-                <Table.Td>
-                    <ProjectSelectInline
-                        type="button"
-                        value={user.project?.code}
-                        canEdit={canEditProject(user.id)}
-                        locale={intl.locale}
-                        onChange={(project) => {
-                            updateUserProject({ userId: String(user.id), project })
-                        }}
-                    />
-                </Table.Td>
-                <Table.Td>
-                    <Button
-                        variant="transparent"
-                        color={lastContract ? "blue" : "gray"}
-                        rightSection={lastContract ? <IconPencil size={14} /> : <IconPlus size={14} />}
-                        onClick={() => {
-                            setSelectedUserId(user.id)
-                            setDrawerOpened(true)
-                        }}
-                        size="compact-sm"
-                        fw={lastContract ? undefined : 500}
-                    >
-                        {lastContract ? (
-                            dayjs(lastContract.endDate).format("DD MMM YYYY")
-                        ) : (
-                            <FormattedMessage id="pages.profile.contract.button" />
-                        )}
-                    </Button>
-                </Table.Td>
-                <Table.Td>
-                    <Flex align="center" justify="end">
-                        {!user.active && <IconLock size={16} color="red" />}
-                        <UserMenu user={user} />
-                    </Flex>
-                </Table.Td>
-            </Table.Tr>
-        )
-    })
+    const rows = content.map((user) => (
+        <UserRow
+            key={user.id}
+            user={user}
+            canEditProgram={canEditProgram}
+            canEditProject={canEditProject}
+            updateUserProgram={updateUserProgram}
+            updateUserProject={updateUserProject}
+            intl={intl}
+            navigate={navigate}
+            setDrawerOpened={setDrawerOpened}
+            setSelectedUserId={setSelectedUserId}
+        />
+    ))
 
     // Карточки для мобильной версии
     const cards = content.map((user) => {
@@ -418,7 +369,12 @@ export const UserList = () => {
                   )
                 : undefined
         return (
-            <Paper key={user.id} shadow="xs" p="sm" className={classes.mobileCard}>
+            <Paper
+                key={user.id}
+                shadow="xs"
+                p="sm"
+                className={`${classes.mobileCard} ${!user.active ? classes.deactivatedCard : ""}`}
+            >
                 <Flex align="center" columnGap={12}>
                     <Avatar
                         size={44}
@@ -438,7 +394,11 @@ export const UserList = () => {
                             {user.email}
                         </Text>
                     </Flex>
-                    {!user.active && <IconLock size={16} color="red" />}
+                    {!user.active && (
+                        <Badge color="red" radius="md" variant="light">
+                            <FormattedMessage id={locales.deactivated} />
+                        </Badge>
+                    )}
                     <UserMenu user={user} />
                 </Flex>
                 <Flex mt="xs" gap={4} wrap="wrap">
@@ -543,8 +503,16 @@ export const UserList = () => {
                                             />
                                         }
                                     />
-                                    <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
-                                    <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
+                                    <ProgramFilter
+                                        value={selectedProgram}
+                                        onChange={handleProgramChange}
+                                        programsOverride={visiblePrograms}
+                                    />
+                                    <ProjectFilter
+                                        value={selectedProject}
+                                        onChange={handleProjectChange}
+                                        projectsOverride={visibleProjects}
+                                    />
                                     {activeFiltersCountMemo > 0 && (
                                         <Button
                                             variant="transparent"
@@ -577,8 +545,17 @@ export const UserList = () => {
                                     />
                                 }
                             />
-                            <ProgramFilter value={selectedProgram} onChange={setSelectedProgram} />
-                            <ProjectFilter value={selectedProject} onChange={setSelectedProject} />
+                            <ProgramFilter
+                                value={selectedProgram}
+                                onChange={handleProgramChange}
+                                programsOverride={visiblePrograms}
+                            />
+
+                            <ProjectFilter
+                                value={selectedProject}
+                                onChange={handleProjectChange}
+                                projectsOverride={visibleProjects}
+                            />
                             {activeFiltersCountMemo > 0 && (
                                 <Button
                                     variant="transparent"

@@ -105,6 +105,7 @@
             "group-description": "Od ovoga zavisi ko će razmatrati obraćanje",
             "success": "<a href=\"{link}\" target=\"_blank\">Tiket br. {number}</a> je uspešno kreiran",
             "error": "Došlo je do greške prilikom kreiranja tiketa, pišite na <a href='mailto:help@russian.rs'>help@russian.rs</a>",
+            "attachmentsRequired": "Za ovaj zahtev je potrebno priložiti fajl(ove).",
             "required": "Obavezno"
         },
         "confirm-modal": {
@@ -170,6 +171,7 @@
         },
         "profile": {
             "documentTitle": "Profil",
+            "deactivated": "Deaktiviran",
             "props": {
                 "city": "Grad",
                 "postalCode": "Poštanski broj",
@@ -274,6 +276,10 @@
             "creator": "Volonter",
             "creation-date": "Datum popunjavanja izveštaja",
             "time-spent-total": "Ukupna količina vremena",
+            "program": "Program",
+            "no-program": "Bez programa",
+            "project": "Projekat",
+            "no-project": "Bez projekta",
             "time-spent-hours": "{h} sat.",
             "time-spent-minutes": "{m} min",
             "task-date": "Datum izvršenja",
@@ -383,6 +389,7 @@
             "view-profile": "Pogledaj profil",
             "send-message": "Pošalji poruku",
             "no-reports": "Nema izveštaja",
+            "na": "N/A",
             "partial-reports": "Delimični izveštaji",
             "full-reports": "Puni izveštaji",
             "pending": "Na čekanju",
@@ -448,7 +455,8 @@
             "invalid-email": "Neverni e-mail",
             "invalid-name": "Nevažeći znakovi",
             "invalid-username": "Samo latinična slova i brojevi, ne može početi sa brojem",
-            "user-created-message": "Korisnik je uspešno kreiran"
+            "user-created-message": "Korisnik je uspešno kreiran",
+            "deactivated": "Deaktiviran"
         },
         "playgrounds": {
             "title": "Izveštaj o igralištu",
@@ -641,6 +649,66 @@
         "reporting": {
             "title": "Vodič za predaju izveštaja"
         },
+        "support": {
+            "title": "Kontakt podrške",
+            "documentTitle": "Kontakt podrške",
+            "description": "Izaberite temu zahteva i popunite polja.",
+            "createButton": "Kreiraj tiket",
+            "caseLabel": "Tema zahteva",
+            "casePlaceholder": "Izaberite temu",
+            "formTitle": "Detalji zahteva",
+            "attachmentsRequiredHint": "Za ovaj slučaj je potrebno priložiti fajl(ove).",
+            "cases": {
+                "bug": "Greška na sajtu",
+                "bug.title": "Greška na sajtu",
+                "auth": "Problem sa pristupom/prijavom",
+                "auth.title": "Problem sa pristupom/prijavom",
+                "addressChange": "Promena adrese",
+                "addressChange.title": "Zahtev kuratoru: promena adrese",
+                "nameChange": "Promena imena",
+                "nameChange.title": "Zahtev kuratoru: promena imena",
+                "programChange": "Promena programa/projekta",
+                "programChange.title": "Zahtev kuratoru: promena programa/projekta",
+                "residencePermit": "Boravak: pitanje/produženje",
+                "residencePermit.title": "Boravak: zahtev",
+                "other": "Drugo",
+                "other.title": "Drugi zahtev"
+            },
+            "fields": {
+                "page": "Stranica/odeljak",
+                "steps": "Koraci reprodukcije",
+                "expected": "Očekivano ponašanje",
+                "actual": "Stvarno ponašanje",
+                "environment": "Okruženje (pregledač/OS)",
+                "loginOrEmail": "Login ili email",
+                "problem": "Opis problema",
+                "when": "Kada se dešava",
+                "oldAddress": "Stara adresa",
+                "newAddress": "Nova adresa",
+                "effectiveDate": "Datum promene",
+                "reason": "Komentar/razlog",
+                "oldName": "Staro puno ime",
+                "newName": "Novo puno ime",
+                "programOrProject": "Program ili projekat",
+                "programOrProject.options.PROGRAM": "Program",
+                "programOrProject.options.PROJECT": "Projekat",
+                "currentProgram": "Trenutni program",
+                "desiredProgram": "Željeni program",
+                "currentProject": "Trenutni projekat",
+                "desiredProject": "Željeni projekat",
+                "permitCase": "Tip zahteva",
+                "permitCase.options.EXTEND": "Produženje",
+                "permitCase.options.QUESTION": "Pitanje/pojašnjenje",
+                "city": "Grad",
+                "desiredDate": "Željeni datum",
+                "question": "Pitanje",
+                "topic": "Tema",
+                "message": "Poruka"
+            },
+            "body": {
+                "case": "Slučaj"
+            }
+        },
         "volunteers-reports": {
             "title": "Izveštaji o volonterima"
         },
@@ -651,6 +719,7 @@
             "title": "Statistika (Ministarstvo rada)",
             "year-label": "Godina",
             "summary": "Rezime",
+            "generate-report": "Generiši izveštaj",
             "total-volunteers": "Ukupno volontera",
             "total-hours": "Ukupno sati",
             "program-stats": "Po programima",
