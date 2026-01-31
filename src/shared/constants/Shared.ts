@@ -1,0 +1,2 @@
+export const NO_PROGRAM_CODE = "NO_PROGRAM"
+export const NO_PROJECT_CODE = "NO_PROJECT"
