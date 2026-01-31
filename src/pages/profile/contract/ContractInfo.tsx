@@ -23,6 +23,8 @@ export const ContractInfo = ({ contracts, userInfo }: ContractInfoProps) => {
     const { user: currentUser } = useContext(UserContext)
     const [drawerOpened, setDrawerOpened] = useState(false)
 
+    const daysLeft = contracts.length > 0 ? getDaysLeft(contracts) : 0
+
     return (
         <Flex className={classes.root}>
             {contracts.length === 0 ? (
@@ -60,15 +62,19 @@ export const ContractInfo = ({ contracts, userInfo }: ContractInfoProps) => {
                             value={<FormattedMessage id={`common.contract-type.${getLastContract(contracts).type}`} />}
                         />
                     </Flex>
-                    <Text className={classes.daysLeft}>
-                        <FormattedMessage id={locales.daysLeft} values={{ count: getDaysLeft(contracts) }} />
+                    <Text className={classes.daysLeft} c={daysLeft < 0 ? "red" : undefined} fw={daysLeft < 0 ? 700 : 400}>
+                        {daysLeft < 0 ? (
+                            <FormattedMessage id={locales.expired} />
+                        ) : (
+                            <FormattedMessage id={locales.daysLeft} values={{ count: daysLeft }} />
+                        )}
                     </Text>
                     {userInfo.id === currentUser?.id && (
                         <TooltipLocalized text={locales.prolongationInfo} position="bottom">
                             <Button
                                 variant="light"
                                 onClick={() => navigate("/application")}
-                                disabled={getDaysLeft(contracts) > 90}
+                                disabled={daysLeft > 90}
                             >
                                 <FormattedMessage id={locales.prolongation} />
                             </Button>

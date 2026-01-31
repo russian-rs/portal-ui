@@ -8,6 +8,7 @@ export const locales = {
     issuingDate: "pages.profile.residencePermit.issuingDate",
     validUntil: "pages.profile.residencePermit.valid-until",
     daysLeft: "pages.profile.residencePermit.days-left",
+    expired: "pages.profile.residencePermit.expired",
     frontSidePhoto: "pages.profile.residencePermit.frontSidePhoto",
     backSidePhoto: "pages.profile.residencePermit.backSidePhoto",
     validationRegistrationNumber: "pages.profile.residencePermit.validation.registrationNumber",

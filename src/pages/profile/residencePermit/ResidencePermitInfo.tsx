@@ -39,6 +39,10 @@ export const ResidencePermitInfo = ({ userInfo, residencePermits, onUpdate }: Re
     const isAdmin = hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER])
     const canEdit = isOwner || isAdmin
 
+    const daysLeft = currentPermit 
+        ? dayjs(currentPermit.validUntil).diff(dayjs().startOf('day'), "day") 
+        : 0
+
     const handlePrev = () => {
         setCurrentIndex((prev) => (prev === 0 ? residencePermits.length - 1 : prev - 1))
     }
@@ -133,11 +137,15 @@ export const ResidencePermitInfo = ({ userInfo, residencePermits, onUpdate }: Re
                         </Button>
                     </Flex>
 
-                    <Text className={classes.daysLeft}>
-                        <FormattedMessage
-                            id="pages.profile.residencePermit.days-left"
-                            values={{ count: dayjs(currentPermit.validUntil).diff(new Date(), "day") }}
-                        />
+                    <Text className={classes.daysLeft} c={daysLeft < 0 ? "red" : undefined} fw={daysLeft < 0 ? 700 : 400}>
+                        {daysLeft < 0 ? (
+                            <FormattedMessage id={locales.expired} />
+                        ) : (
+                            <FormattedMessage
+                                id="pages.profile.residencePermit.days-left"
+                                values={{ count: daysLeft }}
+                            />
+                        )}
                     </Text>
                     {canEdit && (
                         <Button
