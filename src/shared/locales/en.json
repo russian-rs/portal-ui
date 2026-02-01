@@ -795,5 +795,10 @@
         },
         "account-settings": "Account settings",
         "support": "Contact support"
+    },
+    "error-boundary": {
+        "title": "Something went wrong",
+        "description": "An error occurred while processing your request. Please write to <a href='mailto:help@russian.rs'>help@russian.rs</a> and provide the error message:",
+        "reload-button": "Reload page"
     }
 }
