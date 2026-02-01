@@ -1,11 +1,12 @@
-import { Box, Flex, Input, Paper, Select, Text, Button } from "@mantine/core"
-import { IconSearch, IconFilter, IconX } from "@tabler/icons-react"
+import { Box, Button, Flex, Input, Paper, Select, Text } from "@mantine/core"
+import { ProgramDto, ProjectDto } from "@russian-rs/portal-api-axios"
+import { IconCalendarWeek, IconFilter, IconSearch, IconX } from "@tabler/icons-react"
+import dayjs from "dayjs"
 import React from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { ProgramFilter, ProjectFilter } from "src/shared/ui/filter"
 import { locales } from "../lib/locales"
 import classes from "./VolunteerReportFilters.module.scss"
-import { ProgramDto, ProjectDto } from "@russian-rs/portal-api-axios"
 
 interface VolunteerReportFiltersProps {
     search: string
@@ -14,10 +15,10 @@ interface VolunteerReportFiltersProps {
     onProgramChange: (value: string | null) => void
     selectedProject: string | null
     onProjectChange: (value: string | null) => void
-    periodMonths: string
-    onPeriodChange: (value: string) => void
-    onReset: () => void,
-    programsOverride?: ProgramDto[],
+    year: string
+    onYearChange: (value: string) => void
+    onReset: () => void
+    programsOverride?: ProgramDto[]
     projectsOverride?: ProjectDto[]
 }
 
@@ -28,14 +29,15 @@ export const VolunteerReportFilters: React.FC<VolunteerReportFiltersProps> = ({
     onProgramChange,
     selectedProject,
     onProjectChange,
-    periodMonths,
-    onPeriodChange,
+    year,
+    onYearChange,
     onReset,
     programsOverride,
-    projectsOverride
+    projectsOverride,
 }) => {
     const intl = useIntl()
-    const hasActiveFilters = search || selectedProgram || selectedProject || periodMonths !== "3"
+    const hasActiveFilters = search || selectedProgram || selectedProject || year !== dayjs().year().toString()
+    const MIN_YEAR = 2024
 
     return (
         <Paper withBorder p="md" className={classes.filtersContainer}>
@@ -85,15 +87,15 @@ export const VolunteerReportFilters: React.FC<VolunteerReportFiltersProps> = ({
                     </Box>
                     <Box className={classes.filterItem}>
                         <Select
-                            placeholder={intl.formatMessage({ id: locales.period3m })}
-                            value={periodMonths}
-                            onChange={(value) => onPeriodChange(value || "3")}
-                            data={[
-                                { value: "3", label: intl.formatMessage({ id: locales.period3m }) },
-                                { value: "6", label: intl.formatMessage({ id: locales.period6m }) },
-                                { value: "year", label: intl.formatMessage({ id: locales.periodYtd }) },
-                            ]}
-                            className={classes.periodSelect}
+                            placeholder={dayjs().year().toString()}
+                            value={year}
+                            onChange={(value) => onYearChange(value || dayjs().year().toString())}
+                            data={[...Array(dayjs().year() - MIN_YEAR + 1).keys()].map((i) => ({
+                                value: (MIN_YEAR + i).toString(),
+                                label: (MIN_YEAR + i).toString(),
+                            }))}
+                            leftSection={<IconCalendarWeek size={16} />}
+                            className={classes.yearSelect}
                         />
                     </Box>
                 </Flex>

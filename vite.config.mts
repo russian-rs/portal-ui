@@ -1,7 +1,7 @@
 import react from "@vitejs/plugin-react"
 import { resolve } from "node:path"
 import { defineConfig, HttpProxy } from "vite"
-import { plugin as markDownPlugin, Mode } from "vite-plugin-markdown"
+import { Mode, plugin as markDownPlugin } from "vite-plugin-markdown"
 
 // const apiTarget = "http://localhost:8081"
 const apiTarget = "https://portal-test.russian.rs/api"

@@ -22,9 +22,7 @@ export const locales = {
     noReports: "pages.my-reports.heatmap.noReports",
     partialReports: "pages.my-reports.heatmap.partialReports",
     fullReports: "pages.my-reports.heatmap.fullReports",
-    summaryRequiredZero: "pages.my-reports.heatmap.summary.requiredZero",
-    summaryOk: "pages.my-reports.heatmap.summary.ok",
-    summaryDeficit: "pages.my-reports.heatmap.summary.deficit",
+    overtimeReports: "pages.my-reports.heatmap.overtimeReports",
 
     generatePDF: "pages.my-reports.pdf.generate-pdf",
     printPDF: "pages.my-reports.pdf.print-pdf",
