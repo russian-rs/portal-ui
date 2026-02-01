@@ -1,17 +1,15 @@
-import { jsPDF as JsPdf } from "jspdf"
 import { ReportDto, UserInfoDto } from "@russian-rs/portal-api-axios"
+import dayjs from "dayjs"
+import { jsPDF as JsPdf } from "jspdf"
 import { MONTSERRAT_BOLD_BOLD } from "src/shared/docs/fonts/Montserrat-Bold-bold"
 import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
-import dayjs from "dayjs"
-import { getSpentTime, getSpentTimeFromReport } from "src/shared/report/timeSpent"
-import { IntlShape } from "react-intl"
+import { getSpentTimeObject, getSpentTimeObjectFromReport } from "src/shared/report/timeSpent"
 
 export const generateReportsPdf = (
     reports: ReportDto[],
     user: UserInfoDto,
     fromDate: Date | null,
-    toDate: Date | null,
-    intl: IntlShape
+    toDate: Date | null
 ) => {
     const DATE_FORMAT = "DD.MM.YYYY"
     const birthDate = dayjs(user.birthDate).format(DATE_FORMAT)
@@ -97,8 +95,11 @@ export const generateReportsPdf = (
         let lineW = 0
 
         const tokenWidth = (t: { text: string; bold: boolean }) => {
-            if (t.bold) setBold()
-            else setBody()
+            if (t.bold) {
+                setBold()
+            } else {
+                setBody()
+            }
             pdf.setFontSize(pt)
             return pdf.getTextWidth(t.text)
         }
@@ -107,8 +108,11 @@ export const generateReportsPdf = (
             ensureSpace(lh + gapAfterMm)
             let x = MARGIN_X
             for (const t of lt) {
-                if (t.bold) setBold()
-                else setBody()
+                if (t.bold) {
+                    setBold()
+                } else {
+                    setBody()
+                }
                 pdf.setFontSize(pt)
                 pdf.text(t.text, x, y)
                 x += pdf.getTextWidth(t.text)
@@ -162,9 +166,9 @@ export const generateReportsPdf = (
     //Document
 
     writeCentered("Udrženje “Ruska Dijaspora u Srbiji”", TITLE_PT, 3)
-    writeCentered("(Matični broj: 28355122 PIB: 113526376, Telefon 062 154 78 93)", BODY_PT, 3)
+    writeCentered("Matični broj: 28355122 PIB: 113526376, Telefon 062 154 78 93", BODY_PT, 3)
     writeSpacer(4)
-    writeCentered("Nedeljni izveštaji volontera", TITLE_PT, 3)
+    writeCentered("Izveštaj o obavljenom volonterskom radu", TITLE_PT, 3)
     writeSpacer(4)
     writeLeft("Podaci o volonteru:", TITLE_PT, 3)
     writeInlineBold(
@@ -173,38 +177,39 @@ export const generateReportsPdf = (
         3
     )
     writeSpacer(4)
-    writeLeft(`Nedeljni izveštaji za period od (${from} - ${to}):`, TITLE_PT, 2)
+    writeLeft(`Nedeljni izveštaji za period od ${from} do ${to}:`, TITLE_PT, 2)
 
-    reports.forEach((report, index) => {
+    reports.forEach((report) => {
         writeHr()
         writeSpacer(2)
         const weekStart = dayjs(report.createTime).startOf("isoWeek").format(DATE_FORMAT)
         const weekEnd = dayjs(report.createTime).endOf("isoWeek").format(DATE_FORMAT)
+        const spentTime = getSpentTimeObjectFromReport(report)
 
-        writeInlineBold(`**Nedelja ${report.week}** (${weekStart} - ${weekEnd})`, BODY_PT, 4)
+        writeInlineBold(`**Nedelja №${report.week}** (${weekStart} - ${weekEnd})`, BODY_PT, 4)
         writeInlineBold(
-            `**Datum:** ${dayjs(report.createTime).format(DATE_FORMAT)}, **Ukupno vreme:** ${getSpentTimeFromReport(report, intl)}, **Status:** Prihvaćen`,
+            `**Datum:** ${dayjs(report.createTime).format(DATE_FORMAT)}, **Ukupno vreme:** ${spentTime.h} sat. ${spentTime.m} min., **Status:** Prihvaćen`,
             BODY_PT,
             2
         )
         writeInlineBold(`**Zadatci:**`, BODY_PT, 2)
         report.tasks.forEach((task, index, array) => {
             writeSpacer(2)
-            writeInlineBold(`- Zadatak ${index + 1}`, BODY_PT, 1)
+            writeInlineBold(`Zadatak №${index + 1}`, BODY_PT, 1)
             writeInlineBold(`**Naziv:** ${task.name}`, BODY_PT, 1)
             writeInlineBold(`**Opis:** ${task.description}`, BODY_PT, 1)
-            const timeSpent = getSpentTime(task.timeSpent, intl)
-            writeInlineBold(`**Potrošeno vreme:** ${timeSpent}`, BODY_PT, 1)
+            const timeSpent = getSpentTimeObject(task.timeSpent)
+            writeInlineBold(`**Potrošeno vreme:** ${timeSpent.h} sat. ${timeSpent.m} min.`, BODY_PT, 1)
             if (array.length > 1) {
                 writeHr(0.2, true)
             }
         })
         writeSpacer(2)
     })
-    writeSpacer(10)
+    writeSpacer(14)
 
-    writeLeft("Predsednik", BODY_PT, 3)
-    writeLeft("potpis ______________ LEONID STECENKO", BODY_PT, 3)
+    writeLeft(`Datum: ${dayjs().format("DD.MM.YYYY")}`, BODY_PT, 3)
+    writeLeft("Predsednik LEONID STECENKO:  ______________  ", BODY_PT, 3)
 
     pdf.save(`Nedeljni izveštaji - ${user.fullName} (od ${from} do ${to}).pdf`)
 }

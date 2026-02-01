@@ -10,6 +10,7 @@ import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { CurrentUserHeatmap } from "src/pages/reportsPersonal/heatmap/CurrentUserHeatmap"
 import { defaultFilter, defaultPage, defaultPageResponse, locales } from "src/pages/reportsPersonal/lib/constants"
+import { ReportsExporter } from "src/pages/reportsPersonal/reportsExporter/ReportsExporter"
 import { ReportApiService } from "src/shared/api/ReportApiService"
 import { DEFAULT_DATE_FORMAT } from "src/shared/datetime/formats"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
@@ -21,7 +22,6 @@ import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
 import { WeekPicker } from "src/shared/ui/weekPicker/WeekPicker"
 import classes from "./MyReports.module.scss"
-import { UserReportPrinter } from "src/pages/reportsPersonal/reportPDFPrinter/UserReportPrinter"
 
 export const MyReports = () => {
     setDocumentTitleByLocale(locales.documentTitle)
@@ -275,21 +275,22 @@ export const MyReports = () => {
                                         </Button>
                                     )}
                                 </Flex>
-
-                                <Button
-                                    className={classes.newReportButton}
-                                    variant="light"
-                                    size="sm"
-                                    leftSection={<IconPlus size={16} />}
-                                    onClick={() => navigate("/report/create")}
-                                >
-                                    <Text size="sm">
-                                        <FormattedMessage id={locales.newReport} />
-                                    </Text>
-                                </Button>
+                                <Flex direction="row" gap={8} wrap="wrap" align="flex-end">
+                                    <Button
+                                        className={classes.newReportButton}
+                                        variant="light"
+                                        size="sm"
+                                        leftSection={<IconPlus size={16} />}
+                                        onClick={() => navigate("/report/create")}
+                                    >
+                                        <Text size="sm">
+                                            <FormattedMessage id={locales.newReport} />
+                                        </Text>
+                                    </Button>
+                                    <ReportsExporter />
+                                </Flex>
                             </Flex>
                         </Flex>
-                        <UserReportPrinter />
                         <Flex className={classes.reportContainer}>
                             {rows.length == 0 && (
                                 <Flex className={classes.emptyState}>

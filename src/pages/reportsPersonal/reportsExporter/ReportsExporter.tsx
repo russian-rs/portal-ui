@@ -1,24 +1,24 @@
-import React, { useContext, useMemo, useState } from "react"
 import { Alert, Button, Flex, Modal } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useDisclosure } from "@mantine/hooks"
-import { IconCalendar, IconInfoCircle } from "@tabler/icons-react"
-import dayjs from "dayjs"
-import { useMutation } from "@tanstack/react-query"
-import { FormattedMessage, useIntl } from "react-intl"
 import { notifications } from "@mantine/notifications"
-
-import { locales } from "../lib/constants"
+import { PageRequest, ReportFilter } from "@russian-rs/portal-api-axios"
+import { IconCalendar, IconFileTypePdf, IconInfoCircle } from "@tabler/icons-react"
+import { useMutation } from "@tanstack/react-query"
+import dayjs from "dayjs"
+import React, { useContext, useMemo, useState } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
+import { UserContext } from "src/app/providers/UserContext"
 import { ReportApiService } from "src/shared/api/ReportApiService"
 import { DEFAULT_DATE_FORMAT } from "src/shared/datetime/formats"
-import { UserContext } from "src/app/providers/UserContext"
-import { PageRequest, ReportFilter } from "@russian-rs/portal-api-axios"
 import { generateReportsPdf } from "src/shared/docs/generateReportsPrintPdf"
 import { ReportStatus } from "src/shared/report/status"
 
+import { locales } from "../lib/constants"
+
 const PAGE_SIZE = 200
 
-export const UserReportPrinter: React.FC = () => {
+export const ReportsExporter: React.FC = () => {
     const { user } = useContext(UserContext)
     const intl = useIntl()
     const [opened, { open, close }] = useDisclosure(false)
@@ -66,7 +66,7 @@ export const UserReportPrinter: React.FC = () => {
                 return
             }
 
-            generateReportsPdf(reports, user, fromDate, toDate, intl)
+            generateReportsPdf(reports, user, fromDate, toDate)
             close()
         },
         onError: (err) => {
@@ -78,7 +78,7 @@ export const UserReportPrinter: React.FC = () => {
     })
 
     return (
-        <>
+        <Flex align="flex-end">
             <Modal opened={opened} onClose={close} title={<FormattedMessage id={locales.printPDF} />}>
                 <Flex direction="column" gap={12}>
                     <Alert icon={<IconInfoCircle size={16} />} color="red" variant="light">
@@ -116,10 +116,15 @@ export const UserReportPrinter: React.FC = () => {
                     </Button>
                 </Flex>
             </Modal>
-
-            <Button variant="default" onClick={open}>
+            <Button
+                variant="light"
+                color="green.5"
+                fw="normal"
+                onClick={open}
+                leftSection={<IconFileTypePdf size={16} />}
+            >
                 <FormattedMessage id={locales.generatePDF} />
             </Button>
-        </>
+        </Flex>
     )
 }

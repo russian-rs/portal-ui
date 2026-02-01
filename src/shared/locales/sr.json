@@ -337,13 +337,13 @@
             "empty-reports": "Ništa nije pronađeno",
             "new-report": "Novi izveštaj",
             "pdf": {
-                "generate-pdf": "Generiši PDF",
+                "generate-pdf": "Export",
                 "print-pdf": "Štampaj PDF",
                 "period-start": "Početak perioda",
                 "period-end": "Kraj perioda",
                 "invalid-date-range": "Neispravan vremenski opseg",
                 "noReportsFound": "Nema pronađenih izveštaja",
-                "pdfTestNotice": "Ovo je testna funkcija. Automatski prevod na srpski jezik nije obezbeđen."
+                "pdfTestNotice": "Ovo je alpha funkcija. Automatski prevod na srpski jezik nije obezbeđen."
             },
             "report": {
                 "created": "Stvoren",

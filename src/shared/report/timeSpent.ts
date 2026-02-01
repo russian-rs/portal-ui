@@ -24,3 +24,14 @@ export const getSpentTime = (timeInMinutes: number, intl: IntlShape): string => 
         return hoursText
     }
 }
+
+export const getSpentTimeObjectFromReport = (report: ReportDto): { h: number; m: number } => {
+    const timeInMinutes = report.tasks.map((it) => it.timeSpent).reduce((acc, val) => acc + val, 0)
+    return getSpentTimeObject(timeInMinutes)
+}
+
+export const getSpentTimeObject = (timeInMinutes: number): { h: number; m: number } => {
+    const hours = Math.floor(timeInMinutes / 60)
+    const minutes = timeInMinutes % 60
+    return { h: hours, m: minutes }
+}
