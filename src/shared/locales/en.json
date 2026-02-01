@@ -4,7 +4,8 @@
         "reset-filters": "Reset filters",
         "buttons": {
             "login": "Login",
-            "logout": "Logout"
+            "logout": "Logout",
+            "delete": "Delete"
         },
         "file-uploader": {
             "title": "Drag files or click to choose",
@@ -229,6 +230,7 @@
                 "date-until": "End date",
                 "type": "Contract type",
                 "days-left": "Days left: {count}",
+                "expired": "Expired",
                 "prolongation": "Extend",
                 "prolongation-info": "The contract can be extended no earlier than 3 months before the expiration of the current one",
                 "prolongation-disable": "This functionality is still under development",
@@ -241,6 +243,31 @@
                 "createError": "Error creating contract",
                 "number": "Contract {number}",
                 "cannotDeleteLast": "Cannot delete the last contract. A volunteer must have at least one contract."
+            },
+            "residencePermit": {
+                "no-permit": "No residence permit records",
+                "title": "Residence Permit",
+                "issuingDate": "Date of issue",
+                "valid-until": "Valid until",
+                "nationality": "Nationality",
+                "purpose-of-stay": "Purpose of stay",
+                "days-left": "Days left: {count}",
+                "expired": "Expired",
+                "button": "Add residence permit",
+                "add": "Manage Residence Permits",
+                "save": "Save",
+                "saved": "Residence permit successfully saved",
+                "createError": "Error saving residence permit",
+                "number": "Residence Permit {number}",
+                "registrationNumberDescription": "9-digit registration number",
+                "identityNumberDescription": "13-digit JMBG/ID number",
+                "frontSidePhoto": "Front side photo",
+                "backSidePhoto": "Back side photo",
+                "validation": {
+                    "registrationNumber": "Registration number must contain exactly 9 digits",
+                    "identityNumber": "Identity number must contain exactly 13 digits"
+                },
+                "required": "Required"
             },
             "selectProgram": "Select a program",
             "selectProject": "Select a project"

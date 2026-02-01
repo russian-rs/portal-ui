@@ -5,6 +5,7 @@
     width: 26rem;
     margin: var(--mantine-spacing-md);
     justify-content: center;
+    z-index: 10000;
 
     @media (max-width: $mantine-breakpoint-sm) {
         width: 95dvw;
