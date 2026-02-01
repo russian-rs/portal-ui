@@ -4,7 +4,8 @@
         "reset-filters": "Resetujte filtere",
         "buttons": {
             "login": "Prijavite se",
-            "logout": "Odjava"
+            "logout": "Odjava",
+            "delete": "Obriši"
         },
         "file-uploader": {
             "title": "Prenesite datoteke ili kliknite da biste izabrali",
@@ -229,6 +230,7 @@
                 "date-until": "Datum završetka",
                 "type": "Vrsta ugovora",
                 "days-left": "Još dana: {count}",
+                "expired": "Istekao",
                 "prolongation": "Produži",
                 "prolongation-info": "Ugovor se može produžiti najranije 3 meseca pre isteka tekućeg",
                 "prolongation-disable": "Ova funkcionalnost je još uvek u razvoju",
@@ -241,6 +243,31 @@
                 "createError": "Greška pri kreiranju ugovora",
                 "number": "Ugovor {number}",
                 "cannotDeleteLast": "Ne možete obrisati poslednji ugovor. Volonter mora imati bar jedan ugovor."
+            },
+            "residencePermit": {
+                "no-permit": "Nema zapisa o boravku",
+                "title": "Boravišna dozvola",
+                "issuingDate": "Datum izdavanja",
+                "valid-until": "Važi do",
+                "nationality": "Državljanstvo",
+                "purpose-of-stay": "Svrha boravka",
+                "days-left": "Preostalo dana: {count}",
+                "expired": "Istekao",
+                "button": "Dodaj boravak",
+                "add": "Upravljanje boravcima",
+                "save": "Sačuvaj",
+                "saved": "Boravak uspešno sačuvan",
+                "createError": "Greška pri čuvanju boravka",
+                "number": "Boravak {number}",
+                "registrationNumberDescription": "9-cifreni registracioni broj",
+                "identityNumberDescription": "13-cifreni JMBG/ID broj",
+                "frontSidePhoto": "Fotografija prednje strane",
+                "backSidePhoto": "Fotografija zadnje strane",
+                "validation": {
+                    "registrationNumber": "Registracioni broj mora sadržati tačno 9 cifara",
+                    "identityNumber": "Identifikacioni broj mora sadržati tačno 13 cifara"
+                },
+                "required": "Obavezno"
             },
             "selectProgram": "Izaberite program",
             "selectProject": "Izaberite projekat"
