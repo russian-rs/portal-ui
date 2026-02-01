@@ -3,7 +3,7 @@ import { UserInfoDto } from "@russian-rs/portal-api-axios"
 export enum UserGroup {
     ADMIN = "ADMIN",
     ADMIN_VOLUNTEER = "ADMIN_VOLUNTEER",
-    VOLUNTEER = "VOLUNTEER"
+    VOLUNTEER = "VOLUNTEER",
     VOLUNTEER_CLEAN_CITY = "VOLUNTEER_CLEAN_CITY",
     DEVELOPER = "DEVELOPER",
     DEVELOPER_WP = "DEVELOPER_WP",

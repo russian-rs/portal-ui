@@ -795,5 +795,10 @@
         },
         "account-settings": "Настройки уч. записи",
         "support": "Написать в поддержку"
+    },
+    "error-boundary": {
+        "title": "Что-то пошло не так",
+        "description": "Возникла ошибка при загрузке страницы. Пожалуйста, напишите на <a href='mailto:help@russian.rs'>help@russian.rs</a> и предоставьте следующее сообщение об ошибке:",
+        "reload-button": "На главную"
     }
 }

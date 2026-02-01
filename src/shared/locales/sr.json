@@ -795,5 +795,10 @@
         },
         "account-settings": "Podešavanja naloga",
         "support": "Kontaktirajte podršku"
+    },
+    "error-boundary": {
+        "title": "Nešto je pošlo po zlu",
+        "description": "Došlo je do greške pri obradi vašeg zahteva. Molimo Vas da pišete na <a href='mailto:help@russian.rs'>help@russian.rs</a> i navedete sledeću poruku o grešci:",
+        "reload-button": "Preuzmi stranicu ponovo"
     }
 }
