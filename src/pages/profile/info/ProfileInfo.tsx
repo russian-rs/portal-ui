@@ -27,6 +27,7 @@ import { ProfileAvatar } from "src/pages/profile/avatar/ProfileAvatar"
 import { UserMenu } from "src/pages/users/userMenu/UserMenu"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { Locale } from "src/shared/constants/Locales"
+import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { CitySelect } from "src/shared/ui/citySelect/CitySelect"
@@ -36,15 +37,15 @@ import { getFullAddress } from "src/shared/utils/getFullAddress"
 import { z } from "zod"
 import { ProgramSelectInline } from "../select/ProgramSelect"
 import { ProjectSelectInline } from "../select/ProjectSelect"
-import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
 import classes from "./ProfileInfo.module.scss"
 
 interface ProfileInfoProps {
     userInfo: UserInfoDto | undefined
     onUserInfoUpdate?: (userInfo: UserInfoDto) => void
+    showSensitiveData?: boolean | undefined
 }
 
-export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) => {
+export const ProfileInfo = ({ userInfo, onUserInfoUpdate, showSensitiveData }: ProfileInfoProps) => {
     const { user: currentUser, setUser } = useContext(UserContext)
     const [opened, { open, close }] = useDisclosure(false)
     const intl = useIntl()
@@ -241,6 +242,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
     const iconPhone = <IconPhone size={16} />
     const iconHome = <IconHome size={16} />
     const iconCity = <IconBuildings size={16} />
+    const iconMap = <IconMapPin size={16} />
     const iconBirthday = <IconGift size={16} />
     const [isSyncing, setIsSyncing] = useState(false)
     const programValue = userInfo?.program?.code ?? null
@@ -258,8 +260,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
         }
     }, [programValue, projectValue])
 
-    const { programs, visiblePrograms, visibleProjects } =
-        useProgramProjectFilter(selectedProgram, selectedProject)
+    const { programs, visiblePrograms, visibleProjects } = useProgramProjectFilter(selectedProgram, selectedProject)
 
     // Админы могут редактировать программы всем (включая себя)
     // Обычные пользователи могут установить программу только если у них ее еще нет
@@ -310,9 +311,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
 
         const normalizedSelectedProgram = selectedProgram.toUpperCase()
 
-        const program = programs.find(
-            (p) => p.code.toUpperCase() === normalizedSelectedProgram
-        )
+        const program = programs.find((p) => p.code.toUpperCase() === normalizedSelectedProgram)
         const allowed = program?.projectCodes ?? []
 
         if (!allowed.includes(selectedProject)) {
@@ -334,7 +333,9 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                         </Badge>
                     )}
 
-                    {userInfo?.id !== currentUser?.id && <UserMenu user={userInfo} type="profile" />}
+                    {showSensitiveData && userInfo?.id !== currentUser?.id && (
+                        <UserMenu user={userInfo} type="profile" />
+                    )}
                 </Flex>
             </Flex>
             <Text className={classes.userName}>{userInfo?.fullName}</Text>
@@ -355,34 +356,46 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
             <Container className={commonClasses.divider} />
             <TextPropertyBox
                 name={"pages.profile.props.address"}
-                value={getFullAddress(userInfo?.postalCode, userInfo?.city, userInfo?.address)}
+                value={
+                    showSensitiveData
+                        ? getFullAddress(userInfo?.postalCode, userInfo?.city, userInfo?.address)
+                        : userInfo?.city
+                }
                 icon={<IconHome size={18} />}
                 className={classes.propertyBox}
             />
-            <TextPropertyBox
-                name={"pages.profile.props.gender"}
-                value={
-                    userInfo?.gender
-                        ? intl.formatMessage({ id: `pages.profile.props.gender.${userInfo.gender.toLowerCase()}` })
-                        : intl.formatMessage({ id: "pages.profile.props.gender.notSelected" })
-                }
-                icon={<IconGenderMale size={18} />}
-                className={classes.propertyBox}
-            />
+            {showSensitiveData && (
+                <TextPropertyBox
+                    name={"pages.profile.props.gender"}
+                    value={
+                        userInfo?.gender
+                            ? intl.formatMessage({ id: `pages.profile.props.gender.${userInfo.gender.toLowerCase()}` })
+                            : intl.formatMessage({ id: "pages.profile.props.gender.notSelected" })
+                    }
+                    icon={<IconGenderMale size={18} />}
+                    className={classes.propertyBox}
+                />
+            )}
             <TextPropertyBox
                 name={"pages.profile.props.birthDate"}
-                value={dayjs(userInfo?.birthDate).format("DD MMMM YYYY")}
+                value={
+                    showSensitiveData
+                        ? dayjs(userInfo?.birthDate).format("DD MMMM YYYY")
+                        : dayjs(userInfo?.birthDate).format("DD MMMM")
+                }
                 icon={<IconGift size={18} />}
                 className={classes.propertyBox}
             />
             <Container className={commonClasses.divider} />
-            <TextPropertyBox
-                name={"pages.profile.props.email"}
-                value={userInfo?.email}
-                icon={<IconMail size={18} />}
-                href={`mailto:${userInfo?.email}`}
-                className={classes.propertyBox}
-            />
+            {showSensitiveData && (
+                <TextPropertyBox
+                    name={"pages.profile.props.email"}
+                    value={userInfo?.email}
+                    icon={<IconMail size={18} />}
+                    href={`mailto:${userInfo?.email}`}
+                    className={classes.propertyBox}
+                />
+            )}
             <TextPropertyBox
                 name={"pages.profile.props.telegram"}
                 value={userInfo?.telegram}
@@ -390,12 +403,14 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                 href={`https://t.me/${userInfo?.telegram}`}
                 className={classes.propertyBox}
             />
-            <TextPropertyBox
-                name={"pages.profile.props.phone"}
-                value={userInfo?.phone}
-                icon={<IconPhone size={18} />}
-                className={classes.propertyBox}
-            />
+            {showSensitiveData && (
+                <TextPropertyBox
+                    name={"pages.profile.props.phone"}
+                    value={userInfo?.phone}
+                    icon={<IconPhone size={18} />}
+                    className={classes.propertyBox}
+                />
+            )}
             {(userInfo?.id === currentUser?.id ||
                 hasPermission(currentUser, [UserGroup.ADMIN_SSO, UserGroup.ADMIN_VOLUNTEER])) && (
                 <Button
@@ -416,12 +431,13 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate }: ProfileInfoProps) =>
                 >
                     <Flex direction="column" gap="md">
                         <CitySelect
+                            leftSection={iconCity}
                             label={<FormattedMessage id="pages.profile.props.city" />}
                             withAsterisk
                             {...form.getInputProps("city")}
                         />
                         <TextInput
-                            leftSection={<IconMapPin size={16} />}
+                            leftSection={iconMap}
                             label={<FormattedMessage id="pages.profile.props.postalCode" />}
                             {...form.getInputProps("postalCode")}
                         />

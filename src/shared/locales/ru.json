@@ -4,7 +4,8 @@
         "reset-filters": "Сбросить фильтры",
         "buttons": {
             "login": "Войти",
-            "logout": "Выйти"
+            "logout": "Выйти",
+            "delete": "Удалить"
         },
         "file-uploader": {
             "title": "Перенесите файлы или нажмите для выбора",
@@ -40,19 +41,22 @@
             "empty": "Не выбрано"
         },
         "roles": {
+            "VOLUNTEER": "Волонтёр",
+            "VOLUNTEER_CLEAN_CITY": "Волонтёр программы Чистый город",
             "ADMIN": "Админ",
-            "ADMIN_SSO": "Админ SSO",
             "ADMIN_VOLUNTEER": "Админ волонтерства",
-            "ADMIN_WP": "Админ WordPress",
-            "DEVELOPER": "Разработчик",
-            "INSIDE_VOLUNTEER": "Внутренний волонтер",
-            "MAIN_VOLUNTEER": "Волонтер основной пр.",
+            "DEVELOPER": "Разработчик портала",
+            "DEVELOPER_WP": "Разработчик проектов Диаспоры",
             "GUIDES": "Автор гайдов",
             "LAWYERS": "Юрист",
             "MEDIA": "Автор",
             "TEACHER": "Учитель",
-            "SEO_MANAGER": "SEO менеджер",
             "INTERVIEWER": "Интервьюер",
+            "ADMIN_WP": "Админ WordPress",
+            "ADMIN_SSO": "Админ SSO",
+            "SEO_MANAGER": "SEO менеджер",
+            "INSIDE_VOLUNTEER": "Внутренний волонтер",
+            "MAIN_VOLUNTEER": "Волонтер основной пр.",
             "MEMBER": "Член организации"
         },
         "contract-type": {
@@ -229,6 +233,7 @@
                 "date-until": "Дата окончания",
                 "type": "Тип договора",
                 "days-left": "Осталось дней: {count}",
+                "expired": "Истек",
                 "prolongation": "Продлить",
                 "prolongation-info": "Продлить договор можно не ранее чем за 3 месяца до окончания действия текущего",
                 "prolongation-disable": "Данный функционал пока в разработке",
@@ -241,6 +246,31 @@
                 "createError": "Ошибка при создании договора",
                 "number": "Договор {number}",
                 "cannotDeleteLast": "Нельзя удалить последний контракт. У волонтера должен быть как минимум один контракт."
+            },
+            "residencePermit": {
+                "no-permit": "Нет записей о ВНЖ",
+                "title": "Вид на жительство",
+                "issuingDate": "Дата выдачи",
+                "valid-until": "Действителен до",
+                "nationality": "Гражданство",
+                "purpose-of-stay": "Цель пребывания",
+                "days-left": "Осталось дней: {count}",
+                "expired": "Истек",
+                "button": "Добавить ВНЖ",
+                "add": "Управление ВНЖ",
+                "save": "Сохранить",
+                "saved": "ВНЖ успешно сохранен",
+                "createError": "Ошибка при сохранении ВНЖ",
+                "number": "ВНЖ {number}",
+                "registrationNumberDescription": "9-значный регистрационный номер",
+                "identityNumberDescription": "13-значный JMBG/ID номер",
+                "frontSidePhoto": "Фото лицевой стороны",
+                "backSidePhoto": "Фото обратной стороны",
+                "validation": {
+                    "registrationNumber": "Регистрационный номер должен содержать ровно 9 цифр",
+                    "identityNumber": "Номер идентификации должен содержать ровно 13 цифр"
+                },
+                "required": "Обязательно"
             },
             "selectProgram": "Выбор программы",
             "selectProject": "Выбор проекта"
@@ -774,5 +804,10 @@
         },
         "account-settings": "Настройки уч. записи",
         "support": "Написать в поддержку"
+    },
+    "error-boundary": {
+        "title": "Что-то пошло не так",
+        "description": "Возникла ошибка при загрузке страницы. Пожалуйста, напишите на <a href='mailto:help@russian.rs'>help@russian.rs</a> и предоставьте следующее сообщение об ошибке:",
+        "reload-button": "На главную"
     }
 }
