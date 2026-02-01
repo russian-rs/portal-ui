@@ -1,0 +1,25 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mantine-spacing-md);
+    padding: var(--mantine-spacing-xl);
+    background-color: var(--mantine-color-body);
+    border-radius: var(--mantine-radius-lg);
+    border: 1px solid var(--mantine-color-gray-3);
+}
+
+.title {
+    font-size: var(--mantine-font-size-lg);
+    font-weight: 600;
+}
+
+.props {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mantine-spacing-sm);
+}
+
+.daysLeft {
+    font-size: var(--mantine-font-size-sm);
+    color: var(--mantine-color-dimmed);
+}

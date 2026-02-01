@@ -4,7 +4,8 @@
         "reset-filters": "Reset filters",
         "buttons": {
             "login": "Login",
-            "logout": "Logout"
+            "logout": "Logout",
+            "delete": "Delete"
         },
         "file-uploader": {
             "title": "Drag files or click to choose",
@@ -40,19 +41,22 @@
             "empty": "Not selected"
         },
         "roles": {
+            "VOLUNTEER": "Volunteer",
+            "VOLUNTEER_CLEAN_CITY": "Volunteer Clean City",
             "ADMIN": "Admin",
-            "ADMIN_SSO": "Admin SSO",
             "ADMIN_VOLUNTEER": "Admin of volunteers",
-            "ADMIN_WP": "Admin WordPress",
-            "DEVELOPER": "Developer",
-            "INSIDE_VOLUNTEER": "Internal volunteer",
-            "MAIN_VOLUNTEER": "Main volunteer",
-            "GUIDES": "Guide author",
+            "DEVELOPER": "Portal developer ",
+            "DEVELOPER_WP": "Diaspora's programms developer",
+            "GUIDES": "Guides author",
             "LAWYERS": "Lawyer",
             "MEDIA": "Media author",
             "TEACHER": "Teacher",
-            "SEO_MANAGER": "SEO manager",
             "INTERVIEWER": "Interviewer",
+            "ADMIN_WP": "Admin WordPress",
+            "ADMIN_SSO": "Admin SSO",
+            "SEO_MANAGER": "SEO manager",
+            "INSIDE_VOLUNTEER": "Internal volunteer",
+            "MAIN_VOLUNTEER": "Main volunteer",
             "MEMBER": "Member"
         },
         "contract-type": {
@@ -229,6 +233,7 @@
                 "date-until": "End date",
                 "type": "Contract type",
                 "days-left": "Days left: {count}",
+                "expired": "Expired",
                 "prolongation": "Extend",
                 "prolongation-info": "The contract can be extended no earlier than 3 months before the expiration of the current one",
                 "prolongation-disable": "This functionality is still under development",
@@ -241,6 +246,31 @@
                 "createError": "Error creating contract",
                 "number": "Contract {number}",
                 "cannotDeleteLast": "Cannot delete the last contract. A volunteer must have at least one contract."
+            },
+            "residencePermit": {
+                "no-permit": "No residence permit records",
+                "title": "Residence Permit",
+                "issuingDate": "Date of issue",
+                "valid-until": "Valid until",
+                "nationality": "Nationality",
+                "purpose-of-stay": "Purpose of stay",
+                "days-left": "Days left: {count}",
+                "expired": "Expired",
+                "button": "Add residence permit",
+                "add": "Manage Residence Permits",
+                "save": "Save",
+                "saved": "Residence permit successfully saved",
+                "createError": "Error saving residence permit",
+                "number": "Residence Permit {number}",
+                "registrationNumberDescription": "9-digit registration number",
+                "identityNumberDescription": "13-digit JMBG/ID number",
+                "frontSidePhoto": "Front side photo",
+                "backSidePhoto": "Back side photo",
+                "validation": {
+                    "registrationNumber": "Registration number must contain exactly 9 digits",
+                    "identityNumber": "Identity number must contain exactly 13 digits"
+                },
+                "required": "Required"
             },
             "selectProgram": "Select a program",
             "selectProject": "Select a project"
@@ -694,6 +724,7 @@
             "title": "Statistics (Ministry of Labour)",
             "year-label": "Year",
             "summary": "Summary",
+            "generate-report": "Generate report",
             "total-volunteers": "Total volunteers",
             "total-hours": "Total hours",
             "program-stats": "By programs",
