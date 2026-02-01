@@ -1,8 +1,7 @@
-import { Button, Center, Container, Flex, Text, Title } from "@mantine/core"
+import { Button, Center, Code, Container, Flex, ScrollArea, Text, Title } from "@mantine/core"
 import parse from "html-react-parser"
 import { Component, ReactNode } from "react"
 import { FormattedMessage, injectIntl, WrappedComponentProps } from "react-intl"
-import { CopyText } from "src/shared/ui/copyText/CopyText"
 
 interface Props {
     children: ReactNode
@@ -27,6 +26,12 @@ class ErrorBoundaryBase extends Component<Props & WrappedComponentProps, State> 
         console.error("Error caught by boundary:", error, errorInfo)
     }
 
+    // Метод для перехода на главную
+    handleGoHome = () => {
+        // Используем href для полного перехода, чтобы очистить память и состояние ошибки
+        window.location.href = "/"
+    }
+
     render() {
         if (this.state.hasError) {
             return (
@@ -48,10 +53,16 @@ class ErrorBoundaryBase extends Component<Props & WrappedComponentProps, State> 
                                 <Text size="sm">
                                     {parse(this.props.intl.formatMessage({ id: "error-boundary.description" }))}
                                 </Text>
-
-                                <CopyText style={{ color: "red" }} text={this.state.error?.message ?? "-"} />
+                                {/* Блок со Stack Trace */}
+                                {this.state.error?.stack && (
+                                    <ScrollArea h={250} offsetScrollbars>
+                                        <Code block color="red.1" c="red.9" style={{ textAlign: "left" }}>
+                                            {this.state.error.stack}
+                                        </Code>
+                                    </ScrollArea>
+                                )}
                             </Flex>
-                            <Button onClick={() => window.location.reload()}>
+                            <Button onClick={this.handleGoHome}>
                                 <FormattedMessage id="error-boundary.reload-button" />
                             </Button>
                         </Flex>
