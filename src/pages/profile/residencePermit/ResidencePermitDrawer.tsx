@@ -1,4 +1,4 @@
-import { Accordion, Button, Drawer, Flex, Text, Group, Modal, Image } from "@mantine/core"
+import { Accordion, Button, Drawer, Flex, Group, Image, Modal, Text } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { ResidencePermitDto } from "@russian-rs/portal-api-axios"
 import { IconEye, IconPlus } from "@tabler/icons-react"
@@ -12,8 +12,8 @@ import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { v4 as uuid } from "uuid"
-import { ResidencePermitForm } from "./ResidencePermitForm"
 import { locales } from "./lib/locales"
+import { ResidencePermitForm } from "./ResidencePermitForm"
 
 interface ResidencePermitDrawerProps {
     opened: boolean
@@ -43,9 +43,7 @@ export const ResidencePermitDrawer = ({
         }
     }, [opened, residencePermits])
 
-    const isAdmin = hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER])
-    const isOwner = currentUser?.id === userId
-    const canEdit = isAdmin || isOwner
+    const canEdit = hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER])
 
     const { mutate: savePermits } = useMutation({
         mutationFn: async (updatedPermits: ResidencePermitDto[]) => {
@@ -151,19 +149,18 @@ export const ResidencePermitDrawer = ({
                             <FormattedMessage id={locales.noPermit} />
                         </Text>
                     ) : (
-                        <Accordion variant="contained">
+                        <Accordion variant="contained" defaultValue={localPermits[0].id}>
                             {localPermits.map((permit, index) => (
                                 <Accordion.Item key={permit.id} value={permit.id}>
                                     <Accordion.Control>
                                         <Group justify="space-between">
                                             <Text fw={500}>
-                                                <FormattedMessage
-                                                    id={locales.number}
-                                                    values={{ number: index + 1 }}
-                                                />
+                                                <FormattedMessage id={locales.number} values={{ number: index + 1 }} />
                                             </Text>
-                                            <Text size="sm" c="dimmed">
-                                                {permit.validUntil ? dayjs(permit.validUntil).format("DD.MM.YYYY") : ""}
+                                            <Text size="sm" c="dimmed" me="sm">
+                                                {permit.validUntil
+                                                    ? dayjs(permit.validUntil).format("DD MMMM YYYY")
+                                                    : ""}
                                             </Text>
                                         </Group>
                                     </Accordion.Control>
@@ -171,10 +168,15 @@ export const ResidencePermitDrawer = ({
                                         <Flex direction="column" gap="xs">
                                             <Text size="sm">
                                                 <b>
-                                                    <FormattedMessage id={locales.registrationNumberDescription} />
-                                                    :
+                                                    <FormattedMessage id={locales.registrationNumberDescription} />:
                                                 </b>{" "}
                                                 {permit.registrationNumber}
+                                            </Text>
+                                            <Text size="sm">
+                                                <b>
+                                                    <FormattedMessage id={locales.identityNumberDescription} />:
+                                                </b>{" "}
+                                                {permit.identityNumber}
                                             </Text>
                                             <Text size="sm">
                                                 <b>
@@ -218,15 +220,17 @@ export const ResidencePermitDrawer = ({
                                                     </Button>
                                                 )}
                                             </Flex>
-                                            <Button
-                                                variant="light"
-                                                size="xs"
-                                                onClick={() => setEditingId(permit.id)}
-                                                fullWidth
-                                                mt="sm"
-                                            >
-                                                <FormattedMessage id="pages.profile.buttons.edit" />
-                                            </Button>
+                                            {canEdit && (
+                                                <Button
+                                                    variant="light"
+                                                    size="xs"
+                                                    onClick={() => setEditingId(permit.id)}
+                                                    fullWidth
+                                                    mt="sm"
+                                                >
+                                                    <FormattedMessage id="pages.profile.buttons.edit" />
+                                                </Button>
+                                            )}
                                         </Flex>
                                     </Accordion.Panel>
                                 </Accordion.Item>

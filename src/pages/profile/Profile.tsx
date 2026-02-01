@@ -12,6 +12,7 @@ import { ResidencePermitInfo } from "src/pages/profile/residencePermit/Residence
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
+import { hasPermission, UserGroup } from "src/shared/user/roles"
 import classes from "./Profile.module.scss"
 
 export const Profile = () => {
@@ -23,6 +24,7 @@ export const Profile = () => {
     const { setShowProfileModal } = useProfileValidation()
     const { user: currentUser } = useContext(UserContext)
     const intl = useIntl()
+    const [showSensitiveData, setShowSensitiveData] = useState(false)
 
     if (!login) {
         navigate("/not-found")
@@ -40,6 +42,14 @@ export const Profile = () => {
                 return response.data
             }),
     })
+
+    useEffect(() => {
+        if (userInfo) {
+            const isOwner = userInfo.id === currentUser?.id
+            const isAdmin = hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER])
+            setShowSensitiveData(isOwner || isAdmin)
+        }
+    }, [userInfo])
 
     const handleUserInfoUpdate = () => {
         refetch()
@@ -93,17 +103,26 @@ export const Profile = () => {
                     className={classes.root}
                 >
                     <Skeleton visible={isFetching} radius="lg">
-                        <ProfileInfo userInfo={userInfo} onUserInfoUpdate={handleUserInfoUpdate} />
+                        <ProfileInfo
+                            userInfo={userInfo}
+                            onUserInfoUpdate={handleUserInfoUpdate}
+                            showSensitiveData={showSensitiveData}
+                        />
                     </Skeleton>
                     <Skeleton visible={isFetching} radius="lg">
                         <Flex direction="column" gap="md">
-                            {userInfo?.contracts && <ContractInfo userInfo={userInfo} contracts={userInfo.contracts} />}
-                            {userInfo && (
+                            {showSensitiveData && userInfo?.contracts && (
+                                <ContractInfo userInfo={userInfo} contracts={userInfo.contracts} />
+                            )}
+                            {showSensitiveData && userInfo && (
                                 <ResidencePermitInfo
                                     userInfo={userInfo}
                                     residencePermits={
-                                        (userInfo as UserInfoDto & { residencePermits?: ResidencePermitDto[] })
-                                            .residencePermits || []
+                                        (
+                                            userInfo as UserInfoDto & {
+                                                residencePermits?: ResidencePermitDto[]
+                                            }
+                                        ).residencePermits || []
                                     }
                                     onUpdate={handleUserInfoUpdate}
                                 />
