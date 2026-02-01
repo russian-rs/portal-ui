@@ -36,7 +36,7 @@ export const MyReports = () => {
     const [pageRequest, setPageRequest] = useState<PageRequest>({
         ...defaultPage,
         pageNumber: Math.max(0, parseInt(searchParams.get("page") || "1") - 1),
-        pageSize: isMobile ? 10 : 25,
+        pageSize: 5,
     })
     const [filter, setFilter] = useState<ReportFilter>({
         ...defaultFilter,
@@ -129,14 +129,6 @@ export const MyReports = () => {
         updateUrlParams(filter, pageNumber)
     }, [pageRequest.pageNumber])
 
-    // Эффект для обновления размера страницы при изменении типа устройства
-    useEffect(() => {
-        const newPageSize = isMobile ? 10 : 25
-        if (pageRequest.pageSize !== newPageSize) {
-            setPageRequest((prev) => ({ ...prev, pageSize: newPageSize }))
-        }
-    }, [isMobile])
-
     // Эффект для скролла при смене страницы в мобильной версии
     useEffect(() => {
         if (pageRequest.pageNumber !== undefined) {
@@ -158,7 +150,7 @@ export const MyReports = () => {
         queryFn: () => ReportApiService.getReports(pageRequest, filter).then((response) => response.data),
     })
 
-    const onWeekChange = (week: number | null, start: Date | null, end: Date | null) => {
+    const onWeekChange = (_week: number | null, start: Date | null, end: Date | null) => {
         const startDate = start ? dayjs(start).format(DEFAULT_DATE_FORMAT) : null
         const endDate = end ? dayjs(end).format(DEFAULT_DATE_FORMAT) : null
         const newFilter = { ...filter, dateFrom: startDate, dateTo: endDate }
@@ -236,62 +228,59 @@ export const MyReports = () => {
     ))
 
     return (
-        <Flex direction="column">
+        <Flex direction="column" style={{ height: "100%" }}>
             <CustomLoader visible={isFetching} className={classes.loader} />
             <Flex className={classes.root}>
-                <Flex direction="column" gap="md" w="100%" className={classes.content}>
-                    <Flex columnGap="xl" rowGap="md" align="center" wrap="wrap-reverse">
-                        <Text className={classes.title}>
-                            <FormattedMessage id={locales.documentTitle} />
-                        </Text>
+                <Flex ref={listStartRef} />
+                <Flex className={classes.header} align="center">
+                    <Text className={classes.title}>
+                        <FormattedMessage id={locales.documentTitle} />
+                    </Text>
+                    <Flex direction="row" gap={8} wrap="wrap" align="flex-end">
+                        <Button
+                            className={classes.newReportButton}
+                            variant="light"
+                            size="sm"
+                            leftSection={<IconPlus size={16} />}
+                            onClick={() => navigate("/report/create")}
+                        >
+                            <Text size="sm">
+                                <FormattedMessage id={locales.newReport} />
+                            </Text>
+                        </Button>
+                        <ReportsExporter />
                     </Flex>
-                    <div ref={listStartRef} />
-                    <Flex className={classes.content}>
-                        <CurrentUserHeatmap />
-                        <Flex direction="column" gap={8}>
-                            <Flex className={classes.filterArea}>
-                                <Flex direction="row" gap={8} wrap="wrap" align="flex-end">
-                                    <WeekPicker
-                                        onChange={onWeekChange}
-                                        className={classes.filterWeek}
-                                        initialStartDate={filter.dateFrom}
-                                        initialEndDate={filter.dateTo}
-                                    />
-                                    <ReportStatusSelect
-                                        onChange={onStatusChange}
-                                        className={classes.filterStatus}
-                                        value={filter.status}
-                                    />
-                                    {activeFiltersCount > 0 && (
-                                        <Button
-                                            variant="transparent"
-                                            size="sm"
-                                            leftSection={<IconFilterOff size={16} />}
-                                            onClick={resetFilters}
-                                        >
-                                            <Text size="sm">
-                                                <FormattedMessage id={locales.resetFilters} />
-                                            </Text>
-                                        </Button>
-                                    )}
-                                </Flex>
-                                <Flex direction="row" gap={8} wrap="wrap" align="flex-end">
+                </Flex>
+                <Flex className={classes.content}>
+                    <Flex className={classes.reports}>
+                        <Flex className={classes.filterArea}>
+                            <Flex direction="row" gap={8} wrap="wrap" align="flex-end">
+                                <WeekPicker
+                                    onChange={onWeekChange}
+                                    className={classes.filterWeek}
+                                    initialStartDate={filter.dateFrom}
+                                    initialEndDate={filter.dateTo}
+                                />
+                                <ReportStatusSelect
+                                    onChange={onStatusChange}
+                                    className={classes.filterStatus}
+                                    value={filter.status}
+                                />
+                                {activeFiltersCount > 0 && (
                                     <Button
-                                        className={classes.newReportButton}
-                                        variant="light"
+                                        variant="transparent"
                                         size="sm"
-                                        leftSection={<IconPlus size={16} />}
-                                        onClick={() => navigate("/report/create")}
+                                        leftSection={<IconFilterOff size={16} />}
+                                        onClick={resetFilters}
                                     >
                                         <Text size="sm">
-                                            <FormattedMessage id={locales.newReport} />
+                                            <FormattedMessage id={locales.resetFilters} />
                                         </Text>
                                     </Button>
-                                    <ReportsExporter />
-                                </Flex>
+                                )}
                             </Flex>
                         </Flex>
-                        <Flex className={classes.reportContainer}>
+                        <Flex className={classes.reportsList}>
                             {rows.length == 0 && (
                                 <Flex className={classes.emptyState}>
                                     <IconUfo size={48} />
@@ -302,24 +291,31 @@ export const MyReports = () => {
                             )}
                             {rows}
                         </Flex>
+                        <Flex className={classes.paginationContainer}>
+                            {response.page.totalElements != 0 && (
+                                <Text c="dimmed">
+                                    <FormattedMessage
+                                        id={locales.total}
+                                        values={{ total: response.page.totalElements }}
+                                    />
+                                </Text>
+                            )}
+                            <Pagination
+                                total={response.page.totalPages}
+                                value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
+                                disabled={isFetching}
+                                hideWithOnePage={true}
+                                onChange={(newPage) => {
+                                    const pageNumber = newPage - 1
+                                    setPageRequest({ ...pageRequest, pageNumber })
+                                }}
+                                siblings={isMobile ? 0 : 1}
+                                className={classes.paginationPages}
+                            />
+                        </Flex>
                     </Flex>
+                    <CurrentUserHeatmap className={classes.heatmap} />
                 </Flex>
-            </Flex>
-            <Flex className={classes.pagination}>
-                <Pagination
-                    total={response.page.totalPages}
-                    value={pageRequest.pageNumber ? pageRequest.pageNumber + 1 : 1}
-                    disabled={isFetching}
-                    hideWithOnePage={true}
-                    onChange={(newPage) => {
-                        const pageNumber = newPage - 1
-                        setPageRequest({ ...pageRequest, pageNumber })
-                    }}
-                    siblings={isMobile ? 0 : 1}
-                />
-                <Text c="dimmed">
-                    <FormattedMessage id={locales.total} values={{ total: response.page.totalElements }} />
-                </Text>
             </Flex>
         </Flex>
     )

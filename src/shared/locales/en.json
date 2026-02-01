@@ -353,8 +353,8 @@
                 "week": "Week"
             },
             "heatmap": {
-                "description": "Report activity for the current year (by weeks), only accepted reports are counted.",
-                "tooltipReports": "{hours} {hoursLabel} for the period {from}–{to} ({week})",
+                "description": "Report activity by weeks, only accepted reports are counted",
+                "tooltipReports": "{hours} out {hoursRequired} h. for the period {from}–{to} ({week})",
                 "hours": "h",
                 "tooltipWeek": "week {num}",
                 "tooltipNA": "No reporting requirements for the period {from}–{to} ({week})",
@@ -362,11 +362,7 @@
                 "noReports": "No reports",
                 "partialReports": "Partial",
                 "fullReports": "Full",
-                "summary": {
-                    "requiredZero": "You have no hour requirements",
-                    "ok": "{worked} h completed out of {required} expected",
-                    "deficit": "{worked} h completed out of {required} expected (deficit {deficit} h)"
-                }
+                "overtimeReports": "Overtime"
             }
         },
         "report-list": {
@@ -395,6 +391,7 @@
             "search": "Search by name or email",
             "program": "Program",
             "project": "Project",
+            "year": "Year",
             "period": "Period",
             "reset": "Reset",
             "title": "Activity Heatmap",
@@ -406,6 +403,7 @@
             "na": "N/A",
             "partial-reports": "Partial Reports",
             "full-reports": "Full Reports",
+            "overtime-reports": "Overtime Reports",
             "pending": "Pending",
             "legend": "Legend",
             "total-hours": "Total hours",
@@ -422,12 +420,9 @@
                 "na": "{name}: N/A — no contract for {from} - {to} ({week})",
                 "waiting": "{name}: Pending — {from} - {to} ({week})",
                 "no-reports": "{name}: No reports for {from} - {to} ({week})",
-                "reports": "{name}: {hours} {hoursLabel} for {from} - {to} ({week})",
+                "reports": "{name}: {hours} out {hoursRequired} {hoursLabel} for {from} - {to} ({week})",
                 "week": "Week {num}"
             },
-            "period-3m": "Last 3 months",
-            "period-6m": "Last 6 months",
-            "period-ytd": "Year to date",
             "profile": "Profile",
             "reports": "Reports",
             "ticket": "Create ticket"

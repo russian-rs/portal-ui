@@ -353,8 +353,8 @@
                 "week": "Неделя"
             },
             "heatmap": {
-                "description": "Активность по отчетам за текущий год (по неделям), учитываются только принятые.",
-                "tooltipReports": "{hours} {hoursLabel} за период {from}–{to} ({week})",
+                "description": "Активность сдачи отчетов по неделям, учитываются только принятые за время действия договора",
+                "tooltipReports": "{hours} из {hoursRequired} ч. за период {from}–{to} ({week})",
                 "hours": "ч",
                 "tooltipWeek": "неделя {num}",
                 "tooltipNA": "Нет требований по отчётам за период {from}–{to} ({week})",
@@ -362,11 +362,7 @@
                 "noReports": "Нет отчетов",
                 "partialReports": "Частичные",
                 "fullReports": "Полные",
-                "summary": {
-                    "requiredZero": "У вас нет требованйи по часам",
-                    "ok": "Отработано {worked} ч из {required} ожидаемых",
-                    "deficit": "Отработано {worked} ч из {required} ожидаемых (недостача {deficit} ч)"
-                }
+                "overtimeReports": "Переработка"
             }
         },
         "report-list": {
@@ -395,6 +391,7 @@
             "search": "Поиск по имени или email",
             "program": "Программа",
             "project": "Проект",
+            "year": "Год",
             "period": "Период",
             "reset": "Сбросить",
             "title": "Тепловая карта активности",
@@ -406,6 +403,7 @@
             "na": "N/A",
             "partial-reports": "Частичные отчеты",
             "full-reports": "Полные отчеты",
+            "overtime-reports": "Переработка",
             "pending": "Ожидание",
             "legend": "Легенда",
             "total-hours": "Всего часов",
@@ -422,12 +420,9 @@
                 "na": "{name}: N/A — нет контракта за {from} - {to} ({week})",
                 "waiting": "{name}: Ожидание — {from} - {to} ({week})",
                 "no-reports": "{name}: Нет отчетов за {from} - {to} ({week})",
-                "reports": "{name}: {hours} {hoursLabel} за {from} - {to} ({week})",
+                "reports": "{name}: {hours} из {hoursRequired} {hoursLabel} за {from} - {to} ({week})",
                 "week": "Неделя {num}"
             },
-            "period-3m": "Последние 3 месяца",
-            "period-6m": "Последние 6 месяцев",
-            "period-ytd": "С начала года",
             "profile": "Профиль",
             "reports": "Отчеты",
             "ticket": "Создать тикет"

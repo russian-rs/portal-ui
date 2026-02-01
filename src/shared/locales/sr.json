@@ -353,8 +353,8 @@
                 "week": "Nedelja"
             },
             "heatmap": {
-                "description": "Aktivnost izveštaja za tekuću godinu (po nedeljama), računaju se samo prihvaćeni.",
-                "tooltipReports": "{hours} {hoursLabel} za period {from}–{to} ({week})",
+                "description": "Aktivnost izveštaja po nedeljama, računaju se samo prihvaćeni",
+                "tooltipReports": "{hours} od {hoursRequired} sat. za period {from}–{to} ({week})",
                 "hours": "h",
                 "tooltipWeek": "nedelja {num}",
                 "tooltipNA": "Nema zahteva za izveštaje za period {from}–{to} ({week})",
@@ -362,11 +362,7 @@
                 "noReports": "Nema izveštaja",
                 "partialReports": "Delimični",
                 "fullReports": "Potpuni",
-                "summary": {
-                    "requiredZero": "Nemate zahteva po časovima",
-                    "ok": "Odrađeno {worked} h od {required} očekivanih",
-                    "deficit": "Odrađeno {worked} h od {required} očekivanih (nedostatak {deficit} h)"
-                }
+                "overtimeReports": "Prekovremeni rad"
             }
         },
         "report-list": {
@@ -395,6 +391,7 @@
             "search": "Pretraga po imenu ili emailu",
             "program": "Program",
             "project": "Projekat",
+            "year": "Godina",
             "period": "Period",
             "reset": "Resetuj",
             "title": "Toplinska mapa aktivnosti",
@@ -406,6 +403,7 @@
             "na": "N/A",
             "partial-reports": "Delimični izveštaji",
             "full-reports": "Puni izveštaji",
+            "overtime-reports": "Prekovremeni rad",
             "pending": "Na čekanju",
             "legend": "Legenda",
             "total-hours": "Ukupno sati",
@@ -422,12 +420,9 @@
                 "na": "{name}: N/A — nema ugovora za {from} - {to} ({week})",
                 "waiting": "{name}: Na čekanju — {from} - {to} ({week})",
                 "no-reports": "{name}: Nema izveštaja za {from} - {to} ({week})",
-                "reports": "{name}: {hours} {hoursLabel} za {from} - {to} ({week})",
+                "reports": "{name}: {hours} od {hoursRequired} {hoursLabel} za {from} - {to} ({week})",
                 "week": "Nedelja {num}"
             },
-            "period-3m": "Poslednja 3 meseca",
-            "period-6m": "Poslednjih 6 meseci",
-            "period-ytd": "Od početka godine",
             "profile": "Profil",
             "reports": "Izveštaji",
             "ticket": "Kreirajte tiket"

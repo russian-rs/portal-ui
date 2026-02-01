@@ -7,8 +7,10 @@ import { FormattedMessage } from "react-intl"
 import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { ReportHeatMapApiService } from "src/shared/api/ReportHeatMapApiService"
+import { NO_PROGRAM_CODE, NO_PROJECT_CODE } from "src/shared/constants/Shared"
 import { heatmapTemplates } from "src/shared/email/templates"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
+import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
 import { EmailDrawer } from "src/shared/ui/emailModal/EmailDrawer"
 import { VolunteerReportFilters } from "./components/VolunteerReportFilters"
 import { VolunteerReportHeatmap } from "./components/VolunteerReportHeatmap"
@@ -16,8 +18,6 @@ import { defaultPageResponse } from "./lib/defaults"
 import { locales } from "./lib/locales"
 import { hasAccess } from "./lib/roles"
 import classes from "./VolunteerHeatmapPage.module.scss"
-import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
-import { NO_PROGRAM_CODE, NO_PROJECT_CODE } from "src/shared/constants/Shared"
 
 export const VolunteerHeatmapPage: React.FC = () => {
     const { user } = useContext(UserContext)
@@ -43,7 +43,7 @@ export const VolunteerHeatmapPage: React.FC = () => {
         selectedProgram,
         selectedProject
     )
-    const [periodMonths, setPeriodMonths] = useState<string>(searchParams.get("period") || "3")
+    const [filterYear, setFilterYear] = useState<string>(searchParams.get("year") || dayjs().year().toString())
 
     const [selectedVolunteers, setSelectedVolunteers] = useState<Set<number>>(() => new Set())
     const [emailDrawerOpen, setEmailDrawerOpen] = useState(false)
@@ -71,13 +71,11 @@ export const VolunteerHeatmapPage: React.FC = () => {
 
         if (newProject && newProject !== NO_PROJECT_CODE) {
             const project =
-                visibleProjects.find((p) => p.code === newProject) ??
-                projects.find((p) => p.code === newProject)
+                visibleProjects.find((p) => p.code === newProject) ?? projects.find((p) => p.code === newProject)
 
             if (project) {
                 const owningProgramCode =
-                    project.programCode ??
-                    programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
+                    project.programCode ?? programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
 
                 if (owningProgramCode) {
                     nextProgram = owningProgramCode.toUpperCase()
@@ -112,33 +110,14 @@ export const VolunteerHeatmapPage: React.FC = () => {
         }
     }, [search])
 
-    // --- вычисление периода и стартовой даты ---
-
-    const startDate = useMemo(() => {
-        const now = dayjs()
-        switch (periodMonths) {
-            case "3":
-                return now.subtract(3, "month").startOf("month")
-            case "6":
-                return now.subtract(6, "month").startOf("month")
-            case "year":
-                return now.startOf("year")
-            default:
-                return now.subtract(3, "month").startOf("month")
-        }
-    }, [periodMonths])
-
-    const startDateStr = useMemo(() => startDate.format("YYYY-MM-DD"), [startDate])
-
     // --- синхронизация URL-параметров с состоянием ---
-
     useEffect(() => {
         const params = new URLSearchParams()
 
         if (debouncedSearch) params.set("search", debouncedSearch)
         if (selectedProgram) params.set("program", selectedProgram)
         if (selectedProject) params.set("project", selectedProject)
-        if (periodMonths) params.set("period", periodMonths)
+        if (filterYear) params.set("year", filterYear)
         if (pageRequest.pageNumber > 0) {
             params.set("page", String(pageRequest.pageNumber + 1))
         }
@@ -146,7 +125,7 @@ export const VolunteerHeatmapPage: React.FC = () => {
         setSearchParams(params, { replace: true })
         // при смене фильтров / страницы сбрасываем выбранных волонтёров
         setSelectedVolunteers(new Set())
-    }, [debouncedSearch, selectedProgram, selectedProject, periodMonths, pageRequest.pageNumber, setSearchParams])
+    }, [debouncedSearch, selectedProgram, selectedProject, filterYear, pageRequest.pageNumber, setSearchParams])
 
     // --- запрос данных ---
 
@@ -158,14 +137,13 @@ export const VolunteerHeatmapPage: React.FC = () => {
             pageRequest.pageSize,
             selectedProgram,
             selectedProject,
-            periodMonths,
-            startDateStr,
+            filterYear,
         ],
         queryFn: () =>
             ReportHeatMapApiService.getVolunteerHeatMap(debouncedSearch, pageRequest, {
                 program: selectedProgram === NO_PROGRAM_CODE ? "" : selectedProgram || undefined,
                 project: selectedProject === NO_PROJECT_CODE ? "" : selectedProject || undefined,
-                startDate: startDateStr,
+                year: Number(filterYear),
             }).then((response) => response.data),
         placeholderData: { content: [], page: defaultPageResponse },
         staleTime: 5 * 60 * 1000,
@@ -193,7 +171,7 @@ export const VolunteerHeatmapPage: React.FC = () => {
         setSearch("")
         setSelectedProgram(null)
         setSelectedProject(null)
-        setPeriodMonths("3")
+        setFilterYear(dayjs().year().toString())
         setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
     }, [])
 
@@ -239,8 +217,8 @@ export const VolunteerHeatmapPage: React.FC = () => {
                     onProgramChange={handleProgramChange}
                     selectedProject={selectedProject}
                     onProjectChange={handleProjectChange}
-                    periodMonths={periodMonths}
-                    onPeriodChange={setPeriodMonths}
+                    year={filterYear}
+                    onYearChange={setFilterYear}
                     onReset={handleResetFilters}
                     programsOverride={visiblePrograms}
                     projectsOverride={visibleProjects}
@@ -249,7 +227,7 @@ export const VolunteerHeatmapPage: React.FC = () => {
                 <Card withBorder p="lg">
                     <VolunteerReportHeatmap
                         volunteers={volunteerData?.content ?? []}
-                        startDate={startDate}
+                        year={Number(filterYear)}
                         onVolunteerSelect={handleVolunteerSelect}
                         selectedVolunteers={selectedVolunteers}
                         totalVolunteers={totalVolunteers}
