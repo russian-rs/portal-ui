@@ -336,6 +336,15 @@
             "reset-filter": "Reset filters",
             "empty-reports": "Nothing found",
             "new-report": "New report",
+            "pdf": {
+                "generate-pdf": "Export",
+                "print-pdf": "Print to PDF",
+                "period-start": "Start of period",
+                "period-end": "End of period",
+                "invalid-date-range": "Invalid time range",
+                "noReportsFound": "No reports found",
+                "pdfTestNotice": "This is a alpha-feature. Automatic translation into Serbian will be provided later"
+            },
             "report": {
                 "created": "Created",
                 "status": "Status",
