@@ -41,19 +41,22 @@
             "empty": "Не выбрано"
         },
         "roles": {
+            "VOLUNTEER": "Волонтёр",
+            "VOLUNTEER_CLEAN_CITY": "Волонтёр программы Чистый город",
             "ADMIN": "Админ",
-            "ADMIN_SSO": "Админ SSO",
             "ADMIN_VOLUNTEER": "Админ волонтерства",
-            "ADMIN_WP": "Админ WordPress",
-            "DEVELOPER": "Разработчик",
-            "INSIDE_VOLUNTEER": "Внутренний волонтер",
-            "MAIN_VOLUNTEER": "Волонтер основной пр.",
+            "DEVELOPER": "Разработчик портала",
+            "DEVELOPER_WP": "Разработчик проектов Диаспоры",
             "GUIDES": "Автор гайдов",
             "LAWYERS": "Юрист",
             "MEDIA": "Автор",
             "TEACHER": "Учитель",
-            "SEO_MANAGER": "SEO менеджер",
             "INTERVIEWER": "Интервьюер",
+            "ADMIN_WP": "Админ WordPress",
+            "ADMIN_SSO": "Админ SSO",
+            "SEO_MANAGER": "SEO менеджер",
+            "INSIDE_VOLUNTEER": "Внутренний волонтер",
+            "MAIN_VOLUNTEER": "Волонтер основной пр.",
             "MEMBER": "Член организации"
         },
         "contract-type": {
