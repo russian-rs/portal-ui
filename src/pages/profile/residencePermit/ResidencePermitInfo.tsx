@@ -1,6 +1,6 @@
-import { ActionIcon, Button, Center, Flex, Image, Modal, SimpleGrid, Text } from "@mantine/core"
+import { ActionIcon, Button, Flex, Image, Modal, SimpleGrid, Text } from "@mantine/core"
 import { ResidencePermitDto, UserInfoDto } from "@russian-rs/portal-api-axios"
-import { IconCalendar, IconChevronLeft, IconChevronRight, IconEye, IconId, IconPencil } from "@tabler/icons-react"
+import { IconCalendar, IconChevronLeft, IconChevronRight, IconId, IconPencil } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import { useContext, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
@@ -39,9 +39,7 @@ export const ResidencePermitInfo = ({ userInfo, residencePermits, onUpdate }: Re
     const isAdmin = hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER])
     const canEdit = isOwner || isAdmin
 
-    const daysLeft = currentPermit 
-        ? dayjs(currentPermit.validUntil).diff(dayjs().startOf('day'), "day") 
-        : 0
+    const daysLeft = currentPermit ? dayjs(currentPermit.validUntil).diff(dayjs().startOf("day"), "day") : 0
 
     const handlePrev = () => {
         setCurrentIndex((prev) => (prev === 0 ? residencePermits.length - 1 : prev - 1))
@@ -94,16 +92,20 @@ export const ResidencePermitInfo = ({ userInfo, residencePermits, onUpdate }: Re
                         )}
                     </Flex>
 
-                    <Center>
+                    <SimpleGrid cols={2} w="100%">
                         <TextPropertyBox
                             name={locales.registrationNumberDescription}
-                            icon={<IconId size={14} />}
                             value={currentPermit.registrationNumber}
                             justify="center"
                         />
-                    </Center>
+                        <TextPropertyBox
+                            name={locales.identityNumberDescription}
+                            value={currentPermit.identityNumber}
+                            justify="center"
+                        />
+                    </SimpleGrid>
 
-                    <SimpleGrid cols={2} w="100%" spacing="xl">
+                    <SimpleGrid cols={2} w="100%">
                         <TextPropertyBox
                             name={locales.issuingDate}
                             icon={<IconCalendar size={14} />}
@@ -122,29 +124,31 @@ export const ResidencePermitInfo = ({ userInfo, residencePermits, onUpdate }: Re
                         <Button
                             variant="subtle"
                             size="xs"
-                            leftSection={<IconEye size={16} />}
+                            leftSection={<IconId size={16} />}
                             onClick={() => setPreviewImage(currentPermit.frontSidePhoto?.link || null)}
                         >
-                            <FormattedMessage id="pages.profile.residencePermit.frontSidePhoto" />
+                            <FormattedMessage id={locales.frontSidePhoto} />
                         </Button>
                         <Button
                             variant="subtle"
                             size="xs"
-                            leftSection={<IconEye size={16} />}
+                            color="gray"
+                            leftSection={<IconId size={16} />}
                             onClick={() => setPreviewImage(currentPermit.backSidePhoto?.link || null)}
                         >
-                            <FormattedMessage id="pages.profile.residencePermit.backSidePhoto" />
+                            <FormattedMessage id={locales.backSidePhoto} />
                         </Button>
                     </Flex>
 
-                    <Text className={classes.daysLeft} c={daysLeft < 0 ? "red" : undefined} fw={daysLeft < 0 ? 700 : 400}>
+                    <Text
+                        className={classes.daysLeft}
+                        c={daysLeft < 0 ? "red" : undefined}
+                        fw={daysLeft < 0 ? 700 : 400}
+                    >
                         {daysLeft < 0 ? (
                             <FormattedMessage id={locales.expired} />
                         ) : (
-                            <FormattedMessage
-                                id="pages.profile.residencePermit.days-left"
-                                values={{ count: daysLeft }}
-                            />
+                            <FormattedMessage id={locales.daysLeft} values={{ count: daysLeft }} />
                         )}
                     </Text>
                     {canEdit && (
@@ -153,7 +157,7 @@ export const ResidencePermitInfo = ({ userInfo, residencePermits, onUpdate }: Re
                             leftSection={<IconPencil size={14} />}
                             onClick={() => setDrawerOpened(true)}
                         >
-                            <FormattedMessage id="pages.profile.residencePermit.button" />
+                            <FormattedMessage id={locales.button} />
                         </Button>
                     )}
                 </>

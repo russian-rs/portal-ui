@@ -256,7 +256,7 @@
                 "button": "Dodaj boravak",
                 "add": "Upravljanje boravcima",
                 "save": "Sačuvaj",
-                "created": "Boravak uspešno sačuvan",
+                "saved": "Boravak uspešno sačuvan",
                 "createError": "Greška pri čuvanju boravka",
                 "number": "Boravak {number}",
                 "registrationNumberDescription": "9-cifreni registracioni broj",

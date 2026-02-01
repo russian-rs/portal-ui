@@ -256,7 +256,7 @@
                 "button": "Add residence permit",
                 "add": "Manage Residence Permits",
                 "save": "Save",
-                "created": "Residence permit successfully saved",
+                "saved": "Residence permit successfully saved",
                 "createError": "Error saving residence permit",
                 "number": "Residence Permit {number}",
                 "registrationNumberDescription": "9-digit registration number",
