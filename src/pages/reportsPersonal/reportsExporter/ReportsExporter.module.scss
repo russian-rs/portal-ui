@@ -1,0 +1,12 @@
+.root {
+    width: 100%;
+}
+
+.printerArea {
+    gap: 0.5rem;
+    flex-wrap: wrap-reverse;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 100%;
+    }
+}

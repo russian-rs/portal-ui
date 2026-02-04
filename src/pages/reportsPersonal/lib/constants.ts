@@ -12,6 +12,7 @@ export const locales = {
     reportTimeSpent: "pages.my-reports.report.time-spent",
     reportWeek: "pages.my-reports.report.week",
     emptyReports: "pages.my-reports.empty-reports",
+
     heatmapDescription: "pages.my-reports.heatmap.description",
     hours: "pages.my-reports.heatmap.hours",
     tooltipReports: "pages.my-reports.heatmap.tooltipReports",
@@ -21,9 +22,16 @@ export const locales = {
     noReports: "pages.my-reports.heatmap.noReports",
     partialReports: "pages.my-reports.heatmap.partialReports",
     fullReports: "pages.my-reports.heatmap.fullReports",
-    summaryRequiredZero: "pages.my-reports.heatmap.summary.requiredZero",
-    summaryOk: "pages.my-reports.heatmap.summary.ok",
-    summaryDeficit: "pages.my-reports.heatmap.summary.deficit",
+    overtimeReports: "pages.my-reports.heatmap.overtimeReports",
+
+    generatePDF: "pages.my-reports.pdf.generate-pdf",
+    printPDF: "pages.my-reports.pdf.print-pdf",
+    pdfPeriodStart: "pages.my-reports.pdf.period-start",
+    pdfPeriodEnd: "pages.my-reports.pdf.period-end",
+    invalidDateRange: "pages.my-reports.pdf.invalid-date-range",
+    noReportsFound: "pages.my-reports.pdf.noReportsFound",
+    somethingWentWrong: "pages.notFound.title",
+    pdfTestNotice: "pages.my-reports.pdf.pdfTestNotice",
 }
 
 export const defaultPage: PageRequest = {

@@ -2,14 +2,14 @@ import { Box, Flex, Group, Text } from "@mantine/core"
 import { VolunteerHeatMapItem } from "@russian-rs/portal-api-axios"
 import dayjs from "dayjs"
 import React, { useMemo } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import { FormattedMessage } from "react-intl"
 import { locales } from "../lib/locales"
 import classes from "./VolunteerReportHeatmap.module.scss"
 import { VolunteerRow, WeekInfo } from "./VolunteerRow"
 
 interface Props {
     volunteers: VolunteerHeatMapItem[]
-    startDate: dayjs.Dayjs
+    year: number
     onVolunteerSelect: (id: number) => void
     selectedVolunteers: Set<number>
     totalVolunteers: number
@@ -17,31 +17,11 @@ interface Props {
 
 export const VolunteerReportHeatmap: React.FC<Props> = ({
     volunteers,
-    startDate,
+    year,
     onVolunteerSelect,
     selectedVolunteers,
     totalVolunteers,
 }) => {
-    const intl = useIntl()
-
-    const endDate = dayjs().startOf("isoWeek")
-    const totalWeeks = endDate.diff(startDate.startOf("isoWeek"), "week") + 1
-
-    const weeks: WeekInfo[] = useMemo(() => {
-        const arr: WeekInfo[] = []
-        let d = startDate.clone().startOf("isoWeek")
-
-        for (let i = 0; i < totalWeeks; i++) {
-            arr.push({
-                date: d.clone(),
-                weekNumber: d.isoWeek(),
-            })
-            d = d.add(1, "week")
-        }
-
-        return arr
-    }, [startDate, totalWeeks])
-
     if (volunteers.length === 0) {
         return (
             <Box p="xl" ta="center">
@@ -52,6 +32,25 @@ export const VolunteerReportHeatmap: React.FC<Props> = ({
         )
     }
 
+    const startDate = dayjs(new Date(year, 1, 1))
+    const endDate = dayjs().year() == year ? dayjs() : dayjs(new Date(year, 12, 31))
+    const totalWeeks = volunteers[0].weeks.length
+
+    const weeks: WeekInfo[] = useMemo(() => {
+        const arr: WeekInfo[] = []
+        let d = startDate.clone()
+
+        for (let i = 0; i < totalWeeks; i++) {
+            arr.push({
+                date: d.clone(),
+                weekNumber: i + 1,
+            })
+            d = d.add(1, "week").startOf("week")
+        }
+
+        return arr
+    }, [startDate, totalWeeks])
+
     return (
         <Flex className={classes.heatmapContainer}>
             {/* legend */}
@@ -60,6 +59,7 @@ export const VolunteerReportHeatmap: React.FC<Props> = ({
                     <Legend color="noReports" label={locales.noReports} />
                     <Legend color="partialReports" label={locales.partialReports} />
                     <Legend color="fullReports" label={locales.fullReports} />
+                    <Legend color="overtimeReports" label={locales.overtimeReports} />
                     <Legend color="na" label={locales.na} />
                     <Legend color="waiting" label={locales.pending} />
                 </Group>
@@ -87,6 +87,7 @@ export const VolunteerReportHeatmap: React.FC<Props> = ({
                             key={v.volunteerInfo.id}
                             volunteer={v}
                             weeks={weeks}
+                            year={year}
                             isSelected={selectedVolunteers.has(v.volunteerInfo.id)}
                             onVolunteerSelect={onVolunteerSelect}
                             startDate={startDate}
