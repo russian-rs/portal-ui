@@ -5,8 +5,8 @@ import dayjs, { Dayjs } from "dayjs"
 import React, { useMemo, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { getTicketBody } from "src/pages/heatmap/lib/ticket"
-import TicketModal from "src/shared/ui/ticketModal/TicketModal"
 import { TicketGroupTarget } from "src/shared/ui/ticketModal/lib/groupTarget"
+import TicketModal from "src/shared/ui/ticketModal/TicketModal"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { locales } from "../lib/locales"
 import classes from "./VolunteerReportHeatmap.module.scss"
@@ -19,6 +19,7 @@ export interface WeekInfo {
 interface VolunteerRowProps {
     volunteer: VolunteerHeatMapItem
     weeks: WeekInfo[]
+    year: number
     isSelected: boolean
     onVolunteerSelect: (volunteerId: number) => void
     startDate: Dayjs
@@ -27,6 +28,7 @@ interface VolunteerRowProps {
 const VolunteerRowComponent: React.FC<VolunteerRowProps> = ({
     volunteer,
     weeks,
+    year,
     isSelected,
     onVolunteerSelect,
     startDate,
@@ -74,45 +76,49 @@ const VolunteerRowComponent: React.FC<VolunteerRowProps> = ({
     const statusText = getVolunteerStatusText()
 
     const getSquareColor = (weekNumber: number) => {
-        const week = weekByNumber.get(weekNumber)
-        if (!week) return "na"
+        const weekData = weekByNumber.get(weekNumber)
+        if (!weekData) return "na"
 
-        const isCurrentWeek = dayjs().isoWeek() === weekNumber
+        const isCurrentYear = dayjs().year() == year
+        const isCurrentWeek = dayjs().isBetween(weekData.weekStart, weekData.weekEnd, "day", "[]")
+        const hasReports = weekData.hoursWorked > 0
 
-        if (week.hoursRequired === 0) return "na"
-        if (isCurrentWeek) return "waiting"
-        if (week.hoursWorked === 0) return "noReports"
-        if (week.hoursWorked < week.hoursRequired) return "partialReports"
+        if (weekData.hoursRequired === 0) return "na"
+        if (isCurrentWeek && isCurrentYear && !hasReports) return "waiting"
+        if (weekData.hoursWorked === 0) return "noReports"
+        if (weekData.hoursWorked < weekData.hoursRequired) return "partialReports"
+        if (weekData.hoursWorked > weekData.hoursRequired) return "overtimeReports"
 
         return "fullReports"
     }
 
     const getSquareTooltip = (weekNumber: number) => {
-        const week = weekByNumber.get(weekNumber)
-        if (!week) return ""
+        const weekData = weekByNumber.get(weekNumber)
+        if (!weekData) return ""
 
         return intl.formatMessage(
             { id: locales.tooltipReports },
             {
                 name: volunteer.volunteerInfo.fullName,
-                hours: week.hoursWorked,
+                hours: weekData.hoursWorked,
+                hoursRequired: weekData.hoursRequired,
                 hoursLabel: intl.formatMessage({ id: locales.hours }),
-                from: dayjs(week.weekStart).format("DD.MM.YYYY"),
-                to: dayjs(week.weekEnd).format("DD.MM.YYYY"),
+                from: dayjs(weekData.weekStart).format("DD.MM.YYYY"),
+                to: dayjs(weekData.weekEnd).format("DD.MM.YYYY"),
                 week: intl.formatMessage({ id: locales.tooltipWeek }, { num: weekNumber }),
             }
         )
     }
 
     const getSquareInfoLabel = (weekNumber: number) => {
-        const week = weekByNumber.get(weekNumber)
-        if (!week) return ""
+        const weekData = weekByNumber.get(weekNumber)
+        if (!weekData) return ""
 
         const color = getSquareColor(weekNumber)
         const params = {
             name: volunteer.volunteerInfo.fullName,
-            from: dayjs(week.weekStart).format("DD.MM.YYYY"),
-            to: dayjs(week.weekEnd).format("DD.MM.YYYY"),
+            from: dayjs(weekData.weekStart).format("DD.MM.YYYY"),
+            to: dayjs(weekData.weekEnd).format("DD.MM.YYYY"),
             week: intl.formatMessage({ id: locales.tooltipWeek }, { num: weekNumber }),
         }
 

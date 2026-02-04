@@ -11,6 +11,7 @@ interface CopyTextProps {
     text: string | null | undefined
     size?: MantineSize
     className?: string
+    style?: React.CSSProperties
 }
 
 export const CopyText = (props: CopyTextProps) => {
@@ -36,6 +37,7 @@ export const CopyText = (props: CopyTextProps) => {
             <Text
                 component="span"
                 className={`${props.className} ${classes.copyable}`}
+                style={props.style}
                 size={props.size}
                 onClick={handleCopy}
             >

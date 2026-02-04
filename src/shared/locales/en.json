@@ -4,7 +4,8 @@
         "reset-filters": "Reset filters",
         "buttons": {
             "login": "Login",
-            "logout": "Logout"
+            "logout": "Logout",
+            "delete": "Delete"
         },
         "file-uploader": {
             "title": "Drag files or click to choose",
@@ -40,19 +41,22 @@
             "empty": "Not selected"
         },
         "roles": {
+            "VOLUNTEER": "Volunteer",
+            "VOLUNTEER_CLEAN_CITY": "Volunteer Clean City",
             "ADMIN": "Admin",
-            "ADMIN_SSO": "Admin SSO",
             "ADMIN_VOLUNTEER": "Admin of volunteers",
-            "ADMIN_WP": "Admin WordPress",
-            "DEVELOPER": "Developer",
-            "INSIDE_VOLUNTEER": "Internal volunteer",
-            "MAIN_VOLUNTEER": "Main volunteer",
-            "GUIDES": "Guide author",
+            "DEVELOPER": "Portal developer ",
+            "DEVELOPER_WP": "Diaspora's programms developer",
+            "GUIDES": "Guides author",
             "LAWYERS": "Lawyer",
             "MEDIA": "Media author",
             "TEACHER": "Teacher",
-            "SEO_MANAGER": "SEO manager",
             "INTERVIEWER": "Interviewer",
+            "ADMIN_WP": "Admin WordPress",
+            "ADMIN_SSO": "Admin SSO",
+            "SEO_MANAGER": "SEO manager",
+            "INSIDE_VOLUNTEER": "Internal volunteer",
+            "MAIN_VOLUNTEER": "Main volunteer",
             "MEMBER": "Member"
         },
         "contract-type": {
@@ -229,6 +233,7 @@
                 "date-until": "End date",
                 "type": "Contract type",
                 "days-left": "Days left: {count}",
+                "expired": "Expired",
                 "prolongation": "Extend",
                 "prolongation-info": "The contract can be extended no earlier than 3 months before the expiration of the current one",
                 "prolongation-disable": "This functionality is still under development",
@@ -241,6 +246,31 @@
                 "createError": "Error creating contract",
                 "number": "Contract {number}",
                 "cannotDeleteLast": "Cannot delete the last contract. A volunteer must have at least one contract."
+            },
+            "residencePermit": {
+                "no-permit": "No residence permit records",
+                "title": "Residence Permit",
+                "issuingDate": "Date of issue",
+                "valid-until": "Valid until",
+                "nationality": "Nationality",
+                "purpose-of-stay": "Purpose of stay",
+                "days-left": "Days left: {count}",
+                "expired": "Expired",
+                "button": "Add residence permit",
+                "add": "Manage Residence Permits",
+                "save": "Save",
+                "saved": "Residence permit successfully saved",
+                "createError": "Error saving residence permit",
+                "number": "Residence Permit {number}",
+                "registrationNumberDescription": "9-digit registration number",
+                "identityNumberDescription": "13-digit JMBG/ID number",
+                "frontSidePhoto": "Front side photo",
+                "backSidePhoto": "Back side photo",
+                "validation": {
+                    "registrationNumber": "Registration number must contain exactly 9 digits",
+                    "identityNumber": "Identity number must contain exactly 13 digits"
+                },
+                "required": "Required"
             },
             "selectProgram": "Select a program",
             "selectProject": "Select a project"
@@ -306,6 +336,15 @@
             "reset-filter": "Reset filters",
             "empty-reports": "Nothing found",
             "new-report": "New report",
+            "pdf": {
+                "generate-pdf": "Export",
+                "print-pdf": "Print to PDF",
+                "period-start": "Start of period",
+                "period-end": "End of period",
+                "invalid-date-range": "Invalid time range",
+                "noReportsFound": "No reports found",
+                "pdfTestNotice": "This is a alpha-feature. Automatic translation into Serbian will be provided later"
+            },
             "report": {
                 "created": "Created",
                 "status": "Status",
@@ -314,8 +353,8 @@
                 "week": "Week"
             },
             "heatmap": {
-                "description": "Report activity for the current year (by weeks), only accepted reports are counted.",
-                "tooltipReports": "{hours} {hoursLabel} for the period {from}–{to} ({week})",
+                "description": "Report activity by weeks, only accepted reports are counted",
+                "tooltipReports": "{hours} out {hoursRequired} h. for the period {from}–{to} ({week})",
                 "hours": "h",
                 "tooltipWeek": "week {num}",
                 "tooltipNA": "No reporting requirements for the period {from}–{to} ({week})",
@@ -323,11 +362,7 @@
                 "noReports": "No reports",
                 "partialReports": "Partial",
                 "fullReports": "Full",
-                "summary": {
-                    "requiredZero": "You have no hour requirements",
-                    "ok": "{worked} h completed out of {required} expected",
-                    "deficit": "{worked} h completed out of {required} expected (deficit {deficit} h)"
-                }
+                "overtimeReports": "Overtime"
             }
         },
         "report-list": {
@@ -356,6 +391,7 @@
             "search": "Search by name or email",
             "program": "Program",
             "project": "Project",
+            "year": "Year",
             "period": "Period",
             "reset": "Reset",
             "title": "Activity Heatmap",
@@ -367,6 +403,7 @@
             "na": "N/A",
             "partial-reports": "Partial Reports",
             "full-reports": "Full Reports",
+            "overtime-reports": "Overtime Reports",
             "pending": "Pending",
             "legend": "Legend",
             "total-hours": "Total hours",
@@ -383,12 +420,9 @@
                 "na": "{name}: N/A — no contract for {from} - {to} ({week})",
                 "waiting": "{name}: Pending — {from} - {to} ({week})",
                 "no-reports": "{name}: No reports for {from} - {to} ({week})",
-                "reports": "{name}: {hours} {hoursLabel} for {from} - {to} ({week})",
+                "reports": "{name}: {hours} out {hoursRequired} {hoursLabel} for {from} - {to} ({week})",
                 "week": "Week {num}"
             },
-            "period-3m": "Last 3 months",
-            "period-6m": "Last 6 months",
-            "period-ytd": "Year to date",
             "profile": "Profile",
             "reports": "Reports",
             "ticket": "Create ticket"
@@ -765,5 +799,10 @@
         },
         "account-settings": "Account settings",
         "support": "Contact support"
+    },
+    "error-boundary": {
+        "title": "Something went wrong",
+        "description": "An error occurred while processing your request. Please write to <a href='mailto:help@russian.rs'>help@russian.rs</a> and provide the error message:",
+        "reload-button": "Reload page"
     }
 }

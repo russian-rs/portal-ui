@@ -100,10 +100,14 @@
 }
 
 .partialReports {
-    background-color: var(--mantine-color-blue-3);
+    background-color: var(--mantine-color-blue-2);
 }
 
 .fullReports {
+    background-color: var(--mantine-color-blue-5);
+}
+
+.overtimeReports {
     background-color: var(--mantine-color-blue-9);
 }
 

@@ -1,68 +1,25 @@
-import { Alert, Box, Flex, HoverCard, Loader, Text } from "@mantine/core"
-import { VolunteerHeatMapItem } from "@russian-rs/portal-api-axios"
-import { IconAlertHexagon, IconChecks } from "@tabler/icons-react"
+import { Box, Flex, HoverCard, Loader, Text } from "@mantine/core"
+import { HeatMapItem, VolunteerHeatMapItem } from "@russian-rs/portal-api-axios"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import React, { useMemo } from "react"
+import React from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { ReportHeatMapApiService } from "src/shared/api/ReportHeatMapApiService"
 import { locales } from "../lib/constants"
 import classes from "./CurrentUserHeatmap.module.scss"
 
-interface WeekInfo {
-    weekNumber: number
-    date: dayjs.Dayjs
-}
-
-type VolunteerWeek = VolunteerHeatMapItem["weeks"][number]
-
-export const CurrentUserHeatmap: React.FC = () => {
+export const CurrentUserHeatmap = ({ className }: { className?: string }) => {
     const intl = useIntl()
-    const currentYear = dayjs().year()
 
     const { data, isLoading, isError } = useQuery({
-        queryKey: ["currentUserHeatmap", currentYear],
-        queryFn: () =>
-            ReportHeatMapApiService.getCurrentUserHeatMap(currentYear).then(
-                (response) => response.data as VolunteerHeatMapItem
-            ),
+        queryKey: ["currentUserHeatmap"],
+        queryFn: () => ReportHeatMapApiService.getCurrentUserHeatMap().then((response) => response.data),
         staleTime: 5 * 60 * 1000,
         gcTime: 10 * 60 * 1000,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
         refetchOnMount: false,
     })
-
-    const volunteer = data ?? null
-
-    const weekByNumber = useMemo(() => {
-        const map = new Map<number, VolunteerWeek>()
-        if (!volunteer) return map
-
-        for (const w of volunteer.weeks) {
-            map.set(w.week, w)
-        }
-        return map
-    }, [volunteer])
-
-    const weeks: WeekInfo[] = useMemo(() => {
-        if (!volunteer) return []
-
-        const uniqueWeeks: WeekInfo[] = []
-        const seen = new Set<number>()
-
-        for (const w of volunteer.weeks) {
-            if (seen.has(w.week)) continue
-            seen.add(w.week)
-            uniqueWeeks.push({
-                weekNumber: w.week,
-                date: dayjs(w.weekStart),
-            })
-        }
-
-        uniqueWeeks.sort((a, b) => a.weekNumber - b.weekNumber)
-        return uniqueWeeks
-    }, [volunteer])
 
     if (isLoading) {
         return (
@@ -72,54 +29,47 @@ export const CurrentUserHeatmap: React.FC = () => {
         )
     }
 
-    if (isError || !volunteer) {
-        return (
-            <Flex justify="center" align="center" py="md">
-                <Text size="sm" c="dimmed">
-                    Не удалось загрузить данные по вашей активности.
-                </Text>
-            </Flex>
-        )
+    if (isError || !data) {
+        return <Flex />
     }
 
-    const getSquareColor = (weekNumber: number) => {
-        const weekInfo = weekByNumber.get(weekNumber)
-        if (!weekInfo) return "na"
+    const getSquareColor = (weekData: HeatMapItem) => {
+        if (!weekData) return "na"
 
-        const isCurrentWeek = dayjs().isoWeek() === weekNumber
+        const isCurrentYear = dayjs().year() == dayjs(weekData.weekStart).year()
+        const isCurrentWeek = dayjs().isBetween(weekData.weekStart, weekData.weekEnd, "day", "[]")
+        const hasReports = weekData.hoursWorked > 0
 
-        if (weekInfo.hoursRequired === 0) return "na"
-        if (isCurrentWeek) return "waiting"
-        if (weekInfo.hoursWorked === 0) return "noReports"
-        if (weekInfo.hoursWorked < weekInfo.hoursRequired) return "partialReports"
+        if (weekData.hoursRequired === 0) return "na"
+        if (isCurrentWeek && isCurrentYear && !hasReports) return "waiting"
+        if (weekData.hoursWorked === 0) return "noReports"
+        if (weekData.hoursWorked < weekData.hoursRequired) return "partialReports"
+        if (weekData.hoursWorked > weekData.hoursRequired) return "overtimeReports"
+
         return "fullReports"
     }
 
-    const getSquareTooltip = (weekNumber: number) => {
-        const weekInfo = weekByNumber.get(weekNumber)
+    const getSquareTooltip = (weekInfo: HeatMapItem) => {
         if (!weekInfo) return ""
 
         return intl.formatMessage(
             { id: locales.tooltipReports },
             {
-                name: volunteer.volunteerInfo.fullName,
                 hours: weekInfo.hoursWorked,
-                hoursLabel: intl.formatMessage({ id: locales.hours }),
+                hoursRequired: weekInfo.hoursRequired,
                 from: dayjs(weekInfo.weekStart).format("DD.MM.YYYY"),
                 to: dayjs(weekInfo.weekEnd).format("DD.MM.YYYY"),
-                week: intl.formatMessage({ id: locales.tooltipWeek }, { num: weekNumber }),
+                week: intl.formatMessage({ id: locales.tooltipWeek }, { num: weekInfo.week }),
             }
         )
     }
 
-    const getSquareInfoLabel = (weekNumber: number) => {
-        const weekInfo = weekByNumber.get(weekNumber)
+    const getSquareInfoLabel = (weekInfo: HeatMapItem) => {
         if (!weekInfo) return ""
 
-        const color = getSquareColor(weekNumber)
-        const weekLabel = intl.formatMessage({ id: locales.tooltipWeek }, { num: weekNumber })
+        const color = getSquareColor(weekInfo)
+        const weekLabel = intl.formatMessage({ id: locales.tooltipWeek }, { num: weekInfo.week })
         const params = {
-            name: volunteer.volunteerInfo.fullName,
             from: dayjs(weekInfo.weekStart).format("DD.MM.YYYY"),
             to: dayjs(weekInfo.weekEnd).format("DD.MM.YYYY"),
             week: weekLabel,
@@ -132,25 +82,25 @@ export const CurrentUserHeatmap: React.FC = () => {
             return intl.formatMessage({ id: locales.tooltipWaiting }, params)
         }
 
-        return getSquareTooltip(weekNumber)
+        return getSquareTooltip(weekInfo)
     }
 
-    // 👉 итоговые часы
-    const required = volunteer.totalRequired ?? 0
-    const worked = volunteer.totalWorked ?? 0
-    const deficit = Math.max(required - worked, 0)
-
-    let summaryColor: string = "gray"
-    if (required === 0) {
-        summaryColor = "gray"
-    } else if (deficit > 0) {
-        summaryColor = "red"
-    } else {
-        summaryColor = "green"
+    const getSummaryText = (heatmap: VolunteerHeatMapItem) => {
+        if (heatmap.totalRequired === undefined || heatmap.totalWorked === undefined) {
+            return ""
+        }
+        const h = intl.formatMessage({ id: locales.hours })
+        const sign = heatmap.totalWorked - heatmap.totalRequired > 0 ? "+" : ""
+        const showDiff = heatmap.totalRequired != heatmap.totalWorked
+        let summary = `${heatmap.totalWorked} / ${heatmap.totalRequired} ${h}`
+        if (showDiff) {
+            summary += ` (${sign}${heatmap.totalWorked - heatmap.totalRequired})`
+        }
+        return summary
     }
 
     return (
-        <Flex direction="column" gap="xs" className={classes.root}>
+        <Flex direction="column" gap="xs" className={className}>
             <Text size="sm">
                 <FormattedMessage id={locales.heatmapDescription} />
             </Text>
@@ -177,59 +127,63 @@ export const CurrentUserHeatmap: React.FC = () => {
                 </Flex>
 
                 <Flex align="center" gap={4}>
+                    <Box className={`${classes.legendSquare} ${classes.overtimeReports}`} />
+                    <Text size="xs">
+                        <FormattedMessage id={locales.overtimeReports} />
+                    </Text>
+                </Flex>
+
+                <Flex align="center" gap={4}>
                     <Box className={`${classes.legendSquare} ${classes.na}`} />
                     <Text size="xs">N/A</Text>
                 </Flex>
             </Flex>
-            <Flex gap={4} wrap="wrap" className={classes.weeksRow}>
-                {weeks.map((week) => (
-                    <HoverCard
-                        key={week.weekNumber}
-                        position="top"
-                        withArrow
-                        shadow="md"
-                        openDelay={0}
-                        closeDelay={100}
-                        withinPortal
-                    >
-                        <HoverCard.Target>
-                            <Box className={`${classes.weekSquare} ${classes[getSquareColor(week.weekNumber)]}`}>
-                                <Text size="xs" fw={500} className={classes.weekNumber}>
-                                    {week.weekNumber}
-                                </Text>
-                            </Box>
-                        </HoverCard.Target>
-                        <HoverCard.Dropdown
-                            style={{
-                                maxWidth: "min(86vw, 420px)",
-                                overflowWrap: "anywhere",
-                                wordBreak: "break-word",
-                            }}
-                        >
-                            <Text size="xs" style={{ whiteSpace: "normal", lineHeight: 1.35 }}>
-                                {getSquareInfoLabel(week.weekNumber)}
+
+            <Flex direction="column" rowGap="md">
+                {Object.entries(data).map(([year, heatmap]) => (
+                    <Flex direction="column">
+                        <Flex direction="row" align="center" columnGap="md">
+                            <Text fw="bold" size="xl">
+                                {year}
                             </Text>
-                        </HoverCard.Dropdown>
-                    </HoverCard>
+                            <Text c="gray" size="sm">
+                                {getSummaryText(heatmap)}
+                            </Text>
+                        </Flex>
+                        <Flex gap={4} wrap="wrap" className={classes.weeksRow}>
+                            {heatmap.weeks.map((weekItem) => (
+                                <HoverCard
+                                    key={weekItem.week}
+                                    position="top"
+                                    withArrow
+                                    shadow="md"
+                                    openDelay={0}
+                                    closeDelay={100}
+                                    withinPortal
+                                >
+                                    <HoverCard.Target>
+                                        <Box className={`${classes.weekSquare} ${classes[getSquareColor(weekItem)]}`}>
+                                            <Text size="xs" fw={500} className={classes.weekNumber}>
+                                                {weekItem.week}
+                                            </Text>
+                                        </Box>
+                                    </HoverCard.Target>
+                                    <HoverCard.Dropdown
+                                        style={{
+                                            maxWidth: "min(86vw, 420px)",
+                                            overflowWrap: "anywhere",
+                                            wordBreak: "break-word",
+                                        }}
+                                    >
+                                        <Text size="xs" style={{ whiteSpace: "normal", lineHeight: 1.35 }}>
+                                            {getSquareInfoLabel(weekItem)}
+                                        </Text>
+                                    </HoverCard.Dropdown>
+                                </HoverCard>
+                            ))}
+                        </Flex>
+                    </Flex>
                 ))}
-            </Flex>
-            <Flex mt="xs">
-                <Alert
-                    color={summaryColor}
-                    variant="light"
-                    className={classes.alert}
-                    classNames={{ title: classes.alertTitle }}
-                    title={
-                        required === 0 ? (
-                            <FormattedMessage id={locales.summaryRequiredZero} />
-                        ) : deficit > 0 ? (
-                            <FormattedMessage id={locales.summaryDeficit} values={{ worked, required, deficit }} />
-                        ) : (
-                            <FormattedMessage id={locales.summaryOk} values={{ worked, required }} />
-                        )
-                    }
-                    icon={deficit > 0 ? <IconAlertHexagon size={16} /> : <IconChecks size={16} />}
-                ></Alert>
             </Flex>
         </Flex>
     )
