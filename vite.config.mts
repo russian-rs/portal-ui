@@ -3,8 +3,7 @@ import { resolve } from "node:path"
 import { defineConfig, HttpProxy } from "vite"
 import { Mode, plugin as markDownPlugin } from "vite-plugin-markdown"
 
-// const apiTarget = "http://localhost:8081"
-const apiTarget = "https://portal-test.russian.rs/api"
+const apiTarget = process.env.AUTHENTIK_BASE_URL ? `${process.env.AUTHENTIK_BASE_URL}/api` : "http://localhost:8081"
 
 export default defineConfig(({ mode }) => {
     return {
@@ -83,7 +82,7 @@ const proxyLogging = (proxy: HttpProxy.Server) => {
     proxy.on("proxyRes", (proxyRes, req, res) => {
         if (proxyRes.headers["location"]) {
             const location = proxyRes.headers["location"] as string
-            proxyRes.headers["location"] = location.replace("https://portal-test.russian.rs", "http://localhost:3000")
+            proxyRes.headers["location"] = location.replace(new URL(apiTarget).origin, "http://localhost:3000")
             console.log(`[vite-proxy-redirect] Rewritten redirect to: ${proxyRes.headers["location"]}`)
         }
     })
