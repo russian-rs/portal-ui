@@ -23,7 +23,7 @@ If you continue a task from the previous week, be sure to show progress — what
 
 📌 Each week of participation must be closed with a total of at least 10 hours.
 
-📝 **Important**: you must inform and coordinate this in advance with Ingacheva Alla (Telegram: adolfovnaK email: rdsplatforma@gmail.com)
+📝 **Important**: you must inform and coordinate this in advance with a program coordinator (email: rdsplatforma@gmail.com or Telegram)
 
 ---
 

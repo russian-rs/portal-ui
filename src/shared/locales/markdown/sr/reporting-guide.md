@@ -23,7 +23,7 @@ Ako nastavljate zadatak iz prethodne nedelje, obavezno pokažite napredak — š
 
 📌 Svaka nedelja učešća mora biti zatvorena ukupno sa najmanje 10 sati.
 
-📝 **Važno**: obavezno unapred obavestiti i uskladiti ovo sa Ingačevom Allom (Telegram: adolfovnaK email: rdsplatforma@gmail.com)
+📝 **Važno**: obavezno unapred obavestiti i uskladiti ovo sa koordinatorom programa(email: rdsplatforma@gmail.com ili Telegram)
 
 ---
 
