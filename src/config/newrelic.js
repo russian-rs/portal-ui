@@ -1,9 +1,13 @@
+const applicationID = Number(import.meta.env.VITE_NEW_RELIC_APP_ID)
+const licenseKey = import.meta.env.VITE_NEW_RELIC_LICENSE_KEY
+const accountID = Number(import.meta.env.VITE_NEW_RELIC_ACCOUNT_ID)
+
 export const jsConfig = {
     info: {
-        applicationID: 538655907,
+        applicationID,
         beacon: "bam.eu01.nr-data.net",
         errorBeacon: "bam.eu01.nr-data.net",
-        licenseKey: "NRJS-84ec94687e4767a0200",
+        licenseKey,
         sa: 1,
     },
     init: {
@@ -18,10 +22,10 @@ export const jsConfig = {
         },
     },
     loader_config: {
-        accountID: 4676876,
-        agentID: 538655907,
-        applicationID: 538655907,
-        licenseKey: "NRJS-84ec94687e4767a0200",
-        trustKey: 4676876,
+        accountID,
+        agentID: applicationID,
+        applicationID,
+        licenseKey,
+        trustKey: accountID,
     },
 }
