@@ -498,7 +498,7 @@
             "terms": {
                 "title": "Pridruživanje i učešće u aktivnostima organizacije",
                 "required": "Obavezno",
-                "agree-1": "Pročitao/la sam i slažem se sa ciljevima i uslovima navedenim u <a href='https://russian.rs/about/documents' target='_blank'>statutu i etičkom kodeksu organizacije</a>",
+                "agree-1": "Pročitao/la sam i slažem se sa ciljevima i uslovima navedenim u <a href='https://russian.rs/about/about-documents/' target='_blank'>statutu i etičkom kodeksu organizacije</a>",
                 "agree-2": "Slažem se sa obradom i čuvanjem podataka koje sam naveo/la u skladu sa <a href='https://russian.rs/privacy-policy' target='_blank'>politikom privatnosti</a>",
                 "button-application": "Popunite prijavu"
             },
