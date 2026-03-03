@@ -299,7 +299,8 @@
             "comments": "Report's comments",
             "moderator": "Portal Moderator",
             "delete": "Delete report",
-            "delete-submit": "Press again to delete"
+            "delete-submit": "Press again to delete",
+            "auto-report": "Report created automatically based on data from an external system"
         },
         "edit-report": {
             "title": "Create new report",
