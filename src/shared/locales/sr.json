@@ -299,7 +299,8 @@
             "comments": "Komentari o izveštaju",
             "moderator": "Moderator Portala",
             "delete": "Izbrišite izveštaj",
-            "delete-submit": "Dodirnite ponovo da biste uklonili"
+            "delete-submit": "Dodirnite ponovo da biste uklonili",
+            "auto-report": "Izveštaj je automatski kreiran na osnovu podataka iz eksternog sistema"
         },
         "edit-report": {
             "title": "Napravite novi izveštaj",

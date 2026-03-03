@@ -1,7 +1,16 @@
-import { ActionIcon, Anchor, Avatar, Badge, Button, Flex, Loader, Text, Textarea } from "@mantine/core"
+import { ActionIcon, Alert, Anchor, Avatar, Badge, Button, Flex, Loader, Text, Textarea } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { ReportDto, UserInfoDto } from "@russian-rs/portal-api-axios"
-import { IconCalendar, IconCheck, IconClock, IconMail, IconPencil, IconTrash, IconX } from "@tabler/icons-react"
+import {
+    IconCalendar,
+    IconCheck,
+    IconClock,
+    IconMail,
+    IconPencil,
+    IconTrash,
+    IconWand,
+    IconX,
+} from "@tabler/icons-react"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useContext, useMemo, useState } from "react"
@@ -126,6 +135,11 @@ export const ReportPage = () => {
                     </Badge>
                 )}
             </Flex>
+            {report.isAuto && (
+                <Alert className={classes.autoAlert} variant="outline" color="blue" icon={<IconWand size={16} />}>
+                    <FormattedMessage id={locales.autoReport} />
+                </Alert>
+            )}
             <Flex className={classes.reportDescription}>
                 <TextPropertyBox
                     name={locales.creator}
