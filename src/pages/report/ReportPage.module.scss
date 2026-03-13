@@ -14,6 +14,15 @@
     font-weight: bolder;
 }
 
+.autoAlert {
+    width: 36rem;
+    padding: 0.5rem;
+
+    @media (max-width: $mantine-breakpoint-md) {
+        width: 100%;
+    }
+}
+
 .reportDescription {
     width: 36rem;
     column-gap: 2rem;
@@ -45,9 +54,8 @@
 .editButton {
     cursor: pointer;
 
-    transition:
-        box-shadow 0.2s ease,
-        transform 0.2s ease;
+    transition: box-shadow 0.2s ease,
+    transform 0.2s ease;
 
     &:hover {
         box-shadow: 0 0 0.2rem 0.1rem light-dark(var(--mantine-color-blue-2), var(--mantine-color-blue-9));

@@ -23,4 +23,5 @@ export const locales = {
     moderator: "pages.report.moderator",
     delete: "pages.report.delete",
     deleteSubmit: "pages.report.delete-submit",
+    autoReport: "pages.report.auto-report",
 }
