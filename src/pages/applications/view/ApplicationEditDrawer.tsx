@@ -67,7 +67,9 @@ export const ApplicationEditDrawer = ({
         phone: z
             .string()
             .regex(/^\+?\d{10,15}$/, intl.formatMessage({ id: "pages.profile.validation.invalidPhone" }))
-            .max(20, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 20 })),
+            .max(20, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 20 }))
+            .optional()
+            .or(z.literal("")),
         telegram: z
             .string()
             .regex(/^[a-zA-Z][a-zA-Z0-9_]*$/, intl.formatMessage({ id: "pages.profile.validation.invalidTelegram" }))
