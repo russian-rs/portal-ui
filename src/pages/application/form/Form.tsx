@@ -3,17 +3,17 @@ import {
     Checkbox,
     Flex,
     Loader,
+    Radio,
     SegmentedControl,
     Text,
     Textarea,
     TextInput,
-    Radio,
     Tooltip,
 } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
-import { ApplicationDto } from "@russian-rs/portal-api-axios"
+import { ApplicationDto, GenderEnumDto } from "@russian-rs/portal-api-axios"
 import {
     IconAlertCircle,
     IconAt,
@@ -30,7 +30,6 @@ import {
     IconSignature,
     IconWorld,
 } from "@tabler/icons-react"
-import { GenderEnumDto } from "@russian-rs/portal-api-axios"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useEffect, useState } from "react"
@@ -61,6 +60,7 @@ export const Form = () => {
     const fieldRequired = { message: intl.formatMessage({ id: locales.required }) }
     const selectCityList = { message: intl.formatMessage({ id: locales.selectCityList }) }
     const invalidSymbols = intl.formatMessage({ id: locales.invalidSymbols })
+    const invalidSymbolsPassport = intl.formatMessage({ id: locales.invalidSymbolsPassport })
     const minMessage = (count: number) => intl.formatMessage({ id: locales.minLetters }, { count: count })
     const maxMessage = (count: number) => intl.formatMessage({ id: locales.maxLetters }, { count: count })
     const agreementRequired = { message: intl.formatMessage({ id: locales.agreementRequired }) }
@@ -87,7 +87,7 @@ export const Form = () => {
         birthDate: z.date(fieldRequired),
         passport: z
             .string(fieldRequired)
-            .regex(/^[A-Za-z0-9]+$/, invalidSymbols)
+            .regex(/^[A-Za-z0-9]+$/, invalidSymbolsPassport)
             .min(6, minMessage(6))
             .max(20, maxMessage(20)),
         citizenship: z.string(fieldRequired).min(2, minMessage(2)).max(100, maxMessage(100)),

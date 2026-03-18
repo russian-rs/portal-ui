@@ -507,6 +507,7 @@
                 "title": "Membership Application Form",
                 "required": "Required to fill out",
                 "invalid-symbols": "Invalid symbols",
+                "invalid-symbols-passport": "Only latin letters and numbers",
                 "button-send": "Submit Application",
                 "min-letters": "Minimum length - {count}",
                 "max-letters": "Maximum length - {count}",

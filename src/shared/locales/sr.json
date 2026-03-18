@@ -507,6 +507,7 @@
                 "title": "Prijava za članstvo",
                 "required": "Obavezno za popunjavanje",
                 "invalid-symbols": "Nevažeći simboli",
+                "invalid-symbols-passport": "Samo latinična slova i brojevi",
                 "button-send": "Pošalji prijavu",
                 "min-letters": "Minimalna dužina - {count}",
                 "max-letters": "Maksimalna dužina - {count}",

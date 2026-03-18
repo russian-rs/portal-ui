@@ -2,6 +2,7 @@ export const locales = {
     title: "pages.application.form.title",
     required: "pages.application.form.required",
     invalidSymbols: "pages.application.form.invalid-symbols",
+    invalidSymbolsPassport: "pages.application.form.invalid-symbols-passport",
     buttonSend: "pages.application.form.button-send",
     minLetters: "pages.application.form.min-letters",
     maxLetters: "pages.application.form.max-letters",

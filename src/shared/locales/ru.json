@@ -507,6 +507,7 @@
                 "title": "Анкета на вступление",
                 "required": "Обязательно для заполнения",
                 "invalid-symbols": "Недопустимые символы",
+                "invalid-symbols-passport": "Только латинские буквы и цифры",
                 "button-send": "Отправить заявку",
                 "min-letters": "Минимальная длина - {count}",
                 "max-letters": "Максимальная длина - {count}",
