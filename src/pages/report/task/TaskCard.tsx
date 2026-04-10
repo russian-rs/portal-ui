@@ -1,6 +1,6 @@
 import { Avatar, Flex, ScrollArea, Text } from "@mantine/core"
 import { TaskDto, UserInfoDto } from "@russian-rs/portal-api-axios"
-import { IconCalendar, IconClock, IconLink } from "@tabler/icons-react"
+import { IconCalendar, IconClock, IconLink, IconLanguage } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import React from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -45,9 +45,13 @@ export const TaskCard = ({ task, users }: TaskCardProps) => {
             </Text>
             {hasSerbianTranslation && (
                 <Flex className={classes.serbianTaskView}>
-                    <Text fw="bold" size="sm" className={classes.serbianTaskViewLabel}>
-                        <FormattedMessage id={locales.serbianTaskView} />
-                    </Text>
+                    <Flex className={classes.serbianTaskViewLabelContainer}>
+                        <IconLanguage size={16} />
+                        <Text fw="bold" size="sm" className={classes.serbianTaskViewLabel}>
+                            <FormattedMessage id={locales.serbianTaskView} />
+                        </Text>
+                    </Flex>
+
                     <Text fw="bold" className={classes.name}>
                         {serbianName}
                     </Text>

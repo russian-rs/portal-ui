@@ -43,8 +43,11 @@
     border-top: 2px solid light-dark(var(--mantine-color-blue-5), var(--mantine-color-blue-7));
 }
 
-.serbianTaskViewLabel {
+.serbianTaskViewLabelContainer {
     color: light-dark(var(--mantine-color-blue-8), var(--mantine-color-blue-3));
+}
+
+.serbianTaskViewLabel {
     letter-spacing: 0.02em;
 }
 
