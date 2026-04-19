@@ -434,7 +434,6 @@ export default function generateContractPdf(application: ApplicationDto) {
     const leftBottom = yLeft
 
     const rightBottom = yRight
-
     const lineBottom = Math.max(leftBottom, rightBottom)
     pdf.line(dividerX, lineTop, dividerX, lineBottom)
     pdf.setFontSize(BODY_PT)
