@@ -3,7 +3,7 @@ import dayjs from "dayjs"
 import { DEFAULT_DATE_FORMAT } from "src/shared/datetime/formats"
 
 export const mapValuesToRequest = (values: Record<string, any>, currentState: ApplicationDto): ApplicationDto => {
-    const request = currentState
+    const request = { ...currentState }
     if (values["email"]) {
         request.email = values["email"]
     }
@@ -42,6 +42,16 @@ export const mapValuesToRequest = (values: Record<string, any>, currentState: Ap
     }
     if (values["occupation"]) {
         request.occupation = values["occupation"]
+    }
+    if (values["program"]) {
+        request.program = values["program"]
+    } else {
+        delete request.program
+    }
+    if (values["project"]) {
+        request.project = values["project"]
+    } else {
+        delete request.project
     }
     if (values["experience"]) {
         request.experience = values["experience"]
