@@ -1,16 +1,21 @@
-import { ApplicationDto } from "@russian-rs/portal-api-axios"
+import { ApplicationDto, ProgramDto } from "@russian-rs/portal-api-axios"
 import dayjs from "dayjs"
 import { jsPDF as JsPdf } from "jspdf"
 import { MONTSERRAT_BOLD_BOLD } from "src/shared/docs/fonts/Montserrat-Bold-bold"
 import { MONTSERRAT_MEDIUM_NORMAL } from "src/shared/docs/fonts/Montserrat-Medium-normal"
 import { getFullAddress } from "src/shared/utils/getFullAddress"
+import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
+import { notifications } from "@mantine/notifications"
 
-export default function generateContractPdf(application: ApplicationDto) {
+export default function generateContractPdf(application: ApplicationDto, programs: ProgramDto[]) {
     const fullName = errorIfEmpty("Name", application.name)
     const birthDate = dayjs(errorIfEmpty("Birth date", application.birthDate)).format("DD.MM.YYYY")
     const passport = errorIfEmpty("Passport", application.passport)
     const phone = errorIfEmpty("Phone", application.phone)
     const email = errorIfEmpty("Email", application.email)
+    const programCode = errorIfEmpty("Program", application.program)
+    const programDto = programs.find((p) => p.code === programCode)
+    const program = errorIfEmpty("Program name", programDto?.nameSr ?? programDto?.nameEn ?? programDto?.nameRu)
     const address = getFullAddress(
         errorIfEmpty("Postal code", application.postalCode),
         errorIfEmpty("City", application.city),
@@ -251,14 +256,14 @@ export default function generateContractPdf(application: ApplicationDto) {
         4
     )
 
-    //     writeWrapped(
-    //         `1.4. У тренутку закључења овог уговора, волонтер је примарно укључен у програм:_______________
-    // „ИСТРАЖИВАЧ ТЕЛЕКОМУНИКАЦИЈА“
-    //
-    // 1.5. Промена програма или обима активности врши се без измене овог уговора, путем интерне евиденције или анекса, у складу са програмом волонтирања.`,
-    //         BODY_PT,
-    //         4
-    //     )
+    writeWrapped(
+        `1.4. У тренутку закључења овог уговора, волонтер је примарно укључен у програм: ${program}
+    „ИСТРАЖИВАЧ ТЕЛЕКОМУНИКАЦИЈА“
+
+    1.5. Промена програма или обима активности врши се без измене овог уговора, путем интерне евиденције или анекса, у складу са програмом волонтирања.`,
+        BODY_PT,
+        4
+    )
 
     writeHeading("ЧЛАН 2. РОК ТРАЈАЊА УГОВОРА")
     writeInlineBold("2.1. Овај Уговор подразумева континуирано, **дугорочно волонтирање**.", BODY_PT, 1)
@@ -573,7 +578,9 @@ function writeInlineBoldAt(
 
 function errorIfEmpty(name: string, str: string | null | undefined): string {
     if (str == null || str === "") {
-        alert(name + " is empty")
+        notifications.show(
+            ErrorNotification(`${name} is empty`, "Please fill in all required fields before generating the PDF.")
+        )
         throw new Error(name + " is empty")
     }
     return str
