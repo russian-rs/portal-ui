@@ -389,13 +389,20 @@ export default function generateContractPdf(application: ApplicationDto, program
         2
     )
 
+    writeHeading("ЧЛАН 7. ПРИЛОЗИ УГОВОРА")
+    writeWrapped(
+        `7.1. Прилог 1 – Изјава – упитник (заявление – анкета), попуњен и потписан од стране волонтера, чини саставни и нераздвојни део овог уговора и има исту правну снагу као и основни текст уговора.
+
+7.2. Прилог 2 – Програм волонтерских активности у интересу Републике Србије чини саставни и нераздвојни део овог уговора и на основу њега се утврђује садржај и обим волонтерских активности.`,
+        BODY_PT,
+        2
+    )
+
     ensureSpace(25)
 
     pdf.setFontSize(SMALL_PT)
     setBody()
     pdf.text("Прилог 1. из тачке 4.2.1. члана 4 овог уговора", MARGIN_X, y)
-    y += lineHeightMm(SMALL_PT) + 4
-    pdf.text("ПРИЛОГ У УГОВОРУ О ВОЛОНТИРАЊУ", MARGIN_X, y)
     y += lineHeightMm(SMALL_PT) + 4
 
     const dividerX = pageWidth / 2
