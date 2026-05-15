@@ -51,7 +51,6 @@ import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
-import { OfficialGroupDto } from "@russian-rs/portal-api-axios/api"
 import { useOfficialGroup } from "src/app/providers/OfficialGroupProvider"
 
 export const ApplicationView = () => {
