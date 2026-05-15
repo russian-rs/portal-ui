@@ -51,6 +51,8 @@ import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
+import { OfficialGroupDto } from "@russian-rs/portal-api-axios/api"
+import { useOfficialGroup } from "src/app/providers/OfficialGroupProvider"
 
 export const ApplicationView = () => {
     const { id } = useParams()
@@ -59,6 +61,7 @@ export const ApplicationView = () => {
     const intl = useIntl()
     const programs = usePrograms()
     const projects = useProjects()
+    const officialGroups = useOfficialGroup()
     const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
 
     const queryClient = useQueryClient()
@@ -78,6 +81,7 @@ export const ApplicationView = () => {
     const { data: users = {} } = resolveUsers(noteLogins)
     const program = programs.find((p) => p.code === application.program)
     const project = projects.find((p) => p.code === application.project)
+    const officialGroup = officialGroups.find((p) => p.code === program?.officialGroup)
 
     const { isFetching: isLoading, refetch: refetchApplication } = useQuery({
         queryKey: ["getApplication", id],
@@ -353,7 +357,7 @@ export const ApplicationView = () => {
                         disabled={application.contract == null}
                         className={classes.contractGenerate}
                         onClick={() => {
-                            generateContractPdf(application, programs)
+                            generateContractPdf(application, officialGroup)
                         }}
                     >
                         <FormattedMessage id={locales.contractDownload} />

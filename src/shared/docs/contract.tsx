@@ -1,4 +1,4 @@
-import { ApplicationDto, ProgramDto } from "@russian-rs/portal-api-axios"
+import { ApplicationDto, OfficialGroupDto, ProgramDto } from "@russian-rs/portal-api-axios"
 import dayjs from "dayjs"
 import { jsPDF as JsPdf } from "jspdf"
 import { MONTSERRAT_BOLD_BOLD } from "src/shared/docs/fonts/Montserrat-Bold-bold"
@@ -7,15 +7,17 @@ import { getFullAddress } from "src/shared/utils/getFullAddress"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { notifications } from "@mantine/notifications"
 
-export default function generateContractPdf(application: ApplicationDto, programs: ProgramDto[]) {
+export default function generateContractPdf(
+    application: ApplicationDto,
+    officialProgramDto: OfficialGroupDto | undefined
+) {
     const fullName = errorIfEmpty("Name", application.name)
     const birthDate = dayjs(errorIfEmpty("Birth date", application.birthDate)).format("DD.MM.YYYY")
     const passport = errorIfEmpty("Passport", application.passport)
     const phone = errorIfEmpty("Phone", application.phone)
     const email = errorIfEmpty("Email", application.email)
-    const programCode = errorIfEmpty("Program", application.program)
-    const programDto = programs.find((p) => p.code === programCode)
-    const program = errorIfEmpty("Program name", programDto?.nameSr ?? programDto?.nameEn ?? programDto?.nameRu)
+    const officialProgram = errorIfEmpty("Official Program", officialProgramDto?.nameSr)
+
     const address = getFullAddress(
         errorIfEmpty("Postal code", application.postalCode),
         errorIfEmpty("City", application.city),
@@ -257,8 +259,7 @@ export default function generateContractPdf(application: ApplicationDto, program
     )
 
     writeWrapped(
-        `1.4. У тренутку закључења овог уговора, волонтер је примарно укључен у програм: ${program}
-    „ИСТРАЖИВАЧ ТЕЛЕКОМУНИКАЦИЈА“
+        `1.4. У тренутку закључења овог уговора, волонтер је примарно укључен у програм: „${officialProgram}“
 
     1.5. Промена програма или обима активности врши се без измене овог уговора, путем интерне евиденције или анекса, у складу са програмом волонтирања.`,
         BODY_PT,
@@ -395,15 +396,13 @@ export default function generateContractPdf(application: ApplicationDto, program
 
 7.2. Прилог 2 – Програм волонтерских активности у интересу Републике Србије чини саставни и нераздвојни део овог уговора и на основу њега се утврђује садржај и обим волонтерских активности.`,
         BODY_PT,
-        2
+        6
     )
 
     ensureSpace(25)
 
     pdf.setFontSize(SMALL_PT)
     setBody()
-    pdf.text("Прилог 1. из тачке 4.2.1. члана 4 овог уговора", MARGIN_X, y)
-    y += lineHeightMm(SMALL_PT) + 4
 
     const dividerX = pageWidth / 2
     const colGap = 6
