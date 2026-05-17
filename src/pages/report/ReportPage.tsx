@@ -8,6 +8,7 @@ import {
     IconMail,
     IconPencil,
     IconTrash,
+    IconUserStar,
     IconWand,
     IconX,
 } from "@tabler/icons-react"
@@ -65,7 +66,11 @@ export const ReportPage = () => {
         queryFn: () =>
             ReportApiService.getReport(id!!).then((response) => {
                 const report = response.data
-                setLogins([report.user, ...report.tasks.map((it) => it.customer)].filter((it) => it != undefined))
+                setLogins(
+                    [report.user, report.moderator, ...report.tasks.map((it) => it.customer)].filter(
+                        (it) => it != undefined
+                    )
+                )
                 return report
             }),
     })
@@ -201,6 +206,19 @@ export const ReportPage = () => {
                         project ? getLocalizedName(project, intl.locale) : <FormattedMessage id={locales.noProject} />
                     }
                 />
+                {hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER]) && report.moderator && (
+                    <TextPropertyBox
+                        name={locales.moderatorShort}
+                        value={
+                            <Flex align="center" columnGap="sm">
+                                <Anchor href={`/profile/${report.moderator}`} target="_blank">
+                                    <Text>{users[report.moderator || ""].fullName}</Text>
+                                </Anchor>
+                            </Flex>
+                        }
+                        icon={<IconUserStar size={16} />}
+                    />
+                )}
             </Flex>
             {report.notes && report.notes.length > 0 && (
                 <Flex className={classes.notes}>

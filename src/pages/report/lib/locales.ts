@@ -21,6 +21,7 @@ export const locales = {
     commentRequired: "pages.report.comment-required",
     comments: "pages.report.comments",
     moderator: "pages.report.moderator",
+    moderatorShort: "pages.report.moderator-short",
     delete: "pages.report.delete",
     deleteSubmit: "pages.report.delete-submit",
     autoReport: "pages.report.auto-report",
