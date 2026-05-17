@@ -298,6 +298,7 @@
             "comment-required": "Komentar je obavezan kada odbijete izveštaj",
             "comments": "Komentari o izveštaju",
             "moderator": "Moderator Portala",
+            "moderator-short": "Moderator",
             "delete": "Izbrišite izveštaj",
             "delete-submit": "Dodirnite ponovo da biste uklonili",
             "auto-report": "Izveštaj je automatski kreiran na osnovu podataka iz eksternog sistema"
