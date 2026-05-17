@@ -513,7 +513,7 @@
                 "min-letters": "Минимальная длина - {count}",
                 "max-letters": "Максимальная длина - {count}",
                 "form-error": "Анкета заполнена неверно",
-                "captcha-error": "Проверка Captcha не пройденmoderator-shortа",
+                "captcha-error": "Проверка Captcha не пройдена",
                 "application-sent": "Ваша заявка отправлена",
                 "email": "Ваш e-mail",
                 "email-invalid": "Некорректный формат e-mail",
