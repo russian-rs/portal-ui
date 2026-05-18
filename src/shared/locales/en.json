@@ -298,6 +298,7 @@
             "comment-required": "When rejecting report comment is required",
             "comments": "Report's comments",
             "moderator": "Portal Moderator",
+            "moderator-short": "Moderator",
             "delete": "Delete report",
             "delete-submit": "Press again to delete",
             "auto-report": "Report created automatically based on data from an external system"
