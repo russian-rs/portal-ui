@@ -11,33 +11,31 @@ import React, { useEffect, useState } from "react"
 import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
 import { UserInfoDto } from "@russian-rs/portal-api-axios"
 import { NavigateFunction } from "react-router"
-
+import { IDBadge } from "src/shared/ui/badges/IDBadge"
 
 type Props = {
-    user: UserInfoDto,
-    canEditProgram: () => boolean,
-    canEditProject: (targetUserId: number) => boolean,
-    updateUserProgram: (variables: { userId: string; program: string }) => Promise<any> | void,
-    updateUserProject: (variables: { userId: string; project: string }) => Promise<any> | void,
-    intl: IntlShape,
-    navigate: NavigateFunction,
-    setDrawerOpened: (open: boolean) => void,
-    setSelectedUserId: (id: number | null) => void,
+    user: UserInfoDto
+    canEditProgram: () => boolean
+    canEditProject: (targetUserId: number) => boolean
+    updateUserProgram: (variables: { userId: string; program: string }) => Promise<any> | void
+    updateUserProject: (variables: { userId: string; project: string }) => Promise<any> | void
+    intl: IntlShape
+    navigate: NavigateFunction
+    setDrawerOpened: (open: boolean) => void
+    setSelectedUserId: (id: number | null) => void
 }
 
-
 export const UserRow = ({
-                     user,
-                     canEditProgram,
-                     canEditProject,
-                     updateUserProgram,
-                     updateUserProject,
-                     intl,
-                     navigate,
-                     setDrawerOpened,
-                     setSelectedUserId,
-                 }: Props) => {
-
+    user,
+    canEditProgram,
+    canEditProject,
+    updateUserProgram,
+    updateUserProject,
+    intl,
+    navigate,
+    setDrawerOpened,
+    setSelectedUserId,
+}: Props) => {
     const programValue = user?.program?.code ?? null
     const projectValue = user?.project?.code ?? null
 
@@ -50,13 +48,12 @@ export const UserRow = ({
         setSelectedProject(projectValue)
     }, [programValue, projectValue])
 
-    const { programs, visiblePrograms, visibleProjects } =
-        useProgramProjectFilter(selectedProgram, selectedProject)
+    const { programs, visiblePrograms, visibleProjects } = useProgramProjectFilter(selectedProgram, selectedProject)
 
     useEffect(() => {
         if (!selectedProgram || !selectedProject) return
 
-        const program = programs.find(p => p.code === selectedProgram)
+        const program = programs.find((p) => p.code === selectedProgram)
         const allowed = program?.projectCodes ?? []
 
         if (!allowed.includes(selectedProject)) {
@@ -98,9 +95,9 @@ export const UserRow = ({
     const lastContract =
         Array.isArray(user.contracts) && user.contracts.length > 0
             ? user.contracts.reduce(
-                (max, c) => (new Date(c.endDate) > new Date(max.endDate) ? c : max),
-                user.contracts[0]
-            )
+                  (max, c) => (new Date(c.endDate) > new Date(max.endDate) ? c : max),
+                  user.contracts[0]
+              )
             : undefined
 
     return (
@@ -122,6 +119,7 @@ export const UserRow = ({
                         <Text size="sm" c="dimmed" truncate="end">
                             {user.email}
                         </Text>
+                        <IDBadge id={user.id} />
                     </Flex>
                 </Flex>
             </Table.Td>
