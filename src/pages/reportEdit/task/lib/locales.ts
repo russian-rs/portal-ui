@@ -15,4 +15,5 @@ export const locales = {
     required: "pages.edit-report.required",
     minLetters: "pages.edit-report.min-letters",
     invalidUrl: "pages.edit-report.invalid-url",
+    serbianTaskViewLabel: "pages.report.serbian-task-view",
 }

@@ -196,7 +196,7 @@ export const generateReportsPdf = (
         report.tasks.forEach((task, index, array) => {
             writeSpacer(2)
             writeInlineBold(`Zadatak №${index + 1}`, BODY_PT, 1)
-            writeInlineBold(`**Naziv:** ${task.nameSr ?? task.name}}`, BODY_PT, 1)
+            writeInlineBold(`**Naziv:** ${task.nameSr ?? task.name}`, BODY_PT, 1)
             writeInlineBold(`**Opis:** ${task.descriptionSr ?? task.description}`, BODY_PT, 1)
             const timeSpent = getSpentTimeObject(task.timeSpent)
             writeInlineBold(`**Potrošeno vreme:** ${timeSpent.h} sat. ${timeSpent.m} min.`, BODY_PT, 1)

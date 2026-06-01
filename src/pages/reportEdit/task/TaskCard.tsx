@@ -14,7 +14,7 @@ import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { FormValidationResult } from "@mantine/form/lib/types"
 import { FileInfoDto, TaskDto } from "@russian-rs/portal-api-axios"
-import { IconCalendar, IconChecklist, IconClock, IconLink, IconTrashX } from "@tabler/icons-react"
+import { IconCalendar, IconChecklist, IconClock, IconLanguage, IconLink, IconTrashX } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import { createRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -183,9 +183,12 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
             />
             {editMode && hasSerbianTranslation && (
                 <Flex className={classes.serbianTaskView}>
-                    <Text fw="bold" size="sm" className={classes.serbianTaskViewLabel}>
-                        <FormattedMessage id="pages.report.serbian-task-view" />
-                    </Text>
+                    <Flex className={classes.serbianTaskViewLabelContainer}>
+                        <IconLanguage size={16} />
+                        <Text fw="bold" size="sm" className={classes.serbianTaskViewLabel}>
+                            <FormattedMessage id={locales.serbianTaskViewLabel} />
+                        </Text>
+                    </Flex>
                     <Text fw={600} className={classes.serbianTaskViewName}>
                         {serbianName}
                     </Text>
