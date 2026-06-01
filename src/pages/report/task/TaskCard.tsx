@@ -1,10 +1,15 @@
 import { Avatar, Flex, ScrollArea, Text } from "@mantine/core"
 import { TaskDto, UserInfoDto } from "@russian-rs/portal-api-axios"
-import { IconCalendar, IconClock, IconLink } from "@tabler/icons-react"
+import { IconCalendar, IconClock, IconLink, IconLanguage } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import React from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { getSpentTime } from "src/shared/report/timeSpent"
+import {
+    getTaskDisplayDescription,
+    getTaskDisplayName,
+    hasTaskTranslation,
+} from "src/shared/taskTranslation/lib/taskTranslation"
 import { FileButton } from "src/shared/ui/fileButton/FileButton"
 import { ImagePreview } from "src/shared/ui/imagePreview/ImagePreview"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
@@ -18,12 +23,17 @@ interface TaskCardProps {
 
 export const TaskCard = ({ task, users }: TaskCardProps) => {
     const intl = useIntl()
+    const hasSerbianTranslation = hasTaskTranslation(task)
+    const defaultName = getTaskDisplayName(task, false)
+    const defaultDescription = getTaskDisplayDescription(task, false)
+    const serbianName = getTaskDisplayName(task, true)
+    const serbianDescription = getTaskDisplayDescription(task, true)
 
     return (
         <Flex className={classes.task}>
             <Flex className={classes.topArea}>
                 <Text fw="bold" className={classes.name}>
-                    {task.name}
+                    {defaultName}
                 </Text>
                 <Flex className={classes.clock}>
                     <IconClock size={14} />
@@ -31,8 +41,25 @@ export const TaskCard = ({ task, users }: TaskCardProps) => {
                 </Flex>
             </Flex>
             <Text c="dimmed" className={classes.taskDescription}>
-                {task.description}
+                {defaultDescription}
             </Text>
+            {hasSerbianTranslation && (
+                <Flex className={classes.serbianTaskView}>
+                    <Flex className={classes.serbianTaskViewLabelContainer}>
+                        <IconLanguage size={16} />
+                        <Text fw="bold" size="sm" className={classes.serbianTaskViewLabel}>
+                            <FormattedMessage id={locales.serbianTaskView} />
+                        </Text>
+                    </Flex>
+
+                    <Text fw="bold" className={classes.name}>
+                        {serbianName}
+                    </Text>
+                    <Text c="dimmed" className={classes.taskDescription}>
+                        {serbianDescription}
+                    </Text>
+                </Flex>
+            )}
             <Flex className={classes.taskProperties}>
                 <TextPropertyBox
                     name={locales.taskDate}

@@ -14,11 +14,16 @@ import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { FormValidationResult } from "@mantine/form/lib/types"
 import { FileInfoDto, TaskDto } from "@russian-rs/portal-api-axios"
-import { IconCalendar, IconChecklist, IconClock, IconLink, IconTrashX } from "@tabler/icons-react"
+import { IconCalendar, IconChecklist, IconClock, IconLanguage, IconLink, IconTrashX } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import { createRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { locales } from "src/pages/reportEdit/task/lib/locales"
+import {
+    getTaskDisplayDescription,
+    getTaskDisplayName,
+    hasTaskTranslation,
+} from "src/shared/taskTranslation/lib/taskTranslation"
 import { FileUploader, FileUploaderInterface } from "src/shared/ui/fileUploader/FileUploader"
 import { UserSearch } from "src/shared/ui/userSearch/UserSearch"
 import { z } from "zod"
@@ -45,6 +50,9 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
     const intl = useIntl()
 
     const editMode = props.editMode || false
+    const hasSerbianTranslation = hasTaskTranslation(props.task)
+    const serbianName = getTaskDisplayName(props.task, true)
+    const serbianDescription = getTaskDisplayDescription(props.task, true)
 
     const requiredMessage = { message: intl.formatMessage({ id: locales.required }) }
 
@@ -75,6 +83,8 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
             id: props.task.id,
             name: values.name || "",
             description: values.description || "",
+            nameSr: props.task.nameSr,
+            descriptionSr: props.task.descriptionSr,
             result: values.result || "",
             timeSpent: values.timeSpent ? values.timeSpent * 60 : 0,
             date: values.date ? dayjs(values.date).format("YYYY-MM-DD") : "",
@@ -115,6 +125,8 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                 id: props.task.id,
                 name: values.name.trim(),
                 description: values.description.trim(),
+                nameSr: props.task.nameSr,
+                descriptionSr: props.task.descriptionSr,
                 result: values.result,
                 timeSpent: values.timeSpent ? values.timeSpent * 60 : 0,
                 date: dayjs(values.date).format("YYYY-MM-DD"),
@@ -169,6 +181,22 @@ export const TaskCard = forwardRef<TaskCardInterface, TaskCardProps>((props, ref
                 label={<FormattedMessage id={locales.taskDescription} />}
                 description={<FormattedMessage id={locales.taskDescriptionDescription} />}
             />
+            {editMode && hasSerbianTranslation && (
+                <Flex className={classes.serbianTaskView}>
+                    <Flex className={classes.serbianTaskViewLabelContainer}>
+                        <IconLanguage size={16} />
+                        <Text fw="bold" size="sm" className={classes.serbianTaskViewLabel}>
+                            <FormattedMessage id={locales.serbianTaskViewLabel} />
+                        </Text>
+                    </Flex>
+                    <Text fw={600} className={classes.serbianTaskViewName}>
+                        {serbianName}
+                    </Text>
+                    <Text c="dimmed" className={classes.serbianTaskViewDescription}>
+                        {serbianDescription}
+                    </Text>
+                </Flex>
+            )}
             <TextInput
                 name="result"
                 key={form.key("result")}

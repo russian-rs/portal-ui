@@ -19,6 +19,29 @@
     row-gap: 0.5rem;
 }
 
+.serbianTaskView {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+    padding-top: 0.75rem;
+    border-top: 2px solid light-dark(var(--mantine-color-blue-5), var(--mantine-color-blue-7));
+}
+
+.serbianTaskViewLabelContainer {
+    color: light-dark(var(--mantine-color-blue-8), var(--mantine-color-blue-3));
+}
+
+.serbianTaskViewLabel {
+    color: light-dark(var(--mantine-color-blue-8), var(--mantine-color-blue-3));
+    letter-spacing: 0.02em;
+}
+
+.serbianTaskViewName,
+.serbianTaskViewDescription {
+    word-break: break-word;
+    white-space: pre-line;
+}
+
 .filePill {
     background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-gray-8));
 }
