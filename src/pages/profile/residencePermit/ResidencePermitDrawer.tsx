@@ -10,7 +10,6 @@ import { UserContext } from "src/app/providers/UserContext"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
-import { hasPermission, UserGroup } from "src/shared/user/roles"
 import { v4 as uuid } from "uuid"
 import { locales } from "./lib/locales"
 import { ResidencePermitForm } from "./ResidencePermitForm"
@@ -43,7 +42,7 @@ export const ResidencePermitDrawer = ({
         }
     }, [opened, residencePermits])
 
-    const canEdit = hasPermission(currentUser, [UserGroup.ADMIN_VOLUNTEER])
+    const canEdit = true
 
     const { mutate: savePermits } = useMutation({
         mutationFn: async (updatedPermits: ResidencePermitDto[]) => {
