@@ -38,6 +38,7 @@ import { z } from "zod"
 import { ProgramSelectInline } from "../select/ProgramSelect"
 import { ProjectSelectInline } from "../select/ProjectSelect"
 import classes from "./ProfileInfo.module.scss"
+import { IDBadge } from "src/shared/ui/badges/IDBadge"
 
 interface ProfileInfoProps {
     userInfo: UserInfoDto | undefined
@@ -339,6 +340,7 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate, showSensitiveData }: P
                 </Flex>
             </Flex>
             <Text className={classes.userName}>{userInfo?.fullName}</Text>
+            <IDBadge id={userInfo.id} />
             <ProgramSelectInline
                 value={selectedProgram}
                 canEdit={canEditProgram}
