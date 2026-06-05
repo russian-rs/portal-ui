@@ -257,7 +257,7 @@ export const ApplicationView = () => {
                         </Flex>
                     )}
                     <Divider className={classes.divider} />
-                    <Flex direction="column" rowGap="md">
+                    <Flex className={classes.fields}>
                         {application.program && (
                             <TextPropertyBox
                                 name={locales.program}
