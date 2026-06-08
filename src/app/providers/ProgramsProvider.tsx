@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 import { ProgramDto } from "@russian-rs/portal-api-axios"
 import { ProgramsApiService } from "src/shared/api/ProgramsApiService"
 
-const ProgramsContext = createContext<ProgramDto[]>([])
+export const ProgramsContext = createContext<ProgramDto[]>([])
 
 export function ProgramsProvider({ children }: { children: React.ReactNode }) {
     const { data } = useQuery<ProgramDto[]>({

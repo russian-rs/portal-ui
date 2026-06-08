@@ -1,5 +1,7 @@
 import { lazy } from "react"
 import { RouteProps } from "react-router"
+import { ProgramsProvider } from "src/app/providers/ProgramsProvider"
+import { ProjectsProvider } from "src/app/providers/ProjectsProvider"
 
 const Welcome = lazy(() => import("src/pages/welcome/Welcome"))
 const Application = lazy(() => import("src/pages/application/Application"))
@@ -13,7 +15,13 @@ export const routes: RouteProps[] = [
     },
     {
         path: "/application/form",
-        element: <ApplicationForm />,
+        element: (
+            <ProgramsProvider>
+                <ProjectsProvider>
+                    <ApplicationForm />
+                </ProjectsProvider>
+            </ProgramsProvider>
+        ),
     },
     {
         path: "/application-status/:id",

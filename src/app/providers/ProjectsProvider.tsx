@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 import { ProjectDto } from "@russian-rs/portal-api-axios"
 import { ProjectsApiService } from "src/shared/api/ProjectsApiService"
 
-const ProjectsContext = createContext<ProjectDto[]>([])
+export const ProjectsContext = createContext<ProjectDto[]>([])
 
 export function ProjectsProvider({ children }: { children: React.ReactNode }) {
     const { data } = useQuery<ProjectDto[]>({
