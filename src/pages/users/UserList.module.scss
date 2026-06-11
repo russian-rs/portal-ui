@@ -101,6 +101,16 @@ $table-width: 100%;
     box-shadow: 0 0 0.3rem 0.1rem light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
 }
 
+.menuWrapper {
+    border-radius: 4px;
+    padding: 2px;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+}
+
 .deactivatedRow {
     background-color: light-dark(rgba(255, 182, 193, 0.2), rgba(139, 69, 85, 0.3));
 }

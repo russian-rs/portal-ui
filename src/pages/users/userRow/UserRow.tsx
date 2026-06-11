@@ -101,7 +101,15 @@ export const UserRow = ({
             : undefined
 
     return (
-        <Table.Tr key={user.id} className={!user.active ? classes.deactivatedRow : undefined}>
+        <Table.Tr
+            key={user.id}
+            className={!user.active ? classes.deactivatedRow : undefined}
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+                localStorage.setItem("userListState", window.location.search)
+                navigate(`/profile/${user.username}`)
+            }}
+        >
             <Table.Td>
                 <Flex columnGap={16} align="center" className={classes.columnName}>
                     <Avatar
@@ -109,10 +117,6 @@ export const UserRow = ({
                         src={user.avatar?.link}
                         name={user.fullName}
                         className={classes.avatar}
-                        onClick={() => {
-                            localStorage.setItem("userListState", window.location.search)
-                            navigate(`/profile/${user.username}`)
-                        }}
                     />
                     <Flex direction="column">
                         <Text truncate="end">{user.fullName}</Text>
@@ -157,7 +161,8 @@ export const UserRow = ({
                     variant="transparent"
                     color={lastContract ? "blue" : "gray"}
                     rightSection={lastContract ? <IconPencil size={14} /> : <IconPlus size={14} />}
-                    onClick={() => {
+                    onClick={(e) => {
+                        e.stopPropagation()
                         setSelectedUserId(user.id)
                         setDrawerOpened(true)
                     }}
@@ -178,7 +183,9 @@ export const UserRow = ({
                             <FormattedMessage id={locales.deactivated} />
                         </Badge>
                     )}
-                    <UserMenu user={user} />
+                    <div className={classes.menuWrapper} onClick={(e) => e.stopPropagation()}>
+                        <UserMenu user={user} />
+                    </div>
                 </Flex>
             </Table.Td>
         </Table.Tr>
