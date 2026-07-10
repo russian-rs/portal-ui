@@ -136,7 +136,7 @@ export const UserRow = ({
                     ))}
                 </Flex>
             </Table.Td>
-            <Table.Td>
+            <Table.Td onClick={(e) => e.stopPropagation()}>
                 <ProgramSelectInline
                     type="button"
                     value={selectedProgram}
@@ -146,7 +146,7 @@ export const UserRow = ({
                     programsOverride={visiblePrograms}
                 />
             </Table.Td>
-            <Table.Td>
+            <Table.Td onClick={(e) => e.stopPropagation()}>
                 <ProjectSelectInline
                     type="button"
                     value={selectedProject}

@@ -411,7 +411,7 @@ export const UserList = () => {
                         </Badge>
                     ))}
                 </Flex>
-                <Flex mt="xs" direction="column" rowGap={6}>
+                <Flex mt="xs" direction="column" rowGap={6} onClick={(e) => e.stopPropagation()}>
                     <ProgramSelectInline
                         value={user.program?.code}
                         canEdit={canEditProgram()}
