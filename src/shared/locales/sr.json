@@ -173,6 +173,7 @@
                 },
                 "publish": "Objavi",
                 "success": "Obaveštenje je objavljeno",
+                "required": "Obavezno polje",
                 "emptyTitle": "Unesite naslov (najmanje 3 karaktera)",
                 "emptyBody": "Unesite tekst obaveštenja",
                 "emptyProgram": "Izaberite program za slanje"

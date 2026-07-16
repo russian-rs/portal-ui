@@ -1,11 +1,13 @@
 import { Badge, Button, Drawer, Flex, Indicator, ScrollArea, Text, Title } from "@mantine/core"
+import { AnnouncementDto } from "@russian-rs/portal-api-axios"
 import { IconBell } from "@tabler/icons-react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import parse from "html-react-parser"
 import React, { useState } from "react"
 import { FormattedMessage } from "react-intl"
-import { AnnouncementApiService, AnnouncementDto } from "src/shared/api/AnnouncementApiService"
+import { AnnouncementApiService } from "src/shared/api/AnnouncementApiService"
+import { sanitizeHtml } from "src/shared/utils/sanitizeHtml"
 import classes from "./AnnouncementBell.module.scss"
 
 export const AnnouncementBell: React.FC = () => {
@@ -14,7 +16,7 @@ export const AnnouncementBell: React.FC = () => {
 
     const { data: unreadCount = 0 } = useQuery({
         queryKey: ["announcements", "unread-count"],
-        queryFn: () => AnnouncementApiService.getUnreadCount().then((r) => r.data.count),
+        queryFn: () => AnnouncementApiService.getUnreadAnnouncementsCount().then((r) => r.data.count),
         refetchInterval: 60_000,
     })
 
@@ -25,7 +27,7 @@ export const AnnouncementBell: React.FC = () => {
     })
 
     const { mutate: markRead } = useMutation({
-        mutationFn: (id: string) => AnnouncementApiService.markRead(id),
+        mutationFn: (id: string) => AnnouncementApiService.markAnnouncementRead(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["announcements"] })
         },
@@ -94,7 +96,7 @@ export const AnnouncementBell: React.FC = () => {
                                     {dayjs(item.createTime).format("DD.MM.YYYY HH:mm")}
                                 </Text>
                                 <Text size="sm" component="div">
-                                    {parse(item.body)}
+                                    {parse(sanitizeHtml(item.body))}
                                 </Text>
                             </Flex>
                         ))}
