@@ -31,6 +31,11 @@
     margin-right: calc(var(--mantine-spacing-md) * -1);
     color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
     border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--mantine-spacing-xs);
+    padding-right: var(--mantine-spacing-xs);
 }
 
 .links {
