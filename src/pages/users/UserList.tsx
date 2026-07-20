@@ -374,16 +374,17 @@ export const UserList = () => {
                 shadow="xs"
                 p="sm"
                 className={`${classes.mobileCard} ${!user.active ? classes.deactivatedCard : ""}`}
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                    localStorage.setItem("userListState", window.location.search)
+                    navigate(`/profile/${user.username}`)
+                }}
             >
                 <Flex align="center" columnGap={12}>
                     <Avatar
                         size={44}
                         src={user.avatar?.link}
                         name={user.fullName}
-                        onClick={() => {
-                            localStorage.setItem("userListState", window.location.search)
-                            navigate(`/profile/${user.username}`)
-                        }}
                         className={classes.avatar}
                     />
                     <Flex direction="column" style={{ flex: 1 }}>
@@ -399,7 +400,9 @@ export const UserList = () => {
                             <FormattedMessage id={locales.deactivated} />
                         </Badge>
                     )}
-                    <UserMenu user={user} />
+                    <div className={classes.menuWrapper} onClick={(e) => e.stopPropagation()}>
+                        <UserMenu user={user} />
+                    </div>
                 </Flex>
                 <Flex mt="xs" gap={4} wrap="wrap">
                     {user.groups.map((group) => (
@@ -408,7 +411,7 @@ export const UserList = () => {
                         </Badge>
                     ))}
                 </Flex>
-                <Flex mt="xs" direction="column" rowGap={6}>
+                <Flex mt="xs" direction="column" rowGap={6} onClick={(e) => e.stopPropagation()}>
                     <ProgramSelectInline
                         value={user.program?.code}
                         canEdit={canEditProgram()}
@@ -430,7 +433,8 @@ export const UserList = () => {
                         fullWidth
                         color={lastContract ? "blue" : "gray"}
                         rightSection={lastContract ? <IconPencil size={14} /> : <IconPlus size={14} />}
-                        onClick={() => {
+                        onClick={(e) => {
+                            e.stopPropagation()
                             setSelectedUserId(user.id)
                             setDrawerOpened(true)
                         }}
