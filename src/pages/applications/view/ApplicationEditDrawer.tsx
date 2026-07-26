@@ -15,10 +15,11 @@ import {
     IconPhone,
     IconSignature,
 } from "@tabler/icons-react"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import React from "react"
 import { FormattedMessage, useIntl } from "react-intl"
+import { CitiesApiService } from "src/shared/api/CitiesApiService"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
@@ -39,6 +40,11 @@ export const ApplicationEditDrawer = ({
     onApplicationUpdate,
 }: ApplicationEditDrawerProps) => {
     const intl = useIntl()
+
+    const { data: cities = [] } = useQuery({
+        queryKey: ["cities"],
+        queryFn: () => CitiesApiService.getCities().then((response) => response.data),
+    })
 
     // Типобезопасный доступ к дополнительному полю gender,
     // которого пока нет в сгенерированном ApplicationDto
@@ -101,9 +107,11 @@ export const ApplicationEditDrawer = ({
             .or(z.literal("")),
         city: z
             .string()
-            .min(2, intl.formatMessage({ id: "pages.profile.validation.minLetters" }, { count: 2 }))
             .max(100, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 100 }))
-            .optional()
+            .refine(
+                (val) => !val || !cities.length || cities.some((c) => c.name === val || c.nameCyrillic === val),
+                intl.formatMessage({ id: "pages.profile.validation.cityNotInList" })
+            )
             .or(z.literal("")),
         postalCode: z
             .string()

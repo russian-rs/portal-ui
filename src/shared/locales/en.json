@@ -190,6 +190,7 @@
                 "telegram": "Telegram"
             },
             "validation": {
+                "cityNotInList": "Select city from the list",
                 "invalidPhone": "Invalid number",
                 "invalidTelegram": "Invalid format",
                 "invalidPostalCode": "Postal code must contain 5 digits",

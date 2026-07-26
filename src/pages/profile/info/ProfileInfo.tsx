@@ -17,7 +17,7 @@ import {
     IconPencil,
     IconPhone,
 } from "@tabler/icons-react"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { useContext, useEffect, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -25,6 +25,7 @@ import { UserContext } from "src/app/providers/UserContext"
 import commonClasses from "src/app/styles/private.module.scss"
 import { ProfileAvatar } from "src/pages/profile/avatar/ProfileAvatar"
 import { UserMenu } from "src/pages/users/userMenu/UserMenu"
+import { CitiesApiService } from "src/shared/api/CitiesApiService"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { Locale } from "src/shared/constants/Locales"
 import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
@@ -52,12 +53,19 @@ export const ProfileInfo = ({ userInfo, onUserInfoUpdate, showSensitiveData }: P
     const intl = useIntl()
     const locale = intl.locale as Locale
 
+    const { data: cities = [] } = useQuery({
+        queryKey: ["cities"],
+        queryFn: () => CitiesApiService.getCities().then((response) => response.data),
+    })
+
     const validationSchema = z.object({
         city: z
             .string()
-            .min(2, intl.formatMessage({ id: "pages.profile.validation.minLetters" }, { count: 2 }))
             .max(100, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 100 }))
-            .optional()
+            .refine(
+                (val) => !val || !cities.length || cities.some((c) => c.name === val || c.nameCyrillic === val),
+                intl.formatMessage({ id: "pages.profile.validation.cityNotInList" })
+            )
             .or(z.literal("")),
         postalCode: z
             .string()
