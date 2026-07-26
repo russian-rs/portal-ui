@@ -1,4 +1,4 @@
-import { Badge, Button, Drawer, Flex, Indicator, ScrollArea, Text, Title } from "@mantine/core"
+import { Badge, Box, Button, Drawer, Flex, ScrollArea, Text, Title } from "@mantine/core"
 import { AnnouncementDto } from "@russian-rs/portal-api-axios"
 import { IconBell } from "@tabler/icons-react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
@@ -73,7 +73,7 @@ export const AnnouncementBell: React.FC = () => {
 
     return (
         <>
-            <Indicator inline label={unreadCount > 0 ? unreadCount : undefined} size={18} disabled={unreadCount === 0}>
+            <Box pos="relative" display="inline-block">
                 <Button
                     variant="subtle"
                     color="gray"
@@ -81,9 +81,14 @@ export const AnnouncementBell: React.FC = () => {
                     onClick={() => setOpened(true)}
                     className={classes.button}
                 >
-                    <IconBell size={18} />
+                    <IconBell size={22} />
                 </Button>
-            </Indicator>
+                {unreadCount > 0 && (
+                    <Badge size="xs" color="blue" className={classes.bellBadge}>
+                        {unreadCount > 99 ? "99+" : unreadCount}
+                    </Badge>
+                )}
+            </Box>
 
             <Drawer
                 opened={opened}

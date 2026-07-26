@@ -2,6 +2,13 @@
     padding-inline: 8px;
 }
 
+.bellBadge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    pointer-events: none;
+}
+
 .itemUnread {
     border: 1px solid light-dark(var(--mantine-color-blue-3), var(--mantine-color-blue-8));
     border-radius: 8px;
