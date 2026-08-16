@@ -1,6 +1,5 @@
 import { Avatar, Box, Text } from "@mantine/core"
 import { UserInfoDto } from "@russian-rs/portal-api-axios"
-import { QRCodeSVG } from "qrcode.react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { usePrograms } from "src/app/providers/ProgramsProvider"
 import { Locale } from "src/shared/constants/Locales"
@@ -18,8 +17,6 @@ export const VolunteerIDCard = ({ userInfo }: VolunteerIDCardProps) => {
     const programs = usePrograms()
     const programObj = programs.find((p) => p.code === userInfo.program?.code)
     const programName = programObj ? getLocalizedName(programObj, locale) : (userInfo.program?.code ?? "")
-    const profileUrl = `${window.location.origin}/profile/${userInfo.username}`
-
     return (
         <Box className={classes.card}>
             <Box className={classes.header}>
@@ -53,7 +50,6 @@ export const VolunteerIDCard = ({ userInfo }: VolunteerIDCardProps) => {
 
             <Box className={classes.footer}>
                 <Text className={classes.footerOrg}>russka-dijaspora.rs</Text>
-                <QRCodeSVG value={profileUrl} size={40} />
             </Box>
         </Box>
     )
