@@ -190,6 +190,7 @@
                 "telegram": "Telegram"
             },
             "validation": {
+                "cityNotInList": "Выберите город из списка",
                 "invalidPhone": "Неверный формат номера",
                 "invalidTelegram": "Неверный формат",
                 "invalidPostalCode": "Почтовый индекс должен содержать 5 цифр",

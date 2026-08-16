@@ -190,6 +190,7 @@
                 "telegram": "Telegram"
             },
             "validation": {
+                "cityNotInList": "Izaberite grad iz liste",
                 "invalidPhone": "Neispravan format broja telefona",
                 "invalidTelegram": "Neispravan format",
                 "invalidPostalCode": "Poštanski broj mora sadržavati 5 cifara",
