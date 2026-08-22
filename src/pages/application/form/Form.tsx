@@ -91,10 +91,12 @@ export const Form = () => {
             .min(6, minMessage(6))
             .max(20, maxMessage(20)),
         citizenship: z.string(fieldRequired).min(2, minMessage(2)).max(100, maxMessage(100)),
-        telegram: z.union([
-            z.literal(""),
-            z.string().regex(/^[a-zA-Z][a-zA-Z0-9_]*$/, invalidSymbols).min(5, minMessage(5)).max(32, maxMessage(32)),
-        ]),
+        telegram: z
+            .string()
+            .regex(/^[a-zA-Z][a-zA-Z0-9_]*$/, invalidSymbols)
+            .min(5, minMessage(5))
+            .max(32, maxMessage(32))
+            .optional(),
         enterDate: location == "IN" ? z.date(fieldRequired) : z.date().optional(),
         city:
             location == "IN"
