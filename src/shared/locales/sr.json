@@ -766,6 +766,13 @@
             },
             "total": "Ukupno",
             "empty": "Nema podataka za izabranu godinu",
+            "cities": {
+                "city-stats": "Statistika po naseljima",
+                "city": "Naselje",
+                "city-other": "Ostala naselja",
+                "by-cities": "Po naseljima",
+                "without-city": "Bez navedenog grada"
+            },
             "statGroups": {
                 "SOCIJALNA_ZASTITA": "Socijalna zaštita",
                 "MEDIJI_I_KOMUNIKACIJE": "Mediji i komunikacije",
@@ -776,7 +783,8 @@
             "charts": {
                 "age": "Statistika po uzrastu",
                 "gender": "Statistika po polu",
-                "citizenship": "Statistika po državljanstvu"
+                "citizenship": "Statistika po državljanstvu",
+                "cities": "Top 10 naselja"
             }
         }
     },

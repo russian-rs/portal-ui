@@ -13,8 +13,11 @@ import { StatisticsApiService } from "src/shared/api/StatisticsApiService"
 import type { ProgramStatItem, Statistics } from "@russian-rs/portal-api-axios"
 import classes from "./MintrudReport.module.scss"
 import { FinalUsersChart, VolunteersCharts } from "./MintrudCharts"
+import CityStats from "./CityStats"
 import { IconListCheck } from "@tabler/icons-react"
 import generateMintrudReport from "src/shared/docs/mintrud-report"
+
+const MIN_YEAR = 2023
 
 export default function MintrudReport() {
     setDocumentTitleByLocale(locales.titleMintrud)
@@ -29,8 +32,9 @@ export default function MintrudReport() {
 
     const [searchParams, setSearchParams] = useSearchParams()
     const currentYear = new Date().getFullYear()
+    const clampYear = (y: number) => Math.min(Math.max(y, MIN_YEAR), currentYear)
     const urlYear = parseInt(searchParams.get("year") || String(currentYear), 10)
-    const [year, setYear] = useState<number>(isNaN(urlYear) ? currentYear : urlYear)
+    const [year, setYear] = useState<number>(isNaN(urlYear) ? currentYear : clampYear(urlYear))
 
     useEffect(() => {
         const params = new URLSearchParams(searchParams)
@@ -106,8 +110,9 @@ export default function MintrudReport() {
                     <NumberInput
                         value={year}
                         onChange={(v) => setYear(Number(v) || currentYear)}
-                        min={2023}
+                        min={MIN_YEAR}
                         max={currentYear}
+                        clampBehavior="strict"
                         step={1}
                         allowDecimal={false}
                         allowNegative={false}
@@ -190,6 +195,9 @@ export default function MintrudReport() {
                     <FormattedMessage id={locales.finalUsersStats} />
                 </Text>
                 <FinalUsersChart stats={stats} />
+
+                {/* По населённым пунктам */}
+                <CityStats year={year} />
 
                 {/* Кнопка генерации PDF */}
                 <Button
