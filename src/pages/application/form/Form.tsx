@@ -92,10 +92,11 @@ export const Form = () => {
             .max(20, maxMessage(20)),
         citizenship: z.string(fieldRequired).min(2, minMessage(2)).max(100, maxMessage(100)),
         telegram: z
-            .string(fieldRequired)
+            .string()
             .regex(/^[a-zA-Z][a-zA-Z0-9_]*$/, invalidSymbols)
-            .min(5, minMessage(3))
-            .max(32, maxMessage(32)),
+            .min(5, minMessage(5))
+            .max(32, maxMessage(32))
+            .optional(),
         enterDate: location == "IN" ? z.date(fieldRequired) : z.date().optional(),
         city:
             location == "IN"
@@ -399,7 +400,6 @@ export const Form = () => {
                 description={<FormattedMessage id={locales.telegramDescription} />}
                 radius={0}
                 className={classes.input}
-                withAsterisk
                 leftSection={<IconBrandTelegram size={16} />}
                 key={form.key("telegram")}
                 {...form.getInputProps("telegram")}
