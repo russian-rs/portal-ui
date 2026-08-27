@@ -1,4 +1,3 @@
-import React from "react"
 import { Table, Text } from "@mantine/core"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useQuery } from "@tanstack/react-query"
@@ -20,22 +19,17 @@ export default function CityStats({ year }: { year: number }) {
 
     if (!data) return null
 
-    const fmtInt = (n: number | null | undefined) =>
-        new Intl.NumberFormat(intl.locale, { maximumFractionDigits: 0 }).format(Number(n ?? 0))
-
-    const cityName = (item: CityStatItem) => {
-        if (!item.code) return intl.formatMessage({ id: locales.cityOther })
-        return (intl.locale === Locale.RU ? item.nameCyrillic : item.name) ?? item.name ?? item.code
-    }
+    const cityName = ({ code, name, nameCyrillic }: CityStatItem) =>
+        (intl.locale === Locale.RU ? nameCyrillic ?? name : name) ?? code ?? intl.formatMessage({ id: locales.cityOther })
 
     // порядок с сервера: count DESC, сводная запись «прочее» последней — не пересортировываем
-    const items = data.items ?? []
-    const inCitiesCount = items.reduce((sum, item) => sum + (item.count ?? 0), 0)
+    const items = data.items
+    const inCitiesCount = items.reduce((sum, item) => sum + item.count, 0)
 
     const chartData = items
         .filter((item) => item.code)
         .slice(0, TOP_CITIES)
-        .map((item) => ({ name: cityName(item), value: item.count ?? 0 }))
+        .map((item) => ({ name: cityName(item), value: item.count }))
 
     return (
         <>
@@ -43,7 +37,7 @@ export default function CityStats({ year }: { year: number }) {
                 <FormattedMessage id={locales.cityStats} />
             </Text>
 
-            {items.length === 0 && data.totalCount === 0 ? (
+            {!data.totalCount ? (
                 <Text c="dimmed">
                     <FormattedMessage id={locales.empty} />
                 </Text>
@@ -64,9 +58,9 @@ export default function CityStats({ year }: { year: number }) {
                                 </Table.Thead>
                                 <Table.Tbody>
                                     {items.map((item) => (
-                                        <Table.Tr key={String(item.code ?? "OTHER")}>
+                                        <Table.Tr key={item.code ?? "OTHER"}>
                                             <Table.Td>{cityName(item)}</Table.Td>
-                                            <Table.Td ta="right">{fmtInt(item.count)}</Table.Td>
+                                            <Table.Td ta="right">{intl.formatNumber(item.count)}</Table.Td>
                                         </Table.Tr>
                                     ))}
                                 </Table.Tbody>
@@ -77,19 +71,19 @@ export default function CityStats({ year }: { year: number }) {
                                 <Table.Th>
                                     <FormattedMessage id={locales.byCities} />
                                 </Table.Th>
-                                <Table.Th ta="right">{fmtInt(inCitiesCount)}</Table.Th>
+                                <Table.Th ta="right">{intl.formatNumber(inCitiesCount)}</Table.Th>
                             </Table.Tr>
                             <Table.Tr>
                                 <Table.Th>
                                     <FormattedMessage id={locales.withoutCity} />
                                 </Table.Th>
-                                <Table.Th ta="right">{fmtInt(data.withoutCityCount)}</Table.Th>
+                                <Table.Th ta="right">{intl.formatNumber(data.withoutCityCount)}</Table.Th>
                             </Table.Tr>
                             <Table.Tr>
                                 <Table.Th>
                                     <FormattedMessage id={locales.total} />
                                 </Table.Th>
-                                <Table.Th ta="right">{fmtInt(data.totalCount)}</Table.Th>
+                                <Table.Th ta="right">{intl.formatNumber(data.totalCount)}</Table.Th>
                             </Table.Tr>
                         </Table.Tfoot>
                     </Table>

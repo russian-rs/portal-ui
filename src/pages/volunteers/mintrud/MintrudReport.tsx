@@ -32,9 +32,10 @@ export default function MintrudReport() {
 
     const [searchParams, setSearchParams] = useSearchParams()
     const currentYear = new Date().getFullYear()
-    const clampYear = (y: number) => Math.min(Math.max(y, MIN_YEAR), currentYear)
     const urlYear = parseInt(searchParams.get("year") || String(currentYear), 10)
-    const [year, setYear] = useState<number>(isNaN(urlYear) ? currentYear : clampYear(urlYear))
+    const [year, setYear] = useState<number>(
+        isNaN(urlYear) ? currentYear : Math.min(Math.max(urlYear, MIN_YEAR), currentYear)
+    )
 
     useEffect(() => {
         const params = new URLSearchParams(searchParams)
@@ -196,7 +197,6 @@ export default function MintrudReport() {
                 </Text>
                 <FinalUsersChart stats={stats} />
 
-                {/* По населённым пунктам */}
                 <CityStats year={year} />
 
                 {/* Кнопка генерации PDF */}
