@@ -771,7 +771,7 @@
                 "city": "Settlement",
                 "city-other": "Other settlements",
                 "by-cities": "By settlement",
-                "without-city": "No city specified"
+                "without-city": "No settlement specified"
             },
             "statGroups": {
                 "SOCIJALNA_ZASTITA": "Social protection",
@@ -784,7 +784,7 @@
                 "age": "Age distribution",
                 "gender": "Gender distribution",
                 "citizenship": "Citizenship status",
-                "cities": "Top 10 settlements"
+                "cities": "Top {count} settlements"
             }
         }
     },

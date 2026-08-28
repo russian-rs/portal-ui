@@ -206,7 +206,7 @@ export function CityStatsChart({ data }: { data: { name: string; value: number }
     return (
         <div>
             <Text className={classes.chartTitle} mt="lg" fw={600}>
-                <FormattedMessage id={locales.cityStatsTitle} />
+                <FormattedMessage id={locales.cityStatsTitle} values={{ count: data.length }} />
             </Text>
             <div style={{ height: data.length * CITY_BAR_HEIGHT + 40 }}>
                 <ResponsiveContainer width="100%" height="100%">

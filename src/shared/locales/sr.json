@@ -771,7 +771,7 @@
                 "city": "Naselje",
                 "city-other": "Ostala naselja",
                 "by-cities": "Po naseljima",
-                "without-city": "Bez navedenog grada"
+                "without-city": "Bez navedenog naselja"
             },
             "statGroups": {
                 "SOCIJALNA_ZASTITA": "Socijalna zaštita",
@@ -784,7 +784,7 @@
                 "age": "Statistika po uzrastu",
                 "gender": "Statistika po polu",
                 "citizenship": "Statistika po državljanstvu",
-                "cities": "Top 10 naselja"
+                "cities": "Top {count} naselja"
             }
         }
     },
