@@ -5,6 +5,7 @@ import {
     Loader,
     Radio,
     SegmentedControl,
+    Select,
     Text,
     Textarea,
     TextInput,
@@ -40,9 +41,11 @@ import { locales } from "src/pages/application/form/lib/locales"
 import { mapValuesToRequest } from "src/pages/application/form/lib/mapper"
 import { PublicApplicationApiService } from "src/shared/api/applications/PublicApplicationApiService"
 import { checkUserForApplication } from "src/shared/api/user/UserApiService"
+import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
 import { CaptchaSolver } from "src/shared/ui/captcha/CaptchaSolver"
 import { CitySelect } from "src/shared/ui/citySelect/CitySelect"
+import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { z } from "zod"
 import classes from "./Form.module.scss"
 
@@ -55,7 +58,19 @@ export const Form = () => {
     const [location, setLocation] = useState("IN")
     const [residence, setResidence] = useState("REQUIRED")
     const [experience, setExperience] = useState(false)
+    const [selectedProgram, setSelectedProgram] = useState<string | null>(null)
+    const [selectedProject, setSelectedProject] = useState<string | null>(null)
     const [formError, setFormError] = useState<string | null>(null)
+    const { programs, visibleProjects } = useProgramProjectFilter(selectedProgram, selectedProject)
+
+    const programOptions = programs.map((program) => ({
+        value: program.code,
+        label: getLocalizedName(program, intl.locale),
+    }))
+    const projectOptions = visibleProjects.map((project) => ({
+        value: project.code,
+        label: getLocalizedName(project, intl.locale),
+    }))
 
     const fieldRequired = { message: intl.formatMessage({ id: locales.required }) }
     const selectCityList = { message: intl.formatMessage({ id: locales.selectCityList }) }
@@ -135,6 +150,8 @@ export const Form = () => {
                 ? z.boolean(agreementRequired).refine((v) => v, agreementRequired.message)
                 : z.boolean().optional(),
         occupation: z.string(fieldRequired).min(3, minMessage(3)).max(100, maxMessage(100)),
+        program: z.string(fieldRequired).min(1, fieldRequired.message),
+        project: z.string().optional(),
         experience: experience ? z.string().min(20, minMessage(20)).max(1000, maxMessage(1000)) : z.string().optional(),
         languages: z.string(fieldRequired).min(5, minMessage(5)).max(200, maxMessage(200)),
         skills: z.string(fieldRequired).min(20, minMessage(20)).max(500, maxMessage(500)),
@@ -173,8 +190,34 @@ export const Form = () => {
             if (currentUser.gender) {
                 form.setFieldValue("gender", currentUser.gender)
             }
+            if (currentUser.program?.code) {
+                setSelectedProgram(currentUser.program.code)
+                form.setFieldValue("program", currentUser.program.code)
+            }
+            if (currentUser.project?.code) {
+                setSelectedProject(currentUser.project.code)
+                form.setFieldValue("project", currentUser.project.code)
+            }
         }
     }, [currentUser])
+
+    const onProgramChange = (program: string | null) => {
+        setSelectedProgram(program)
+        form.setFieldValue("program", program ?? "")
+
+        const selectedProgramDto = programs.find((p) => p.code === program)
+        const selectedProjectAvailable =
+            selectedProject && (selectedProgramDto?.projectCodes ?? []).includes(selectedProject)
+        if (!selectedProjectAvailable) {
+            setSelectedProject(null)
+            form.setFieldValue("project", "")
+        }
+    }
+
+    const onProjectChange = (project: string | null) => {
+        setSelectedProject(project)
+        form.setFieldValue("project", project ?? "")
+    }
 
     const { isFetching, refetch } = useQuery({
         enabled: false,
@@ -486,6 +529,34 @@ export const Form = () => {
                 key={form.key("occupation")}
                 {...form.getInputProps("occupation")}
                 disabled={isFetching}
+            />
+            <Select
+                label={<FormattedMessage id={locales.program} />}
+                description={<FormattedMessage id={locales.programDescription} />}
+                placeholder={intl.formatMessage({ id: locales.programPlaceholder })}
+                radius={0}
+                className={classes.input}
+                withAsterisk
+                searchable
+                data={programOptions}
+                value={selectedProgram}
+                error={form.errors.program}
+                onChange={onProgramChange}
+                disabled={isFetching}
+            />
+            <Select
+                label={<FormattedMessage id={locales.project} />}
+                description={<FormattedMessage id={locales.projectDescription} />}
+                placeholder={intl.formatMessage({ id: locales.projectPlaceholder })}
+                radius={0}
+                className={classes.input}
+                searchable
+                clearable
+                data={projectOptions}
+                value={selectedProject}
+                error={form.errors.project}
+                onChange={onProjectChange}
+                disabled={isFetching || !selectedProgram || projectOptions.length === 0}
             />
             <Checkbox
                 radius={0}

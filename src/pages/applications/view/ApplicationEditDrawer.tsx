@@ -1,4 +1,4 @@
-import { Button, Drawer, Flex, Radio, TextInput, Tooltip } from "@mantine/core"
+import { Button, Drawer, Flex, Radio, Select, TextInput, Tooltip } from "@mantine/core"
 import { DateInput } from "@mantine/dates"
 import { useForm, zodResolver } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
@@ -23,7 +23,9 @@ import { CitiesApiService } from "src/shared/api/CitiesApiService"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { SuccessNotification } from "src/shared/notifications/SuccessNotification"
+import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
 import { CitySelect } from "src/shared/ui/citySelect/CitySelect"
+import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { z } from "zod"
 
 interface ApplicationEditDrawerProps {
@@ -123,6 +125,8 @@ export const ApplicationEditDrawer = ({
             .max(200, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 200 }))
             .optional()
             .or(z.literal("")),
+        program: z.string().min(1, intl.formatMessage({ id: "pages.application.form.required" })),
+        project: z.string().optional(),
     })
 
     const form = useForm({
@@ -137,10 +141,23 @@ export const ApplicationEditDrawer = ({
             city: application.city || "",
             postalCode: application.postalCode || "",
             address: application.address || "",
+            program: application.program || "",
+            project: application.project || "",
             gender: appGender,
         },
         validate: zodResolver(validationSchema),
     })
+
+    const { programs, visibleProjects } = useProgramProjectFilter(form.values.program || null, form.values.project || null)
+
+    const programOptions = programs.map((program) => ({
+        value: program.code,
+        label: getLocalizedName(program, intl.locale),
+    }))
+    const projectOptions = visibleProjects.map((project) => ({
+        value: project.code,
+        label: getLocalizedName(project, intl.locale),
+    }))
 
     const { mutate: updateApplication, isPending } = useMutation({
         mutationFn: async (data: Partial<ApplicationDto>) => {
@@ -178,6 +195,8 @@ export const ApplicationEditDrawer = ({
         if (form.values.city?.trim()) updateData.city = form.values.city.trim()
         if (form.values.postalCode?.trim()) updateData.postalCode = form.values.postalCode.trim()
         if (form.values.address?.trim()) updateData.address = form.values.address.trim()
+        updateData.program = form.values.program.trim()
+        updateData.project = form.values.project?.trim() || ""
         if (form.values.gender?.trim()) updateData.gender = form.values.gender as GenderEnumDto
 
         updateApplication(updateData)
@@ -197,10 +216,26 @@ export const ApplicationEditDrawer = ({
                 city: application.city || "",
                 postalCode: application.postalCode || "",
                 address: application.address || "",
+                program: application.program || "",
+                project: application.project || "",
                 gender: (application as unknown as ApplicationWithGender).gender || "",
             })
         }
     }, [opened, application])
+
+    const onProgramChange = (program: string | null) => {
+        form.setFieldValue("program", program ?? "")
+
+        const selectedProgramDto = programs.find((p) => p.code === program)
+        const projectAvailable = form.values.project && (selectedProgramDto?.projectCodes ?? []).includes(form.values.project)
+        if (!projectAvailable) {
+            form.setFieldValue("project", "")
+        }
+    }
+
+    const onProjectChange = (project: string | null) => {
+        form.setFieldValue("project", project ?? "")
+    }
 
     return (
         <Drawer
@@ -274,6 +309,26 @@ export const ApplicationEditDrawer = ({
                         leftSection={<IconLocation size={16} />}
                         label={<FormattedMessage id="pages.applications.view.address" />}
                         {...form.getInputProps("address")}
+                    />
+                    <Select
+                        label={<FormattedMessage id="pages.applications.view.program" />}
+                        placeholder={intl.formatMessage({ id: "pages.application.form.program-placeholder" })}
+                        withAsterisk
+                        searchable
+                        data={programOptions}
+                        value={form.values.program || null}
+                        error={form.errors.program}
+                        onChange={onProgramChange}
+                    />
+                    <Select
+                        label={<FormattedMessage id="pages.applications.view.project" />}
+                        placeholder={intl.formatMessage({ id: "pages.application.form.project-placeholder" })}
+                        searchable
+                        clearable
+                        data={projectOptions}
+                        value={form.values.project || null}
+                        onChange={onProjectChange}
+                        disabled={!form.values.program || projectOptions.length === 0}
                     />
                     <Radio.Group
                         label={

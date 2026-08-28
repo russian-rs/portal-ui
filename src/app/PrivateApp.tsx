@@ -1,5 +1,6 @@
 import { AppShell, ScrollArea } from "@mantine/core"
 import { NavbarContextProvider } from "src/app/providers/NavbarProvider"
+import { OfficialGroupProvider } from "src/app/providers/OfficialGroupProvider"
 import { ProgramsProvider } from "src/app/providers/ProgramsProvider"
 import { ProjectsProvider } from "src/app/providers/ProjectsProvider"
 import { ProfileValidationProvider } from "src/app/providers/ProfileValidationProvider"
@@ -16,20 +17,22 @@ const PrivateApp = () => {
             <NavbarContextProvider>
                 <ProgramsProvider>
                     <ProjectsProvider>
-                        <ProfileValidationProvider>
-                            <ProfileValidationGuard>
-                                <AppShell className={classes.appShell}>
-                                    <AppHeader />
-                                    <AppNavbar />
-                                    <AppShell.Main className={classes.appShellMain}>
-                                        <ScrollArea className={classes.appShellMainScroll}>
-                                            <PrivateRouter />
-                                        </ScrollArea>
-                                    </AppShell.Main>
-                                </AppShell>
-                                <ProfileValidationModal />
-                            </ProfileValidationGuard>
-                        </ProfileValidationProvider>
+                        <OfficialGroupProvider>
+                            <ProfileValidationProvider>
+                                <ProfileValidationGuard>
+                                    <AppShell className={classes.appShell}>
+                                        <AppHeader />
+                                        <AppNavbar />
+                                        <AppShell.Main className={classes.appShellMain}>
+                                            <ScrollArea className={classes.appShellMainScroll}>
+                                                <PrivateRouter />
+                                            </ScrollArea>
+                                        </AppShell.Main>
+                                    </AppShell>
+                                    <ProfileValidationModal />
+                                </ProfileValidationGuard>
+                            </ProfileValidationProvider>
+                        </OfficialGroupProvider>
                     </ProjectsProvider>
                 </ProgramsProvider>
             </NavbarContextProvider>

@@ -26,6 +26,8 @@ import dayjs from "dayjs"
 import { useContext, useState } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
+import { usePrograms } from "src/app/providers/ProgramsProvider"
+import { useProjects } from "src/app/providers/ProjectsProvider"
 import { UserContext } from "src/app/providers/UserContext"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
 import { AddApplicationNote } from "src/pages/applications/note/AddApplicationNote"
@@ -44,16 +46,21 @@ import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
 import { ApplicationStatus } from "src/shared/user/applications"
 import { hasPermission } from "src/shared/user/roles"
+import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
 import { allowedRoles } from "./lib/roles"
+import { useOfficialGroup } from "src/app/providers/OfficialGroupProvider"
 
 export const ApplicationView = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const { user } = useContext(UserContext)
     const intl = useIntl()
+    const programs = usePrograms()
+    const projects = useProjects()
+    const officialGroups = useOfficialGroup()
     const [drawerOpened, { open: openDrawer, close: closeDrawer }] = useDisclosure(false)
 
     const queryClient = useQueryClient()
@@ -71,6 +78,9 @@ export const ApplicationView = () => {
 
     const noteLogins = application.notes?.map((note) => note.createdBy).filter(Boolean) || []
     const { data: users = {} } = resolveUsers(noteLogins)
+    const program = programs.find((p) => p.code === application.program)
+    const project = projects.find((p) => p.code === application.project)
+    const officialGroup = officialGroups.find((p) => p.code === program?.officialGroup)
 
     const { isFetching: isLoading, refetch: refetchApplication } = useQuery({
         queryKey: ["getApplication", id],
@@ -247,7 +257,19 @@ export const ApplicationView = () => {
                         </Flex>
                     )}
                     <Divider className={classes.divider} />
-                    <Flex direction="column" rowGap="md">
+                    <Flex className={classes.fields}>
+                        {application.program && (
+                            <TextPropertyBox
+                                name={locales.program}
+                                value={program ? getLocalizedName(program, intl.locale) : application.program}
+                            />
+                        )}
+                        {application.project && (
+                            <TextPropertyBox
+                                name={locales.project}
+                                value={project ? getLocalizedName(project, intl.locale) : application.project}
+                            />
+                        )}
                         {application.occupation && (
                             <TextPropertyBox name={locales.occupation} value={application.occupation} />
                         )}
@@ -334,7 +356,7 @@ export const ApplicationView = () => {
                         disabled={application.contract == null}
                         className={classes.contractGenerate}
                         onClick={() => {
-                            generateContractPdf(application)
+                            generateContractPdf(application, officialGroup)
                         }}
                     >
                         <FormattedMessage id={locales.contractDownload} />
