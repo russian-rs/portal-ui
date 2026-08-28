@@ -7,6 +7,7 @@ import classes from "src/shared/ui/appNavbar/AppNavbar.module.scss"
 import { Content } from "src/shared/ui/appNavbar/Content"
 import { LogoutButton } from "src/shared/ui/appNavbar/logoutButton/LogoutButton"
 import { UserButton } from "src/shared/ui/appNavbar/userButton/UserButton"
+import { AnnouncementBell } from "src/shared/ui/announcements/AnnouncementBell"
 import { LocaleSwitcher } from "src/shared/ui/locale/LocaleSwitcher"
 import { ThemeSwitcher } from "src/shared/ui/theme/ThemeSwitcher"
 import { hasPermission } from "src/shared/user/roles"
@@ -60,6 +61,7 @@ export const AppNavbar = React.memo(function AppNavbar() {
                     <nav className={classes.navbar}>
                         <div className={classes.header}>
                             <UserButton />
+                            <AnnouncementBell />
                         </div>
 
                         <ScrollArea className={classes.links}>

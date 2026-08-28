@@ -95,6 +95,12 @@
             "emptyContent": "Prazno telo emaila",
             "success": "Poruka uspešno poslata"
         },
+        "announcements": {
+            "title": "Obaveštenja",
+            "loading": "Učitavanje…",
+            "empty": "Nema obaveštenja",
+            "new": "Novo"
+        },
         "ticket-modal": {
             "modalTitle": "Kreirati tiket",
             "titleLabel": "Tema obraćanja",
@@ -148,6 +154,30 @@
             "description": "Nemate dovoljno dozvola za pregled sadržaja. Ako mislite da je ovo greška, obratite se podršci.",
             "homeButton": "Početna",
             "backButton": "Nazad"
+        },
+        "announcements": {
+            "admin": {
+                "title": "Slanje obaveštenja",
+                "description": "Poruka će se pojaviti u zvoncu volonterima unutar portala (bez email-a).",
+                "fields": {
+                    "title": "Naslov",
+                    "body": "Tekst",
+                    "bodyHint": "Podržan je jednostavan HTML: <p>, <b>, <a href=\"...\">",
+                    "audience": "Publika",
+                    "program": "Program",
+                    "programPlaceholder": "Izaberite program"
+                },
+                "audience": {
+                    "all": "Svi aktivni volonteri",
+                    "program": "Samo program"
+                },
+                "publish": "Objavi",
+                "success": "Obaveštenje je objavljeno",
+                "required": "Obavezno polje",
+                "emptyTitle": "Unesite naslov (najmanje 3 karaktera)",
+                "emptyBody": "Unesite tekst obaveštenja",
+                "emptyProgram": "Izaberite program za slanje"
+            }
         },
         "welcome": {
             "title": "Portal volontera",
@@ -803,7 +833,8 @@
             "summary": "Rezime",
             "cleaning": "Izveštaj \"Čisti grad\"",
             "reporting-guide": "Vodič za predaju izveštaja",
-            "heat-map": "Toplotna karta"
+            "heat-map": "Toplotna karta",
+            "announcements": "Slanje obaveštenja"
         },
         "volunteers": {
             "volunteers": "Volonteri",
