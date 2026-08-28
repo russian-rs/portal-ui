@@ -10,7 +10,9 @@ const TOP_CITIES = 10
 export default function CityStats({ data }: { data?: CityStatistics }) {
     const intl = useIntl()
 
-    if (!data?.totalCount) return null
+    // totalCount и items приходят из разных запросов бэкенда, поэтому пустота — это отсутствие обоих:
+    // строки при totalCount = 0 означают расхождение, и его надо показать, а не спрятать
+    if (!data || (!data.totalCount && !data.items.length)) return null
 
     const cityName = ({ code, name, nameCyrillic }: CityStatItem) =>
         (intl.locale === Locale.RU ? nameCyrillic ?? name : name) ?? code ?? intl.formatMessage({ id: locales.cityOther })
