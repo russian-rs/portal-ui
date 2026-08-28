@@ -95,6 +95,12 @@
             "emptyContent": "Empty email body",
             "success": "Message sent successfully"
         },
+        "announcements": {
+            "title": "Notifications",
+            "loading": "Loading…",
+            "empty": "No notifications",
+            "new": "New"
+        },
         "ticket-modal": {
             "modalTitle": "Create Ticket",
             "titleLabel": "Subject",
@@ -148,6 +154,30 @@
             "description": "You do not have sufficient rights to view the content. If you believe this is an error, please contact support.",
             "homeButton": "Home page",
             "backButton": "Go back"
+        },
+        "announcements": {
+            "admin": {
+                "title": "Broadcast notifications",
+                "description": "The message will appear in the bell icon for volunteers inside the portal (no email).",
+                "fields": {
+                    "title": "Title",
+                    "body": "Message",
+                    "bodyHint": "Simple HTML is supported: <p>, <b>, <a href=\"...\">",
+                    "audience": "Audience",
+                    "program": "Program",
+                    "programPlaceholder": "Select a program"
+                },
+                "audience": {
+                    "all": "All active volunteers",
+                    "program": "Program only"
+                },
+                "publish": "Publish",
+                "success": "Notification published",
+                "required": "Required field",
+                "emptyTitle": "Enter a title (at least 3 characters)",
+                "emptyBody": "Enter notification text",
+                "emptyProgram": "Select a program for the broadcast"
+            }
         },
         "welcome": {
             "title": "Volunteer portal",
@@ -556,6 +586,12 @@
                 "agreement-5": "The volunteer agreement will be drawn up in Serbian, and I will be able to understand it",
                 "agreement-required": "Without this, we cannot review your application",
                 "occupation": "Your occupation",
+                "program": "Program",
+                "program-description": "You can find out the program from portal admins",
+                "program-placeholder": "Select a program",
+                "project": "Project",
+                "project-description": "You can find out the project from portal admins",
+                "project-placeholder": "Select a project",
                 "check-experience": "I have volunteering experience",
                 "experience": "Describe your volunteering experience",
                 "languages": "Which languages do you know",
@@ -647,7 +683,9 @@
                     "title": "Reason for refusal",
                     "description": "Please specify the reason for refusal"
                 },
-                "notes": "Notes"
+                "notes": "Notes",
+                "program": "Program",
+                "project": "Project"
             },
             "report": {
                 "contract-from": "Start Date",
@@ -803,7 +841,8 @@
             "summary": "Summary",
             "cleaning": "Report for \"Clean City\"",
             "reporting-guide": "Reporting Guidelines",
-            "heat-map": "Heat Map"
+            "heat-map": "Heat Map",
+            "announcements": "Broadcast notifications"
         },
         "volunteers": {
             "volunteers": "Volunteers",

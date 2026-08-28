@@ -95,6 +95,12 @@
             "emptyContent": "Prazno telo emaila",
             "success": "Poruka uspešno poslata"
         },
+        "announcements": {
+            "title": "Obaveštenja",
+            "loading": "Učitavanje…",
+            "empty": "Nema obaveštenja",
+            "new": "Novo"
+        },
         "ticket-modal": {
             "modalTitle": "Kreirati tiket",
             "titleLabel": "Tema obraćanja",
@@ -148,6 +154,30 @@
             "description": "Nemate dovoljno dozvola za pregled sadržaja. Ako mislite da je ovo greška, obratite se podršci.",
             "homeButton": "Početna",
             "backButton": "Nazad"
+        },
+        "announcements": {
+            "admin": {
+                "title": "Slanje obaveštenja",
+                "description": "Poruka će se pojaviti u zvoncu volonterima unutar portala (bez email-a).",
+                "fields": {
+                    "title": "Naslov",
+                    "body": "Tekst",
+                    "bodyHint": "Podržan je jednostavan HTML: <p>, <b>, <a href=\"...\">",
+                    "audience": "Publika",
+                    "program": "Program",
+                    "programPlaceholder": "Izaberite program"
+                },
+                "audience": {
+                    "all": "Svi aktivni volonteri",
+                    "program": "Samo program"
+                },
+                "publish": "Objavi",
+                "success": "Obaveštenje je objavljeno",
+                "required": "Obavezno polje",
+                "emptyTitle": "Unesite naslov (najmanje 3 karaktera)",
+                "emptyBody": "Unesite tekst obaveštenja",
+                "emptyProgram": "Izaberite program za slanje"
+            }
         },
         "welcome": {
             "title": "Portal volontera",
@@ -556,6 +586,12 @@
                 "agreement-5": "Volonterski ugovor će biti sastavljen na srpskom jeziku, moći ću da ga razumem",
                 "agreement-required": "Bez ovoga ne možemo razmotriti vašu prijavu",
                 "occupation": "Vaša delatnost",
+                "program": "Program",
+                "program-description": "Program možete saznati od admina portala",
+                "program-placeholder": "Izaberite program",
+                "project": "Projekat",
+                "project-description": "Projekat možete saznati od admina portala",
+                "project-placeholder": "Izaberite projekat",
                 "check-experience": "Imam iskustvo u volonterstvu",
                 "experience": "Opišite vaše iskustvo u volonterstvu",
                 "languages": "Koje jezike poznajete",
@@ -647,7 +683,9 @@
                     "title": "Razlog odbijanja",
                     "description": "Molimo navedite razlog odbijanja"
                 },
-                "notes": "Zapisi"
+                "notes": "Zapisi",
+                "program": "Program",
+                "project": "Projekat"
             },
             "report": {
                 "contract-from": "Datum početka",
@@ -803,7 +841,8 @@
             "summary": "Rezime",
             "cleaning": "Izveštaj \"Čisti grad\"",
             "reporting-guide": "Vodič za predaju izveštaja",
-            "heat-map": "Toplotna karta"
+            "heat-map": "Toplotna karta",
+            "announcements": "Slanje obaveštenja"
         },
         "volunteers": {
             "volunteers": "Volonteri",
