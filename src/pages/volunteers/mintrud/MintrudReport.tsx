@@ -10,11 +10,14 @@ import { locales } from "../lib/locales"
 import { allowedRoles } from "../lib/roles"
 import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { StatisticsApiService } from "src/shared/api/StatisticsApiService"
-import type { ProgramStatItem, Statistics } from "@russian-rs/portal-api-axios"
+import type { CityStatistics, ProgramStatItem, Statistics } from "@russian-rs/portal-api-axios"
 import classes from "./MintrudReport.module.scss"
 import { FinalUsersChart, VolunteersCharts } from "./MintrudCharts"
+import CityStats from "./CityStats"
 import { IconListCheck } from "@tabler/icons-react"
 import generateMintrudReport from "src/shared/docs/mintrud-report"
+
+const MIN_YEAR = 2023
 
 export default function MintrudReport() {
     setDocumentTitleByLocale(locales.titleMintrud)
@@ -30,7 +33,9 @@ export default function MintrudReport() {
     const [searchParams, setSearchParams] = useSearchParams()
     const currentYear = new Date().getFullYear()
     const urlYear = parseInt(searchParams.get("year") || String(currentYear), 10)
-    const [year, setYear] = useState<number>(isNaN(urlYear) ? currentYear : urlYear)
+    const [year, setYear] = useState<number>(
+        isNaN(urlYear) ? currentYear : Math.min(Math.max(urlYear, MIN_YEAR), currentYear)
+    )
 
     useEffect(() => {
         const params = new URLSearchParams(searchParams)
@@ -38,10 +43,17 @@ export default function MintrudReport() {
         setSearchParams(params, { replace: true })
     }, [year])
 
-    const { data: stats, isFetching } = useQuery<Statistics>({
+    const { data: stats, isFetching: isFetchingStats } = useQuery<Statistics>({
         queryKey: ["mintrudStatistics", year],
         queryFn: () => StatisticsApiService.getStatistics(year).then((r) => r.data),
     })
+
+    const { data: cityStats, isFetching: isFetchingCities } = useQuery<CityStatistics>({
+        queryKey: ["cityStatistics", year],
+        queryFn: () => StatisticsApiService.getCityStatistics(year).then((r) => r.data),
+    })
+
+    const isFetching = isFetchingStats || isFetchingCities
 
     const fmtInt = (n: number | null | undefined) =>
         new Intl.NumberFormat(intl.locale, { maximumFractionDigits: 0 }).format(Number(n ?? 0))
@@ -105,8 +117,8 @@ export default function MintrudReport() {
                     </Text>
                     <NumberInput
                         value={year}
-                        onChange={(v) => setYear(Number(v) || currentYear)}
-                        min={2023}
+                        onChange={(v) => setYear(Number(v) || year)}
+                        min={MIN_YEAR}
                         max={currentYear}
                         step={1}
                         allowDecimal={false}
@@ -190,6 +202,8 @@ export default function MintrudReport() {
                     <FormattedMessage id={locales.finalUsersStats} />
                 </Text>
                 <FinalUsersChart stats={stats} />
+
+                {stats && <CityStats data={cityStats} />}
 
                 {/* Кнопка генерации PDF */}
                 <Button

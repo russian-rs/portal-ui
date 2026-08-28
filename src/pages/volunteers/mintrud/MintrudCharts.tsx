@@ -198,3 +198,27 @@ export function FinalUsersChart({ stats }: { stats?: Statistics }) {
         </div>
     )
 }
+const CITY_BAR_HEIGHT = 28
+
+export function CityStatsChart({ data }: { data: { name: string; value: number }[] }) {
+    if (!data.length) return null
+
+    return (
+        <div>
+            <Text className={classes.chartTitle} mt="lg" fw={600}>
+                <FormattedMessage id={locales.cityStatsTitle} values={{ count: data.length }} />
+            </Text>
+            <div style={{ height: data.length * CITY_BAR_HEIGHT + 40 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={data} layout="vertical" margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis type="number" allowDecimals={false} />
+                        <YAxis type="category" dataKey="name" width={140} interval={0} tick={{ fontSize: 12 }} />
+                        <Tooltip />
+                        <Bar dataKey="value" fill={COLORS[0]} />
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
+        </div>
+    )
+}
