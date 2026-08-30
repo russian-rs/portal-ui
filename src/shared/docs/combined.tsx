@@ -10,15 +10,6 @@ import { fillQuestionnairePage } from "src/shared/docs/questionnaire"
 import { ErrorNotification } from "src/shared/notifications/ErrorNotification"
 import { getFullAddress } from "src/shared/utils/getFullAddress"
 
-// ─── Activity checkbox x-positions on prijava.pdf ────────────────────────────
-// Row 1 (fromTop ≈ 313): x = 85 | 234 | 343 | 505
-// Row 2 (fromTop ≈ 328): x = 85 | 153 | 210 | 324 | 441
-//
-// Map your program.code values to the matching checkbox here.
-// Example:
-//   "media":   { x: 85,  fromTop: 313 }
-//   "ecology": { x: 234, fromTop: 313 }
-//   ...
 const ACTIVITY_CHECKBOX_MAP: Record<string, { x: number; fromTop: number }> = {
     // TODO: fill in after verifying prijava.pdf visually
 }
@@ -44,11 +35,10 @@ export default async function generateCombinedPdf(application: ApplicationDto, p
         fetch("/resources/prijava.pdf").then((r) => r.arrayBuffer()),
     ])
 
-    // ── Page 1: questionnaire (exact same logic as generateQuestionnairePdf) ──
     const questionnairePdf = await PDFDocument.load(templateBytes)
     await fillQuestionnairePage(questionnairePdf, application)
 
-    // ── Page 2: prijava ───────────────────────────────────────────────────────
+    // ── Page 2: prijava
     const prijavaDoc = await PDFDocument.load(prijavaBytes)
     prijavaDoc.registerFontkit(fontkit)
 
@@ -76,9 +66,6 @@ export default async function generateCombinedPdf(application: ApplicationDto, p
         })
 
     const drawMarkP = (x: number, yFromTop: number) => drawPxP("✔", x, yFromTop, symbolFont, 9)
-
-    // ── COORDINATES — all fromTop values derived from native PDF baseline y.  ──
-    // ── Verify visually and adjust if any field is off by a few pixels.        ──
 
     // 1. Ime i prezime
     drawPxP(fullName, 185, 125)
@@ -115,8 +102,6 @@ export default async function generateCombinedPdf(application: ApplicationDto, p
     }
 
     // 10. Пол/Род
-    // Checkboxes on prijava: male x=157, female x=227, other x=295 (fromTop ≈ 386).
-    // "Друго" is the third option; map GenderEnumDto.Other to it if the enum exists.
     if (gender === GenderEnumDto.Male) {
         drawMarkP(157, 386)
     } else if (gender === GenderEnumDto.Female) {
@@ -126,17 +111,15 @@ export default async function generateCombinedPdf(application: ApplicationDto, p
         drawMarkP(295, 386)
     }
 
-    // Date: "У Новом Саду, ___ 20__ године"
-    // The form prints "20" at x≈299; we write the full date before that anchor.
-    // Adjust x if the day and year land on the wrong blanks.
+    // Date
+
     const day = dayjs().format("DD")
     const year2 = dayjs().format("YY")
     drawPxP(day, 200, 675)
     drawPxP(year2, 311, 675)
 
-    // Signature — intentionally left blank
+    // Signature
 
-    // ── Merge both pages into one document ────────────────────────────────────
     const combinedPdf = await PDFDocument.create()
     const [questionnairePage] = await combinedPdf.copyPages(questionnairePdf, [0])
     const [prijavaFilledPage] = await combinedPdf.copyPages(prijavaDoc, [0])
