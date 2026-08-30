@@ -685,7 +685,8 @@
                 },
                 "notes": "Zapisi",
                 "program": "Program",
-                "project": "Projekat"
+                "project": "Projekat",
+                "combinedDownload": "Preuzimanje prijave i upitnika"
             },
             "report": {
                 "contract-from": "Datum početka",

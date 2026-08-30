@@ -12,6 +12,7 @@ import {
     IconContract,
     IconEPassport,
     IconLanguageHiragana,
+    IconFiles,
     IconListCheck,
     IconLocation,
     IconMailFilled,
@@ -35,6 +36,7 @@ import { ApplicationNote } from "src/pages/applications/note/ApplicationNote"
 import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { resolveUsers } from "src/shared/api/user/UserApiService"
+import generateCombinedPdf from "src/shared/docs/combined"
 import generateContractPdf from "src/shared/docs/contract"
 import generateEnvelopPdf from "src/shared/docs/envelop"
 import generateQuestionnairePdf from "src/shared/docs/questionnaire"
@@ -372,6 +374,17 @@ export const ApplicationView = () => {
                         }}
                     >
                         <FormattedMessage id={locales.questionnaireDownload} />
+                    </Button>
+                    <Button
+                        variant="gradient"
+                        gradient={{ from: "#6C63FF", to: "#3F3D9B" }}
+                        rightSection={<IconFiles size={15} />}
+                        disabled={application.contract == null}
+                        onClick={() => {
+                            generateCombinedPdf(application, program)
+                        }}
+                    >
+                        <FormattedMessage id={locales.combinedDownload} />
                     </Button>
                     <Button
                         variant="gradient"

@@ -685,7 +685,8 @@
                 },
                 "notes": "Заметки",
                 "program": "Программа",
-                "project": "Проект"
+                "project": "Проект",
+                "combinedDownload": "Скачать пријаву и анкету"
             },
             "report": {
                 "contract-from": "Дата начала",

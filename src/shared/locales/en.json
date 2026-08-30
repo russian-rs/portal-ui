@@ -685,7 +685,8 @@
                 },
                 "notes": "Notes",
                 "program": "Program",
-                "project": "Project"
+                "project": "Project",
+                "combinedDownload": "Download combined application"
             },
             "report": {
                 "contract-from": "Start Date",
