@@ -43,14 +43,9 @@ try {
         { width: 390, height: 844 },
     ]) {
         const context = await browser.newContext({ viewport })
-        await context.addInitScript(
-            ({ employee }) => {
-                localStorage.setItem("user", JSON.stringify(employee))
-                localStorage.setItem("lastLogin", JSON.stringify(new Date()))
-                localStorage.setItem("locale", JSON.stringify("en"))
-            },
-            { employee }
-        )
+        await context.addInitScript(() => {
+            localStorage.setItem("locale", JSON.stringify("en"))
+        })
         const page = await context.newPage()
         page.on("requestfailed", (request) => console.error("FAILED", request.url(), request.failure()?.errorText))
         page.on("response", async (response) => {
@@ -70,6 +65,7 @@ try {
             notes: [],
         }
         const writes = []
+        let loginRequests = 0
         let failNextUpdate = false
         let failNextAssignment = false
         await page.route(`${baseURL}/api/**`, async (route) => {
@@ -77,7 +73,10 @@ try {
             const path = new URL(request.url()).pathname.replace(/^\/api/, "")
             const data = request.postDataJSON()
             let response = []
-            if (path === "/applications")
+            if (path === "/user/account") {
+                loginRequests += 1
+                response = employee
+            } else if (path === "/applications")
                 response = {
                     content: [
                         application,
@@ -130,6 +129,10 @@ try {
             }
             await route.fulfill({ json: response })
         })
+        // Use the app's login flow with a synthetic API response instead of writing a profile to storage.
+        await page.goto(`${baseURL}/login`)
+        await page.waitForURL(`${baseURL}/`)
+        assert.ok(loginRequests > 0, "Login must use the mocked current-account endpoint")
         await page.goto(`${baseURL}/applications`)
         const assignedAvatar = page.getByLabel("Assignee: Elena Petrova", { exact: true })
         await assignedAvatar.waitFor().catch(async (error) => {
