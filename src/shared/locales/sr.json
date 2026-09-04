@@ -616,6 +616,10 @@
             }
         },
         "applications": {
+            "assignee": "Odgovorna osoba",
+            "unassigned": "Nije dodeljeno",
+            "noEmployees": "Nema zaposlenih",
+            "clearAssignee": "Ukloni dodelu",
             "title": "Prijave za članstvo",
             "empty": "Nijedna prijava nije pronađena",
             "total": "Ukupno: {count}",

@@ -148,7 +148,10 @@ export const ApplicationEditDrawer = ({
         validate: zodResolver(validationSchema),
     })
 
-    const { programs, visibleProjects } = useProgramProjectFilter(form.values.program || null, form.values.project || null)
+    const { programs, visibleProjects } = useProgramProjectFilter(
+        form.values.program || null,
+        form.values.project || null
+    )
 
     const programOptions = programs.map((program) => ({
         value: program.code,
@@ -160,9 +163,10 @@ export const ApplicationEditDrawer = ({
     }))
 
     const { mutate: updateApplication, isPending } = useMutation({
+        mutationKey: ["writeApplication"],
         mutationFn: async (data: Partial<ApplicationDto>) => {
             const response = await PrivateApplicationApiService.updateApplication({
-                ...application,
+                id: application.id,
                 ...data,
             })
             return response.data
@@ -227,7 +231,8 @@ export const ApplicationEditDrawer = ({
         form.setFieldValue("program", program ?? "")
 
         const selectedProgramDto = programs.find((p) => p.code === program)
-        const projectAvailable = form.values.project && (selectedProgramDto?.projectCodes ?? []).includes(form.values.project)
+        const projectAvailable =
+            form.values.project && (selectedProgramDto?.projectCodes ?? []).includes(form.values.project)
         if (!projectAvailable) {
             form.setFieldValue("project", "")
         }

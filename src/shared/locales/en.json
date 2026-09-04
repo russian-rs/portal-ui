@@ -616,6 +616,10 @@
             }
         },
         "applications": {
+            "assignee": "Assignee",
+            "unassigned": "Unassigned",
+            "noEmployees": "No employees found",
+            "clearAssignee": "Clear assignment",
             "title": "Applications for Admission",
             "empty": "No applications found",
             "total": "Total: {count}",

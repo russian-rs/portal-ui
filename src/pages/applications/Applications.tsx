@@ -7,6 +7,7 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useSearchParams } from "react-router"
 import { UserContext } from "src/app/providers/UserContext"
 import { allowedRoles } from "src/pages/applications/lib/roles"
+import { resolveUsers } from "src/shared/api/user/UserApiService"
 import { ApplicationRow } from "src/pages/applications/row/ApplicationRow"
 import { CreateUser } from "src/pages/users/createUser/CreateUser"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
@@ -194,7 +195,15 @@ export const Applications = () => {
         updateUrlParams("", false, 0)
     }
 
-    const rows = content.map((application) => <ApplicationRow key={application.id} applicationDto={application} />)
+    const { data: assigneeUsers = {} } = resolveUsers(content.map((application) => application.assignee))
+
+    const rows = content.map((application) => (
+        <ApplicationRow
+            key={application.id}
+            applicationDto={application}
+            assigneeUser={assigneeUsers[application.assignee || ""]}
+        />
+    ))
 
     return (
         <Flex direction="column">
@@ -283,7 +292,12 @@ export const Applications = () => {
                             </>
                         ) : (
                             content.map((application) => (
-                                <ApplicationRow key={application.id} applicationDto={application} isMobile={true} />
+                                <ApplicationRow
+                                    key={application.id}
+                                    applicationDto={application}
+                                    assigneeUser={assigneeUsers[application.assignee || ""]}
+                                    isMobile={true}
+                                />
                             ))
                         )}
                     </Flex>

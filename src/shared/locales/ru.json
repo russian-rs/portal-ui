@@ -616,6 +616,10 @@
             }
         },
         "applications": {
+            "assignee": "Ответственный",
+            "unassigned": "Не назначен",
+            "noEmployees": "Сотрудники не найдены",
+            "clearAssignee": "Снять назначение",
             "title": "Заявки на вступление",
             "empty": "Заявок не найдено",
             "total": "Всего: {count}",

@@ -21,9 +21,9 @@ import {
     IconWorld,
     IconGenderBigender,
 } from "@tabler/icons-react"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useIsMutating, useQuery, useQueryClient } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import { useContext, useState } from "react"
+import { useContext } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { useNavigate, useParams } from "react-router"
 import { usePrograms } from "src/app/providers/ProgramsProvider"
@@ -32,8 +32,8 @@ import { UserContext } from "src/app/providers/UserContext"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
 import { AddApplicationNote } from "src/pages/applications/note/AddApplicationNote"
 import { ApplicationNote } from "src/pages/applications/note/ApplicationNote"
-import { defaultApplicationDto } from "src/pages/applications/view/lib/defaults"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
+import { cacheApplication, useApplicationUpdate } from "src/shared/api/applications/useApplicationUpdate"
 import { resolveUsers } from "src/shared/api/user/UserApiService"
 import generateContractPdf from "src/shared/docs/contract"
 import generateEnvelopPdf from "src/shared/docs/envelop"
@@ -47,6 +47,7 @@ import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusS
 import { ApplicationStatus } from "src/shared/user/applications"
 import { hasPermission } from "src/shared/user/roles"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
+import { ApplicationAssigneeSelect } from "../assignee/ApplicationAssigneeSelect"
 import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
@@ -73,32 +74,23 @@ export const ApplicationView = () => {
         navigate("/unauthorized")
     }
 
-    const [application, setApplication] = useState<ApplicationDto>(defaultApplicationDto)
-    setDocumentTitleByString(application.name)
-
-    const noteLogins = application.notes?.map((note) => note.createdBy).filter(Boolean) || []
-    const { data: users = {} } = resolveUsers(noteLogins)
-    const program = programs.find((p) => p.code === application.program)
-    const project = projects.find((p) => p.code === application.project)
-    const officialGroup = officialGroups.find((p) => p.code === program?.officialGroup)
-
-    const { isFetching: isLoading, refetch: refetchApplication } = useQuery({
+    const {
+        data: application,
+        isPending: isLoading,
+        refetch: refetchApplication,
+    } = useQuery({
         queryKey: ["getApplication", id],
-        queryFn: () =>
-            PrivateApplicationApiService.getApplication(id!!).then((response) => {
-                setApplication(response.data)
-                return response.data
-            }),
+        queryFn: () => PrivateApplicationApiService.getApplication(id!).then((response) => response.data),
+        enabled: !!id,
     })
-
-    useQuery({
-        enabled: application !== defaultApplicationDto,
-        queryKey: ["updateApplication", application],
-        queryFn: () =>
-            PrivateApplicationApiService.updateApplication(application).then((response) => {
-                return response.data
-            }),
-    })
+    const { mutate: updateApplication } = useApplicationUpdate()
+    const isUpdating = useIsMutating({ mutationKey: ["writeApplication"] }) > 0
+    setDocumentTitleByString(application?.name)
+    const noteLogins = application?.notes?.map((note) => note.createdBy).filter(Boolean) || []
+    const { data: users = {} } = resolveUsers(noteLogins)
+    const program = programs.find((p) => p.code === application?.program)
+    const project = projects.find((p) => p.code === application?.project)
+    const officialGroup = officialGroups.find((p) => p.code === program?.officialGroup)
 
     if (isLoading) {
         return (
@@ -108,22 +100,25 @@ export const ApplicationView = () => {
         )
     }
 
+    if (!application) return null
+
     const onStatusChange = (status: string, comment?: string) => {
+        if (status === application.status) return
         if (status === ApplicationStatus.DENY && comment) {
-            setApplication({ ...application, status: status, refuseReason: comment })
+            updateApplication({ id: application.id, status, refuseReason: comment })
         } else if (status === ApplicationStatus.PAUSED && comment) {
-            setApplication({ ...application, status: status, comment: comment })
+            updateApplication({ id: application.id, status, comment })
         } else {
-            setApplication({ ...application, status: status })
+            updateApplication({ id: application.id, status })
         }
     }
 
     const onContractChanged = (contract: ContractDto) => {
-        setApplication({ ...application, contract: contract })
+        updateApplication({ id: application.id, contract })
     }
 
     const onApplicationUpdate = (updatedApplication: ApplicationDto) => {
-        setApplication(updatedApplication)
+        cacheApplication(queryClient, updatedApplication)
     }
 
     const onNoteAdded = () => {
@@ -316,6 +311,7 @@ export const ApplicationView = () => {
                     )}
                 </Flex>
                 <Flex gap="md" mt={16} direction="column" className={classes.controls}>
+                    <ApplicationAssigneeSelect application={application} disabled={isUpdating} />
                     <PropertyBox
                         align="start"
                         name={locales.status}
@@ -325,6 +321,7 @@ export const ApplicationView = () => {
                                     application={application}
                                     className={classes.statusSelect}
                                     onChange={onStatusChange}
+                                    disabled={isUpdating}
                                     showInlineReason={false}
                                 />
                                 {application.status === ApplicationStatus.PAUSED && application.comment && (
@@ -346,6 +343,7 @@ export const ApplicationView = () => {
                             <ContractDate
                                 application={application}
                                 onChange={onContractChanged}
+                                disabled={isUpdating}
                                 className={classes.contractDate}
                             />
                         }
@@ -389,7 +387,7 @@ export const ApplicationView = () => {
                         variant="outline"
                         rightSection={<IconPencil size={14} />}
                         onClick={openDrawer}
-                        disabled={application.status === ApplicationStatus.DONE}
+                        disabled={isUpdating || application.status === ApplicationStatus.DONE}
                     >
                         <FormattedMessage id="pages.profile.buttons.edit" />
                     </Button>
