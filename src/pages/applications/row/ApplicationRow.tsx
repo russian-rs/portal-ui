@@ -1,14 +1,14 @@
 import { Avatar, Badge, Box, Card, Flex, Table, Text } from "@mantine/core"
-import { ApplicationDto, ContractDto } from "@russian-rs/portal-api-axios"
+import { ApplicationDto, ContractDto, UserInfoDto } from "@russian-rs/portal-api-axios"
 import { IconNotes } from "@tabler/icons-react"
-import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
-import { ReactNode, useState } from "react"
+import { ReactNode } from "react"
 import { FormattedMessage } from "react-intl"
 import { useNavigate } from "react-router"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
 import { ApplicationMenu } from "src/pages/applications/menu/ApplicationMenu"
-import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
+import { useApplicationUpdate } from "src/shared/api/applications/useApplicationUpdate"
+import { ApplicationAssigneeAvatar } from "../assignee/ApplicationAssigneeAvatar"
 import { useScreenSize } from "src/shared/hooks/useDesktop"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
@@ -19,34 +19,30 @@ import classes from "./ApplicationRow.module.scss"
 interface ApplicationRowProps {
     applicationDto: ApplicationDto
     isMobile?: boolean
+    assigneeUser?: UserInfoDto
 }
 
-export const ApplicationRow = ({ applicationDto, isMobile = false }: ApplicationRowProps) => {
-    const [application, setApplication] = useState(applicationDto)
-    const [updated, setUpdated] = useState(false)
+export const ApplicationRow = ({
+    applicationDto: application,
+    isMobile = false,
+    assigneeUser,
+}: ApplicationRowProps) => {
     const { isLargeDesktop } = useScreenSize()
     const navigate = useNavigate()
-
-    const { isFetching: isUpdating } = useQuery({
-        enabled: updated,
-        queryKey: ["updateApplication", application],
-        queryFn: () => PrivateApplicationApiService.updateApplication(application).then((response) => response.data),
-    })
+    const { mutate: updateApplication, isPending: isUpdating } = useApplicationUpdate()
 
     const onStatusUpdate = (status: string, comment?: string) => {
-        const updated = { ...application, status: status } as ApplicationDto
-        if (status === ApplicationStatus.DENY && comment) {
-            ;(updated as any).refuseReason = comment
-        } else if (status === ApplicationStatus.PAUSED && comment) {
-            ;(updated as any).comment = comment
-        }
-        setApplication(updated)
-        setUpdated(true)
+        if (status === application.status) return
+        updateApplication({
+            id: application.id,
+            status,
+            ...(status === ApplicationStatus.DENY && comment ? { refuseReason: comment } : {}),
+            ...(status === ApplicationStatus.PAUSED && comment ? { comment } : {}),
+        })
     }
 
     const onContractChanged = (contract: ContractDto) => {
-        setApplication({ ...application, contract: contract })
-        setUpdated(true)
+        updateApplication({ id: application.id, contract })
     }
 
     if (isMobile) {
@@ -73,6 +69,7 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                         </Flex>
 
                         <Flex align="center" gap="xs">
+                            <ApplicationAssigneeAvatar login={application.assignee} user={assigneeUser} />
                             {application.notes && application.notes.length > 0 && (
                                 <Badge variant="light" color="blue" leftSection={<IconNotes size={12} />}>
                                     {application.notes.length}
@@ -86,7 +83,7 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                     <Box className={classes.mobileInfo}>
                         <div className={classes.mobileRow}>
                             <Text size="xs" c="dimmed" className={classes.mobileLabel}>
-                                <FormattedMessage id="pages.applications.type" />:
+                                <FormattedMessage id="pages.applications.view.type" />:
                             </Text>
                             <div>{type(application.type, false)}</div>
                         </div>
@@ -105,7 +102,11 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                                 <FormattedMessage id="pages.applications.contractStart" />:
                             </Text>
                             <div>
-                                <ContractDate application={application} onChange={onContractChanged} />
+                                <ContractDate
+                                    application={application}
+                                    onChange={onContractChanged}
+                                    disabled={isUpdating}
+                                />
                             </div>
                         </div>
 
@@ -165,7 +166,7 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
                 </Flex>
             </Table.Td>
             <Table.Td>
-                <ContractDate application={application} onChange={onContractChanged} />
+                <ContractDate application={application} onChange={onContractChanged} disabled={isUpdating} />
             </Table.Td>
             <Table.Td className={classes.statusSelect}>
                 <div>
@@ -186,6 +187,7 @@ export const ApplicationRow = ({ applicationDto, isMobile = false }: Application
             </Table.Td>
             <Table.Td>
                 <Flex align="center" justify="flex-end" gap="xs">
+                    <ApplicationAssigneeAvatar login={application.assignee} user={assigneeUser} />
                     {application.notes && application.notes.length > 0 && (
                         <Badge variant="light" color="blue" leftSection={<IconNotes size={12} />}>
                             {application.notes.length}
