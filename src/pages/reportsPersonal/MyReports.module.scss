@@ -236,6 +236,10 @@
     width: 100%;
     min-width: 0;
 }
+.resetFilters {
+    grid-column: 1 / -1;
+    justify-self: end;
+}
 @media (max-width: 36em) {
     .filterArea > div {
         grid-template-columns: minmax(0, 1fr);

@@ -286,6 +286,7 @@ export const MyReports = () => {
                                 />
                                 {activeFiltersCount > 0 && (
                                     <Button
+                                        className={classes.resetFilters}
                                         variant="transparent"
                                         size="sm"
                                         leftSection={<IconFilterOff size={16} />}

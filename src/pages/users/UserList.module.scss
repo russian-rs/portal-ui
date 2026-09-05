@@ -59,11 +59,10 @@ $table-width: 100%;
     }
 
     & {
-        background: var(--portal-surface);
-        backdrop-filter: blur(20px);
+        background: var(--portal-solid);
         border-color: var(--portal-border);
         box-shadow: 0 -4px 20px #173b4308;
-        border-radius: 16px;
+        border-radius: 0;
         padding: 16px;
         flex-wrap: wrap;
         row-gap: 12px;

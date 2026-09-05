@@ -159,7 +159,7 @@ export const AnnouncementsAdminPage: React.FC = () => {
                 <FormattedMessage id="pages.announcements.admin.description" />
             </Text>
 
-            <Card withBorder p="lg">
+            <Card withBorder p="lg" className={classes.editorCard}>
                 <form onSubmit={onPublish}>
                     <Flex direction="column" gap="md">
                         <TextInput
@@ -173,7 +173,7 @@ export const AnnouncementsAdminPage: React.FC = () => {
                                 <FormattedMessage id="pages.announcements.admin.fields.body" />
                             </Text>
                             <RichTextEditor editor={editor} style={{ minHeight: 200 }}>
-                                <RichTextEditor.Toolbar sticky stickyOffset={60}>
+                                <RichTextEditor.Toolbar sticky>
                                     <RichTextEditor.ControlsGroup>
                                         <RichTextEditor.Bold />
                                         <RichTextEditor.Italic />

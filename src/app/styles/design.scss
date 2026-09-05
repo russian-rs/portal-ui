@@ -206,9 +206,15 @@ body {
 .mantine-RichTextEditor-root {
     border-radius: 16px;
     border-color: var(--portal-border);
-    overflow: hidden;
+    overflow: clip;
 }
-.mantine-RichTextEditor-toolbar,
+.mantine-RichTextEditor-toolbar {
+    background: var(--portal-solid);
+    border-color: var(--portal-border);
+}
+.mantine-RichTextEditor-controlsGroup {
+    background: transparent;
+}
 .mantine-RichTextEditor-content {
     background: var(--portal-surface);
 }
