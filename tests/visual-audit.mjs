@@ -4,7 +4,7 @@ import assert from "node:assert/strict"
 import { mkdir, writeFile } from "node:fs/promises"
 import { detail, routeData } from "./visual-fixtures.mjs"
 const base = process.env.TEST_BASE_URL || "http://127.0.0.1:3017"
-const output = process.env.TEST_OUTPUT_DIR || "/tmp/portal-visual-audit/before"
+const output = process.env.TEST_OUTPUT_DIR || "/tmp/portal-visual-audit/current"
 const widths = (process.env.AUDIT_WIDTHS || "1440,390").split(",").map(Number)
 const schemes = (process.env.AUDIT_SCHEMES || "light").split(",")
 await mkdir(output, { recursive: true })
@@ -184,7 +184,7 @@ try {
             }
             audit.push({ width, scheme, errors })
             await context.close()
-            console.log(`Captured ${width}px ${scheme}: all private routes and overlays; errors=${errors.length}`)
+            console.log(`Captured ${width}px ${scheme}: pages and overlays selected for this run; errors=${errors.length}`)
         }
     const failures = audit.filter(
         (x) =>

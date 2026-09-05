@@ -250,6 +250,7 @@ export const MyReports = () => {
                     <Flex className={classes.headerActions} direction="row" gap={8} wrap="wrap" align="flex-end">
                         <Button
                             className={classes.newReportButton}
+                            color="ocean.7"
                             variant="filled"
                             size="md"
                             leftSection={<IconPlus size={16} />}

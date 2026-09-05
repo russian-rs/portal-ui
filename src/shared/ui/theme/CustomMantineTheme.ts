@@ -1,4 +1,16 @@
-import { Button, createTheme, DEFAULT_THEME, Input, MantineColor, Modal, Paper } from "@mantine/core"
+import {
+    Button,
+    createTheme,
+    DEFAULT_THEME,
+    defaultVariantColorsResolver,
+    getContrastColor,
+    getPrimaryShade,
+    Input,
+    MantineColor,
+    Modal,
+    Paper,
+    parseThemeColor,
+} from "@mantine/core"
 
 export const theme = createTheme({
     fontFamily: "Geologica, sans-serif",
@@ -9,6 +21,19 @@ export const theme = createTheme({
     primaryColor: "ocean",
     defaultGradient: { from: "ocean.7", to: "cyan.7", deg: 110 },
     primaryShade: { light: 7, dark: 4 },
+    variantColorResolver: (input) => {
+        const colors = defaultVariantColorsResolver(input)
+        if (input.variant !== "filled" || !(input.autoContrast ?? input.theme.autoContrast)) return colors
+        const parsed = parseThemeColor({ color: input.color || input.theme.primaryColor, theme: input.theme })
+        if (!parsed.isThemeColor || parsed.shade !== undefined) return colors
+        const contrast = (scheme: "light" | "dark") =>
+            getContrastColor({
+                color: `${parsed.color}.${getPrimaryShade(input.theme, scheme)}`,
+                theme: input.theme,
+                autoContrast: true,
+            })
+        return { ...colors, color: `light-dark(${contrast("light")}, ${contrast("dark")})` }
+    },
     colors: {
         ocean: [
             "#e9f8f4",
