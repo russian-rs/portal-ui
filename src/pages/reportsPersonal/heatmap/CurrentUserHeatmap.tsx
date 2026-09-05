@@ -1,5 +1,5 @@
 import { Box, Flex, HoverCard, Loader, Text, Title } from "@mantine/core"
-import { IconChartDots } from "@tabler/icons-react"
+import { IconCalendarWeek, IconClockHour4 } from "@tabler/icons-react"
 import { HeatMapItem, VolunteerHeatMapItem } from "@russian-rs/portal-api-axios"
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
@@ -100,10 +100,13 @@ export const CurrentUserHeatmap = ({ className }: { className?: string }) => {
         return summary
     }
 
+    const now = dayjs()
+    const visibleYears = Object.entries(data).filter(([year]) => now.month() < 6 || Number(year) >= now.year())
+
     return (
         <Flex direction="column" gap="xs" className={`${classes.root} ${className || ""}`}>
             <Flex align="center" gap="sm" mb="sm">
-                <IconChartDots size={20} color="var(--portal-accent)" />
+                <IconCalendarWeek size={20} color="var(--portal-accent)" />
                 <Title order={2} size="h4">
                     <FormattedMessage id="design.activity" />
                 </Title>
@@ -147,7 +150,7 @@ export const CurrentUserHeatmap = ({ className }: { className?: string }) => {
             </Flex>
 
             <Flex direction="column" rowGap="md">
-                {Object.entries(data).map(([year, heatmap]) => (
+                {visibleYears.map(([year, heatmap]) => (
                     <Flex direction="column" key={year} className={classes.year}>
                         <Flex direction="row" align="center" justify="space-between" mb="sm">
                             <Text fw="bold" size="xl">
@@ -181,7 +184,7 @@ export const CurrentUserHeatmap = ({ className }: { className?: string }) => {
                                 }
                                 aria-hidden="true"
                             >
-                                <IconChartDots size={26} stroke={1.5} />
+                                <IconClockHour4 size={26} stroke={1.5} />
                             </div>
                         </div>
                         <Flex gap={4} wrap="wrap" className={classes.weeksRow}>

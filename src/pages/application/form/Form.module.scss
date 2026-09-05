@@ -9,7 +9,8 @@
 
     & {
         @include s.glass;
-        margin-block: 20px;
+        padding: var(--portal-page-padding);
+        margin-block: var(--portal-page-top-gap) var(--portal-page-padding);
     }
 }
 

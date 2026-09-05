@@ -1,5 +1,6 @@
 {
     "design": {
+        "loading": "Loading…",
         "portal": "Volunteer portal",
         "navigation": "Navigation",
         "workspace": "Your workspace",
@@ -8,7 +9,6 @@
         "hoursRequired": "of {hours} h this year",
         "reportHistory": "Report history",
         "reportWeek": "Week {week}",
-        "newReportNote": "Share what you accomplished.",
         "reportSummary": "Your report",
         "tasksCount": "{count, plural, one {# task} other {# tasks}}",
         "draftHint": "Your draft is saved automatically in this browser.",

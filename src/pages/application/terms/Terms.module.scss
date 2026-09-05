@@ -7,7 +7,7 @@
 
     & {
         @include s.glass;
-        margin-block: 20px;
+        padding: var(--portal-page-padding);
     }
 }
 

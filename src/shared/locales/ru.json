@@ -1,5 +1,6 @@
 {
     "design": {
+        "loading": "Загрузка…",
         "portal": "Портал волонтёра",
         "navigation": "Навигация",
         "workspace": "Личное пространство",
@@ -8,7 +9,6 @@
         "hoursRequired": "из {hours} ч за год",
         "reportHistory": "История отчётов",
         "reportWeek": "Неделя {week}",
-        "newReportNote": "Расскажите, что удалось сделать.",
         "reportSummary": "Ваш отчёт",
         "tasksCount": "{count, plural, one {# задача} few {# задачи} many {# задач} other {# задачи}}",
         "draftHint": "Черновик автоматически сохраняется в этом браузере.",

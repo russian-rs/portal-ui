@@ -2,6 +2,7 @@
     width: 100%;
     min-width: 0;
     padding: var(--portal-page-padding);
+    padding-top: var(--portal-page-top-gap);
     background: transparent;
     animation: portal-enter 350ms ease both;
 }

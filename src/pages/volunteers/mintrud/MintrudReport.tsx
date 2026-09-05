@@ -8,7 +8,6 @@ import { UserContext } from "src/app/providers/UserContext"
 import { hasPermission } from "src/shared/user/roles"
 import { locales } from "../lib/locales"
 import { allowedRoles } from "../lib/roles"
-import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { StatisticsApiService } from "src/shared/api/StatisticsApiService"
 import type { ProgramStatItem, Statistics } from "@russian-rs/portal-api-axios"
 import classes from "./MintrudReport.module.scss"
@@ -91,7 +90,6 @@ export default function MintrudReport() {
 
     return (
         <Flex direction="column">
-            <CustomLoader visible={isFetching} className={classes.loader} />
 
             <Flex className={classes.root} direction="column" gap={16}>
                 <Text className={classes.title}>

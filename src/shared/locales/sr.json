@@ -1,5 +1,6 @@
 {
     "design": {
+        "loading": "Učitavanje…",
         "portal": "Portal volontera",
         "navigation": "Navigacija",
         "workspace": "Vaš radni prostor",
@@ -8,7 +9,6 @@
         "hoursRequired": "od {hours} č ove godine",
         "reportHistory": "Istorija izveštaja",
         "reportWeek": "Nedelja {week}",
-        "newReportNote": "Podelite šta ste postigli.",
         "reportSummary": "Vaš izveštaj",
         "tasksCount": "{count, plural, one {# zadatak} few {# zadatka} other {# zadataka}}",
         "draftHint": "Nacrt se automatski čuva u ovom pregledaču.",

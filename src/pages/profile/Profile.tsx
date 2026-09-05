@@ -11,7 +11,7 @@ import { ProfileInfo } from "src/pages/profile/info/ProfileInfo"
 import { ResidencePermitInfo } from "src/pages/profile/residencePermit/ResidencePermitInfo"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
-import CustomLoader from "src/shared/ui/loading/CustomLoader"
+import { LoadingScreen } from "src/shared/ui/loading/LoadingScreen"
 import { hasPermission, UserGroup } from "src/shared/user/roles"
 import classes from "./Profile.module.scss"
 
@@ -88,13 +88,12 @@ export const Profile = () => {
     }, [userInfo, currentUser, setShowProfileModal, intl])
 
     if (loading) {
-        return <CustomLoader visible={true} className={classes.loader} />
+        return <LoadingScreen />
     }
 
     return (
         <>
             <Flex direction="column">
-                <CustomLoader visible={isFetching} className={classes.loader} />
                 <Container className={classes.upperSpace} />
                 <SimpleGrid
                     cols={{ base: 1, "40rem": 2 }}

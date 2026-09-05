@@ -1,4 +1,4 @@
-import { AppShell, Drawer, Group, ScrollArea, Transition } from "@mantine/core"
+import { AppShell, Drawer, Group, ScrollArea } from "@mantine/core"
 import React, { useContext, useEffect, useMemo } from "react"
 import { NavbarContext } from "src/app/providers/NavbarProvider"
 import { UserContext } from "src/app/providers/UserContext"
@@ -35,15 +35,9 @@ export const AppNavbar = React.memo(function AppNavbar() {
     const { menuOpened, setMenuOpened } = useContext(NavbarContext)
     const location = useLocation()
 
+    // Reset the mobile drawer after navigation or switching between mobile and desktop.
     useEffect(() => {
-        setMenuOpened(isDesktop)
-    }, [isDesktop])
-
-    // Close navbar on route change for mobile view
-    useEffect(() => {
-        if (!isDesktop) {
-            setMenuOpened(false)
-        }
+        setMenuOpened(false)
     }, [location.pathname, isDesktop, setMenuOpened])
 
     const items = useMemo(() => {
@@ -53,7 +47,7 @@ export const AppNavbar = React.memo(function AppNavbar() {
     }, [user])
 
     const navigation = (
-        <nav className={classes.navbar}>
+        <nav id="portal-navigation" className={classes.navbar}>
             <div className={classes.header}>
                 <UserButton />
             </div>
@@ -75,20 +69,17 @@ export const AppNavbar = React.memo(function AppNavbar() {
                 onClose={() => setMenuOpened(false)}
                 title={<FormattedMessage id="design.navigation" />}
                 size={310}
-                classNames={{ body: classes.mobileBody, content: classes.mobileContent }}
+                classNames={{
+                    body: classes.mobileBody,
+                    content: classes.mobileContent,
+                    header: classes.mobileHeader,
+                    close: classes.mobileClose,
+                }}
             >
                 {navigation}
             </Drawer>
         )
     }
 
-    return (
-        <Transition mounted={menuOpened} transition="slide-right" timingFunction="ease">
-            {(styles) => (
-                <AppShell.Navbar style={styles} className={classes.appShellNavbar}>
-                    {navigation}
-                </AppShell.Navbar>
-            )}
-        </Transition>
-    )
+    return <AppShell.Navbar className={classes.appShellNavbar}>{navigation}</AppShell.Navbar>
 })

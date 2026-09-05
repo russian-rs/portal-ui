@@ -178,9 +178,6 @@ export const EditReport = () => {
                 <Title order={1} className={classes.title}>
                     <FormattedMessage id={editMode ? locales.titleEdit : locales.title} />
                 </Title>
-                <Text c="dimmed" size="sm" mt={10}>
-                    <FormattedMessage id="design.newReportNote" />
-                </Text>
             </div>
             <div className={classes.workspace}>
                 <div className={classes.taskContainer}>
@@ -230,20 +227,6 @@ export const EditReport = () => {
                     <Text className={classes.description}>
                         <FormattedMessage id={locales.description} />
                     </Text>
-                    <div className={classes.taskNavigation}>
-                        {tasks.map((task, index) => (
-                            <button
-                                type="button"
-                                key={task.id}
-                                onClick={() => scrollToCard(index)}
-                                className={classes.taskLink}
-                            >
-                                <span>{String(index + 1).padStart(2, "0")}</span>
-                                <FormattedMessage id="pages.edit-report.task" values={{ index: index + 1 }} />
-                                <IconChevronRight size={15} />
-                            </button>
-                        ))}
-                    </div>
                     <div className={classes.draftHint}>
                         <IconCircleCheck size={18} />
                         <Text size="xs">

@@ -11,6 +11,7 @@
     --portal-shadow: 0 8px 32px -16px rgba(31, 71, 76, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.7);
     --portal-radius: 24px;
     --portal-page-padding: clamp(20px, 3vw, 44px);
+    --portal-page-top-gap: 12px;
 }
 
 :root[data-mantine-color-scheme] {

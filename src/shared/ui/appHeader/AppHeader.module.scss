@@ -6,8 +6,13 @@
     padding: 0 32px;
     gap: 16px;
     flex-wrap: nowrap;
-    background: color-mix(in srgb, var(--portal-bg) 75%, transparent);
-    backdrop-filter: blur(20px);
+    background: transparent;
+}
+.identity {
+    position: relative;
+    gap: 16px;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
 }
 .brand {
     flex-shrink: 0;

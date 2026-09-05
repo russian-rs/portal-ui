@@ -37,7 +37,7 @@ try {
                 await page.mouse.move(0, 0)
                 await page.waitForTimeout(250)
                 const metrics = await page.evaluate(() => {
-                    const header = document.querySelector(".mantine-Burger-root")?.parentElement
+                    const header = document.querySelector('[class*="rootGroup_"]')
                     const headerBounds = header?.getBoundingClientRect()
                     const headerOverflow = headerBounds
                         ? [...header.querySelectorAll("button,a")].some((e) => {
@@ -184,7 +184,9 @@ try {
             }
             audit.push({ width, scheme, errors })
             await context.close()
-            console.log(`Captured ${width}px ${scheme}: pages and overlays selected for this run; errors=${errors.length}`)
+            console.log(
+                `Captured ${width}px ${scheme}: pages and overlays selected for this run; errors=${errors.length}`
+            )
         }
     const failures = audit.filter(
         (x) =>

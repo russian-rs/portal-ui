@@ -12,8 +12,10 @@
     border: 0;
     padding: 18px 32px;
     height: 76px;
-    background: var(--portal-surface);
-    backdrop-filter: blur(20px);
+    background: transparent;
+}
+.loginGroup {
+    position: relative;
 }
 .appShellMainScroll {
     height: 100%;

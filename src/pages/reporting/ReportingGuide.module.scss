@@ -15,7 +15,8 @@
         @include s.glass;
         @include s.prose;
         width: calc(100% - 2 * var(--portal-page-padding));
-        margin: var(--portal-page-padding);
+        padding: var(--portal-page-padding);
+        margin: var(--portal-page-top-gap) var(--portal-page-padding) var(--portal-page-padding);
     }
 }
 

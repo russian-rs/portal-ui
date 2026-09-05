@@ -14,7 +14,6 @@ import { CreateUser } from "src/pages/users/createUser/CreateUser"
 import { PrivateApplicationApiService } from "src/shared/api/applications/PrivateApplicationApiService"
 import { useScreenSize } from "src/shared/hooks/useDesktop"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
-import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { hasPermission } from "src/shared/user/roles"
 import classes from "./Applications.module.scss"
 import { defaultPage, defaultPageResponse, UNASSIGNED_ASSIGNEE } from "./lib/defaults"
@@ -168,7 +167,6 @@ export const Applications = () => {
 
     return (
         <Flex direction="column">
-            <CustomLoader visible={isFetching} className={classes.loader} />
             <Flex className={classes.root}>
                 <Text className={classes.title} variant="gradient">
                     <FormattedMessage id={locales.title} />

@@ -12,7 +12,6 @@ import { resolveUsers } from "src/shared/api/user/UserApiService"
 import { DEFAULT_DATE_FORMAT } from "src/shared/datetime/formats"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { getSpentTimeFromReport } from "src/shared/report/timeSpent"
-import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
 import { NO_PROGRAM_CODE, NO_PROJECT_CODE } from "src/shared/constants/Shared"
 import { Badge, useComputedColorScheme } from "@mantine/core"
@@ -581,7 +580,6 @@ export const ReportList = () => {
 
     return (
         <Flex direction="column">
-            <CustomLoader visible={isFetchingReports} className={classes.loader} />
             <Flex className={classes.root}>
                 <Text className={classes.title}>
                     <FormattedMessage id={locales.title} />

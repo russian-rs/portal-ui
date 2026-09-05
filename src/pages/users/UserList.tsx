@@ -27,7 +27,6 @@ import { UserMenu } from "src/pages/users/userMenu/UserMenu"
 import { UserApiService } from "src/shared/api/user/UserApiService"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { useProgramProjectFilter } from "src/shared/hooks/useProgramProjectFilter"
-import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { NO_PROGRAM_CODE, NO_PROJECT_CODE } from "src/shared/constants/Shared"
 import { notifications } from "@mantine/notifications"
 import { useIntl } from "react-intl"
@@ -467,7 +466,6 @@ export const UserList = () => {
 
     return (
         <Flex direction="column">
-            <CustomLoader visible={isFetching} className={classes.loader} />
             <Flex className={classes.root}>
                 <Title order={1} className={classes.title}>
                     <FormattedMessage id={locales.title} />

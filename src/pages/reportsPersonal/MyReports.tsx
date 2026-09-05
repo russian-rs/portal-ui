@@ -24,7 +24,6 @@ import { DEFAULT_DATE_FORMAT } from "src/shared/datetime/formats"
 import { setDocumentTitleByLocale } from "src/shared/hooks/useDocumentTitle"
 import { getReportStatusColor } from "src/shared/report/status"
 import { getSpentTimeFromReport } from "src/shared/report/timeSpent"
-import CustomLoader from "src/shared/ui/loading/CustomLoader"
 import { TextPropertyBox } from "src/shared/ui/propertyBox/TextPropertyBox"
 import { ReportStatusSelect } from "src/shared/ui/select/ReportStatusSelect"
 import { WeekPicker } from "src/shared/ui/weekPicker/WeekPicker"
@@ -233,7 +232,6 @@ export const MyReports = () => {
 
     return (
         <Flex direction="column" style={{ height: "100%" }}>
-            <CustomLoader visible={isFetching} className={classes.loader} />
             <Flex className={classes.root} ref={listStartRef}>
                 <Flex className={classes.header} align="center">
                     <div>
