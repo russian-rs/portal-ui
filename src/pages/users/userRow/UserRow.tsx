@@ -118,7 +118,7 @@ export const UserRow = ({
                         name={user.fullName}
                         className={classes.avatar}
                     />
-                    <Flex direction="column">
+                    <Flex direction="column" miw={0}>
                         <Text truncate="end">{user.fullName}</Text>
                         <Text size="sm" c="dimmed" truncate="end">
                             {user.email}

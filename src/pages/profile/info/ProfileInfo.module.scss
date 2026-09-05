@@ -16,7 +16,9 @@
 
 .userName {
     margin-top: var(--mantine-spacing-md);
-    font-size: 2rem;
+    font-size: clamp(26px, 2.5vw, 32px);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
     font-weight: bold;
 }
 

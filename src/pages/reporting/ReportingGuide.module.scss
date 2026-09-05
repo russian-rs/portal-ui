@@ -13,7 +13,9 @@
 
     & {
         @include s.glass;
-        margin-block: 20px;
+        @include s.prose;
+        width: calc(100% - 2 * var(--portal-page-padding));
+        margin: var(--portal-page-padding);
     }
 }
 

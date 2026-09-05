@@ -27,6 +27,7 @@ $table-width: 100%;
 }
 
 .avatar {
+    flex-shrink: 0;
     &:hover {
         cursor: pointer;
     }
@@ -120,6 +121,7 @@ $table-width: 100%;
 }
 
 .menuWrapper {
+    flex-shrink: 0;
     border-radius: 4px;
     padding: 2px;
     transition: background-color 0.15s ease;

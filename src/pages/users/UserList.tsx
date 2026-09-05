@@ -381,11 +381,11 @@ export const UserList = () => {
             >
                 <Flex align="center" columnGap={12}>
                     <Avatar size={44} src={user.avatar?.link} name={user.fullName} className={classes.avatar} />
-                    <Flex direction="column" style={{ flex: 1 }}>
-                        <Text fw={500} truncate="end">
+                    <Flex direction="column" style={{ flex: 1, minWidth: 0 }}>
+                        <Text fw={500} style={{ overflowWrap: "anywhere" }}>
                             {user.fullName}
                         </Text>
-                        <Text size="sm" c="dimmed" truncate="end">
+                        <Text size="sm" c="dimmed" truncate="end" title={user.email}>
                             {user.email}
                         </Text>
                     </Flex>

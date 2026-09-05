@@ -310,7 +310,7 @@ export const ApplicationView = () => {
                         />
                     )}
                 </Flex>
-                <Flex gap="md" mt={16} direction="column" className={classes.controls}>
+                <Flex gap="md" direction="column" className={classes.controls}>
                     <ApplicationAssigneeSelect application={application} disabled={isUpdating} />
                     <PropertyBox
                         align="start"
@@ -360,8 +360,7 @@ export const ApplicationView = () => {
                         <FormattedMessage id={locales.contractDownload} />
                     </Button>
                     <Button
-                        variant="gradient"
-                        gradient={{ from: "#00FF95", to: "#5AB08C" }}
+                        variant="light"
                         rightSection={<IconListCheck size={15} />}
                         disabled={application.contract == null}
                         className={classes.questionnaireGenerate}
@@ -372,8 +371,7 @@ export const ApplicationView = () => {
                         <FormattedMessage id={locales.questionnaireDownload} />
                     </Button>
                     <Button
-                        variant="gradient"
-                        gradient={{ from: "#FF7E5F", to: "#FEB47B" }}
+                        variant="light"
                         rightSection={<IconMailFilled size={15} />}
                         disabled={application.contract == null}
                         className={classes.envelopGenerate}
@@ -392,8 +390,6 @@ export const ApplicationView = () => {
                         <FormattedMessage id="pages.profile.buttons.edit" />
                     </Button>
                 </Flex>
-
-                <Divider className={classes.divider} />
 
                 <Flex className={classes.notes} direction="column" gap="md">
                     <Text fw="bold" size="lg">

@@ -247,7 +247,7 @@ export const MyReports = () => {
                             <FormattedMessage id="design.reportsSubtitle" />
                         </Text>
                     </div>
-                    <Flex direction="row" gap={8} wrap="wrap" align="flex-end">
+                    <Flex className={classes.headerActions} direction="row" gap={8} wrap="wrap" align="flex-end">
                         <Button
                             className={classes.newReportButton}
                             variant="filled"

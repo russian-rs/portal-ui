@@ -8,7 +8,8 @@
 
     & {
         @include s.glass;
-        margin-block: 20px;
+        width: calc(100% - 2 * var(--portal-page-padding));
+        margin: var(--portal-page-padding);
     }
 }
 
@@ -17,6 +18,7 @@
 }
 
 .markdown {
+    @include s.prose;
     display: block;
     width: 100%;
 
@@ -38,7 +40,9 @@
     }
 
     :global(p.img-row > img) {
-        width: 49%;
+        width: 0;
+        flex: 1;
+        min-width: 0;
         max-width: 49%;
         margin: 0;
     }
@@ -57,12 +61,6 @@
     :global(.warn) {
         color: #d7263d;
         font-weight: 700;
-    }
-
-    :global(h1),
-    :global(h2),
-    :global(h3) {
-        margin-top: 1.5rem;
     }
 
     :global(p) {

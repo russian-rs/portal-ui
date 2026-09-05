@@ -11,6 +11,9 @@
     --portal-shadow: 0 8px 32px -16px rgba(31, 71, 76, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.7);
     --portal-radius: 24px;
     --portal-page-padding: clamp(20px, 3vw, 44px);
+}
+
+:root[data-mantine-color-scheme] {
     --mantine-color-body: var(--portal-bg);
     --mantine-color-text: var(--portal-ink);
     --mantine-color-dimmed: var(--portal-muted);
@@ -105,6 +108,10 @@ body {
 .mantine-Drawer-header {
     background: var(--portal-solid);
     border-bottom: 1px solid var(--portal-border);
+}
+.mantine-Modal-body,
+.mantine-Drawer-body {
+    padding-top: 16px;
 }
 .mantine-Modal-title,
 .mantine-Drawer-title {
@@ -229,9 +236,10 @@ body {
     }
     .mantine-Input-input {
         font-size: 16px;
+        min-height: 42px;
     }
 }
 
 .mantine-Text-root[data-variant="gradient"] {
-    --text-gradient: linear-gradient(110deg, var(--portal-accent), light-dark(#3d687f, #bdd7ed));
+    background-image: linear-gradient(110deg, var(--portal-accent), light-dark(#3d687f, #bdd7ed));
 }

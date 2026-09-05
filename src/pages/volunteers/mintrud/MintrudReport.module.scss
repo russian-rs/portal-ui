@@ -3,10 +3,10 @@
 $table-width: 100%;
 
 .root {
-    @include s.page;
+    width: 100%;
+    min-width: 0;
     flex-direction: column;
     gap: 24px;
-    overflow-x: auto;
 }
 
 .loader {
@@ -15,16 +15,46 @@ $table-width: 100%;
 }
 
 .title {
-    @include s.title;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--portal-ink);
 }
 
 .chartTitle {
-    font-size: small;
-    font-weight: bolder;
+    font-size: 14px;
+    line-height: 1.5;
+    font-weight: 600;
     text-align: center;
+    min-height: 42px;
+}
 
-    @media (max-width: $mantine-breakpoint-md) {
-        font-size: x-small;
-        text-align: center;
+.chartGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 20px;
+}
+
+.chartCard {
+    @include s.glass;
+    min-width: 0;
+    padding: 20px 12px;
+    color: var(--portal-muted);
+}
+
+.table {
+    table-layout: fixed;
+    th:first-child { width: 50%; }
+    th, td { overflow-wrap: anywhere; }
+    @media (max-width: 36em) {
+        th:first-child { width: 44%; }
+        th, td { padding-inline: 10px; font-size: 12px; }
     }
+}
+
+.totals {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    max-width: 640px;
 }

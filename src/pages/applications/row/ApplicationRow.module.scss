@@ -92,15 +92,19 @@
     gap: 3rem;
     align-items: center;
     min-height: 40px;
+    > * {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
 
     @media (max-width: $mantine-breakpoint-sm) {
-        grid-template-columns: 7rem 1fr;
+        grid-template-columns: 6rem minmax(0, 1fr);
         gap: 1rem;
         min-height: 36px;
     }
 
     @media (min-width: $mantine-breakpoint-sm) and (max-width: $mantine-breakpoint-md) {
-        grid-template-columns: 8rem 1fr;
+        grid-template-columns: 8rem minmax(0, 1fr);
         gap: 2rem;
         min-height: 42px;
     }

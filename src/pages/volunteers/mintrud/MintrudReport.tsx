@@ -94,7 +94,7 @@ export default function MintrudReport() {
             <CustomLoader visible={isFetching} className={classes.loader} />
 
             <Flex className={classes.root} direction="column" gap={16}>
-                <Text className={classes.title} variant="gradient">
+                <Text className={classes.title}>
                     <FormattedMessage id={locales.titleMintrud} />
                 </Text>
 
@@ -117,7 +117,7 @@ export default function MintrudReport() {
                 </Group>
 
                 {/* Итоги */}
-                <Group mt="xs">
+                <div className={classes.totals}>
                     <Card withBorder radius="md" p="md">
                         <Text size="xs" c="dimmed">
                             <FormattedMessage id={locales.totalVolunteers} />
@@ -135,13 +135,13 @@ export default function MintrudReport() {
                             {fmtHours(totalHours)}
                         </Text>
                     </Card>
-                </Group>
+                </div>
 
                 {/* По программам */}
                 <Text mt="md" fw={600}>
                     <FormattedMessage id={locales.programStats} />
                 </Text>
-                <Table withColumnBorders striped highlightOnHover>
+                <Table className={classes.table} withColumnBorders striped highlightOnHover>
                     <Table.Thead>
                         <Table.Tr>
                             <Table.Th>

@@ -12,7 +12,7 @@ export default function VolunteerReports() {
     return (
         <Flex direction="column">
             <Flex className={classes.root}>
-                <Text className={classes.title} variant="gradient">
+                <Text className={classes.title}>
                     <FormattedMessage id={locales.titleReports} />
                 </Text>
                 <Flex className={classes.reportContainer}>
