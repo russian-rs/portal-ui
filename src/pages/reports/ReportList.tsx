@@ -156,13 +156,11 @@ export const ReportList = () => {
 
         if (newProject && newProject !== NO_PROJECT_CODE) {
             const project =
-                visibleProjects.find((p) => p.code === newProject) ??
-                projects.find((p) => p.code === newProject)
+                visibleProjects.find((p) => p.code === newProject) ?? projects.find((p) => p.code === newProject)
 
             if (project) {
                 const owningProgramCode =
-                    project.programCode ??
-                    programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
+                    project.programCode ?? programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
 
                 if (owningProgramCode) {
                     nextProgram = owningProgramCode.toUpperCase()
@@ -177,12 +175,7 @@ export const ReportList = () => {
             setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
             updateUrlParams(filter, nextProgram, newProject, 0)
         } else {
-            updateUrlParams(
-                filter,
-                nextProgram,
-                newProject,
-                pageRequest.pageNumber || 0
-            )
+            updateUrlParams(filter, nextProgram, newProject, pageRequest.pageNumber || 0)
         }
     }
 
@@ -579,8 +572,8 @@ export const ReportList = () => {
     })
 
     return (
-        <Flex direction="column">
-            <Flex className={classes.root}>
+        <Flex className={classes.root}>
+            <Flex direction="column" gap={24} miw={0}>
                 <Text className={classes.title}>
                     <FormattedMessage id={locales.title} />
                 </Text>
@@ -638,12 +631,7 @@ export const ReportList = () => {
                                                     setSelectedProject(null)
                                                     setPageRequest({ ...pageRequest, pageNumber: 0 })
 
-                                                    updateUrlParams(
-                                                        filter,
-                                                        newProgram,
-                                                        null,
-                                                        0
-                                                    )
+                                                    updateUrlParams(filter, newProgram, null, 0)
                                                 } else {
                                                     updateUrlParams(
                                                         filter,
@@ -722,12 +710,7 @@ export const ReportList = () => {
                                             setSelectedProject(null)
                                             setPageRequest({ ...pageRequest, pageNumber: 0 })
 
-                                            updateUrlParams(
-                                                filter,
-                                                newProgram,
-                                                null,
-                                                0
-                                            )
+                                            updateUrlParams(filter, newProgram, null, 0)
                                         } else {
                                             updateUrlParams(
                                                 filter,

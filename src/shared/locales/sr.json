@@ -637,7 +637,7 @@
         "applications": {
             "assignee": "Odgovorna osoba",
             "unassigned": "Nije dodeljeno",
-            "notesCount": "Beleške: {count}",
+            "notesCount": "Komentari: {count}",
             "unassignedApplications": "Nedodeljene",
             "allAssignees": "Sve odgovorne osobe",
             "clearAssigneeFilter": "Poništi filter odgovorne osobe",
@@ -662,7 +662,8 @@
             "program-project-required": "Pre završetka izaberite program i projekat u prijavi",
             "contract-required": "Da biste završili, morate navesti datume ugovora",
             "showCompleted": "Prikaži završene",
-            "add-note": "Dodaj zapis",
+            "add-note": "Dodaj komentar",
+            "delete-comment": "Obriši komentar",
             "menu": {
                 "actions": "Radnje za prijavu",
                 "view": "Pogledaj",
@@ -712,7 +713,7 @@
                     "title": "Razlog odbijanja",
                     "description": "Molimo navedite razlog odbijanja"
                 },
-                "notes": "Zapisi",
+                "notes": "Komentari",
                 "program": "Program",
                 "project": "Projekat"
             },

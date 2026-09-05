@@ -1,6 +1,6 @@
 import { Box, Card, Flex, Table, Text, Tooltip, UnstyledButton } from "@mantine/core"
 import { ApplicationDto, ContractDto, UserInfoDto } from "@russian-rs/portal-api-axios"
-import { IconNotes } from "@tabler/icons-react"
+import { IconMessageCircle } from "@tabler/icons-react"
 import dayjs from "dayjs"
 import { MouseEvent, ReactNode } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -14,6 +14,7 @@ import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
 import { ApplicationStatus } from "src/shared/user/applications"
 import classes from "./ApplicationRow.module.scss"
+import { ApplicationStatusReason } from "./ApplicationStatusReason"
 
 interface ApplicationRowProps {
     applicationDto: ApplicationDto
@@ -34,7 +35,7 @@ export const ApplicationRow = ({
     const applicationPath = `/application/${application.id}`
     const notesCount = application.notes?.length || 0
     const notesLabel = intl.formatMessage(
-        { id: "pages.applications.notesCount", defaultMessage: "Заметки: {count}" },
+        { id: "pages.applications.notesCount", defaultMessage: "Комментарии: {count}" },
         { count: notesCount }
     )
     const notesCounter = notesCount > 0 && (
@@ -45,7 +46,7 @@ export const ApplicationRow = ({
                 className={classes.notesCounter}
                 aria-label={notesLabel}
             >
-                <IconNotes size={15} aria-hidden="true" />
+                <IconMessageCircle size={17} stroke={1.6} aria-hidden="true" />
                 <span>{notesCount > 99 ? "99+" : notesCount}</span>
             </UnstyledButton>
         </Tooltip>
@@ -82,6 +83,27 @@ export const ApplicationRow = ({
     const onContractChanged = (contract: ContractDto) => {
         updateApplication({ id: application.id, contract })
     }
+
+    const statusReason =
+        application.status === ApplicationStatus.PAUSED
+            ? application.comment
+            : application.status === ApplicationStatus.DENY
+              ? application.refuseReason
+              : undefined
+    const reasonLabel = intl.formatMessage({
+        id:
+            application.status === ApplicationStatus.PAUSED
+                ? "pages.applications.view.pause-reason"
+                : "pages.applications.view.refuse-reason",
+    })
+    const statusControl = (
+        <div className={classes.statusControl} data-row-action>
+            <div className={classes.statusField}>
+                <ApplicationStatusSelect application={application} disabled={isUpdating} onChange={onStatusUpdate} />
+            </div>
+            {statusReason?.trim() && <ApplicationStatusReason label={reasonLabel} reason={statusReason} />}
+        </div>
+    )
 
     if (isMobile) {
         return (
@@ -139,20 +161,7 @@ export const ApplicationRow = ({
                             <Text size="xs" c="dimmed" className={classes.mobileLabel}>
                                 <FormattedMessage id="pages.applications.status" />:
                             </Text>
-                            <div data-row-action>
-                                <ApplicationStatusSelect
-                                    application={application}
-                                    className={classes.mobileStatusSelect}
-                                    disabled={isUpdating}
-                                    onChange={onStatusUpdate}
-                                />
-
-                                {application.status === ApplicationStatus.PAUSED && (application as any).comment && (
-                                    <Text size="xs" c="dimmed" mt={4} style={{ whiteSpace: "pre-wrap" }}>
-                                        {(application as any).comment}
-                                    </Text>
-                                )}
-                            </div>
+                            {statusControl}
                         </div>
                     </Box>
                 </Flex>
@@ -192,23 +201,7 @@ export const ApplicationRow = ({
                     <ContractDate application={application} onChange={onContractChanged} disabled={isUpdating} />
                 </Box>
             </Table.Td>
-            <Table.Td className={classes.statusSelect}>
-                <div data-row-action>
-                    <ApplicationStatusSelect
-                        application={application}
-                        className={classes.statusSelect}
-                        disabled={isUpdating}
-                        onChange={onStatusUpdate}
-                        showInlineReason={false}
-                    />
-
-                    {application.status === ApplicationStatus.PAUSED && (application as any).comment && (
-                        <Text size="xs" c="dimmed" mt={4} style={{ whiteSpace: "pre-wrap" }}>
-                            {(application as any).comment}
-                        </Text>
-                    )}
-                </div>
-            </Table.Td>
+            <Table.Td>{statusControl}</Table.Td>
             <Table.Td>
                 <Flex className={classes.rowActions}>
                     {notesCounter}

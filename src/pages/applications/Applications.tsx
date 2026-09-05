@@ -166,8 +166,8 @@ export const Applications = () => {
     ))
 
     return (
-        <Flex direction="column">
-            <Flex className={classes.root}>
+        <Flex className={classes.root}>
+            <Flex direction="column" gap={24} miw={0}>
                 <Text className={classes.title} variant="gradient">
                     <FormattedMessage id={locales.title} />
                 </Text>

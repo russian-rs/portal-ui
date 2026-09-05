@@ -1,7 +1,7 @@
 import { Combobox, Flex, InputBase, Text, Tooltip, useCombobox } from "@mantine/core"
 import { ApplicationDto } from "@russian-rs/portal-api-axios"
 import { ReactNode, useState } from "react"
-import { FormattedMessage } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 import { DenyReasonModal } from "src/shared/ui/denyReasonModal/DenyReasonModal"
 import { PauseReasonModal } from "src/shared/ui/pauseReasonModal/PauseReasonModal"
 import { ApplicationStatus, getApplicationStatusColor, getApplicationStatusIcon } from "src/shared/user/applications"
@@ -18,6 +18,7 @@ interface ApplicationStatusSelectProps {
 }
 
 export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => {
+    const intl = useIntl()
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
     })
@@ -122,7 +123,11 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
                         rightSectionPointerEvents={value === null ? "none" : "all"}
                         rightSection={<Combobox.Chevron />}
                     >
-                        <Text size="sm">
+                        <Text
+                            size="sm"
+                            truncate="end"
+                            title={intl.formatMessage({ id: `common.application-status.${value}` })}
+                        >
                             <FormattedMessage id={`common.application-status.${value}`} />
                         </Text>
                     </InputBase>

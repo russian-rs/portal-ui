@@ -637,7 +637,7 @@
         "applications": {
             "assignee": "Assignee",
             "unassigned": "Unassigned",
-            "notesCount": "Notes: {count}",
+            "notesCount": "Comments: {count}",
             "unassignedApplications": "Unassigned",
             "allAssignees": "All assignees",
             "clearAssigneeFilter": "Clear assignee filter",
@@ -662,7 +662,8 @@
             "program-project-required": "Select a program and project in the application form before completing it",
             "contract-required": "Contract dates must be specified to complete",
             "showCompleted": "Show completed",
-            "add-note": "Add note",
+            "add-note": "Add comment",
+            "delete-comment": "Delete comment",
             "menu": {
                 "actions": "Application actions",
                 "view": "View",
@@ -712,7 +713,7 @@
                     "title": "Reason for refusal",
                     "description": "Please specify the reason for refusal"
                 },
-                "notes": "Notes",
+                "notes": "Comments",
                 "program": "Program",
                 "project": "Project"
             },

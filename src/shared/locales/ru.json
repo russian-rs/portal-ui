@@ -637,7 +637,7 @@
         "applications": {
             "assignee": "Ответственный",
             "unassigned": "Не назначен",
-            "notesCount": "Заметки: {count}",
+            "notesCount": "Комментарии: {count}",
             "unassignedApplications": "Не назначенные",
             "allAssignees": "Все ответственные",
             "clearAssigneeFilter": "Сбросить фильтр по ответственному",
@@ -662,7 +662,8 @@
             "program-project-required": "Для завершения укажите программу и проект в анкете заявки",
             "contract-required": "Для завершения необходимо указать даты контракта",
             "showCompleted": "Показать завершенные",
-            "add-note": "Добавить заметку",
+            "add-note": "Добавить комментарий",
+            "delete-comment": "Удалить комментарий",
             "menu": {
                 "actions": "Действия с заявкой",
                 "view": "Посмотреть",
@@ -712,7 +713,7 @@
                     "title": "Причина отказа",
                     "description": "Пожалуйста, укажите причину отказа"
                 },
-                "notes": "Заметки",
+                "notes": "Комментарии",
                 "program": "Программа",
                 "project": "Проект"
             },

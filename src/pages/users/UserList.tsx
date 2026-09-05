@@ -465,8 +465,8 @@ export const UserList = () => {
     const selectedUser = selectedUserId ? content.find((u) => u.id === selectedUserId) : null
 
     return (
-        <Flex direction="column">
-            <Flex className={classes.root}>
+        <Flex className={classes.root}>
+            <Flex direction="column" gap={24} miw={0}>
                 <Title order={1} className={classes.title}>
                     <FormattedMessage id={locales.title} />
                 </Title>

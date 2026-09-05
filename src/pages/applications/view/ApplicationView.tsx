@@ -48,6 +48,7 @@ import { ApplicationStatus } from "src/shared/user/applications"
 import { hasPermission } from "src/shared/user/roles"
 import { getLocalizedName } from "src/shared/utils/getLocalName"
 import { ApplicationAssigneeSelect } from "../assignee/ApplicationAssigneeSelect"
+import { ApplicationStatusReason } from "../row/ApplicationStatusReason"
 import { ApplicationEditDrawer } from "./ApplicationEditDrawer"
 import classes from "./ApplicationView.module.scss"
 import { locales } from "./lib/locales"
@@ -129,6 +130,13 @@ export const ApplicationView = () => {
         refetchApplication()
     }
 
+    const statusReason =
+        application.status === ApplicationStatus.PAUSED
+            ? application.comment
+            : application.status === ApplicationStatus.DENY
+              ? application.refuseReason
+              : undefined
+
     return (
         <Flex className={classes.root}>
             <Text className={classes.title}>
@@ -139,7 +147,7 @@ export const ApplicationView = () => {
                     <Text className={classes.name} variant="gradient">
                         {application.name + (application.patronymic ? ` (${application.patronymic})` : "")}
                     </Text>
-                    <Flex columnGap="xl">
+                    <Flex className={classes.fields}>
                         <TextPropertyBox
                             name={locales.createdAt}
                             value={dayjs(application.created).format("DD MMMM YYYY, HH:mm")}
@@ -310,110 +318,115 @@ export const ApplicationView = () => {
                         />
                     )}
                 </Flex>
-                <Flex gap="md" direction="column" className={classes.controls}>
-                    <ApplicationAssigneeSelect application={application} disabled={isUpdating} />
-                    <PropertyBox
-                        className={classes.controlField}
-                        align="start"
-                        name={locales.status}
-                        value={
-                            <Flex direction="column" gap={4}>
-                                <ApplicationStatusSelect
+                <Flex className={classes.sidebar} direction="column" gap={24}>
+                    <Flex gap="md" direction="column" className={classes.controls}>
+                        <ApplicationAssigneeSelect application={application} disabled={isUpdating} />
+                        <PropertyBox
+                            className={classes.controlField}
+                            align="start"
+                            name={locales.status}
+                            value={
+                                <Flex className={classes.statusControl}>
+                                    <div className={classes.statusField}>
+                                        <ApplicationStatusSelect
+                                            application={application}
+                                            className={classes.statusSelect}
+                                            onChange={onStatusChange}
+                                            disabled={isUpdating}
+                                            showInlineReason={false}
+                                        />
+                                    </div>
+                                    {statusReason?.trim() && (
+                                        <ApplicationStatusReason
+                                            label={intl.formatMessage({
+                                                id:
+                                                    application.status === ApplicationStatus.PAUSED
+                                                        ? locales.pauseReason
+                                                        : locales.refuseReason,
+                                            })}
+                                            reason={statusReason}
+                                        />
+                                    )}
+                                </Flex>
+                            }
+                        />
+                        <PropertyBox
+                            className={classes.controlField}
+                            name={locales.contractStart}
+                            value={
+                                <ContractDate
                                     application={application}
-                                    className={classes.statusSelect}
-                                    onChange={onStatusChange}
+                                    onChange={onContractChanged}
                                     disabled={isUpdating}
-                                    showInlineReason={false}
+                                    className={classes.contractDate}
                                 />
-                                {application.status === ApplicationStatus.PAUSED && application.comment && (
-                                    <Text size="sm" c="dimmed" className={classes.pauseReasonBlock}>
-                                        <FormattedMessage id={locales.pauseReason} />: {application.comment}
-                                    </Text>
-                                )}
-                                {application.status === ApplicationStatus.DENY && !!application.refuseReason && (
-                                    <Text size="sm" c="dimmed" className={classes.pauseReasonBlock}>
-                                        <FormattedMessage id={locales.refuseReason} />: {application.refuseReason}
-                                    </Text>
-                                )}
+                            }
+                        />
+                        <Button
+                            variant="gradient"
+                            rightSection={<IconContract size={14} />}
+                            disabled={application.contract == null}
+                            className={classes.contractGenerate}
+                            onClick={() => {
+                                generateContractPdf(application, officialGroup)
+                            }}
+                        >
+                            <FormattedMessage id={locales.contractDownload} />
+                        </Button>
+                        <Button
+                            variant="light"
+                            rightSection={<IconListCheck size={15} />}
+                            disabled={application.contract == null}
+                            className={classes.questionnaireGenerate}
+                            onClick={() => {
+                                generateQuestionnairePdf(application)
+                            }}
+                        >
+                            <FormattedMessage id={locales.questionnaireDownload} />
+                        </Button>
+                        <Button
+                            variant="light"
+                            rightSection={<IconMailFilled size={15} />}
+                            disabled={application.contract == null}
+                            className={classes.envelopGenerate}
+                            onClick={() => {
+                                generateEnvelopPdf(application)
+                            }}
+                        >
+                            <FormattedMessage id={locales.envelopDownload} />
+                        </Button>
+                        <Button
+                            variant="outline"
+                            rightSection={<IconPencil size={14} />}
+                            onClick={openDrawer}
+                            disabled={isUpdating || application.status === ApplicationStatus.DONE}
+                        >
+                            <FormattedMessage id="pages.profile.buttons.edit" />
+                        </Button>
+                    </Flex>
+
+                    <Flex className={classes.notes} direction="column" gap="md">
+                        <Text fw="bold" size="lg">
+                            <FormattedMessage id={locales.notes} />
+                        </Text>
+
+                        <AddApplicationNote applicationId={application.id} onNoteAdded={onNoteAdded} />
+
+                        {application.notes && application.notes.length > 0 && (
+                            <Flex direction="column" gap={24}>
+                                {application.notes
+                                    .sort((n1: any, n2: any) => dayjs(n2.createTime).diff(dayjs(n1.createTime)))
+                                    .map((note: any) => (
+                                        <ApplicationNote
+                                            key={note.id}
+                                            note={note}
+                                            userInfo={users[note.createdBy]}
+                                            onNoteDeleted={onNoteDeleted}
+                                        />
+                                    ))}
                             </Flex>
-                        }
-                    />
-                    <PropertyBox
-                        className={classes.controlField}
-                        name={locales.contractStart}
-                        value={
-                            <ContractDate
-                                application={application}
-                                onChange={onContractChanged}
-                                disabled={isUpdating}
-                                className={classes.contractDate}
-                            />
-                        }
-                    />
-                    <Button
-                        variant="gradient"
-                        rightSection={<IconContract size={14} />}
-                        disabled={application.contract == null}
-                        className={classes.contractGenerate}
-                        onClick={() => {
-                            generateContractPdf(application, officialGroup)
-                        }}
-                    >
-                        <FormattedMessage id={locales.contractDownload} />
-                    </Button>
-                    <Button
-                        variant="light"
-                        rightSection={<IconListCheck size={15} />}
-                        disabled={application.contract == null}
-                        className={classes.questionnaireGenerate}
-                        onClick={() => {
-                            generateQuestionnairePdf(application)
-                        }}
-                    >
-                        <FormattedMessage id={locales.questionnaireDownload} />
-                    </Button>
-                    <Button
-                        variant="light"
-                        rightSection={<IconMailFilled size={15} />}
-                        disabled={application.contract == null}
-                        className={classes.envelopGenerate}
-                        onClick={() => {
-                            generateEnvelopPdf(application)
-                        }}
-                    >
-                        <FormattedMessage id={locales.envelopDownload} />
-                    </Button>
-                    <Button
-                        variant="outline"
-                        rightSection={<IconPencil size={14} />}
-                        onClick={openDrawer}
-                        disabled={isUpdating || application.status === ApplicationStatus.DONE}
-                    >
-                        <FormattedMessage id="pages.profile.buttons.edit" />
-                    </Button>
-                </Flex>
-
-                <Flex className={classes.notes} direction="column" gap="md">
-                    <Text fw="bold" size="lg">
-                        <FormattedMessage id={locales.notes} />
-                    </Text>
-
-                    <AddApplicationNote applicationId={application.id} onNoteAdded={onNoteAdded} />
-
-                    {application.notes && application.notes.length > 0 && (
-                        <Flex direction="column" gap="sm">
-                            {application.notes
-                                .sort((n1: any, n2: any) => dayjs(n2.createTime).diff(dayjs(n1.createTime)))
-                                .map((note: any) => (
-                                    <ApplicationNote
-                                        key={note.id}
-                                        note={note}
-                                        userInfo={users[note.createdBy]}
-                                        onNoteDeleted={onNoteDeleted}
-                                    />
-                                ))}
-                        </Flex>
-                    )}
+                        )}
+                    </Flex>
                 </Flex>
             </Flex>
 
