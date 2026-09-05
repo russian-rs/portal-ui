@@ -313,6 +313,7 @@ export const ApplicationView = () => {
                 <Flex gap="md" direction="column" className={classes.controls}>
                     <ApplicationAssigneeSelect application={application} disabled={isUpdating} />
                     <PropertyBox
+                        className={classes.controlField}
                         align="start"
                         name={locales.status}
                         value={
@@ -338,6 +339,7 @@ export const ApplicationView = () => {
                         }
                     />
                     <PropertyBox
+                        className={classes.controlField}
                         name={locales.contractStart}
                         value={
                             <ContractDate

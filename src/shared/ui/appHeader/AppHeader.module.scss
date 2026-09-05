@@ -49,7 +49,14 @@
 }
 
 @media (max-width: 22.5em) {
-    .rootGroup { padding-inline: 10px; gap: 8px; }
-    .logo { width: 44px; }
-    .actions { gap: 4px; }
+    .rootGroup {
+        padding-inline: 10px;
+        gap: 8px;
+    }
+    .logo {
+        width: 44px;
+    }
+    .actions {
+        gap: 4px;
+    }
 }

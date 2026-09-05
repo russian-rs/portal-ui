@@ -2,7 +2,8 @@ import { Button, createTheme, DEFAULT_THEME, Input, MantineColor, Modal, Paper }
 
 export const theme = createTheme({
     fontFamily: "Geologica, sans-serif",
-    luminanceThreshold: 0.5,
+    luminanceThreshold: 0.3,
+    autoContrast: true,
     focusRing: "auto",
     defaultRadius: "md",
     primaryColor: "ocean",

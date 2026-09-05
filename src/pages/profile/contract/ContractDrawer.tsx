@@ -151,7 +151,7 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
                                 style={{
                                     position: "relative",
                                     padding: "16px",
-                                    border: "1px solid var(--mantine-color-gray-3)",
+                                    border: "1px solid var(--portal-border)",
                                     borderRadius: "var(--mantine-radius-sm)",
                                 }}
                             >
@@ -223,7 +223,7 @@ export const ContractDrawer = ({ opened, onClose, onSuccess, userId, contracts }
                             justify="center"
                             style={{
                                 padding: "32px",
-                                border: "1px dashed var(--mantine-color-gray-3)",
+                                border: "1px dashed var(--portal-border)",
                                 borderRadius: "var(--mantine-radius-sm)",
                             }}
                         >

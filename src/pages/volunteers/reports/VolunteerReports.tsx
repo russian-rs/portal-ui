@@ -16,7 +16,7 @@ export default function VolunteerReports() {
                     <FormattedMessage id={locales.titleReports} />
                 </Text>
                 <Flex className={classes.reportContainer}>
-                    <MintrudReport/>
+                    <MintrudReport />
                 </Flex>
             </Flex>
         </Flex>

@@ -131,7 +131,7 @@ export const CreateUser = ({
         <>
             <Drawer opened={opened} onClose={close} title={<FormattedMessage id={locales.newUser} />}>
                 <Flex direction="column" rowGap={8}>
-                    <Flex columnGap={8}>
+                    <Flex className={classes.fieldRow} columnGap={8}>
                         <TextInput
                             withAsterisk
                             className={classes.name}
@@ -164,7 +164,7 @@ export const CreateUser = ({
                     <Text c="dimmed" size="sm" mt="md">
                         <FormattedMessage id={locales.contractInfo} />
                     </Text>
-                    <Flex columnGap={8}>
+                    <Flex className={classes.fieldRow} columnGap={8}>
                         <DateInput
                             withAsterisk
                             valueFormat="DD MMM YYYY"

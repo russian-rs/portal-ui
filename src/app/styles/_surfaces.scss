@@ -36,12 +36,37 @@
         margin: 32px 0 16px;
         letter-spacing: -0.025em;
     }
-    h3 { font-size: 18px; line-height: 1.4; margin: 24px 0 12px; }
-    p { margin: 0 0 16px; }
-    ul, ol { padding-left: 24px; margin: 0 0 20px; }
-    li { margin-block: 6px; }
-    a { color: var(--portal-accent); text-underline-offset: 3px; }
-    hr { border: 0; border-top: 1px solid var(--portal-border); margin-block: 28px; }
-    img { max-width: 100%; height: auto; border-radius: 16px; }
-    > :last-child { margin-bottom: 0; }
+    h3 {
+        font-size: 18px;
+        line-height: 1.4;
+        margin: 24px 0 12px;
+    }
+    p {
+        margin: 0 0 16px;
+    }
+    ul,
+    ol {
+        padding-left: 24px;
+        margin: 0 0 20px;
+    }
+    li {
+        margin-block: 6px;
+    }
+    a {
+        color: var(--portal-accent);
+        text-underline-offset: 3px;
+    }
+    hr {
+        border: 0;
+        border-top: 1px solid var(--portal-border);
+        margin-block: 28px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 16px;
+    }
+    > :last-child {
+        margin-bottom: 0;
+    }
 }

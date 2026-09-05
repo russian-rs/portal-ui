@@ -115,8 +115,8 @@ $width: 36rem;
 }
 
 .controls > div,
-.controls > div > div,
-.controls > div > div > div {
+.controlField > div,
+.controlField > div > div {
     width: 100%;
     min-width: 0;
 }

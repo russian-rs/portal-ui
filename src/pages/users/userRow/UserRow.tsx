@@ -112,12 +112,7 @@ export const UserRow = ({
         >
             <Table.Td>
                 <Flex columnGap={16} align="center" className={classes.columnName}>
-                    <Avatar
-                        size={36}
-                        src={user.avatar?.link}
-                        name={user.fullName}
-                        className={classes.avatar}
-                    />
+                    <Avatar size={36} src={user.avatar?.link} name={user.fullName} className={classes.avatar} />
                     <Flex direction="column" miw={0}>
                         <Text truncate="end">{user.fullName}</Text>
                         <Text size="sm" c="dimmed" truncate="end">

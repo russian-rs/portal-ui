@@ -44,11 +44,22 @@ $table-width: 100%;
 
 .table {
     table-layout: fixed;
-    th:first-child { width: 50%; }
-    th, td { overflow-wrap: anywhere; }
+    th:first-child {
+        width: 50%;
+    }
+    th,
+    td {
+        overflow-wrap: anywhere;
+    }
     @media (max-width: 36em) {
-        th:first-child { width: 44%; }
-        th, td { padding-inline: 10px; font-size: 12px; }
+        th:first-child {
+            width: 44%;
+        }
+        th,
+        td {
+            padding-inline: 10px;
+            font-size: 12px;
+        }
     }
 }
 

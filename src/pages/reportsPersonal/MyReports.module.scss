@@ -159,9 +159,16 @@
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         width: 100%;
-        > button { padding-inline: 10px; }
-        > div { min-width: 0; }
-        > div > button { width: 100%; padding-inline: 10px; }
+        > button {
+            padding-inline: 10px;
+        }
+        > div {
+            min-width: 0;
+        }
+        > div > button {
+            width: 100%;
+            padding-inline: 10px;
+        }
     }
     .root {
         gap: 24px;
