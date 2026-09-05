@@ -1,0 +1,237 @@
+:root {
+    --portal-bg: #edf3f3;
+    --portal-surface: rgba(255, 255, 255, 0.72);
+    --portal-solid: #fbfdfd;
+    --portal-subtle: rgba(226, 236, 237, 0.5);
+    --portal-border: rgba(109, 143, 148, 0.2);
+    --portal-ink: #19383e;
+    --portal-muted: #637c81;
+    --portal-accent: #117d79;
+    --portal-accent-soft: #d7efea;
+    --portal-shadow: 0 8px 32px -16px rgba(31, 71, 76, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    --portal-radius: 24px;
+    --portal-page-padding: clamp(20px, 3vw, 44px);
+    --mantine-color-body: var(--portal-bg);
+    --mantine-color-text: var(--portal-ink);
+    --mantine-color-dimmed: var(--portal-muted);
+}
+
+:root[data-mantine-color-scheme="dark"] {
+    --portal-bg: #101f25;
+    --portal-surface: rgba(28, 48, 55, 0.8);
+    --portal-solid: #1c3037;
+    --portal-subtle: rgba(61, 89, 98, 0.25);
+    --portal-border: rgba(150, 191, 196, 0.16);
+    --portal-ink: #e2eeee;
+    --portal-muted: #9bb4ba;
+    --portal-accent: #7ad6c7;
+    --portal-accent-soft: #244c4c;
+    --portal-shadow: 0 12px 40px -20px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(194, 230, 229, 0.04);
+}
+
+body {
+    background: var(--portal-bg);
+    background-image: radial-gradient(ellipse at 80% 0%, light-dark(#d2e9e4, #173e41) 0, transparent 45%),
+        radial-gradient(ellipse at 30% 90%, light-dark(#dfe5f1, #202d44) 0, transparent 50%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+    background: #a5ded1;
+    color: #143a3b;
+}
+*:focus-visible {
+    outline: 3px solid var(--portal-accent);
+    outline-offset: 4px;
+}
+
+.mantine-Title-root {
+    letter-spacing: -0.04em;
+    font-weight: 650;
+}
+.mantine-Input-input {
+    background: var(--portal-surface);
+    border-color: var(--portal-border);
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+    &:focus,
+    &:focus-within {
+        border-color: var(--portal-accent);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--portal-accent) 12%, transparent);
+    }
+}
+.mantine-InputWrapper-label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+.mantine-InputWrapper-description {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 7px;
+}
+.mantine-Button-root {
+    font-weight: 500;
+    transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        background 160ms ease;
+    &:not(:disabled):hover {
+        transform: translateY(-1px);
+    }
+}
+.mantine-ActionIcon-root {
+    transition:
+        background 160ms ease,
+        transform 160ms ease;
+}
+.mantine-Paper-root {
+    background: var(--portal-surface);
+    border-color: var(--portal-border);
+}
+.mantine-Card-root {
+    border-radius: var(--portal-radius);
+    box-shadow: var(--portal-shadow);
+}
+.mantine-Modal-content,
+.mantine-Drawer-content {
+    background: var(--portal-solid);
+    box-shadow: 0 24px 100px #081f3440;
+}
+.mantine-Modal-header,
+.mantine-Drawer-header {
+    background: var(--portal-solid);
+    border-bottom: 1px solid var(--portal-border);
+}
+.mantine-Modal-title,
+.mantine-Drawer-title {
+    font-weight: 600;
+}
+.mantine-Overlay-root {
+    backdrop-filter: blur(5px);
+}
+.mantine-Combobox-dropdown,
+.mantine-Menu-dropdown,
+.mantine-Popover-dropdown {
+    background: var(--portal-solid);
+    border: 1px solid var(--portal-border);
+    box-shadow: 0 16px 40px #122f3a1c;
+    border-radius: 16px;
+}
+.mantine-Combobox-option,
+.mantine-Menu-item {
+    border-radius: 9px;
+}
+.mantine-Badge-root {
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+}
+.mantine-Table-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--portal-border);
+    border-radius: 18px;
+    background: var(--portal-surface);
+    overflow: hidden;
+}
+.mantine-Table-th {
+    background: var(--portal-subtle);
+    color: var(--portal-muted);
+    font-size: 13px;
+    font-weight: 500;
+    padding-block: 15px;
+}
+.mantine-Table-td {
+    border-color: var(--portal-border);
+    padding-block: 14px;
+}
+.mantine-Table-tr {
+    transition: background 160ms ease;
+}
+.mantine-Tabs-list {
+    gap: 8px;
+    border-color: var(--portal-border);
+}
+.mantine-Tabs-tab {
+    border-radius: 10px 10px 0 0;
+    font-weight: 500;
+    padding: 14px 18px;
+}
+.mantine-Tabs-tab[data-active] {
+    background: var(--portal-accent-soft);
+}
+.mantine-Accordion-item {
+    border-color: var(--portal-border);
+}
+.mantine-Accordion-control {
+    border-radius: 12px;
+}
+.mantine-Dropzone-root {
+    background: var(--portal-subtle);
+    border: 1px dashed var(--portal-border);
+    border-radius: 16px;
+    transition:
+        border-color 160ms ease,
+        background 160ms ease;
+    &:hover {
+        border-color: var(--portal-accent);
+        background: var(--portal-accent-soft);
+    }
+}
+.mantine-Pagination-control {
+    border-color: var(--portal-border);
+    background: var(--portal-surface);
+}
+.mantine-Pagination-control[data-active] {
+    background: var(--portal-accent);
+    color: light-dark(white, #102e30);
+}
+.mantine-RichTextEditor-root {
+    border-radius: 16px;
+    border-color: var(--portal-border);
+    overflow: hidden;
+}
+.mantine-RichTextEditor-toolbar,
+.mantine-RichTextEditor-content {
+    background: var(--portal-surface);
+}
+
+@keyframes portal-enter {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+@media (max-width: 48em) {
+    :root {
+        --portal-page-padding: 18px;
+        --portal-radius: 20px;
+    }
+    .mantine-Input-input {
+        font-size: 16px;
+    }
+}
+
+.mantine-Text-root[data-variant="gradient"] {
+    --text-gradient: linear-gradient(110deg, var(--portal-accent), light-dark(#3d687f, #bdd7ed));
+}

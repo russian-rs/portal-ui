@@ -1,4 +1,22 @@
 {
+    "design": {
+        "portal": "Portal volontera",
+        "navigation": "Navigacija",
+        "workspace": "Vaš radni prostor",
+        "reportsSubtitle": "Svaki zadatak je deo nečeg većeg.",
+        "activity": "Vaša aktivnost",
+        "hoursRequired": "od {hours} č ove godine",
+        "reportHistory": "Istorija izveštaja",
+        "reportWeek": "Nedelja {week}",
+        "newReportNote": "Podelite šta ste postigli.",
+        "reportSummary": "Vaš izveštaj",
+        "tasksCount": "{count, plural, one {# zadatak} few {# zadatka} other {# zadataka}}",
+        "draftHint": "Nacrt se automatski čuva u ovom pregledaču.",
+        "editHint": "Izmene će biti sačuvane kada pošaljete izveštaj.",
+        "backToReports": "Nazad na moje izveštaje",
+        "taskDelete": "Obriši zadatak",
+        "reportGuide": "Kako napisati izveštaj"
+    },
     "common": {
         "filters": "Filteri",
         "reset-filters": "Resetujte filtere",

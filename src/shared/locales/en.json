@@ -1,4 +1,22 @@
 {
+    "design": {
+        "portal": "Volunteer portal",
+        "navigation": "Navigation",
+        "workspace": "Your workspace",
+        "reportsSubtitle": "Every task is part of something bigger.",
+        "activity": "Your activity",
+        "hoursRequired": "of {hours} h this year",
+        "reportHistory": "Report history",
+        "reportWeek": "Week {week}",
+        "newReportNote": "Share what you accomplished.",
+        "reportSummary": "Your report",
+        "tasksCount": "{count, plural, one {# task} other {# tasks}}",
+        "draftHint": "Your draft is saved automatically in this browser.",
+        "editHint": "Changes will be saved when you submit the report.",
+        "backToReports": "Back to my reports",
+        "taskDelete": "Delete task",
+        "reportGuide": "How to write a report"
+    },
     "common": {
         "filters": "Filters",
         "reset-filters": "Reset filters",

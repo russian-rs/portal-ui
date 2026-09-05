@@ -90,7 +90,7 @@ export const UserSearch = ({
     return (
         <Combobox
             store={combobox}
-            withinPortal={false}
+            withinPortal
             onOptionSubmit={(userId) => {
                 const user = userMap.get(userId)
                 if (user) {

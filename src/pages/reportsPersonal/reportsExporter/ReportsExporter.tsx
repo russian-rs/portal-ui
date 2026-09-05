@@ -118,7 +118,8 @@ export const ReportsExporter: React.FC = () => {
             </Modal>
             <Button
                 variant="light"
-                color="green.5"
+                color="ocean"
+                size="md"
                 fw="normal"
                 onClick={open}
                 leftSection={<IconFileTypePdf size={16} />}

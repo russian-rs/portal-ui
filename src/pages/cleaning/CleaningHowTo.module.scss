@@ -1,16 +1,19 @@
+@use "../../app/styles/surfaces" as s;
+
 .root {
-    padding: 1rem 2rem;
+    @include s.page;
     flex-direction: column;
-    row-gap: 1rem;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 1440px;
-    margin: 0 auto;
+    gap: 24px;
+    max-width: 1200px;
+
+    & {
+        @include s.glass;
+        margin-block: 20px;
+    }
 }
 
 .title {
-    font-size: xx-large;
-    font-weight: bolder;
+    @include s.title;
 }
 
 .markdown {

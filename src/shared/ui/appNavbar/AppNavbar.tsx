@@ -1,4 +1,4 @@
-import { AppShell, Group, ScrollArea, Transition } from "@mantine/core"
+import { AppShell, Drawer, Group, ScrollArea, Transition } from "@mantine/core"
 import React, { useContext, useEffect, useMemo } from "react"
 import { NavbarContext } from "src/app/providers/NavbarProvider"
 import { UserContext } from "src/app/providers/UserContext"
@@ -7,9 +7,7 @@ import classes from "src/shared/ui/appNavbar/AppNavbar.module.scss"
 import { Content } from "src/shared/ui/appNavbar/Content"
 import { LogoutButton } from "src/shared/ui/appNavbar/logoutButton/LogoutButton"
 import { UserButton } from "src/shared/ui/appNavbar/userButton/UserButton"
-import { AnnouncementBell } from "src/shared/ui/announcements/AnnouncementBell"
-import { LocaleSwitcher } from "src/shared/ui/locale/LocaleSwitcher"
-import { ThemeSwitcher } from "src/shared/ui/theme/ThemeSwitcher"
+import { FormattedMessage } from "react-intl"
 import { hasPermission } from "src/shared/user/roles"
 import { LinksGroup } from "./links/NavbarLinksGroup"
 import { useLocation } from "react-router"
@@ -54,28 +52,41 @@ export const AppNavbar = React.memo(function AppNavbar() {
         ))
     }, [user])
 
+    const navigation = (
+        <nav className={classes.navbar}>
+            <div className={classes.header}>
+                <UserButton />
+            </div>
+
+            <ScrollArea className={classes.links}>
+                <div className={classes.linksInner}>{items}</div>
+            </ScrollArea>
+
+            <Group className={classes.footer} justify="space-between">
+                <LogoutButton />
+            </Group>
+        </nav>
+    )
+
+    if (!isDesktop) {
+        return (
+            <Drawer
+                opened={menuOpened}
+                onClose={() => setMenuOpened(false)}
+                title={<FormattedMessage id="design.navigation" />}
+                size={310}
+                classNames={{ body: classes.mobileBody, content: classes.mobileContent }}
+            >
+                {navigation}
+            </Drawer>
+        )
+    }
+
     return (
-        <Transition mounted={menuOpened} transition="scale-x" timingFunction="ease">
+        <Transition mounted={menuOpened} transition="slide-right" timingFunction="ease">
             {(styles) => (
                 <AppShell.Navbar style={styles} className={classes.appShellNavbar}>
-                    <nav className={classes.navbar}>
-                        <div className={classes.header}>
-                            <UserButton />
-                            <AnnouncementBell />
-                        </div>
-
-                        <ScrollArea className={classes.links}>
-                            <div className={classes.linksInner}>{items}</div>
-                        </ScrollArea>
-
-                        <Group className={classes.footer} justify="space-between">
-                            <LogoutButton />
-                            <Group justify="flex-end">
-                                <LocaleSwitcher />
-                                <ThemeSwitcher />
-                            </Group>
-                        </Group>
-                    </nav>
+                    {navigation}
                 </AppShell.Navbar>
             )}
         </Transition>

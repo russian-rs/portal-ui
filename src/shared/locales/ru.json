@@ -1,4 +1,22 @@
 {
+    "design": {
+        "portal": "Портал волонтёра",
+        "navigation": "Навигация",
+        "workspace": "Личное пространство",
+        "reportsSubtitle": "Каждая задача — часть большого дела.",
+        "activity": "Ваша активность",
+        "hoursRequired": "из {hours} ч за год",
+        "reportHistory": "История отчётов",
+        "reportWeek": "Неделя {week}",
+        "newReportNote": "Расскажите, что удалось сделать.",
+        "reportSummary": "Ваш отчёт",
+        "tasksCount": "{count, plural, one {# задача} few {# задачи} many {# задач} other {# задачи}}",
+        "draftHint": "Черновик автоматически сохраняется в этом браузере.",
+        "editHint": "Изменения будут сохранены после отправки отчёта.",
+        "backToReports": "К моим отчётам",
+        "taskDelete": "Удалить задачу",
+        "reportGuide": "Как заполнить отчёт"
+    },
     "common": {
         "filters": "Фильтры",
         "reset-filters": "Сбросить фильтры",

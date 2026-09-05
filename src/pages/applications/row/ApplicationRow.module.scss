@@ -1,6 +1,14 @@
-.clickableRow,
-.mobileCard {
+@use "../../../app/styles/surfaces" as s;
+
+.clickableRow {
     cursor: pointer;
+}
+.mobileCard {
+    @include s.glass;
+    cursor: pointer;
+    padding: 20px;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .applicant {

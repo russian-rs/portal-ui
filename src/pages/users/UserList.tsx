@@ -10,6 +10,7 @@ import {
     Paper,
     Table,
     Text,
+    Title,
 } from "@mantine/core"
 import { useMediaQuery } from "@mantine/hooks"
 import { ContractDto, PageRequest } from "@russian-rs/portal-api-axios"
@@ -75,7 +76,7 @@ export const UserList = () => {
             setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
         }
 
-        const pageNumber = programChanged ? 0 : (pageRequest.pageNumber || 0)
+        const pageNumber = programChanged ? 0 : pageRequest.pageNumber || 0
         updateUrlParams(debouncedSearch, newProgram, nextProject, pageNumber)
     }
 
@@ -85,13 +86,11 @@ export const UserList = () => {
 
         if (newProject && newProject !== NO_PROJECT_CODE) {
             const project =
-                visibleProjects.find((p) => p.code === newProject) ??
-                projects.find((p) => p.code === newProject)
+                visibleProjects.find((p) => p.code === newProject) ?? projects.find((p) => p.code === newProject)
 
             if (project) {
                 const owningProgramCode =
-                    project.programCode ??
-                    programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
+                    project.programCode ?? programs.find((pr) => (pr.projectCodes ?? []).includes(project.code))?.code
 
                 if (owningProgramCode) {
                     nextProgram = owningProgramCode.toUpperCase()
@@ -106,7 +105,7 @@ export const UserList = () => {
             setPageRequest((prev) => ({ ...prev, pageNumber: 0 }))
         }
 
-        const pageNumber = projectChanged ? 0 : (pageRequest.pageNumber || 0)
+        const pageNumber = projectChanged ? 0 : pageRequest.pageNumber || 0
         updateUrlParams(debouncedSearch, nextProgram, newProject, pageNumber)
     }
 
@@ -381,12 +380,7 @@ export const UserList = () => {
                 }}
             >
                 <Flex align="center" columnGap={12}>
-                    <Avatar
-                        size={44}
-                        src={user.avatar?.link}
-                        name={user.fullName}
-                        className={classes.avatar}
-                    />
+                    <Avatar size={44} src={user.avatar?.link} name={user.fullName} className={classes.avatar} />
                     <Flex direction="column" style={{ flex: 1 }}>
                         <Text fw={500} truncate="end">
                             {user.fullName}
@@ -475,6 +469,9 @@ export const UserList = () => {
         <Flex direction="column">
             <CustomLoader visible={isFetching} className={classes.loader} />
             <Flex className={classes.root}>
+                <Title order={1} className={classes.title}>
+                    <FormattedMessage id={locales.title} />
+                </Title>
                 {isMobile ? (
                     <Flex direction="column">
                         <Button

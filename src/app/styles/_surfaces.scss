@@ -1,0 +1,24 @@
+@mixin page {
+    width: 100%;
+    min-width: 0;
+    padding: var(--portal-page-padding);
+    background: transparent;
+    animation: portal-enter 350ms ease both;
+}
+
+@mixin glass {
+    background: var(--portal-surface);
+    border: 1px solid var(--portal-border);
+    border-radius: var(--portal-radius);
+    box-shadow: var(--portal-shadow);
+    backdrop-filter: blur(18px);
+}
+
+@mixin title {
+    font-size: clamp(26px, 2.6vw, 38px);
+    font-weight: 650;
+    line-height: 1.2;
+    letter-spacing: -0.045em;
+    color: var(--portal-ink);
+    text-align: left;
+}

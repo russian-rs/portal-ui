@@ -1,12 +1,13 @@
 .loaderDisabled {
     height: 4px;
+    background: transparent;
 }
 
 .loader {
     height: 4px;
     width: 20rem;
-    --c: no-repeat linear-gradient(#3a64e9 0 0);
-    background: var(--c), var(--c), #d7b8fc;
+    --c: no-repeat linear-gradient(#278b80 0 0);
+    background: var(--c), var(--c), #cae5dd;
     background-size: 60% 100%;
     animation: l16 3s infinite;
     @keyframes l16 {

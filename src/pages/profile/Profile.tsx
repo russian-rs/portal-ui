@@ -97,7 +97,7 @@ export const Profile = () => {
                 <CustomLoader visible={isFetching} className={classes.loader} />
                 <Container className={classes.upperSpace} />
                 <SimpleGrid
-                    cols={{ base: 1, "40rem": 2, "70rem": 3 }}
+                    cols={{ base: 1, "40rem": 2 }}
                     spacing={{ base: "1rem" }}
                     type="container"
                     className={classes.root}

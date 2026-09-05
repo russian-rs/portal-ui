@@ -1,14 +1,11 @@
+@use "../../../app/styles/surfaces" as s;
+
 $width: 36rem;
 
 .root {
-    width: 100%;
-    padding: 2rem;
+    @include s.page;
     flex-direction: column;
-    row-gap: 1rem;
-
-    @media (max-width: $mantine-breakpoint-sm) {
-        padding: 1rem;
-    }
+    gap: 24px;
 }
 
 .wrapContainer {
@@ -23,6 +20,13 @@ $width: 36rem;
     @media (max-width: $mantine-breakpoint-sm) {
         width: 100%;
     }
+
+    & {
+        @include s.glass;
+        padding: 24px;
+        min-width: 0;
+        max-width: 100%;
+    }
 }
 
 .controls {
@@ -31,15 +35,17 @@ $width: 36rem;
     @media (max-width: $mantine-breakpoint-sm) {
         width: 100%;
     }
+
+    & {
+        @include s.glass;
+        padding: 24px;
+        min-width: 0;
+        max-width: 100%;
+    }
 }
 
 .title {
-    font-size: large;
-    font-weight: bold;
-
-    @media (max-width: $mantine-breakpoint-sm) {
-        font-size: large;
-    }
+    @include s.title;
 }
 
 .statusSelect {
@@ -98,5 +104,12 @@ $width: 36rem;
 
     @media (max-width: $mantine-breakpoint-sm) {
         width: 100%;
+    }
+
+    & {
+        @include s.glass;
+        padding: 24px;
+        min-width: 0;
+        max-width: 100%;
     }
 }
