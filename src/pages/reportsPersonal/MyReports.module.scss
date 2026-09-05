@@ -26,8 +26,8 @@
     font-size: 14px;
 }
 .newReportButton {
-    background: linear-gradient(110deg, #197e76, #245c65);
-    box-shadow: 0 6px 16px #167e7626;
+    background: var(--portal-action-gradient);
+    box-shadow: 0 6px 16px #286cb326;
 }
 .content {
     display: grid;

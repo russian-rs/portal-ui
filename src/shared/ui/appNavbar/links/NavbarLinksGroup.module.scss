@@ -3,7 +3,7 @@
     width: 100%;
     padding: 12px 8px;
     margin-top: 5px;
-    color: #d7e7e8;
+    color: #dbe8f3;
     font-size: 14px;
     border-radius: 12px;
     transition: background 180ms ease;
@@ -12,7 +12,7 @@
         color: white;
     }
     :global(.mantine-ThemeIcon-root) {
-        color: #9dd0c8;
+        color: #a4cfe8;
         background: #ffffff0a;
     }
 }
@@ -21,7 +21,7 @@
     padding: 11px 12px 11px 18px;
     margin: 3px 0 3px 16px;
     border-radius: 11px;
-    color: #b8ced2;
+    color: #bdcfdf;
     text-decoration: none;
     font-size: 14px;
     font-weight: 400;
@@ -36,16 +36,16 @@
         transform: translateX(2px);
     }
     &[aria-current="page"] {
-        color: #eafff9;
-        background: linear-gradient(110deg, #378e8077, #4b928322);
+        color: #eef8ff;
+        background: linear-gradient(110deg, #397fac77, #3c928322);
         box-shadow:
-            inset 3px 0 #8cdbc4,
-            inset 0 0 0 1px #8cdbc420;
+            inset 3px 0 #97d1f0,
+            inset 0 0 0 1px #97d1f020;
     }
 }
 .control[aria-current="page"] {
     background: #ffffff12;
-    color: #a6e7d9;
+    color: #b4ddf4;
 }
 .chevron {
     transition: transform 200ms ease;

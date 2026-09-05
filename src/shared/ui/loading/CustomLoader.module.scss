@@ -7,7 +7,7 @@
 .loader {
     height: 4px;
     width: 20rem;
-    --c: no-repeat linear-gradient(#278b80 0 0);
+    --c: no-repeat linear-gradient(var(--portal-accent) 0 0);
     background: var(--c), var(--c), #cae5dd;
     background-size: 60% 100%;
     animation: l16 3s infinite;
