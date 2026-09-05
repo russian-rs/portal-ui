@@ -125,7 +125,7 @@ export const ApplicationEditDrawer = ({
             .max(200, intl.formatMessage({ id: "pages.profile.validation.maxLetters" }, { count: 200 }))
             .optional()
             .or(z.literal("")),
-        program: z.string().min(1, intl.formatMessage({ id: "pages.application.form.required" })),
+        program: z.string().optional(),
         project: z.string().optional(),
     })
 
@@ -318,8 +318,8 @@ export const ApplicationEditDrawer = ({
                     <Select
                         label={<FormattedMessage id="pages.applications.view.program" />}
                         placeholder={intl.formatMessage({ id: "pages.application.form.program-placeholder" })}
-                        withAsterisk
                         searchable
+                        clearable
                         data={programOptions}
                         value={form.values.program || null}
                         error={form.errors.program}

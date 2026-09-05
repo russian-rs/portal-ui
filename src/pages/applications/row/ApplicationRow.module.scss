@@ -1,5 +1,64 @@
-.avatar {
+.clickableRow,
+.mobileCard {
     cursor: pointer;
+}
+
+.applicant {
+    min-width: 0;
+}
+
+.applicationLink {
+    color: inherit;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--mantine-primary-color-filled);
+        outline-offset: 2px;
+        border-radius: 2px;
+    }
+}
+
+.rowActions {
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    gap: 6px;
+}
+
+.notesCounter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    height: 28px;
+    min-width: 36px;
+    padding: 0 6px;
+    gap: 4px;
+    border-radius: 8px;
+    background: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+    color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1));
+    font-size: 11px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-decoration: none;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+
+    &:hover {
+        background: var(--mantine-primary-color-light);
+        color: var(--mantine-primary-color-light-color);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--mantine-primary-color-filled);
+        outline-offset: 2px;
+    }
 }
 
 .mobileCard {

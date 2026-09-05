@@ -60,7 +60,14 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
     const options = Object.values(ApplicationStatus).map((status) => {
         const tooltip = getTooltip(status, props.application)
         return (
-            <Tooltip label={tooltip} key={status} hidden={tooltip == undefined}>
+            <Tooltip
+                label={tooltip}
+                key={status}
+                hidden={tooltip == undefined}
+                multiline
+                w={360}
+                maw="calc(100vw - 32px)"
+            >
                 <Combobox.Option value={status} disabled={isDisabled(status, props.application)}>
                     <Flex align="center" justify="start" columnGap="xs">
                         <Flex>{getApplicationStatusIcon(status, 16, getApplicationStatusColor(status))}</Flex>
@@ -81,6 +88,7 @@ export const ApplicationStatusSelect = (props: ApplicationStatusSelectProps) => 
             <Combobox
                 store={combobox}
                 onOptionSubmit={(val) => {
+                    if (isDisabled(val as ApplicationStatus, props.application)) return
                     if (val === ApplicationStatus.PAUSED) {
                         setPendingStatus(val)
                         setPauseOpened(true)
@@ -162,7 +170,7 @@ const isDisabled = (status: ApplicationStatus, application: ApplicationDto): boo
 
     switch (status) {
         case ApplicationStatus.DONE:
-            return application.contract == null
+            return !application.contract || !application.program?.trim() || !application.project?.trim()
         default:
             return false
     }
@@ -171,11 +179,21 @@ const isDisabled = (status: ApplicationStatus, application: ApplicationDto): boo
 const getTooltip = (status: ApplicationStatus, application: ApplicationDto): ReactNode => {
     switch (status) {
         case ApplicationStatus.DONE:
-            if (!application.contract) {
-                return <FormattedMessage id={locales.contractRequired} />
-            } else {
-                return undefined
-            }
+            if (application.contract && application.program?.trim() && application.project?.trim()) return undefined
+            return (
+                <Flex direction="column" gap={4}>
+                    {!application.contract && (
+                        <Text component="div" size="sm" c="inherit">
+                            <FormattedMessage id={locales.contractRequired} />
+                        </Text>
+                    )}
+                    {(!application.program?.trim() || !application.project?.trim()) && (
+                        <Text component="div" size="sm" c="inherit">
+                            <FormattedMessage id={locales.programProjectRequired} />
+                        </Text>
+                    )}
+                </Flex>
+            )
         default:
             return undefined
     }

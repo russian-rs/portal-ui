@@ -1,5 +1,7 @@
 import { ApplicationsFilter, PageRequest, PageResponse } from "@russian-rs/portal-api-axios"
 
+export const UNASSIGNED_ASSIGNEE = "__unassigned__"
+
 export const defaultPage: PageRequest = {
     pageNumber: 0,
     pageSize: 20,

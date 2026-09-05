@@ -45,6 +45,13 @@ try {
         const context = await browser.newContext({ viewport })
         await context.addInitScript(() => {
             localStorage.setItem("locale", JSON.stringify("en"))
+            Object.defineProperty(navigator, "clipboard", {
+                value: {
+                    writeText: async (text) => {
+                        window.copiedText = text
+                    },
+                },
+            })
         })
         const page = await context.newPage()
         page.on("requestfailed", (request) => console.error("FAILED", request.url(), request.failure()?.errorText))
@@ -85,6 +92,7 @@ try {
                             id: "22222222-2222-4222-8222-222222222222",
                             name: "Unassigned Applicant",
                             assignee: null,
+                            notes: [],
                         },
                     ],
                     page: { pageNumber: 0, pageSize: 25, totalElements: 2, totalPages: 1 },
@@ -133,7 +141,7 @@ try {
         await page.goto(`${baseURL}/login`)
         await page.waitForURL(`${baseURL}/`)
         assert.ok(loginRequests > 0, "Login must use the mocked current-account endpoint")
-        await page.goto(`${baseURL}/applications`)
+        await page.goto(`${baseURL}/applications`, { waitUntil: "domcontentloaded" })
         const assignedAvatar = page.getByLabel("Assignee: Elena Petrova", { exact: true })
         await assignedAvatar.waitFor().catch(async (error) => {
             console.error(page.url(), errors, await page.locator("body").innerText())
@@ -149,6 +157,39 @@ try {
         await page.mouse.move(0, 0)
         assert.equal(writes.length, 0, "Loading list must not write")
         await page.screenshot({ path: `${output}/list-${viewport.width}.png`, fullPage: true })
+        const applicantLink = page.getByRole("link", { name: "Test Applicant", exact: true })
+        const row =
+            viewport.width >= 1024
+                ? page.locator("tbody tr").filter({ has: applicantLink })
+                : page.locator(".mantine-Card-root").filter({ has: applicantLink })
+        assert.equal(await row.locator(".mantine-Avatar-root").count(), 1, "Only assignee avatar remains")
+        await row.getByText("applicant@example.com", { exact: true }).click()
+        assert.equal(await page.evaluate(() => window.copiedText), "applicant@example.com")
+        assert.equal(new URL(page.url()).pathname, "/applications", "Copying email must not open application")
+        await row.getByRole("button", { name: "Add", exact: true }).click()
+        await page.getByRole("button", { name: "Save", exact: true }).waitFor()
+        await page.locator(".mantine-Popover-dropdown input").first().focus()
+        assert.equal(new URL(page.url()).pathname, "/applications", "Contract editor must not trigger row navigation")
+        await page.keyboard.press("Escape")
+        await page.getByRole("button", { name: "Cancel", exact: true }).click()
+        await page.getByRole("button", { name: "Save", exact: true }).waitFor({ state: "hidden" })
+        await row.getByRole("button", { name: "Application actions" }).click()
+        await page.getByRole("menuitem", { name: "Contact", exact: true }).click()
+        const emailDialog = page.locator(".mantine-Drawer-content[role=dialog]")
+        await emailDialog.waitFor()
+        await emailDialog.getByRole("textbox", { name: "Email Subject", exact: true }).fill("Test subject")
+        assert.equal(new URL(page.url()).pathname, "/applications", "Portalled email editor must not open application")
+        await page.keyboard.press("Escape")
+        await emailDialog.waitFor({ state: "hidden" })
+        await page.keyboard.press("Escape")
+        assert.equal(writes.length, 0, "Opening nested controls does not save applications")
+        if (viewport.width >= 1024) await row.locator("td").first().click()
+        else await row.getByText("New", { exact: true }).click()
+        await page.waitForURL(`${baseURL}/application/${application.id}`)
+        await page.goto(`${baseURL}/applications`, { waitUntil: "domcontentloaded" })
+        await applicantLink.focus()
+        await applicantLink.press("Enter")
+        await page.waitForURL(`${baseURL}/application/${application.id}`)
 
         await page.goto(`${baseURL}/application/${application.id}`)
         const select = page.getByRole("textbox", { name: "Assignee", exact: true })
@@ -160,7 +201,7 @@ try {
         await page.waitForFunction(() => document.querySelector('input[value="Ivan Ivanov"]'))
         assert.equal(writes.length, 1, "Manual selection sends only one request")
         assert.deepEqual(writes[0].data, { assignee: "interviewer" })
-        await page.goto(`${baseURL}/applications`)
+        await page.goto(`${baseURL}/applications`, { waitUntil: "domcontentloaded" })
         const initialsAvatar = page.getByLabel("Assignee: Ivan Ivanov", { exact: true })
         await initialsAvatar.waitFor()
         assert.equal(await initialsAvatar.locator("img").count(), 0, "Employee without photo uses initials")
@@ -222,16 +263,56 @@ try {
         assert.equal(writes.length, beforeContract + 1)
         assert.deepEqual(Object.keys(writes.at(-1).data).sort(), ["contract", "id"])
         assert.equal(application.assignee, null, "Contract edit must not assign employee")
-        await page.goto(`${baseURL}/applications`)
+        await page.goto(`${baseURL}/applications`, { waitUntil: "domcontentloaded" })
         const beforeListStatus = writes.length
         await page.getByRole("button", { name: "In Progress", exact: true }).first().click()
         await page.getByRole("option", { name: "Created", exact: true }).click()
         await page.getByLabel("Assignee: Elena Petrova", { exact: true }).waitFor()
         assert.equal(writes.length, beforeListStatus + 1)
         assert.deepEqual(writes.at(-1).data, { id: application.id, status: "CREATED" })
+        assert.equal(new URL(page.url()).pathname, "/applications", "Changing row status must stay on list")
+        const avatarWithNotes = await page.getByLabel("Assignee: Elena Petrova", { exact: true }).boundingBox()
+        const avatarWithoutNotes = await page.getByLabel("Unassigned", { exact: true }).boundingBox()
+        assert.ok(
+            Math.abs(avatarWithNotes.x - avatarWithoutNotes.x) < 1,
+            "Assignee avatars align with and without notes"
+        )
+        for (const fields of [
+            { program: undefined, project: undefined },
+            { program: "IT", project: undefined },
+            { program: undefined, project: "PORTAL" },
+            { program: "IT", project: "PORTAL" },
+        ]) {
+            application = { ...application, ...fields }
+            const blocked = !fields.program || !fields.project
+            for (const path of ["/applications", `/application/${application.id}`]) {
+                await page.goto(`${baseURL}${path}`, { waitUntil: "domcontentloaded" })
+                await page.getByRole("button", { name: "Created", exact: true }).first().click()
+                const completed = page.getByRole("option", { name: "Completed", exact: true })
+                await completed.waitFor()
+                assert.equal(await completed.getAttribute("data-combobox-disabled"), blocked ? "true" : null)
+                if (blocked) {
+                    await completed.hover()
+                    await page
+                        .getByRole("tooltip", {
+                            name: "Select a program and project in the application form before completing it",
+                        })
+                        .waitFor()
+                    const beforeBlockedCompletion = writes.length
+                    await completed.dispatchEvent("click")
+                    assert.equal(writes.length, beforeBlockedCompletion, "Blocked completion must not send a request")
+                    assert.equal(application.status, "CREATED")
+                }
+                await page.keyboard.press("Escape")
+            }
+        }
+        await page.getByRole("button", { name: "Created", exact: true }).click()
+        await page.getByRole("option", { name: "Completed", exact: true }).click()
+        await page.getByRole("button", { name: "Completed", exact: true }).waitFor()
+        assert.equal(application.status, "DONE", "Completion succeeds with contract, program and project")
         assert.deepEqual(errors, [], "No browser runtime errors")
         console.log(
-            `PASS ${viewport.width}px: avatar, tooltip, fallback, no load writes, manual assignment, same/new status, failure, clearing, note/contract isolation, list status`
+            `PASS ${viewport.width}px: avatar, tooltip, fallback, no load writes, manual assignment, same/new status, failure, clearing, note/contract isolation, list status, completion requirements`
         )
         await context.close()
     }

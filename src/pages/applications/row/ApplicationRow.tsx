@@ -1,10 +1,10 @@
-import { Avatar, Badge, Box, Card, Flex, Table, Text } from "@mantine/core"
+import { Box, Card, Flex, Table, Text, Tooltip, UnstyledButton } from "@mantine/core"
 import { ApplicationDto, ContractDto, UserInfoDto } from "@russian-rs/portal-api-axios"
 import { IconNotes } from "@tabler/icons-react"
 import dayjs from "dayjs"
-import { ReactNode } from "react"
-import { FormattedMessage } from "react-intl"
-import { useNavigate } from "react-router"
+import { MouseEvent, ReactNode } from "react"
+import { FormattedMessage, useIntl } from "react-intl"
+import { Link, useNavigate } from "react-router"
 import { ContractDate } from "src/pages/applications/contract/ContractDate"
 import { ApplicationMenu } from "src/pages/applications/menu/ApplicationMenu"
 import { useApplicationUpdate } from "src/shared/api/applications/useApplicationUpdate"
@@ -12,7 +12,6 @@ import { ApplicationAssigneeAvatar } from "../assignee/ApplicationAssigneeAvatar
 import { useScreenSize } from "src/shared/hooks/useDesktop"
 import { CopyText } from "src/shared/ui/copyText/CopyText"
 import { ApplicationStatusSelect } from "src/shared/ui/select/ApplicationStatusSelect"
-import { getMantineColor } from "src/shared/ui/theme/CustomMantineTheme"
 import { ApplicationStatus } from "src/shared/user/applications"
 import classes from "./ApplicationRow.module.scss"
 
@@ -29,7 +28,46 @@ export const ApplicationRow = ({
 }: ApplicationRowProps) => {
     const { isLargeDesktop } = useScreenSize()
     const navigate = useNavigate()
+    const intl = useIntl()
     const { mutate: updateApplication, isPending: isUpdating } = useApplicationUpdate()
+
+    const applicationPath = `/application/${application.id}`
+    const notesCount = application.notes?.length || 0
+    const notesLabel = intl.formatMessage(
+        { id: "pages.applications.notesCount", defaultMessage: "Заметки: {count}" },
+        { count: notesCount }
+    )
+    const notesCounter = notesCount > 0 && (
+        <Tooltip label={notesLabel} withArrow>
+            <UnstyledButton
+                component={Link}
+                to={applicationPath}
+                className={classes.notesCounter}
+                aria-label={notesLabel}
+            >
+                <IconNotes size={15} aria-hidden="true" />
+                <span>{notesCount > 99 ? "99+" : notesCount}</span>
+            </UnstyledButton>
+        </Tooltip>
+    )
+    const onRowClick = (event: MouseEvent<HTMLElement>) => {
+        const target = event.target as Element
+        if (
+            event.defaultPrevented ||
+            event.button !== 0 ||
+            event.metaKey ||
+            event.ctrlKey ||
+            event.shiftKey ||
+            event.altKey ||
+            !event.currentTarget.contains(target) ||
+            target.closest(
+                'a, button, input, select, textarea, label, [role="button"], [role="menuitem"], [role="option"], [role="combobox"], [tabindex], [data-row-action]'
+            ) ||
+            window.getSelection()?.toString()
+        )
+            return
+        navigate(applicationPath)
+    }
 
     const onStatusUpdate = (status: string, comment?: string) => {
         if (status === application.status) return
@@ -47,35 +85,22 @@ export const ApplicationRow = ({
 
     if (isMobile) {
         return (
-            <Card shadow="sm" padding="sm" radius="md" withBorder className={classes.mobileCard}>
+            <Card shadow="sm" padding="sm" radius="md" withBorder className={classes.mobileCard} onClick={onRowClick}>
                 <Flex direction="column" gap="md">
                     <Flex justify="space-between" align="center">
-                        <Flex columnGap="sm" align="center">
-                            <Avatar
-                                name={application.name}
-                                size={40}
-                                color={getMantineColor(application.name)}
-                                className={classes.avatar}
-                                onClick={() => navigate(`/application/${application.id}`)}
-                            />
-                            <Box>
-                                <Text fw={600} size="sm">
-                                    {application.name}
-                                </Text>
-                                <Text c="dimmed" size="xs">
-                                    {dayjs(application.created).format("DD MMM YYYY")}
-                                </Text>
-                            </Box>
-                        </Flex>
+                        <Box className={classes.applicant}>
+                            <Text component={Link} to={applicationPath} className={classes.applicationLink} size="sm">
+                                {application.name}
+                            </Text>
+                            <Text c="dimmed" size="xs">
+                                {dayjs(application.created).format("DD MMM YYYY")}
+                            </Text>
+                        </Box>
 
-                        <Flex align="center" gap="xs">
+                        <Flex className={classes.rowActions}>
+                            {notesCounter}
+
                             <ApplicationAssigneeAvatar login={application.assignee} user={assigneeUser} />
-                            {application.notes && application.notes.length > 0 && (
-                                <Badge variant="light" color="blue" leftSection={<IconNotes size={12} />}>
-                                    {application.notes.length}
-                                </Badge>
-                            )}
-
                             <ApplicationMenu applicationDto={application} />
                         </Flex>
                     </Flex>
@@ -92,7 +117,7 @@ export const ApplicationRow = ({
                             <Text size="xs" c="dimmed" className={classes.mobileLabel}>
                                 <FormattedMessage id="pages.applications.email" />:
                             </Text>
-                            <div>
+                            <div data-row-action>
                                 <CopyText text={application.email} size="xs" />
                             </div>
                         </div>
@@ -101,7 +126,7 @@ export const ApplicationRow = ({
                             <Text size="xs" c="dimmed" className={classes.mobileLabel}>
                                 <FormattedMessage id="pages.applications.contractStart" />:
                             </Text>
-                            <div>
+                            <div data-row-action>
                                 <ContractDate
                                     application={application}
                                     onChange={onContractChanged}
@@ -114,7 +139,7 @@ export const ApplicationRow = ({
                             <Text size="xs" c="dimmed" className={classes.mobileLabel}>
                                 <FormattedMessage id="pages.applications.status" />:
                             </Text>
-                            <div>
+                            <div data-row-action>
                                 <ApplicationStatusSelect
                                     application={application}
                                     className={classes.mobileStatusSelect}
@@ -136,7 +161,7 @@ export const ApplicationRow = ({
     }
 
     return (
-        <Table.Tr key={application.id}>
+        <Table.Tr key={application.id} className={classes.clickableRow} onClick={onRowClick}>
             <Table.Td>
                 <Box>
                     <Text c="dimmed" size={isLargeDesktop ? "sm" : "xs"} className={classes.compactText}>
@@ -147,29 +172,28 @@ export const ApplicationRow = ({
                 </Box>
             </Table.Td>
             <Table.Td>
-                <Flex columnGap="sm" align="center" className={classes.compactFlex}>
-                    <Avatar
-                        name={application.name}
-                        size={isLargeDesktop ? 24 : 20}
-                        color={getMantineColor(application.name)}
-                        className={classes.avatar}
-                        onClick={() => navigate(`/application/${application.id}`)}
-                    />
-
-                    <Flex direction="column" gap="0">
-                        <Text size={isLargeDesktop ? "sm" : "xs"} truncate="end" className={classes.compactText}>
-                            {application.name}
-                        </Text>
-
+                <Flex direction="column" gap="0" className={classes.applicant}>
+                    <Text
+                        component={Link}
+                        to={applicationPath}
+                        size={isLargeDesktop ? "sm" : "xs"}
+                        truncate="end"
+                        className={classes.applicationLink}
+                    >
+                        {application.name}
+                    </Text>
+                    <Box data-row-action w="fit-content" maw="100%">
                         <CopyText text={application.email} size={isLargeDesktop ? "sm" : "xs"} />
-                    </Flex>
+                    </Box>
                 </Flex>
             </Table.Td>
             <Table.Td>
-                <ContractDate application={application} onChange={onContractChanged} disabled={isUpdating} />
+                <Box data-row-action w="fit-content">
+                    <ContractDate application={application} onChange={onContractChanged} disabled={isUpdating} />
+                </Box>
             </Table.Td>
             <Table.Td className={classes.statusSelect}>
-                <div>
+                <div data-row-action>
                     <ApplicationStatusSelect
                         application={application}
                         className={classes.statusSelect}
@@ -186,14 +210,10 @@ export const ApplicationRow = ({
                 </div>
             </Table.Td>
             <Table.Td>
-                <Flex align="center" justify="flex-end" gap="xs">
-                    <ApplicationAssigneeAvatar login={application.assignee} user={assigneeUser} />
-                    {application.notes && application.notes.length > 0 && (
-                        <Badge variant="light" color="blue" leftSection={<IconNotes size={12} />}>
-                            {application.notes.length}
-                        </Badge>
-                    )}
+                <Flex className={classes.rowActions}>
+                    {notesCounter}
 
+                    <ApplicationAssigneeAvatar login={application.assignee} user={assigneeUser} />
                     <ApplicationMenu applicationDto={application} />
                 </Flex>
             </Table.Td>

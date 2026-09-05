@@ -467,6 +467,7 @@
             "title": "Все волонтеры",
             "total": "Всего: {total}",
             "search": "Поиск",
+            "add-user": "Добавить пользователя",
             "new-user": "Новый пользователь",
             "first-name": "Имя",
             "last-name": "Фамилия",
@@ -618,6 +619,10 @@
         "applications": {
             "assignee": "Ответственный",
             "unassigned": "Не назначен",
+            "notesCount": "Заметки: {count}",
+            "unassignedApplications": "Не назначенные",
+            "allAssignees": "Все ответственные",
+            "clearAssigneeFilter": "Сбросить фильтр по ответственному",
             "noEmployees": "Сотрудники не найдены",
             "clearAssignee": "Снять назначение",
             "title": "Заявки на вступление",
@@ -636,10 +641,12 @@
             "status-short": "Статус",
             "contractStart": "Договор (начало)",
             "contract-start-short": "Договор",
+            "program-project-required": "Для завершения укажите программу и проект в анкете заявки",
             "contract-required": "Для завершения необходимо указать даты контракта",
             "showCompleted": "Показать завершенные",
             "add-note": "Добавить заметку",
             "menu": {
+                "actions": "Действия с заявкой",
                 "view": "Посмотреть",
                 "contact": "Написать"
             },

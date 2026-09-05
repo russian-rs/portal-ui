@@ -467,6 +467,7 @@
             "title": "All volunteers",
             "total": "Total: {total}",
             "search": "Search",
+            "add-user": "Add user",
             "new-user": "New user",
             "first-name": "First name",
             "last-name": "Last name",
@@ -618,6 +619,10 @@
         "applications": {
             "assignee": "Assignee",
             "unassigned": "Unassigned",
+            "notesCount": "Notes: {count}",
+            "unassignedApplications": "Unassigned",
+            "allAssignees": "All assignees",
+            "clearAssigneeFilter": "Clear assignee filter",
             "noEmployees": "No employees found",
             "clearAssignee": "Clear assignment",
             "title": "Applications for Admission",
@@ -636,10 +641,12 @@
             "status-short": "Status",
             "contractStart": "Contract (start)",
             "contract-start-short": "Contract",
+            "program-project-required": "Select a program and project in the application form before completing it",
             "contract-required": "Contract dates must be specified to complete",
             "showCompleted": "Show completed",
             "add-note": "Add note",
             "menu": {
+                "actions": "Application actions",
                 "view": "View",
                 "contact": "Contact"
             },

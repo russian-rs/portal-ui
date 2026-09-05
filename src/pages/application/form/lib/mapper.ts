@@ -43,16 +43,8 @@ export const mapValuesToRequest = (values: Record<string, any>, currentState: Ap
     if (values["occupation"]) {
         request.occupation = values["occupation"]
     }
-    if (values["program"]) {
-        request.program = values["program"]
-    } else {
-        delete request.program
-    }
-    if (values["project"]) {
-        request.project = values["project"]
-    } else {
-        delete request.project
-    }
+    delete request.program
+    delete request.project
     if (values["experience"]) {
         request.experience = values["experience"]
     }
